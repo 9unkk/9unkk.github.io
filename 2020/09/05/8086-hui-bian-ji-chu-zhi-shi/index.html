@@ -1,0 +1,556 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="preconnect" href="//www.googletagmanager.com">
+	<link rel="preconnect" href="//zz.bdstatic.com">
+	<link rel="preconnect" href="//sp0.baidu.com">
+	<link rel="preconnect" href="//www.google-analytics.com">
+	<link rel="preconnect" href="//cdn1.lncld.net">
+	<link rel="preconnect" href="//unpkg.com">
+	<link rel="preconnect" href="//app-router.leancloud.cn">
+	<link rel="preconnect" href="//9qpuwspm.api.lncld.net">
+	<link rel="preconnect" href="//gravatar.loli.net">
+
+	<title>8086 汇编-基础知识 | 9unk</title>
+
+	<meta name="HandheldFriendly" content="True">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+	<meta name="generator" content="hexo">
+	<meta name="author" content="9nuk">
+	<meta name="description" content>
+
+	
+	<meta name="keywords" content>
+	
+
+	
+	<link rel="shortcut icon" href="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png">
+	<link rel="apple-touch-icon" href="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png">
+	
+
+	
+	<meta name="theme-color" content="#3c484e">
+	<meta name="msapplication-TileColor" content="#3c484e">
+	
+
+	
+
+	
+
+	<meta property="og:site_name" content="9unk">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="8086 汇编-基础知识 | 9unk">
+	<meta property="og:description" content>
+	<meta property="og:url" content="http://yoursite.com/2020/09/05/8086-hui-bian-ji-chu-zhi-shi/">
+
+	
+	<meta property="article:published_time" content="2020-09-05T00:09:00+08:00"> 
+	<meta property="article:author" content="9nuk">
+	<meta property="article:published_first" content="9unk, /2020/09/05/8086-hui-bian-ji-chu-zhi-shi/">
+	
+
+	
+	
+	
+<link rel="stylesheet" href="/css/allinonecss.min.css">
+
+
+	
+	
+	
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+<body class="post-template">
+	<div class="site-wrapper">
+		
+
+
+
+
+<header class="site-header post-site-header outer">
+    <div class="inner">
+        
+<nav class="site-nav"> 
+    <div class="site-nav-left">
+        <ul class="nav">
+            <li>
+                
+                
+                <a class="site-nav-logo" href="/" title="9unk">
+                    <img src="https://pic2.zhimg.com/80/v2-41b7556078db198db3955539789490a8_720w.jpg" alt="9unk">
+                </a>
+                
+                
+            </li>
+            
+            
+            <li>
+                <a href="/about" title="关于">关于</a>
+            </li>
+            
+            <li>
+                <a href="/archives" title="文章">文章</a>
+            </li>
+            
+            
+        </ul> 
+    </div>
+    
+    <div class="search-button-area">
+        <a href="#search" class="search-button">Search ...</a>
+    </div>
+     
+    <div class="site-nav-right">
+        
+        <a href="#search" class="search-button">Search ...</a>
+         
+        
+<div class="social-links">
+    
+    
+    <a class="social-link" title="github" href="https://github.com/hhkk2334" target="_blank" rel="noopener">
+        <svg viewBox="0 0 1049 1024" xmlns="http://www.w3.org/2000/svg"><path d="M524.979332 0C234.676191 0 0 234.676191 0 524.979332c0 232.068678 150.366597 428.501342 358.967656 498.035028 26.075132 5.215026 35.636014-11.299224 35.636014-25.205961 0-12.168395-0.869171-53.888607-0.869171-97.347161-146.020741 31.290159-176.441729-62.580318-176.441729-62.580318-23.467619-60.841976-58.234462-76.487055-58.234463-76.487055-47.804409-32.15933 3.476684-32.15933 3.476685-32.15933 53.019436 3.476684 80.83291 53.888607 80.83291 53.888607 46.935238 79.963739 122.553122 57.365291 152.97411 43.458554 4.345855-33.897672 18.252593-57.365291 33.028501-70.402857-116.468925-12.168395-239.022047-57.365291-239.022047-259.012982 0-57.365291 20.860106-104.300529 53.888607-140.805715-5.215026-13.037566-23.467619-66.926173 5.215027-139.067372 0 0 44.327725-13.906737 144.282399 53.888607 41.720212-11.299224 86.917108-17.383422 131.244833-17.383422s89.524621 6.084198 131.244833 17.383422C756.178839 203.386032 800.506564 217.29277 800.506564 217.29277c28.682646 72.1412 10.430053 126.029806 5.215026 139.067372 33.897672 36.505185 53.888607 83.440424 53.888607 140.805715 0 201.64769-122.553122 245.975415-239.891218 259.012982 19.121764 16.514251 35.636014 47.804409 35.636015 97.347161 0 70.402857-0.869171 126.898978-0.869172 144.282399 0 13.906737 9.560882 30.420988 35.636015 25.205961 208.601059-69.533686 358.967656-265.96635 358.967655-498.035028C1049.958663 234.676191 814.413301 0 524.979332 0z"/></svg>
+    </a>
+    
+    
+    
+    
+    
+    
+</div>
+    </div>
+</nav>
+    </div>
+</header>
+
+
+<div id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+        <header class="post-full-header">
+            <div class="post-full-meta">
+                <time class="post-full-meta-date" datetime="2020-09-04T16:38:46.000Z">
+                    2020-09-5
+                </time>
+                
+                <span class="date-divider">/</span>
+                
+                
+            </div>
+            <h1 class="post-full-title">8086 汇编-基础知识</h1>
+        </header>
+        <div class="post-full no-image">
+            
+            <div class="post-full-content">
+                <article id="photoswipe" class="markdown-body">
+                    <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>简单介绍机器语言和汇编语言产生。</p>
+<h2 id="什么是机器语言"><a href="#什么是机器语言" class="headerlink" title="什么是机器语言"></a>什么是机器语言</h2><p>机器语言是机器指令的集合。</p>
+<p>早期计算机的概念：电子计算机的机器指令是一列二进制数字，计算机将之转变为一列高低电平，以使计算机的电子器件受到驱动，进行运算。</p>
+<p>现在是用 CPU（中央处理器单元） 来完成上面所说的计算机的功能。每一种微处理器，由于硬件设计和内部结构的不同，就需要不同的电平脉冲来控制，使它工作。所以每一种微处理器都有自己的指令集，也就是机器语言。</p>
+<p>早期的程序设计均使用机器语言。程序员们将用 0、1 数字编成的程序代码打在纸带或卡片上，1打孔，0不打孔，再将程序通过纸带机或卡片机输入计算机，进行运算。</p>
+<p><img alt="1.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/20/UvtbGZmnHaXihcs.png" data-index="0" data-src="https://i.loli.net/2020/06/20/UvtbGZmnHaXihcs.png"></p>
+<p>如上图的机器码，这不仅晦涩难懂且不易排错。</p>
+<h2 id="汇编语言的产生"><a href="#汇编语言的产生" class="headerlink" title="汇编语言的产生"></a>汇编语言的产生</h2><p>早期程序员们很快就发现了使用机器语言带来的麻烦，给整个产业的发展带来了障碍，于是汇编语言就产生了。</p>
+<p>汇编语言的主体是汇编指令。汇编指令和机器指令的差别在于指令的表示方法上，汇编指令是机器指令便于记忆的书写格式。</p>
+<p>例如：</p>
+<pre class=" language-text"><code class="language-text">操作：把寄存器 BX 的内容送到 AX 中
+机器指令：1000100111011000
+汇编语言：mov ax,bx。</code></pre>
+<p>此后，程序员们就用汇编指令编写源程序，然后用编译器将汇编语言转换成机器码，由计算机最终执行程序。</p>
+<p><img alt="2.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/20/rFqhGEQWN72uH6i.png" data-index="1" data-src="https://i.loli.net/2020/06/20/rFqhGEQWN72uH6i.png"></p>
+<h2 id="汇编语言的组成"><a href="#汇编语言的组成" class="headerlink" title="汇编语言的组成"></a>汇编语言的组成</h2><p>汇编语言由以下 3 类指令组成。</p>
+<ol>
+<li>汇编指令：机器码的助记符，有对应的机器码。</li>
+<li>伪指令：没有对应的机器码，由编译器执行，计算机并不执行。</li>
+<li>其他符号：如 + 、-、*、/  等，由比编译器识别，没有对应的机器码。</li>
+</ol>
+<p>汇编语言的核心是汇编指令，它决定了汇编语言的特性。</p>
+<h1 id="第一章：基础知识"><a href="#第一章：基础知识" class="headerlink" title="第一章：基础知识"></a>第一章：基础知识</h1><p>学习汇编必须要了解计算机的硬件结构和部分硬件的运行原理。这一章主要介绍 存储器、总线 和 内存地址空间。</p>
+<h2 id="存储器"><a href="#存储器" class="headerlink" title="存储器"></a>存储器</h2><p>存储器(Memory)所指的不仅是内存和硬盘，其中还包括了主板上的ROM、显存、缓存（cache）等存储信息的设备。</p>
+<blockquote>
+<p>硬盘和内存的区别：硬盘（外部存储器）不同于内存（内部存储器），硬盘上的只是用于存储数据，而内存是读取硬盘上的数据来运行系统、程序等。</p>
+</blockquote>
+<h3 id="指令和数据"><a href="#指令和数据" class="headerlink" title="指令和数据"></a>指令和数据</h3><p>在内存或磁盘上，指令和数据没有任何区别，都是二进制信息。CPU 在工作的时候把有的信息看做指令来执行某些操作，有的信息看做数据，为同样的信息赋予不同的意义。</p>
+<p>例如：内存中的二进制信息 1000100111011000，计算机可以把它看做大小为 89D8H 的数据来处理，也可以将其看做指令 mov ax,bx 来执行。</p>
+<h3 id="存储单元"><a href="#存储单元" class="headerlink" title="存储单元"></a>存储单元</h3><p>存储器被划分成若干个存储单元，每个存储单元从 0 开始顺序编号，例如一个存储器有 128 个存储单元，编号从 0~127。</p>
+<p><img alt="3" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/20/4CUZHIWmEXL2V3G.png" data-index="2" data-src="https://i.loli.net/2020/06/20/4CUZHIWmEXL2V3G.png"></p>
+<p>计算机中最小信息存储单位是 bit（比特），8 个 bit 组成 1 Byte（字节）。一个存储单元可以存储 1 Byte，一个存储器有 128 个存储单元，可以存储 128 个 Byte。</p>
+<p>计算机存储器的容量的最小单位是 Byte。对于大的存储器一般用 KB、MB、GB、TB 单位来计量容量。</p>
+<h2 id="总线（Bus）"><a href="#总线（Bus）" class="headerlink" title="总线（Bus）"></a>总线（Bus）</h2><p>存储器被划分成多个存储单元，每个存储单元大小为 1 字节 。存储单元从 0~127 开始按顺序编号，这些编号可以看做是存储单元在存储器中的地址,就像旅馆的每个房间都有房间号。</p>
+<p>如果你要在旅馆找人，首先需要知道他的房间号。同理 CPU 要从存储器中读取数据，首先要知道存储单元的地址。</p>
+<p>另外在一台计算机中，不只有内存这个器件（还有显卡、键盘、鼠标等）。因此 CPU 在读写数据时还要指明，它要对哪个器件进行操作，进行哪种操作，是从中读取数据，还是向里面写入数据。</p>
+<p>由此可见，CPU 想要进行数据的读写，必须和外部器件进行 3 种信息的交互。</p>
+<ul>
+<li>存储单元的地址（地址信息）</li>
+<li>器件的选择，读或写的指令（控制信息）</li>
+<li>读或写的数据（数据信息）</li>
+</ul>
+<p>在计算机中有专门连接 CPU 和其他器件的导线，通常称为总线。总线从物理上来讲，就是一个根根导线的集合。根据传送信息的不同，总线从逻辑上又分为 3 种：地址总线、控制总线、数据总线。</p>
+<p>CPU 从 3 号处理单元中读取数据的过程如下</p>
+<p><img alt="4.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/20/3Vwxkh7mnfqLyY1.png" data-index="3" data-src="https://i.loli.net/2020/06/20/3Vwxkh7mnfqLyY1.png"></p>
+<ol>
+<li><p>CPU 通过地址线发出地址信息 3</p>
+</li>
+<li><p>CPU 通过控制线发出内存读命令，选中存储器芯片，并通知它，将要从中读取数据</p>
+</li>
+<li><p>内存将 3 号单元中的数据 8 通过数据线送入 CPU</p>
+</li>
+</ol>
+<h3 id="地址总线"><a href="#地址总线" class="headerlink" title="地址总线"></a>地址总线</h3><p>CPU 是通过地址总线来指定某个存储单元位置。地址总线决定了 CPU 能识别多大的内存。</p>
+<p>专业术语：N 根地址总线地址就表示：总线宽度为 N。地址总线的宽度决定了 CPU 的寻址能力（能识别多大内存）。</p>
+<p>你可以理解为：CPU是一个集团，一根地址总线就相当于一个人，如果人手越多，那么集团收集处理情报数据的能力也就越强。</p>
+<p><strong>示例：</strong></p>
+<p>在计算机中，一根导线可以传送的稳定状态只有两种，高电平或是低电平（即 1 和 0）。也就是说一根导线可以传送两种不同的数据来进行寻址。那么 10 根导线可以使用 2 ^ 10 个不同的数据（0~1023）来进行寻址。</p>
+<p>下图展示了一个具有 10 根地址线的 CPU 向内存发出的地址信息 11 时 10 根地址总线上传输的二进制信息。</p>
+<p><img alt="5.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/21/IuXbtf2eAnr831C.png" data-index="4" data-src="https://i.loli.net/2020/06/21/IuXbtf2eAnr831C.png"></p>
+<p><strong>总结：</strong> 上面的例子主要说明的是，一个地址总线可以使用 1 或 0 这两个 bit 信息来寻找存储单元（即：一个地址总线可以寻找 2 个存储单元），那么 10 根地址总线可以寻找 2^10 个存储单元（1 存储单元=1Byte）。也就是说 10 根地址总线可以寻找到 2^10 Byte 的数据，能识别 1K 的内存。</p>
+<p><strong>概念：</strong> 一个 CPU 有 N 根地址总线，那么可以说这个 CPU 的地址总线宽度为 N。这样 CPU 最多可以寻找 2 的 N 次方个内存单元，即 CPU 的寻址能力为 2 的 N 次方。</p>
+<h3 id="数据总线"><a href="#数据总线" class="headerlink" title="数据总线"></a>数据总线</h3><p>CPU 与内存或其他器件之间的数据传送是通过数据总线来进行的。数据总线的宽度决定了 CPU 和外界的数据传送速度。 8 根数据总线一次性可传送一个 8 位二进制数据（即一个字节）。16 根数据总线一次可传送两个字节。</p>
+<p>8088 CPU 的数据总线宽度为 8，8086 CPU 的数据总线宽度为 16。如果向内存中写入数据 89D8H 时，CPU 是如何通过数据总线传送数据的。</p>
+<p><strong>如下图所示：</strong></p>
+<p><img alt="6.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/21/Q1d3CfH4a7trkcS.png" data-index="5" data-src="https://i.loli.net/2020/06/21/Q1d3CfH4a7trkcS.png"></p>
+<p><img alt="7.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/21/9mDPyXzsw6VAdNC.png" data-index="6" data-src="https://i.loli.net/2020/06/21/9mDPyXzsw6VAdNC.png"></p>
+<blockquote>
+<p>数据传输是从低位往高位传输，阅读的时候是从高位往低位读</p>
+</blockquote>
+<p>8086 有 16 根数据线。可一次性传送 16 位数据，所以可一次传送数据 89D8H；而 8088 只有 8 根数据先，一次只能传送 8 位数据，所以向内存中写入数据 89D8H 时需要进行两次数据传送。</p>
+<blockquote>
+<p>H 表示这个数据是 16 进制的。</p>
+</blockquote>
+<h3 id="控制总线"><a href="#控制总线" class="headerlink" title="控制总线"></a>控制总线</h3><p>CPU 对外部的器件的控制是通过控制总线类进行的。在这里控制总线是个总称，控制总线是一些不同控制线的集合。有多少根控制总线，就意味着 CPU 可以控制多少个外部器件。所以控制总线的宽度决定了 CPU 对外部器件的控制能力。</p>
+<p>控制总线发送控制信息（即读或写等操作信息）</p>
+<h2 id="内存地址空间"><a href="#内存地址空间" class="headerlink" title="内存地址空间"></a>内存地址空间</h2><p>一个 CPU 的地址总线宽度为 10 ，那么可以寻址 1024 个内存单元，这 1024 个可寻到的内存单元就构成了这个 CPU 的内存地址空间。</p>
+<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><ol>
+<li><p>接口卡<br>接口卡就是计算机中的 USB 口、网口、音频口、VGA 口、HDMI 口等等。 CPU 是通过总线向接口卡发送命令，接口卡根据 CPU 的命令控制外设内让其进行工作。</p>
+</li>
+<li><p>存储器<br>存储器从读写属性上看分为两类：随机存储器（RAM）和只读存储器（ROM）。随机存储器可读写，但必须带电存储，关机后存储的内容会丢失；只读存储器只能读取不能写入，关机后其中的内容不丢失。这些存储器从功能功能和连接上又可分为以下几类。</p>
+<ul>
+<li><p>随机存储器<br>用于存放供 CPU 使用的绝大部分程序和数据，主随机存储器一般由两个位置上的 RAM 组成，装在主板上 RAM 和插在扩展插槽行的 RAM。</p>
+</li>
+<li><p>装有 BIOS（Basic Input/Output System，基本输入/输出系统）的 ROM<br>BIOS 是由主板和各类接口卡（如显卡、网卡等）厂商提供的软件系统，可以通过它利用该硬件设备进行最基本的输入输出。在主板和某些接口卡上插有存储相应 BIOS 的 ROM。例如，主板上的 ROM 中存储着主板的 BIOS（通常称为系统 BIOS）；显卡上的 ROM 中存储着显卡的 BIOS；如果网卡上装有 ROM，那其中就可以存储网卡的 BIOS。</p>
+</li>
+<li><p>接口卡上的 RAM<br>某些接口卡需要对大批量输入、输出数据进行暂时存储，在其上装有 RAM。最典型的是显卡上的 RAM，一般称为显存。显示卡随时将现存中的数据向显卡器上输出。换句话说，我们需要显示的内容写入显存，就会出现在显示器上。</p>
+</li>
+</ul>
+</li>
+</ol>
+<p><img alt="8.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/22/SVu84CmtqPHfd3W.png" data-index="7" data-src="https://i.loli.net/2020/06/22/SVu84CmtqPHfd3W.png"></p>
+<h3 id="详细解释"><a href="#详细解释" class="headerlink" title="详细解释"></a>详细解释</h3><p>上述的那些存储器，在物理上是独立的，但是它们都是和总线相连的，CPU 对它们进行读或写的时候都是通过控制线发出内存读写命令。</p>
+<p>这也就是说，CPU 操控它们的时候，都是把它们当做内存来对待，把他们总的看作一个有若干存储单元组成的逻辑存储器，这个逻辑处理器就是地址空间。</p>
+<p><img alt="9.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/22/uicOfdXEY3ZAT6D.png" data-index="8" data-src="https://i.loli.net/2020/06/22/uicOfdXEY3ZAT6D.png"></p>
+<p>从上图中可以看到，所有的物理存储器被看做一个由若干存储单元组成的逻辑存储器，每个物理存储器在这个逻辑存储器中占有一个地址段，即一段地址空间。CPU 在这段地址空间中读写数据，实际上就是在对相应的物理存储器中读取数据。</p>
+<p>内存地址空间的大小受 CPU 地址总线宽度的限制。8086 CPU 的地址总线宽度为 20，可以传送 2 的 20 次方个不同的地址信息（大小从0 至 2^20-1）。也就是说，8086CPU 最多可定位识别 2 的 20 次方个内存单元，则 8086PC 的内存地址空间大小为 1 MB（能识别 1M 的内存）。同理，82386 CPU 的地址总线宽度为 32，则内存地址空间最大为 4 GB（能识别 4GB 的内存）。</p>
+<p>在基于一个计算机硬件系统编程的时候，必须知道这个系统中的内存地址空间分配情况，这样才能保证读写操作是在预期的存储器中进行。</p>
+<p>不同的计算机系统的内存地址空间额分配情况是不同的，下图展示了 8086PC 机内存地址空间分配情况。</p>
+<p><img alt class="post-img b-lazy" data-img="https://i.loli.net/2020/06/23/hXAUKYqteQDwimc.png" data-index="9" data-src="https://i.loli.net/2020/06/23/hXAUKYqteQDwimc.png"></p>
+<p>从地址 <code>0~9FFFF</code> 的内存单元中读取数据，实际上就是在读取主随机存储器中的数据；向地址 <code>A0000~BFFFF</code> 的内存单元中写数据，就是向显存中写入数据，这些数据会被显示卡输出到显示器上；向地址 <code>C0000~FFFFF</code> 的内存单元中写数据的操作是无效的，因为这等于改写只读存储器中的内容。</p>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a href="https://www.zhihu.com/question/68679429/answer/308673635" target="_blank" rel="noopener">存储器？</a></p>
+<p><a href="https://blog.csdn.net/yangjiancool/article/details/17055759" target="_blank" rel="noopener">32位64位最大内存、寻址空间等问题</a></p>
+<p><a href="https://www.bilibili.com/video/BV1zW411n79C?p=44" target="_blank" rel="noopener">汇编语言-小甲鱼</a></p>
+<p>[汇编语言第二版-王爽]</p>
+
+                </article>
+                <ul class="tags-postTags">
+                    
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/" rel="tag"># 汇编</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/8086CPU/" rel="tag"># 8086CPU</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    
+    <nav id="gobottom" class="pagination">
+        
+        <span class="prev-next-post">·</span>
+        
+        <a class="next-post" title="Elastic Stack笔记" href="/2020/04/30/elastic-stack-bi-ji/">
+            Elastic Stack笔记 →
+        </a>
+        
+    </nav>
+
+    
+    <div class="inner">
+        <div id="comment"></div>
+    </div>
+    
+</div>
+
+<div class="toc-bar">
+    <div class="toc-btn-bar">
+        <a href="#site-main" class="toc-btn">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M793.024 710.272a32 32 0 1 0 45.952-44.544l-310.304-320a32 32 0 0 0-46.4 0.48l-297.696 320a32 32 0 0 0 46.848 43.584l274.752-295.328 286.848 295.808z"/></svg>
+        </a>
+        <div class="toc-btn toc-switch">
+            <svg class="toc-open" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M779.776 480h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M779.776 672h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M256 288a32 32 0 1 0 0 64 32 32 0 0 0 0-64M392.576 352h387.2a32 32 0 0 0 0-64h-387.2a32 32 0 0 0 0 64M256 480a32 32 0 1 0 0 64 32 32 0 0 0 0-64M256 672a32 32 0 1 0 0 64 32 32 0 0 0 0-64"/></svg>
+            <svg class="toc-close hide" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M512 960c-247.039484 0-448-200.960516-448-448S264.960516 64 512 64 960 264.960516 960 512 759.039484 960 512 960zM512 128.287273c-211.584464 0-383.712727 172.128262-383.712727 383.712727 0 211.551781 172.128262 383.712727 383.712727 383.712727 211.551781 0 383.712727-172.159226 383.712727-383.712727C895.712727 300.415536 723.551781 128.287273 512 128.287273z"/><path d="M557.05545 513.376159l138.367639-136.864185c12.576374-12.416396 12.672705-32.671738 0.25631-45.248112s-32.704421-12.672705-45.248112-0.25631l-138.560301 137.024163-136.447897-136.864185c-12.512727-12.512727-32.735385-12.576374-45.248112-0.063647-12.512727 12.480043-12.54369 32.735385-0.063647 45.248112l136.255235 136.671523-137.376804 135.904314c-12.576374 12.447359-12.672705 32.671738-0.25631 45.248112 6.271845 6.335493 14.496116 9.504099 22.751351 9.504099 8.12794 0 16.25588-3.103239 22.496761-9.247789l137.567746-136.064292 138.687596 139.136568c6.240882 6.271845 14.432469 9.407768 22.65674 9.407768 8.191587 0 16.352211-3.135923 22.591372-9.34412 12.512727-12.480043 12.54369-32.704421 0.063647-45.248112L557.05545 513.376159z"/></svg>
+        </div>
+        <a href="#gobottom" class="toc-btn">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M231.424 346.208a32 32 0 0 0-46.848 43.584l297.696 320a32 32 0 0 0 46.4 0.48l310.304-320a32 32 0 1 0-45.952-44.544l-286.848 295.808-274.752-295.36z"/></svg>
+        </a>
+    </div>
+    <div class="toc-main">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是机器语言"><span class="toc-text">什么是机器语言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#汇编语言的产生"><span class="toc-text">汇编语言的产生</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#汇编语言的组成"><span class="toc-text">汇编语言的组成</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第一章：基础知识"><span class="toc-text">第一章：基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#存储器"><span class="toc-text">存储器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#指令和数据"><span class="toc-text">指令和数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#存储单元"><span class="toc-text">存储单元</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总线（Bus）"><span class="toc-text">总线（Bus）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#地址总线"><span class="toc-text">地址总线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据总线"><span class="toc-text">数据总线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#控制总线"><span class="toc-text">控制总线</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内存地址空间"><span class="toc-text">内存地址空间</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#概述"><span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#详细解释"><span class="toc-text">详细解释</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#reference"><span class="toc-text">reference</span></a></li></ol>
+    </div>
+</div>
+
+
+
+
+
+
+	</div>
+	
+
+
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+  <header class="read-next-card-header">
+    <small class="read-next-card-header-sitetitle">— 9unk —</small>
+    <h3 class="read-next-card-header-title">最新文章</h3>
+  </header>
+  <div class="read-next-divider">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/>
+    </svg>
+  </div>
+  <div class="read-next-card-content">
+    <ul>
+      
+      
+      
+      <li>
+        <a href="/2020/09/05/8086-hui-bian-ji-chu-zhi-shi/">8086 汇编-基础知识</a>
+      </li>
+      
+      
+      
+      <li>
+        <a href="/2020/04/30/elastic-stack-bi-ji/">Elastic Stack笔记</a>
+      </li>
+      
+      
+      
+      <li>
+        <a href="/2020/04/16/ubuntu-ri-chang/">ubuntu日常</a>
+      </li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+  </div>
+  <footer class="read-next-card-footer">
+    <a href="/archives">  MORE  → </a>
+  </footer>
+</article>
+
+            
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+    <header class="read-next-card-header tagcloud-card">
+        <h3 class="read-next-card-header-title">分类</h3>
+    </header>
+    <div class="read-next-card-content">
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Citrix/">Citrix</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web-Security/">Web Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/github/">github</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/system-security/">system security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%97%E9%80%8F%E5%B7%A5%E5%85%B7/">渗透工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E6%99%AE/">科普</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A0%81/">编码</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%B6%85%E8%9E%8D%E5%90%88/">超融合</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%9A%E4%BF%A1/">通信</a></li></ul>
+    </div>
+</article>
+
+
+            
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+	<header class="read-next-card-header tagcloud-card">
+		<h3 class="read-next-card-header-title">标签云</h3>
+	</header>
+	<div class="read-next-card-content-ext">
+		<a href="/tags/8086CPU/" style="font-size: 14px;">8086CPU</a> <a href="/tags/ELK/" style="font-size: 14px;">ELK</a> <a href="/tags/%E6%B1%87%E7%BC%96/" style="font-size: 14px;">汇编</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" style="font-size: 24px;">漏洞复现</a> <a href="/tags/%E9%9D%B6%E6%9C%BA/" style="font-size: 24px;">靶机</a>
+	</div>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+	
+
+
+
+
+<div id="search" class="search-overlay">
+    <div class="search-form">
+        
+        <div class="search-overlay-logo">
+        	<img src="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png" alt="9unk">
+        </div>
+        
+        <input id="local-search-input" class="search-input" type="text" name="search" placeholder="搜索 ...">
+        <a class="search-overlay-close" href="#"></a>
+    </div>
+    <div id="local-search-result"></div>
+</div>
+
+<footer class="site-footer outer">
+	<div class="site-footer-content inner">
+		<div class="copyright">
+			<a href="/" title="9unk">9unk © 2020</a>
+			
+				
+    		
+		</div>
+		<nav class="site-footer-nav">
+			
+			<a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+			<a href="https://github.com/xzhih/hexo-theme-casper" title="Casper" target="_blank" rel="noopener">Casper</a>
+		</nav>
+	</div>
+</footer>
+	
+
+
+<script>
+    if(window.navigator && navigator.serviceWorker) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for(let registration of registrations) {
+                registration.unregister()
+            }
+        })
+    }
+</script>
+
+
+<script id="scriptLoad" src="/js/allinone.min.js" async></script>
+
+
+<script>
+    document.getElementById('scriptLoad').addEventListener('load', function () {
+        
+        
+            var bLazy = new Blazy();
+        
+
+        
+        
+
+        
+        
+        
+            searchFunc("/");
+        
+        
+    })
+</script>
+
+
+
+
+
+
+<script id="valineScript" src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+<script>
+    document.getElementById('valineScript').addEventListener("load", function() {
+        new Valine({
+            el: '#comment' ,
+            verify: false,
+            notify: false,
+            appId: 'lhq4C91rscRdbbVHPYesVhOz-gzGzoHsz',
+            appKey: 'EHeksCG71RId7DpUxMiocJQ4',
+            placeholder: '你是魔鬼吧，都不留言！',
+            pageSize: 10,
+            avatar: 'mm',
+            visitor: 
+        })
+    });
+</script>
+
+
+
+
+
+
+
+</body></html>
