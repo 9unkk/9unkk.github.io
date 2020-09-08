@@ -11,7 +11,7 @@
 	<link rel="preconnect" href="//9qpuwspm.api.lncld.net">
 	<link rel="preconnect" href="//gravatar.loli.net">
 
-	<title>CVE-2019-1388 | 9unk</title>
+	<title>30天制作操作系统 | 9unk</title>
 
 	<meta name="HandheldFriendly" content="True">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -39,14 +39,14 @@
 
 	<meta property="og:site_name" content="9unk">
 	<meta property="og:type" content="article">
-	<meta property="og:title" content="CVE-2019-1388 | 9unk">
+	<meta property="og:title" content="30天制作操作系统 | 9unk">
 	<meta property="og:description" content>
-	<meta property="og:url" content="http://yoursite.com/2019/12/01/cve-2019-1388/">
+	<meta property="og:url" content="http://yoursite.com/2020/09/06/30-tian-zhi-zuo-cao-zuo-xi-tong/">
 
 	
-	<meta property="article:published_time" content="2019-12-01T16:12:00+08:00"> 
+	<meta property="article:published_time" content="2020-09-06T09:09:00+08:00"> 
 	<meta property="article:author" content="9nuk">
-	<meta property="article:published_first" content="9unk, /2019/12/01/cve-2019-1388/">
+	<meta property="article:published_first" content="9unk, /2020/09/06/30-tian-zhi-zuo-cao-zuo-xi-tong/">
 	
 
 	
@@ -128,83 +128,115 @@
     <div class="inner">
         <header class="post-full-header">
             <div class="post-full-meta">
-                <time class="post-full-meta-date" datetime="2019-12-01T08:15:16.000Z">
-                    2019-12-1
+                <time class="post-full-meta-date" datetime="2020-09-06T01:44:11.000Z">
+                    2020-09-6
                 </time>
                 
                 <span class="date-divider">/</span>
                 
-                <a href="/categories/system-security/">system security</a>  
-                
                 
             </div>
-            <h1 class="post-full-title">CVE-2019-1388</h1>
+            <h1 class="post-full-title">30天制作操作系统</h1>
         </header>
         <div class="post-full no-image">
             
             <div class="post-full-content">
                 <article id="photoswipe" class="markdown-body">
-                    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>该漏洞位于 Windows 的 UAC（User Account Control，用户帐户控制）机制中。默认情况下，Windows会在一个单独的桌面上显示所有的 UAC 提示——Secure Desktop。这些提示是由名为 consent.exe 的可执行文件产生的，该可执行文件以 NT AUTHORITY\SYSTEM 权限运行，完整性级别为 System。因为用户可以与该 UI 交互，因此对 UI 来说紧限制是必须的。否则，低权限的用户可能可以通过 UI 操作的循环路由以 SYSTEM 权限执行操作。即使隔离状态的看似无害的 UI 特征都可能会成为引发任意控制的动作链的第一步。事实上，UAC 会话中含有尽可能少的点击操作选项。利用该漏洞很容易就可以提升权限到 SYSTEM。</p>
-<h2 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h2><pre><code>SERVER
-======
-
-Windows 2008r2    7601    ** link OPENED AS SYSTEM **
-Windows 2012r2    9600    ** link OPENED AS SYSTEM **
-Windows 2016    14393    ** link OPENED AS SYSTEM **
-Windows 2019    17763    link NOT opened
-
-
-WORKSTATION
-===========
-
-Windows 7 SP1    7601    ** link OPENED AS SYSTEM **
-Windows 8        9200    ** link OPENED AS SYSTEM **
-Windows 8.1        9600    ** link OPENED AS SYSTEM **
-Windows 10 1511    10240    ** link OPENED AS SYSTEM **
-Windows 10 1607    14393    ** link OPENED AS SYSTEM **
-Windows 10 1703    15063    link NOT opened
-Windows 10 1709    16299    link NOT opened
-...</code></pre><h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p><strong>操作系统：</strong> windows 7 sp1 x86</p>
-<p><strong>EXP：</strong> <a href="https://github.com/jas502n/CVE-2019-1388" target="_blank" rel="noopener">https://github.com/jas502n/CVE-2019-1388</a></p>
-<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><ol>
-<li><strong>登录 guest 账户，并上传 HHUPD.exe</strong></li>
+                    <h1 id="第-0-天：准备阶段"><a href="#第-0-天：准备阶段" class="headerlink" title="第 0 天：准备阶段"></a>第 0 天：准备阶段</h1><h2 id="下载工具和原版镜像"><a href="#下载工具和原版镜像" class="headerlink" title="下载工具和原版镜像"></a>下载工具和原版镜像</h2><p><a href="https://github.com/sky5454/30daysMakeOS-Origin-ISOfiles.git" target="_blank" rel="noopener">原版光盘(含iso文件)</a></p>
+<p><img alt="1.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/09/06/riLD5TFQt9Jowys.png" data-index="0" data-src="https://i.loli.net/2020/09/06/riLD5TFQt9Jowys.png"></p>
+<h2 id="二进制编辑器"><a href="#二进制编辑器" class="headerlink" title="二进制编辑器"></a>二进制编辑器</h2><p>BZ 是一个修改二进制文件的工具。工具可到网上下载，或者使用工具包中 BZ。</p>
+<p><img alt="4.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/09/06/qnyYotO8UvLDdTu.png" data-index="1" data-src="https://i.loli.net/2020/09/06/qnyYotO8UvLDdTu.png"></p>
+<p>取消只读选框，可对文件进行修改。</p>
+<h2 id="工具目录-tolset"><a href="#工具目录-tolset" class="headerlink" title="工具目录 tolset"></a>工具目录 tolset</h2><ol>
+<li>nask 编译器</li>
 </ol>
-<p><img alt="CVE-2019-1388-1.png" class="post-img b-lazy" data-img="https://i.loli.net/2019/12/01/rRygvB2cPVQ7kxz.png" data-index="0" data-src="https://i.loli.net/2019/12/01/rRygvB2cPVQ7kxz.png"></p>
+<p>把 nas 文件(作者的汇编源码)转为二进制的，用来把 nas 文件编译成二进制 img 文件。可能用翻译更贴切，不过说成编译也没有什么毛病。 </p>
+<p>路径：/tolset/z_tools/nask.exe</p>
 <ol start="2">
-<li><strong>以管理员权限打开程序</strong></li>
+<li>imgtol.com </li>
 </ol>
-<p>点击 “显示详细信息” –> “显示有关此发布者的证书信息” –> “颁发者：…..” –> 关闭所有程序窗口</p>
-<p><img alt="CVE-2019-1388-2.png" class="post-img b-lazy" data-img="https://i.loli.net/2019/12/01/5ME1mK8yXk9fZvL.png" data-index="1" data-src="https://i.loli.net/2019/12/01/5ME1mK8yXk9fZvL.png"></p>
-<p>点击超链接会从 consent.exe 启动浏览器，浏览器会以 NT AUTHORITY\SYSTEM 权限运行。虽然浏览器是以 SYSTEM 权限运行的，但是是一个正常的桌面而非 Secure Desktop。</p>
+<p>将 img 文件刻录到软盘的工具。</p>
+<p>用法：imgtol.com w a: helloos.img</p>
+<p>路径：/tolset/z_tools/imgtol.com</p>
 <ol start="3">
-<li><strong>提权</strong></li>
+<li>make.exe</li>
 </ol>
-<ul>
-<li>选择刚才打开的网页，点击 “页面” –> “另存”</li>
-</ul>
-<p><img alt="CVE-2019-1388-3.png" class="post-img b-lazy" data-img="https://i.loli.net/2019/12/01/BLUk5RmsArCcS2x.png" data-index="2" data-src="https://i.loli.net/2019/12/01/BLUk5RmsArCcS2x.png"></p>
-<ul>
-<li>在文件命中输入：C:\Windows\System32*.* 并回车</li>
-</ul>
-<p><img alt="CVE-2019-1388-4.png" class="post-img b-lazy" data-img="https://i.loli.net/2019/12/01/Ekjb4LmU3sYfFch.png" data-index="3" data-src="https://i.loli.net/2019/12/01/Ekjb4LmU3sYfFch.png"></p>
-<ul>
-<li>找到 cmd.exe ，并右击打开</li>
-</ul>
-<p><img alt="CVE-2019-1388-5.png" class="post-img b-lazy" data-img="https://i.loli.net/2019/12/01/kMVuXIos7waBpYl.png" data-index="4" data-src="https://i.loli.net/2019/12/01/kMVuXIos7waBpYl.png"></p>
-<ul>
-<li>成功提权到 system 权限</li>
-</ul>
-<p><img alt="CVE-2019-1388-6.png" class="post-img b-lazy" data-img="https://i.loli.net/2019/12/01/OUp7V6qi23gNEde.png" data-index="5" data-src="https://i.loli.net/2019/12/01/OUp7V6qi23gNEde.png"></p>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a href="https://www.cnblogs.com/Sylon/p/11941276.html" target="_blank" rel="noopener">CVE-2019-1388 UAC提权复现</a></p>
-<p><a href="https://github.com/jas502n/CVE-2019-1388" target="_blank" rel="noopener">CVE-2019-1388</a></p>
-<p><a href="https://www.4hou.com/info/news/21710.html" target="_blank" rel="noopener">CVE-2019-1388： Windows UAC权限提升漏洞</a></p>
-<p><a href="http://www.8sec.cc/index.php/archives/335/" target="_blank" rel="noopener">CVE-2019-1388本地提权复现</a></p>
+<p>读取并执行 Makefile 的 GNU 系列工具，能读取指定目录下的 Makefile 脚本。其参数与 Makefile 有关。</p>
+<p>路径：/tolset/z_tools/make.exe</p>
+<h2 id="制作运行-img-操作"><a href="#制作运行-img-操作" class="headerlink" title="制作运行 img 操作"></a>制作运行 img 操作</h2><ol>
+<li>将 nas 源码文件编译成 img 文件</li>
+</ol>
+<pre class=" language-bash"><code class="language-bash">nask.exe helloos.nas helloos.img</code></pre>
+<ol start="2">
+<li>将 img 写入软盘 A</li>
+</ol>
+<pre class=" language-bash"><code class="language-bash">imgtol.com w a: helloos.img</code></pre>
+<p><img alt="2.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/09/06/sX5QicPBWvE3J6C.png" data-index="2" data-src="https://i.loli.net/2020/09/06/sX5QicPBWvE3J6C.png"></p>
+<p>需要重启系统，从软盘进入 img 系统</p>
+<ol start="3">
+<li>使用 qemu 启动 img 系统</li>
+</ol>
+<pre class=" language-bash"><code class="language-bash">make.exe -C <span class="token punctuation">..</span>/z_tools/qemu</code></pre>
+<p><img alt="3.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/09/06/LTlceyJSXIutb5U.png" data-index="3" data-src="https://i.loli.net/2020/09/06/LTlceyJSXIutb5U.png"></p>
+<h1 id="第-1-天：汇编入门"><a href="#第-1-天：汇编入门" class="headerlink" title="第 1 天：汇编入门"></a>第 1 天：汇编入门</h1><h2 id="NASM-简介"><a href="#NASM-简介" class="headerlink" title="NASM 简介"></a>NASM 简介</h2><p>NASM 全称 The Netwide Assembler，是一款基于 80x86 和 x86-64 平台的汇编语言编译程序，其设计初衷是为了实现编译器程序跨平台和模块化的特性。NASM支持大量的文件格式，包括 Linux，*BSD，a.out，ELF，COFF，Mach−O，Microsoft 16−bit OBJ，Win32 以及Win64，同时也支持简单的二进制文件生成。NASM 是众多汇编器中，免费且比较好用的汇编编译器。</p>
+<h2 id="知识学习"><a href="#知识学习" class="headerlink" title="知识学习"></a>知识学习</h2><p><img alt="5.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/09/06/MGwTO7HFVD8tKny.png" data-index="4" data-src="https://i.loli.net/2020/09/06/MGwTO7HFVD8tKny.png"></p>
+<p><img alt="6.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/09/06/mdDaTUeVRQJcKql.png" data-index="5" data-src="https://i.loli.net/2020/09/06/mdDaTUeVRQJcKql.png"></p>
+<ol>
+<li>DB（Define Byte）：定义一串字节数据（8位）</li>
+</ol>
+<p>例如：</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 定义 6 个字节数据： eb，4e，90</span>
+DB 0xeb,0x4e,0x90
+
+<span class="token comment" spellcheck="true"># 定义 8 个字节数据：HELLOIPL</span>
+DB <span class="token string">"HELLOIPL"</span>
+
+<span class="token comment" spellcheck="true"># 定义 10 个字节</span>
+DB 10</code></pre>
+<blockquote>
+<p>编译器默认会将数据认为是 10 进制，所以需要使用 0x 来表示这个数据是 16 进制的。</p>
+</blockquote>
+<ol start="2">
+<li>DW（伪指令）：定义一串字型数据（16 位）</li>
+</ol>
+<p>例如：</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 定义 10 个字，即 20 个字节</span>
+DW 10</code></pre>
+<ol start="3">
+<li>DD（伪指令）：定义一串双字型数据（32 位）</li>
+</ol>
+<p>例如：</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 定义 10 个双字，即 40 个字节</span>
+DD 10</code></pre>
+<ol start="4">
+<li>RESB（Reserve Byte）: “RESB”, “RESW”, “RESD”, “RESQ” and “REST” 被设计用在模块的 BSS 段中：它们声明未初始化的内存空间。每一个带有单个操作数，用来表明字节数，字数，或双字数或其它的需要保留单位。这些指令在初始化空间中默认填充0。</li>
+</ol>
+<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 初始化 18 个字节的空间，并填充0。</span>
+RESB 18</code></pre>
+<ol start="5">
+<li>$：用法表示当前的指令在哪个位置。 </li>
+</ol>
+<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 我当前的指令在 $ 位置，或者说现在已经使用了 $ 个字节。这个指令意思是：填充 "0x1fe-$" 个值位 "0x00" 的字节。</span>
+RESB 0x1fe-$</code></pre>
+<blockquote>
+<p>上面的这些指令都是伪指令。伪指令是只有编译器能执行的指令，编译器会将伪指令编译成数据。</p>
+</blockquote>
+<h2 id="专业术语"><a href="#专业术语" class="headerlink" title="专业术语"></a>专业术语</h2><ol>
+<li>启动区（boot sector）</li>
+</ol>
+<p>软盘的第一个扇区称为启动区，因为计算机读写软盘的时候是以 512 字节为一个单位进行读写的，所以软盘中的 512 字节称为一个扇区。</p>
+<p>计算机在读写软盘的时候，会先读取第一个扇区，如果第一个扇区的最后两个字节不是 0x55 AA，计算机就会认为这张盘上没有所需的启动程序，就会报一个不能启动的错误。因此第一个扇区也被称为启动区。</p>
+<ol start="2">
+<li>IPL（initial program loader）</li>
+</ol>
+<p>IPL 启动程序加载器。启动区的 512 字节，肯定是放不下一个正常的操作系统，所以就有了 IPL 这个程序（放到启动区中）来加载操作系统。因此有时启动区也称为 IPL</p>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a href="https://blog.csdn.net/weixin_30675247/article/details/99217620" target="_blank" rel="noopener">《30天自制操作系统》笔记1 — 准备阶段</a></p>
 
                 </article>
                 <ul class="tags-postTags">
                     
                     <li>
-                        <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" rel="tag"># 漏洞复现</a>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/" rel="tag"># 汇编</a>
                     </li>
                     
                 </ul>
@@ -215,14 +247,10 @@ Windows 10 1709    16299    link NOT opened
     
     <nav id="gobottom" class="pagination">
         
-        <a class="prev-post" title="什么是CDN" href="/2019/12/07/shi-me-shi-cdn/">
-            ← 什么是CDN
-        </a>
-        
         <span class="prev-next-post">·</span>
         
-        <a class="next-post" title="dn" href="/2019/11/30/dn/">
-            dn →
+        <a class="next-post" title="8086 汇编-基础知识" href="/2020/09/05/8086-hui-bian-ji-chu-zhi-shi/">
+            8086 汇编-基础知识 →
         </a>
         
     </nav>
@@ -248,7 +276,7 @@ Windows 10 1709    16299    link NOT opened
         </a>
     </div>
     <div class="toc-main">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#影响版本"><span class="toc-text">影响版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#环境准备"><span class="toc-text">环境准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞复现"><span class="toc-text">漏洞复现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reference"><span class="toc-text">reference</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第-0-天：准备阶段"><span class="toc-text">第 0 天：准备阶段</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#下载工具和原版镜像"><span class="toc-text">下载工具和原版镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二进制编辑器"><span class="toc-text">二进制编辑器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工具目录-tolset"><span class="toc-text">工具目录 tolset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#制作运行-img-操作"><span class="toc-text">制作运行 img 操作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第-1-天：汇编入门"><span class="toc-text">第 1 天：汇编入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#NASM-简介"><span class="toc-text">NASM 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#知识学习"><span class="toc-text">知识学习</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#专业术语"><span class="toc-text">专业术语</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#reference"><span class="toc-text">reference</span></a></li></ol>
     </div>
 </div>
 
