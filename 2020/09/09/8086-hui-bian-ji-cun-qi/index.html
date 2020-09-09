@@ -1,0 +1,622 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="preconnect" href="//www.googletagmanager.com">
+	<link rel="preconnect" href="//zz.bdstatic.com">
+	<link rel="preconnect" href="//sp0.baidu.com">
+	<link rel="preconnect" href="//www.google-analytics.com">
+	<link rel="preconnect" href="//cdn1.lncld.net">
+	<link rel="preconnect" href="//unpkg.com">
+	<link rel="preconnect" href="//app-router.leancloud.cn">
+	<link rel="preconnect" href="//9qpuwspm.api.lncld.net">
+	<link rel="preconnect" href="//gravatar.loli.net">
+
+	<title>8086 汇编-寄存器 | 9unk</title>
+
+	<meta name="HandheldFriendly" content="True">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+	<meta name="generator" content="hexo">
+	<meta name="author" content="9nuk">
+	<meta name="description" content>
+
+	
+	<meta name="keywords" content>
+	
+
+	
+	<link rel="shortcut icon" href="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png">
+	<link rel="apple-touch-icon" href="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png">
+	
+
+	
+	<meta name="theme-color" content="#3c484e">
+	<meta name="msapplication-TileColor" content="#3c484e">
+	
+
+	
+
+	
+
+	<meta property="og:site_name" content="9unk">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="8086 汇编-寄存器 | 9unk">
+	<meta property="og:description" content>
+	<meta property="og:url" content="http://yoursite.com/2020/09/09/8086-hui-bian-ji-cun-qi/">
+
+	
+	<meta property="article:published_time" content="2020-09-09T00:09:00+08:00"> 
+	<meta property="article:author" content="9nuk">
+	<meta property="article:published_first" content="9unk, /2020/09/09/8086-hui-bian-ji-cun-qi/">
+	
+
+	
+	
+	
+<link rel="stylesheet" href="/css/allinonecss.min.css">
+
+
+	
+	
+	
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+<body class="post-template">
+	<div class="site-wrapper">
+		
+
+
+
+
+<header class="site-header post-site-header outer">
+    <div class="inner">
+        
+<nav class="site-nav"> 
+    <div class="site-nav-left">
+        <ul class="nav">
+            <li>
+                
+                
+                <a class="site-nav-logo" href="/" title="9unk">
+                    <img src="https://pic2.zhimg.com/80/v2-41b7556078db198db3955539789490a8_720w.jpg" alt="9unk">
+                </a>
+                
+                
+            </li>
+            
+            
+            <li>
+                <a href="/about" title="关于">关于</a>
+            </li>
+            
+            <li>
+                <a href="/archives" title="文章">文章</a>
+            </li>
+            
+            
+        </ul> 
+    </div>
+    
+    <div class="search-button-area">
+        <a href="#search" class="search-button">Search ...</a>
+    </div>
+     
+    <div class="site-nav-right">
+        
+        <a href="#search" class="search-button">Search ...</a>
+         
+        
+<div class="social-links">
+    
+    
+    <a class="social-link" title="github" href="https://github.com/hhkk2334" target="_blank" rel="noopener">
+        <svg viewBox="0 0 1049 1024" xmlns="http://www.w3.org/2000/svg"><path d="M524.979332 0C234.676191 0 0 234.676191 0 524.979332c0 232.068678 150.366597 428.501342 358.967656 498.035028 26.075132 5.215026 35.636014-11.299224 35.636014-25.205961 0-12.168395-0.869171-53.888607-0.869171-97.347161-146.020741 31.290159-176.441729-62.580318-176.441729-62.580318-23.467619-60.841976-58.234462-76.487055-58.234463-76.487055-47.804409-32.15933 3.476684-32.15933 3.476685-32.15933 53.019436 3.476684 80.83291 53.888607 80.83291 53.888607 46.935238 79.963739 122.553122 57.365291 152.97411 43.458554 4.345855-33.897672 18.252593-57.365291 33.028501-70.402857-116.468925-12.168395-239.022047-57.365291-239.022047-259.012982 0-57.365291 20.860106-104.300529 53.888607-140.805715-5.215026-13.037566-23.467619-66.926173 5.215027-139.067372 0 0 44.327725-13.906737 144.282399 53.888607 41.720212-11.299224 86.917108-17.383422 131.244833-17.383422s89.524621 6.084198 131.244833 17.383422C756.178839 203.386032 800.506564 217.29277 800.506564 217.29277c28.682646 72.1412 10.430053 126.029806 5.215026 139.067372 33.897672 36.505185 53.888607 83.440424 53.888607 140.805715 0 201.64769-122.553122 245.975415-239.891218 259.012982 19.121764 16.514251 35.636014 47.804409 35.636015 97.347161 0 70.402857-0.869171 126.898978-0.869172 144.282399 0 13.906737 9.560882 30.420988 35.636015 25.205961 208.601059-69.533686 358.967656-265.96635 358.967655-498.035028C1049.958663 234.676191 814.413301 0 524.979332 0z"/></svg>
+    </a>
+    
+    
+    
+    
+    
+    
+</div>
+    </div>
+</nav>
+    </div>
+</header>
+
+
+<div id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+        <header class="post-full-header">
+            <div class="post-full-meta">
+                <time class="post-full-meta-date" datetime="2020-09-08T16:00:40.000Z">
+                    2020-09-9
+                </time>
+                
+                <span class="date-divider">/</span>
+                
+                
+            </div>
+            <h1 class="post-full-title">8086 汇编-寄存器</h1>
+        </header>
+        <div class="post-full no-image">
+            
+            <div class="post-full-content">
+                <article id="photoswipe" class="markdown-body">
+                    <p>CPU 是由运算器、控制器、寄存器等器件构成，这些器件都是靠内部总线相连。之前所说的总线，相对于 CPU 来说是外部总线。内部总线实现 CPU 内部各个器件之间的联系，外部总线实现 CPU 和主板上其他器件的联系。</p>
+<p>CPU 内部器件功能描述：</p>
+<ul>
+<li>运算器进行的信息处理；</li>
+<li>寄存器进行的信息存储；</li>
+<li>控制器控制各器件进行工作；</li>
+<li>内部总线连接各种器件，在它们之间进行数据传送。</li>
+</ul>
+<p>汇编就是向寄存器中读写数据，来改变寄存器中的内容实现对 CPU 的控制。</p>
+<p>不同的 CPU 寄存器的个数、结构是不相同的。8086 CPU 有 14 个寄存器，每个寄存器有一个名称。这些寄存器是：AX、BX、CX、DX、SI、DI、SP、BP、IP、CS、SS、DS、ES、PSW。</p>
+<h1 id="通用寄存器"><a href="#通用寄存器" class="headerlink" title="通用寄存器"></a>通用寄存器</h1><p>8086 CPU 的所有寄存器都是 16 位的，可以存放两个字节。AX、BX、CX、DX 这 4 个寄存器通常用来存放一般性的数据，被称为通用寄存器。</p>
+<p>以 AX 为例，寄存器的逻辑结构图如下：</p>
+<p><img alt="11.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/23/QxLK5Sfn4EN8iBw.png" data-index="0" data-src="https://i.loli.net/2020/06/23/QxLK5Sfn4EN8iBw.png"></p>
+<p>一个 16 位寄存器可以存储一个 16 位的数据，数据在寄存器中的存放情况如下：</p>
+<p><img alt="12.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/23/kZlJmRBAsLt3VzG.png" data-index="1" data-src="https://i.loli.net/2020/06/23/kZlJmRBAsLt3VzG.png"></p>
+<p>8086 CPU 的上一代 CPU 中的寄存器都是 8 位的，为了保证兼容，使原来基于上一代 CPU 编写的程序稍加修改就可以运行在 8086 上，8086CPU 的 AX、BX、CX、DX 这 4 个寄存器都可以分为两个独立的 8 位寄存器来用：</p>
+<ul>
+<li>AX 可分为 AH 和 AL</li>
+<li>BX 可分为 BH 和 BL</li>
+<li>CX 可分为 CH 和 CL</li>
+<li>DX 可分为 DH 和 DL。</li>
+</ul>
+<p>以 AX 为例，8086 CPU 的 16 位寄存器分为两个 8 位寄存器的情况如下：</p>
+<p><img alt="13.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/23/Rve9dZ3bOaQLrFj.png" data-index="2" data-src="https://i.loli.net/2020/06/23/Rve9dZ3bOaQLrFj.png"></p>
+<p>AX 的低 8 位（0位～7位）构成了 AL 寄存器，高 8 位（8位～15位）构成了 AH 寄存器。AH 和 AL 寄存器是可以独立使用的 8 位寄存器。下图展示了 16 位寄存器及 它所分成的两个 8 位寄存器的数据存储情况。</p>
+<p><img alt="14.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/23/dMuCAzYZLvong68.png" data-index="3" data-src="https://i.loli.net/2020/06/23/dMuCAzYZLvong68.png"></p>
+<p>一个 16 位寄存器被分为两个 8 位寄存器使用的时候，独立出来的 8 位寄存器与原来的 16 位寄存器无关。例如：使用 AH 或 AL 时，当数据超过 8 位时多出来的数据会被丢弃。</p>
+<p><strong>示例：</strong><br>通过汇编指令控制 CPU 进行工作，如下入的几条指令</p>
+<p><img alt="16.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/23/iGuB7aRPoltbcrq.png" data-index="4" data-src="https://i.loli.net/2020/06/23/iGuB7aRPoltbcrq.png"></p>
+<blockquote>
+<p>在写一条汇编指令或一个寄存器的名称时不区分大小写。</p>
+</blockquote>
+<p>下图 CPU 执行表中所列的程序段中的每条指令后，对寄存器中的数据进行的改变。</p>
+<p><img alt="17.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/23/eRLrETstDPSfQm3.png" data-index="5" data-src="https://i.loli.net/2020/06/23/eRLrETstDPSfQm3.png"><br><img alt="18.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/23/UrBLS2TDXgzuiyJ.png" data-index="6" data-src="https://i.loli.net/2020/06/23/UrBLS2TDXgzuiyJ.png"></p>
+<p>上图中的最后一条指令 add ax,bx  的 AX 数据为：8226H+8226H=1044C（16|4|4|12），但是 AX 是16 位寄存器只能存储 4 位 16 进制数据，所以最高位 1 不能在 ax 中保存，ax 中的数据为：044CH</p>
+<p>下图所列的是一段程序的执行情况：</p>
+<p><img alt="19.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/23/JrxzeZuonGwXd5c.png" data-index="7" data-src="https://i.loli.net/2020/06/23/JrxzeZuonGwXd5c.png"></p>
+<p>上图中的最后一条指令 add al,93H ，在执行前，al中的数据为 C5H，相加后所得的值为：C5+93=158H（12+4,5|8），但是 al 为 8 位寄存器，只能存储两位 16 进制的数据，所以最高位的 1 丢失，ax 中的数据为：0058H</p>
+<h2 id="字在寄存器中的存储"><a href="#字在寄存器中的存储" class="headerlink" title="字在寄存器中的存储"></a>字在寄存器中的存储</h2><p>出于对兼容性的考虑，8086CPU 可以一次性处理以下两种尺寸的数据。</p>
+<ul>
+<li>字节（byte）：一个字节由 8 个 bit 组成，可以存在 8 位寄存器中。</li>
+<li>字（word）：一个字由两个字节组成，这两个字节分别称为这个字的高位字节和低位字节，如下图所示：</li>
+</ul>
+<p><img alt="15.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/23/Tmp4Zn5AHz1ejGt.png" data-index="8" data-src="https://i.loli.net/2020/06/23/Tmp4Zn5AHz1ejGt.png"></p>
+<p>一个字可以存放在一个 16 位 寄存器中，这个字的高位字节和低位字节自然就存在这个寄存器的高 8 位寄存器和低 8 位寄存器中。</p>
+<h1 id="物理地址"><a href="#物理地址" class="headerlink" title="物理地址"></a>物理地址</h1><ol>
+<li><p>CPU 在访问内存单元的时，要给出内存单元的地址。在内存地址空间中，每个内存单元在空间中都有一个唯一的地址，这个唯一的地址称为物理地址。</p>
+</li>
+<li><p>要执行一个汇编指令，CPU 就必须要知道这个汇编指令的物理地址才能去执行指令。</p>
+</li>
+<li><p>不同的 CPU 可以有不同的形成物理地址的方式。</p>
+</li>
+</ol>
+<h2 id="16-位结构的-CPU"><a href="#16-位结构的-CPU" class="headerlink" title="16 位结构的 CPU"></a>16 位结构的 CPU</h2><p>8086 是 16 位结构的 CPU，其具有下面几方面的结构特性。</p>
+<ul>
+<li>运算器一次最多可以处理 16 位的数据</li>
+<li>寄存器的最大宽度为 16 位</li>
+<li>寄存器和运算器之间的通路为16位</li>
+</ul>
+<p>上面的这些特性说明了 8086 内部，能够一次处理、传输、暂时存储的信息最大长度是 16 位。</p>
+<h2 id="8086-CPU-给出物理地址的方法"><a href="#8086-CPU-给出物理地址的方法" class="headerlink" title="8086 CPU 给出物理地址的方法"></a>8086 CPU 给出物理地址的方法</h2><ol>
+<li><p>8086 CPU 有 20 位外部地址总线，可以传送 20 位地址，达到 1M 寻址能力。</p>
+</li>
+<li><p>但是 8086 CPU 是 16 位结构，只有 16 位内部地址总线，可以传送 16 位地址，达到 64KB 的寻址能力。</p>
+</li>
+<li><p>为了不浪费资源 8086 CPU 在内部使用两个 16 位地址来合成一个 20 位的外部地址</p>
+</li>
+</ol>
+<p>在内部用两个 16 位地址合成来形成一个 20 位的物理地址。8086 CPU 相关部件逻辑结构如下图所示：</p>
+<p><img alt="20.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/24/MgRZk5SvyXYLzOW.png" data-index="9" data-src="https://i.loli.net/2020/06/24/MgRZk5SvyXYLzOW.png"></p>
+<p>如上图所示，当 8086 CPU 要读写内存时：</p>
+<ol>
+<li><p>CPU 中的相关部件提供了两个 16 位的地址，一个称为段地址，另一个称为偏移地址；</p>
+</li>
+<li><p>段地址和偏移地址通过内部总线送入一个称为地址加法器的部件；</p>
+</li>
+<li><p>地址加法器将两个 16 位地址合成为一个 20 位的物理地址；</p>
+</li>
+<li><p>地址加法器通过内部总线将 20 位物理地址送入输入输出控制电路；</p>
+</li>
+<li><p>输入输出控制电路将 20 位物理地址送上地址总线；</p>
+</li>
+<li><p>20 位物理地址被地址总线传送到存储器。</p>
+</li>
+</ol>
+<h2 id="地址加法器"><a href="#地址加法器" class="headerlink" title="地址加法器"></a>地址加法器</h2><p>地址加法器采用 “物理地址=段地址x16+偏移地址” 的方法用段地址和偏移偏移地址合成物理地址。例如，8086 CPU 要访问地址为 123C8H 的内存单元，此时，地址加法器的工作过程如下图所示（途中数据都是十六进制表示）</p>
+<p><img alt="21.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/24/zgAIB87UnPKEoRr.png" data-index="10" data-src="https://i.loli.net/2020/06/24/zgAIB87UnPKEoRr.png"></p>
+<p><img alt="22.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/24/KEvSFGxRT8WcMXA.png" data-index="11" data-src="https://i.loli.net/2020/06/24/KEvSFGxRT8WcMXA.png"></p>
+<p>简单来说就是：十进制数 10x10=100 数字向左偏移了1位，那么十六进制数向左偏移一位，就是 1230x16=12300（添加一个0）</p>
+<h2 id="“段地址x16-偏移地址-物理地址”的本质和思想"><a href="#“段地址x16-偏移地址-物理地址”的本质和思想" class="headerlink" title="“段地址x16+偏移地址=物理地址”的本质和思想"></a>“段地址x16+偏移地址=物理地址”的本质和思想</h2><blockquote>
+<p>“段地址x16+偏移地址=物理地址”的本质含义是：CPU 在访问内存时，用一个基础地址（段地址x16）和一个相对于基础地址的偏移地址相加，给出内存单元的物理地址。简单来说，8086 CPU 的这种寻址功能是 “基础地址+偏移地址=物理地址”寻址模式的一种具体实现方案。</p>
+</blockquote>
+<p><strong>下面举例做进一步的比喻说明。</strong></p>
+<ol>
+<li>比喻说明“基础地质+偏移地址=物理地址”的思想。</li>
+</ol>
+<p>比如说，学校、体育馆、图书馆同在一条笔直的单行路上，学校位于路的七点（从路的七点到学校距离是 0 米）</p>
+<p><img alt="23.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/24/JO7jBG5RdtzNwKn.png" data-index="12" data-src="https://i.loli.net/2020/06/24/JO7jBG5RdtzNwKn.png"></p>
+<p>你要去图书馆，问我那里的地址，我可以用两种方式告诉你图书馆的地址</p>
+<ol>
+<li>从学校走 2826m 到图书馆。这 2826m 可以认为是图书馆的物理地址。</li>
+<li>从学校走 2000m 到体育馆，从体育馆再走 826m 到图书馆。第一个距离 2000m，是相对于起点的基础地址，第二个距离 826m 是相对于基础地址的偏移地址（以基础地址位起点的地址）。</li>
+</ol>
+<p>第一种方式是直接给出物理地址 2826m，而第二种方式是用基础地址和偏移地址相加来得到物理地址的。</p>
+<ol start="2">
+<li>比喻说明 ”段地址x16+偏移地址=物理地址”的思想。</li>
+</ol>
+<p>我们为上面的例子加一些限制条件，比如，只能通过纸条来互相通信，你可以问我图书馆的地址我只能将它写在纸条上告诉你。显然我必须有一张可以容纳 4 位数据的纸条，才能写下 2826 这个数据。</p>
+<p><img alt class="post-img b-lazy" data-img="https://i.loli.net/2020/06/24/7jNwK3brkiCcF1h.png" data-index="13" data-src="https://i.loli.net/2020/06/24/7jNwK3brkiCcF1h.png"></p>
+<p>但是不巧的是，我没有能容纳 4 位数的纸条，仅有两张可以容纳 3 位数据的纸条。这样我只能以这种方式告诉你 2826 这个数据。</p>
+<p><img alt class="post-img b-lazy" data-img="https://i.loli.net/2020/06/24/atPUbdgrYFqp7CR.png" data-index="14" data-src="https://i.loli.net/2020/06/24/atPUbdgrYFqp7CR.png"></p>
+<p>在第一张纸条上写上 200（段地址），在第二张纸条上写上 826（偏移地址）。假设我们事前对这种情况又有过相关的约定：你得到两张纸后，做这样的运算：200（段地址）x10+826（偏移地址）=2826（物理地址）。</p>
+<p>8086 CPU 就是这样一个只能提供两张 3 位数据纸条的 CPU。</p>
+<h1 id="段的概念"><a href="#段的概念" class="headerlink" title="段的概念"></a>段的概念</h1><p>”段地址“ 中 “段” 的概念是由 CPU 衍生过来的。你可以想象内存被 CPU 使用一套计算方案（基地址+偏移地址=物理地址）划分成段，将整个内存空间以分段的方式来进行管理。</p>
+<p>在编程时根据需要，将若干地址连续的内存单元看作一个段，用段地址x16，定位段地址的起始地址（基础地址），用偏移地址定位段中的内存单元。有两点需要注意：段地址x16 必然是 16 的倍数，所以一个段的起始地址也一 定是 16 的倍数；偏移地址为 16 位，16 位地址的寻址能力为 64KB，所以一个段的长度最大为 64KB。</p>
+<p><img alt="27.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/25/JFKnE7mIRsDx8UL.png" data-index="15" data-src="https://i.loli.net/2020/06/25/JFKnE7mIRsDx8UL.png"><br><img alt="28.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/25/LVzgCyvY8Wn5E1T.png" data-index="16" data-src="https://i.loli.net/2020/06/25/LVzgCyvY8Wn5E1T.png"></p>
+<h2 id="段寄存器"><a href="#段寄存器" class="headerlink" title="段寄存器"></a>段寄存器</h2><p>8086 CPU 在访问内存时要由相关部件提供内存单元的段地址和偏移地址，送入地址加法器合成物理地址。段地址在 8086CPU 的段寄存器中存放。8086CPU 有 4 个段寄存器：CS（Code Segment，代码段寄存器）、DS（Data Segment，数据段寄存器）、SS（Stack Segment，堆栈段寄存器）、ES（Extra Segment，附加段寄存器）。当 8086 CPU 要访问内存时由这 4 个段寄存器提供内存单元的段地址。</p>
+<h2 id="CS-和-IP"><a href="#CS-和-IP" class="headerlink" title="CS 和 IP"></a>CS 和 IP</h2><p>CS 和 IP 是 8086 CPU 中两个最关键的寄存器，它们指示了 CPU 当前要读取指令的地址。CS 为代码段寄存器，IP 为指令指针寄存器，从名称上我们可以看出它们和指令的关系。<br>在 8086 CPU 中，任意时刻，CPU 将 CS:IP 指向的内容当作指令执行。</p>
+<blockquote>
+<p>CS = 段地址；IP = 偏移地址；CS:IP = 物理地址</p>
+</blockquote>
+<p><strong>下图展示了 8086CPU 读取、执行指令的工作原理：</strong></p>
+<p><img alt="29.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/25/t3mAyXwDhxVb7jp.png" data-index="17" data-src="https://i.loli.net/2020/06/25/t3mAyXwDhxVb7jp.png"></p>
+<ol>
+<li><p>8086 CPU 当前状态：CS 中的内容为 2000H，IP 中的内容为 0000H；</p>
+</li>
+<li><p>内存 20000H～20009H 单元存放着可执行的机器代码；</p>
+</li>
+<li><p>内存 20000H～20009H 单元中存放的机器码对应的汇编指令如下。</p>
+</li>
+</ol>
+<p>地址：20000H~20002H，内容：B8 23 01，长度：3Byte，对应汇编指令：mov ax，0123H</p>
+<p>地址：20003H～20005H，内容：BB 03 00，长度：3Byte，对应汇编指令：mov bx，0003H</p>
+<p>地址: 20006H~20007H，内容：89 D8，长度：2Byte，对应的汇编指令：mov ax，bx</p>
+<p>地址：20008H～20009H，内容：01 D8，长度：2Byte，对应汇编指令：add ax，bx</p>
+<blockquote>
+<p>如果该指令中有数据，那么该指令的长度为 3 Byte；如果没有，那么指令的长度位 2 Byte</p>
+</blockquote>
+<p>下面一组图，以上图为初始状态，展示了 8086CPU 读取、执行一条指令的过程。注意每幅图中发生的变化（下面对 8086 CPU 的描述，是在逻辑结构、宏观过程的层面上进行的，目的是使读者对 CPU 工作原理有一个清晰、直观的认识，为汇编语言学习打下基础。其中隐蔽了 CPU 的物理结构以及具体的工作细节）。</p>
+<p><img alt="30.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/26/RnupHroIYwJ6gOL.png" data-index="18" data-src="https://i.loli.net/2020/06/26/RnupHroIYwJ6gOL.png"></p>
+<p><img alt="31.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/26/qneTcoL89SsFWdw.png" data-index="19" data-src="https://i.loli.net/2020/06/26/qneTcoL89SsFWdw.png"></p>
+<p><img alt="32.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/26/2jI4ymANlv59bpg.png" data-index="20" data-src="https://i.loli.net/2020/06/26/2jI4ymANlv59bpg.png"></p>
+<p><img alt="33.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/26/BIQVhCRpwy7foir.png" data-index="21" data-src="https://i.loli.net/2020/06/26/BIQVhCRpwy7foir.png"></p>
+<p><img alt="34.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/26/GbhS6rIdj4z2kTp.png" data-index="22" data-src="https://i.loli.net/2020/06/26/GbhS6rIdj4z2kTp.png"></p>
+<p><img alt="35.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/26/um9o7DdLnH1lzfF.png" data-index="23" data-src="https://i.loli.net/2020/06/26/um9o7DdLnH1lzfF.png"></p>
+<p><img alt="36.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/26/5uPDpGhoCbBWQFM.png" data-index="24" data-src="https://i.loli.net/2020/06/26/5uPDpGhoCbBWQFM.png"></p>
+<p><img alt="37.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/26/azdjJhl4iBMg9T7.png" data-index="25" data-src="https://i.loli.net/2020/06/26/azdjJhl4iBMg9T7.png"></p>
+<p><img alt="38.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/26/Kg6xekDi9yBOpJY.png" data-index="26" data-src="https://i.loli.net/2020/06/26/Kg6xekDi9yBOpJY.png"></p>
+<p><img alt="39.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/26/tDdAcu9J1Xj3EQ2.png" data-index="27" data-src="https://i.loli.net/2020/06/26/tDdAcu9J1Xj3EQ2.png"></p>
+<p><img alt="40.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/26/L9etXR3QCIwyz2k.png" data-index="28" data-src="https://i.loli.net/2020/06/26/L9etXR3QCIwyz2k.png"></p>
+<p><img alt="41.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/26/VvPrkULTDgGOy1Z.png" data-index="29" data-src="https://i.loli.net/2020/06/26/VvPrkULTDgGOy1Z.png"></p>
+<p><img alt="42.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/26/ZCjMBUvGYK2mw3t.png" data-index="30" data-src="https://i.loli.net/2020/06/26/ZCjMBUvGYK2mw3t.png"></p>
+<p><img alt="43.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/26/kGyA8zRowZJqSaj.png" data-index="31" data-src="https://i.loli.net/2020/06/26/kGyA8zRowZJqSaj.png"></p>
+<p><img alt="44.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/26/gCWBUEwLODevbRh.png" data-index="32" data-src="https://i.loli.net/2020/06/26/gCWBUEwLODevbRh.png"></p>
+<p><img alt="45.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/26/8HZ59iDTgWANtUM.png" data-index="33" data-src="https://i.loli.net/2020/06/26/8HZ59iDTgWANtUM.png"></p>
+<p>通过上面的过程展示，8086 CPU 的工作过程可以简要描述如下。</p>
+<ol>
+<li>从 CS:IP 指向内存单元读取指令，读取的指令进入指令的缓冲器；</li>
+<li>IP=IP+所读取的指令长度，从而指向下一条指令；</li>
+<li>执行指令。转到步骤 1，重复这个过程。</li>
+</ol>
+<h2 id="代码段"><a href="#代码段" class="headerlink" title="代码段"></a>代码段</h2><p>8086 PC 机，在编程时，可以根据需要，将一组内存单元定义为一个段。我们可以将长度为 N（N≤64KB）的一组代码，存在一组地址连续、起始地址为 16 的倍数的内存单元中，我们可以认为，这段内存是用来存放代码的，从而定义了一个代码段。比如，将：</p>
+<pre class=" language-bash"><code class="language-bash">mov ax,0000     （B8  00  00）
+
+add ax,0123     （05  23  01）
+
+mov  bx,ax          （8B  D8）
+
+jmp  bx             （FF  E3）</code></pre>
+<p>这段长度为 10 个字节的指令，存放在 123B0H～123B9H 的一组内存单元中，我们就可以认为，123B0H～123B9H 这段内存是用来存放代码的，是一个代码段 ，它的段地址为 123BH，长度为 10 个字节。</p>
+<p>如何使得代码段中的指令被执行呢？将一段内存当作代码，仅仅是我们在编程时的一种安排，CPU 并不会由于这种安排，就自动地将我们定义的代码段中的指令当作指令来执行。CPU 只认被 CS:IP 指向的内存单元中的内容为指令。所以，要让 CPU 执行我们放在代码段中的指令，必须要将 CS:IP 指向定义的代码段中的第一条指令的首地址，将其定义为代码段，如果要让这段代码得到执行，可设 CS=123BH、IP=0000H。</p>
+
+                </article>
+                <ul class="tags-postTags">
+                    
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/" rel="tag"># 汇编</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    
+    <nav id="gobottom" class="pagination">
+        
+        <span class="prev-next-post">·</span>
+        
+        <a class="next-post" title="30天制作操作系统" href="/2020/09/06/30-tian-zhi-zuo-cao-zuo-xi-tong/">
+            30天制作操作系统 →
+        </a>
+        
+    </nav>
+
+    
+    <div class="inner">
+        <div id="comment"></div>
+    </div>
+    
+</div>
+
+<div class="toc-bar">
+    <div class="toc-btn-bar">
+        <a href="#site-main" class="toc-btn">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M793.024 710.272a32 32 0 1 0 45.952-44.544l-310.304-320a32 32 0 0 0-46.4 0.48l-297.696 320a32 32 0 0 0 46.848 43.584l274.752-295.328 286.848 295.808z"/></svg>
+        </a>
+        <div class="toc-btn toc-switch">
+            <svg class="toc-open" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M779.776 480h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M779.776 672h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M256 288a32 32 0 1 0 0 64 32 32 0 0 0 0-64M392.576 352h387.2a32 32 0 0 0 0-64h-387.2a32 32 0 0 0 0 64M256 480a32 32 0 1 0 0 64 32 32 0 0 0 0-64M256 672a32 32 0 1 0 0 64 32 32 0 0 0 0-64"/></svg>
+            <svg class="toc-close hide" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M512 960c-247.039484 0-448-200.960516-448-448S264.960516 64 512 64 960 264.960516 960 512 759.039484 960 512 960zM512 128.287273c-211.584464 0-383.712727 172.128262-383.712727 383.712727 0 211.551781 172.128262 383.712727 383.712727 383.712727 211.551781 0 383.712727-172.159226 383.712727-383.712727C895.712727 300.415536 723.551781 128.287273 512 128.287273z"/><path d="M557.05545 513.376159l138.367639-136.864185c12.576374-12.416396 12.672705-32.671738 0.25631-45.248112s-32.704421-12.672705-45.248112-0.25631l-138.560301 137.024163-136.447897-136.864185c-12.512727-12.512727-32.735385-12.576374-45.248112-0.063647-12.512727 12.480043-12.54369 32.735385-0.063647 45.248112l136.255235 136.671523-137.376804 135.904314c-12.576374 12.447359-12.672705 32.671738-0.25631 45.248112 6.271845 6.335493 14.496116 9.504099 22.751351 9.504099 8.12794 0 16.25588-3.103239 22.496761-9.247789l137.567746-136.064292 138.687596 139.136568c6.240882 6.271845 14.432469 9.407768 22.65674 9.407768 8.191587 0 16.352211-3.135923 22.591372-9.34412 12.512727-12.480043 12.54369-32.704421 0.063647-45.248112L557.05545 513.376159z"/></svg>
+        </div>
+        <a href="#gobottom" class="toc-btn">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M231.424 346.208a32 32 0 0 0-46.848 43.584l297.696 320a32 32 0 0 0 46.4 0.48l310.304-320a32 32 0 1 0-45.952-44.544l-286.848 295.808-274.752-295.36z"/></svg>
+        </a>
+    </div>
+    <div class="toc-main">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#通用寄存器"><span class="toc-text">通用寄存器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#字在寄存器中的存储"><span class="toc-text">字在寄存器中的存储</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#物理地址"><span class="toc-text">物理地址</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#16-位结构的-CPU"><span class="toc-text">16 位结构的 CPU</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8086-CPU-给出物理地址的方法"><span class="toc-text">8086 CPU 给出物理地址的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#地址加法器"><span class="toc-text">地址加法器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#“段地址x16-偏移地址-物理地址”的本质和思想"><span class="toc-text">“段地址x16+偏移地址=物理地址”的本质和思想</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#段的概念"><span class="toc-text">段的概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#段寄存器"><span class="toc-text">段寄存器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CS-和-IP"><span class="toc-text">CS 和 IP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码段"><span class="toc-text">代码段</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+
+
+
+
+
+	</div>
+	
+
+
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+  <header class="read-next-card-header">
+    <small class="read-next-card-header-sitetitle">— 9unk —</small>
+    <h3 class="read-next-card-header-title">最新文章</h3>
+  </header>
+  <div class="read-next-divider">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/>
+    </svg>
+  </div>
+  <div class="read-next-card-content">
+    <ul>
+      
+      
+      
+      <li>
+        <a href="/2020/09/09/8086-hui-bian-ji-cun-qi/">8086 汇编-寄存器</a>
+      </li>
+      
+      
+      
+      <li>
+        <a href="/2020/09/06/30-tian-zhi-zuo-cao-zuo-xi-tong/">30天制作操作系统</a>
+      </li>
+      
+      
+      
+      <li>
+        <a href="/2020/09/05/8086-hui-bian-ji-chu-zhi-shi/">8086 汇编-基础知识</a>
+      </li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+  </div>
+  <footer class="read-next-card-footer">
+    <a href="/archives">  MORE  → </a>
+  </footer>
+</article>
+
+            
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+    <header class="read-next-card-header tagcloud-card">
+        <h3 class="read-next-card-header-title">分类</h3>
+    </header>
+    <div class="read-next-card-content">
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Citrix/">Citrix</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web-Security/">Web Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/github/">github</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/system-security/">system security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%97%E9%80%8F%E5%B7%A5%E5%85%B7/">渗透工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E6%99%AE/">科普</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A0%81/">编码</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%B6%85%E8%9E%8D%E5%90%88/">超融合</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%9A%E4%BF%A1/">通信</a></li></ul>
+    </div>
+</article>
+
+
+            
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+	<header class="read-next-card-header tagcloud-card">
+		<h3 class="read-next-card-header-title">标签云</h3>
+	</header>
+	<div class="read-next-card-content-ext">
+		<a href="/tags/8086CPU/" style="font-size: 14px;">8086CPU</a> <a href="/tags/ELK/" style="font-size: 14px;">ELK</a> <a href="/tags/%E6%B1%87%E7%BC%96/" style="font-size: 19px;">汇编</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" style="font-size: 24px;">漏洞复现</a> <a href="/tags/%E9%9D%B6%E6%9C%BA/" style="font-size: 24px;">靶机</a>
+	</div>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+	
+
+
+
+
+<div id="search" class="search-overlay">
+    <div class="search-form">
+        
+        <div class="search-overlay-logo">
+        	<img src="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png" alt="9unk">
+        </div>
+        
+        <input id="local-search-input" class="search-input" type="text" name="search" placeholder="搜索 ...">
+        <a class="search-overlay-close" href="#"></a>
+    </div>
+    <div id="local-search-result"></div>
+</div>
+
+<footer class="site-footer outer">
+	<div class="site-footer-content inner">
+		<div class="copyright">
+			<a href="/" title="9unk">9unk © 2020</a>
+			
+				
+    		
+		</div>
+		<nav class="site-footer-nav">
+			
+			<a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+			<a href="https://github.com/xzhih/hexo-theme-casper" title="Casper" target="_blank" rel="noopener">Casper</a>
+		</nav>
+	</div>
+</footer>
+	
+
+
+<script>
+    if(window.navigator && navigator.serviceWorker) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for(let registration of registrations) {
+                registration.unregister()
+            }
+        })
+    }
+</script>
+
+
+<script id="scriptLoad" src="/js/allinone.min.js" async></script>
+
+
+<script>
+    document.getElementById('scriptLoad').addEventListener('load', function () {
+        
+        
+            var bLazy = new Blazy();
+        
+
+        
+        
+
+        
+        
+        
+            searchFunc("/");
+        
+        
+    })
+</script>
+
+
+
+
+
+
+<script id="valineScript" src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+<script>
+    document.getElementById('valineScript').addEventListener("load", function() {
+        new Valine({
+            el: '#comment' ,
+            verify: false,
+            notify: false,
+            appId: 'lhq4C91rscRdbbVHPYesVhOz-gzGzoHsz',
+            appKey: 'EHeksCG71RId7DpUxMiocJQ4',
+            placeholder: '你是魔鬼吧，都不留言！',
+            pageSize: 10,
+            avatar: 'mm',
+            visitor: 
+        })
+    });
+</script>
+
+
+
+
+
+
+
+</body></html>
