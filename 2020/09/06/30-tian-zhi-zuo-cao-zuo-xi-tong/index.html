@@ -230,7 +230,114 @@ RESB 0x1fe-$</code></pre>
 <li>IPL（initial program loader）</li>
 </ol>
 <p>IPL 启动程序加载器。启动区的 512 字节，肯定是放不下一个正常的操作系统，所以就有了 IPL 这个程序（放到启动区中）来加载操作系统。因此有时启动区也称为 IPL。</p>
+<h1 id="第-2-天：汇编语言学习-与-makefile-入门"><a href="#第-2-天：汇编语言学习-与-makefile-入门" class="headerlink" title="第 2 天：汇编语言学习 与 makefile 入门"></a>第 2 天：汇编语言学习 与 makefile 入门</h1><p><img alt="7.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/09/12/bOVAuiJXZpR9STN.png" data-index="6" data-src="https://i.loli.net/2020/09/12/bOVAuiJXZpR9STN.png"></p>
+<p><img alt="8.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/09/12/SNBbarV8x5ORuTE.png" data-index="7" data-src="https://i.loli.net/2020/09/12/SNBbarV8x5ORuTE.png"></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><ol>
+<li>8 位寄存器</li>
+</ol>
+<ul>
+<li>AL：累加寄存器低位</li>
+<li>CL：计数寄存器低位</li>
+<li>DL：数据寄存器低位</li>
+<li>BL：基地址寄存器低位</li>
+<li>AH：累加寄存器高位</li>
+<li>CH：计数寄存器高位</li>
+<li>DH：数据寄存器高位</li>
+<li>BH：基地址寄存器高位</li>
+</ul>
+<ol start="2">
+<li>16 位寄存器</li>
+</ol>
+<ul>
+<li>AX：累加寄存器</li>
+<li>CX：计数寄存器</li>
+<li>DX：数据寄存器</li>
+<li>BX：基地址寄存器</li>
+<li>SP：栈指针寄存器</li>
+<li>BP：基地址指针寄存器</li>
+<li>SI：源变地址寄存器</li>
+<li>DI：目的变地址寄存器</li>
+</ul>
+<p>AX、CX、DX、BX 可拆分成 8 位寄存器：AH、AL、BH、BL、CH、CL、DH、DL 。这里的 X 表示扩展（extend）的意思，因为之前是 8 位寄存器，现在扩展到了 16 位寄存器。。</p>
+<ol start="3">
+<li>32 位寄存器</li>
+</ol>
+<ul>
+<li>EAX：累加寄存器</li>
+<li>ECX：计数寄存器</li>
+<li>EDX：数据寄存器</li>
+<li>EBX：基地址寄存器</li>
+<li>ESP：栈指针寄存器</li>
+<li>EBP：基地址指针寄存器</li>
+<li>ESI：源变地址寄存器</li>
+<li>EDI：目的变地址寄存器</li>
+</ul>
+<ol start="4">
+<li>段寄存器</li>
+</ol>
+<ul>
+<li>ES：附加段寄存器</li>
+<li>CS：代码段寄存器</li>
+<li>SS：栈段寄存器</li>
+<li>DS：数据段寄存器</li>
+<li>FS：没有名称</li>
+<li>GS：没有名称</li>
+</ul>
+<ol start="5">
+<li>内存地址<br>一个程序被加载到内存后，CPU 必须要从内存中读取处理一条一条的指令，程序才得以运行。内存中的指令存放在内存地址中，只有当你告诉 CPU 我要执行哪个内存地址的指令时，CPU 才会正确执行这条指令。内存地址用 <code>[常量]</code> 来表示。</li>
+</ol>
+<h2 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h2><ol>
+<li>ORG（origin） 指令：修改段内偏移地址。<br>工作原理：org 指令本身不能决定程序将要加载的内存的什么位置，它只是告诉编译器，程序在编译好后需要加载到 xxx 地址，所以在编译时帮我调整好数据访问时的地址。</li>
+</ol>
+<p>地址调整方法：指定地址+旧的偏移地址</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 在源码中这条指令的偏移地址是 0，也就是旧的偏移地址是 0。</span>
+<span class="token comment" spellcheck="true"># 当程序加载的时候，偏移地址=0x7c00+0</span>
+<span class="token comment" spellcheck="true"># 0x7c00~0x7dff ：是启动区内容的装载地址</span>
+ORG 0x7c00</code></pre>
+<ol start="2">
+<li>JMP 指令：无条件跳转指令<br>工作原理：jmp 跳转指令根据跳转的距离分为：段内短转移、段内近转移、段间转移。段内转移都是通过当前 IP（偏移地址）的转移位移来进行跳转的。比如，当前 IP=5 ，要跳转的 IP=8，指令跳转的时候就是 jmp 5+3=jmp 8。这里的 3 表示 IP 向后移动 3 个偏移地址。</li>
+</ol>
+<p>段内跳转方法：当前IP + 位移</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># "entry:" 的术语叫标号，表示将一段程序做一个标识。</span>
+<span class="token comment" spellcheck="true"># 当我需要用这段程序的时候，可以使用 "指令 标号"来执行这段程序。</span>
+jmp entry</code></pre>
+<ol start="3">
+<li>MOV 指令：传送指令<br>工作原理：将一个寄存器或者内存单元中的值，传送到另一个寄存器或内存单元中。</li>
+</ol>
+<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 将值 0，传送到 ax 寄存器中。原来 ax 寄存器中的值会被覆盖</span>
+mov ax,0</code></pre>
+<ol start="4">
+<li>ADD 指令：加法指令<br>工作原理：将两个数值相加</li>
+</ol>
+<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># si=si+1</span>
+add si,1</code></pre>
+<ol start="5">
+<li>CMP 指令：比较指令</li>
+</ol>
+<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 将 al 中的值和 0 进行比较</span>
+<span class="token function">cmp</span> al,0</code></pre>
+<ol start="6">
+<li>JE 指令：有条件跳转指令，根据比较结果进行指令跳转。如果比较结果相等，则跳转到制定地址；如果跳转指令不相等，则不跳转，继续执行下一条指令。</li>
+</ol>
+<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 如果 al=0，就跳转到 fin 标号处</span>
+<span class="token function">cmp</span> al,0
+je fin</code></pre>
+<ol start="7">
+<li><p>INT 指令：软件中断指令。int 指令调用的是操作系统提供的子程序或者其他特殊的程序</p>
+</li>
+<li><p>HLT 指令：使程序停止运行，CPU 处于待机状态，当外部发生变化，比如按键盘、鼠标等，CPU 就会醒过来，继续执行程序。</p>
+</li>
+</ol>
+<h2 id="Makefile-入门"><a href="#Makefile-入门" class="headerlink" title="Makefile 入门"></a>Makefile 入门</h2><p><img alt="9.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/09/13/huf8kL2Q3RaB6bG.png" data-index="8" data-src="https://i.loli.net/2020/09/13/huf8kL2Q3RaB6bG.png"></p>
+<p><strong>Makefile语法：</strong></p>
+<pre class=" language-bash"><code class="language-bash">规则名称 <span class="token keyword">:</span> 执行这个规则所需要的文件（以空格符隔开）
+    该规则的执行指令</code></pre>
+<p><strong>make 语法：</strong></p>
+<p><code>make -r 规则名</code></p>
+<p><strong>优点：</strong></p>
+<p>使用灵活方便：当规则执行，找不到需要的文件时。程序会自动需找并执行所需文件的规则。Makefile 可集成多个规则，并按要求执行。</p>
 <h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a href="https://blog.csdn.net/weixin_30675247/article/details/99217620" target="_blank" rel="noopener">《30天自制操作系统》笔记1 — 准备阶段</a></p>
+<p><a href="https://blog.csdn.net/GerryLee93/article/details/106477483/" target="_blank" rel="noopener">org指令详解</a></p>
 
                 </article>
                 <ul class="tags-postTags">
@@ -280,7 +387,7 @@ RESB 0x1fe-$</code></pre>
         </a>
     </div>
     <div class="toc-main">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第-0-天：准备阶段"><span class="toc-text">第 0 天：准备阶段</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#下载工具和原版镜像"><span class="toc-text">下载工具和原版镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二进制编辑器"><span class="toc-text">二进制编辑器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工具目录-tolset"><span class="toc-text">工具目录 tolset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#制作运行-img-操作"><span class="toc-text">制作运行 img 操作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第-1-天：汇编入门"><span class="toc-text">第 1 天：汇编入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#NASM-简介"><span class="toc-text">NASM 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#知识学习"><span class="toc-text">知识学习</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#专业术语"><span class="toc-text">专业术语</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#reference"><span class="toc-text">reference</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第-0-天：准备阶段"><span class="toc-text">第 0 天：准备阶段</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#下载工具和原版镜像"><span class="toc-text">下载工具和原版镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二进制编辑器"><span class="toc-text">二进制编辑器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工具目录-tolset"><span class="toc-text">工具目录 tolset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#制作运行-img-操作"><span class="toc-text">制作运行 img 操作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第-1-天：汇编入门"><span class="toc-text">第 1 天：汇编入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#NASM-简介"><span class="toc-text">NASM 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#知识学习"><span class="toc-text">知识学习</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#专业术语"><span class="toc-text">专业术语</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第-2-天：汇编语言学习-与-makefile-入门"><span class="toc-text">第 2 天：汇编语言学习 与 makefile 入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#知识点"><span class="toc-text">知识点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#指令"><span class="toc-text">指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Makefile-入门"><span class="toc-text">Makefile 入门</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#reference"><span class="toc-text">reference</span></a></li></ol>
     </div>
 </div>
 

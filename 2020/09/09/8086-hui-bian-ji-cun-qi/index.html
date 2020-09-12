@@ -255,11 +255,20 @@
 <p><img alt class="post-img b-lazy" data-img="https://i.loli.net/2020/06/24/atPUbdgrYFqp7CR.png" data-index="14" data-src="https://i.loli.net/2020/06/24/atPUbdgrYFqp7CR.png"></p>
 <p>在第一张纸条上写上 200（段地址），在第二张纸条上写上 826（偏移地址）。假设我们事前对这种情况又有过相关的约定：你得到两张纸后，做这样的运算：200（段地址）x10+826（偏移地址）=2826（物理地址）。</p>
 <p>8086 CPU 就是这样一个只能提供两张 3 位数据纸条的 CPU。</p>
-<h1 id="段的概念"><a href="#段的概念" class="headerlink" title="段的概念"></a>段的概念</h1><p>”段地址“ 中 “段” 的概念是由 CPU 衍生过来的。你可以想象内存被 CPU 使用一套计算方案（基地址+偏移地址=物理地址）划分成段，将整个内存空间以分段的方式来进行管理。</p>
+<h1 id="段的概念"><a href="#段的概念" class="headerlink" title="段的概念"></a>段的概念</h1><p>”段地址“ 中 “段” 的概念是由 CPU 衍生过来的。你可以想象内存被 CPU 使用一套计算方案（基地址+偏移地址=物理地址）划分成内存单元，若干个地址连续的内存单元看作一个段。这样使得整个内存空间可以用分段的方式来进行管理。</p>
 <p>在编程时根据需要，将若干地址连续的内存单元看作一个段，用段地址x16，定位段地址的起始地址（基础地址），用偏移地址定位段中的内存单元。有两点需要注意：段地址x16 必然是 16 的倍数，所以一个段的起始地址也一 定是 16 的倍数；偏移地址为 16 位，16 位地址的寻址能力为 64KB，所以一个段的长度最大为 64KB。</p>
-<p><img alt="27.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/25/JFKnE7mIRsDx8UL.png" data-index="15" data-src="https://i.loli.net/2020/06/25/JFKnE7mIRsDx8UL.png"><br><img alt="28.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/25/LVzgCyvY8Wn5E1T.png" data-index="16" data-src="https://i.loli.net/2020/06/25/LVzgCyvY8Wn5E1T.png"></p>
+<p><strong>比如：</strong></p>
+<ul>
+<li><p>0 段有 20h 的空间，也就是 32 个内存单元，那 0 段的范围就是：[0]~[32]</p>
+</li>
+<li><p>0 段被分成了 2 份，分别为 0 、1 两个段，10h 的空间，范围是：[0]~[16]</p>
+</li>
+</ul>
+<p>两个例子的空间和位置都是一样的，唯一的区别就是偏移地址的范围。根据偏移地址来进行分段。</p>
+<p><img alt="27.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/25/JFKnE7mIRsDx8UL.png" data-index="15" data-src="https://i.loli.net/2020/06/25/JFKnE7mIRsDx8UL.png"></p>
+<p><img alt="28.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/06/25/LVzgCyvY8Wn5E1T.png" data-index="16" data-src="https://i.loli.net/2020/06/25/LVzgCyvY8Wn5E1T.png"></p>
 <h2 id="段寄存器"><a href="#段寄存器" class="headerlink" title="段寄存器"></a>段寄存器</h2><p>8086 CPU 在访问内存时要由相关部件提供内存单元的段地址和偏移地址，送入地址加法器合成物理地址。段地址在 8086CPU 的段寄存器中存放。8086CPU 有 4 个段寄存器：CS（Code Segment，代码段寄存器）、DS（Data Segment，数据段寄存器）、SS（Stack Segment，堆栈段寄存器）、ES（Extra Segment，附加段寄存器）。当 8086 CPU 要访问内存时由这 4 个段寄存器提供内存单元的段地址。</p>
-<h2 id="CS-和-IP"><a href="#CS-和-IP" class="headerlink" title="CS 和 IP"></a>CS 和 IP</h2><p>CS 和 IP 是 8086 CPU 中两个最关键的寄存器，它们指示了 CPU 当前要读取指令的地址。CS 为代码段寄存器，IP 为指令指针寄存器，从名称上我们可以看出它们和指令的关系。<br>在 8086 CPU 中，任意时刻，CPU 将 CS:IP 指向的内容当作指令执行。</p>
+<h2 id="CS-和-IP"><a href="#CS-和-IP" class="headerlink" title="CS 和 IP"></a>CS 和 IP</h2><p>CS 和 IP 是 8086 CPU 中两个最关键的寄存器，它们指示了 CPU 当前要读取指令的地址。CS 为代码段寄存器，IP 为指令指针寄存器，从名称上我们可以看出它们和指令的关系。在 8086 CPU 中，任意时刻，CPU 将 CS:IP 指向的内容当作指令执行。</p>
 <blockquote>
 <p>CS = 段地址；IP = 偏移地址；CS:IP = 物理地址</p>
 </blockquote>
