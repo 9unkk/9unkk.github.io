@@ -185,13 +185,14 @@
 <li>DB（Define Byte）：定义一串字节数据（8位）</li>
 </ol>
 <p>例如：</p>
-<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 定义 6 个字节数据： eb，4e，90</span>
+<pre class=" language-bash"><code class="language-bash">
+<span class="token punctuation">;</span> 定义 6 个字节数据： eb，4e，90
 DB 0xeb,0x4e,0x90
 
-<span class="token comment" spellcheck="true"># 定义 8 个字节数据：HELLOIPL</span>
+<span class="token punctuation">;</span> 定义 8 个字节数据：HELLOIPL
 DB <span class="token string">"HELLOIPL"</span>
 
-<span class="token comment" spellcheck="true"># 定义 10 个字节</span>
+<span class="token punctuation">;</span> 定义 10 个字节
 DB 10</code></pre>
 <blockquote>
 <p>编译器默认会将数据认为是 10 进制，所以需要使用 0x 来表示这个数据是 16 进制的。</p>
@@ -200,23 +201,23 @@ DB 10</code></pre>
 <li>DW（伪指令）：定义一串字型数据（16 位）</li>
 </ol>
 <p>例如：</p>
-<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 定义 10 个字，即 20 个字节</span>
+<pre class=" language-bash"><code class="language-bash"><span class="token punctuation">;</span> 定义 10 个字，即 20 个字节
 DW 10</code></pre>
 <ol start="3">
 <li>DD（伪指令）：定义一串双字型数据（32 位）</li>
 </ol>
 <p>例如：</p>
-<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 定义 10 个双字，即 40 个字节</span>
+<pre class=" language-bash"><code class="language-bash"><span class="token punctuation">;</span> 定义 10 个双字，即 40 个字节
 DD 10</code></pre>
 <ol start="4">
 <li>RESB（Reserve Byte）: “RESB”, “RESW”, “RESD”, “RESQ” and “REST” 被设计用在模块的 BSS 段中：它们声明未初始化的内存空间。每一个带有单个操作数，用来表明字节数，字数，或双字数或其它的需要保留单位。这些指令在初始化空间中默认填充0。</li>
 </ol>
-<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 初始化 18 个字节的空间，并填充0。</span>
+<pre class=" language-bash"><code class="language-bash"><span class="token punctuation">;</span> 初始化 18 个字节的空间，并填充0。
 RESB 18</code></pre>
 <ol start="5">
 <li>$：用法表示当前的指令在哪个位置。 </li>
 </ol>
-<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 我当前的指令在 $ 位置，或者说现在已经使用了 $ 个字节。这个指令意思是：填充 "0x1fe-$" 个值位 "0x00" 的字节。</span>
+<pre class=" language-bash"><code class="language-bash"><span class="token punctuation">;</span> 我当前的指令在 $ 位置，或者说现在已经使用了 $ 个字节。这个指令意思是：填充 <span class="token string">"0x1fe-$"</span> 个值位 <span class="token string">"0x00"</span> 的字节。
 RESB 0x1fe-$</code></pre>
 <blockquote>
 <p>上面的这些指令都是伪指令。伪指令是只有编译器能执行的指令，编译器会将伪指令编译成数据。</p>
@@ -290,36 +291,41 @@ RESB 0x1fe-$</code></pre>
 <li>ORG（origin） 指令：修改段内偏移地址。<br>工作原理：org 指令本身不能决定程序将要加载的内存的什么位置，它只是告诉编译器，程序在编译好后需要加载到 xxx 地址，所以在编译时帮我调整好数据访问时的地址。</li>
 </ol>
 <p>地址调整方法：指定地址+旧的偏移地址</p>
-<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 在源码中这条指令的偏移地址是 0，也就是旧的偏移地址是 0。</span>
-<span class="token comment" spellcheck="true"># 当程序加载的时候，偏移地址=0x7c00+0</span>
-<span class="token comment" spellcheck="true"># 0x7c00~0x7dff ：是启动区内容的装载地址</span>
+<pre class=" language-bash"><code class="language-bash">
+<span class="token punctuation">;</span> 在源码中这条指令的偏移地址是 0，也就是旧的偏移地址是 0。
+<span class="token punctuation">;</span> 当程序加载的时候，偏移地址<span class="token operator">=</span>0x7c00+0
+<span class="token punctuation">;</span> 0x7c00~0x7dff ：是启动区内容的装载地址
+
 ORG 0x7c00</code></pre>
 <ol start="2">
 <li>JMP 指令：无条件跳转指令<br>工作原理：jmp 跳转指令根据跳转的距离分为：段内短转移、段内近转移、段间转移。段内转移都是通过当前 IP（偏移地址）的转移位移来进行跳转的。比如，当前 IP=5 ，要跳转的 IP=8，指令跳转的时候就是 jmp 5+3=jmp 8。这里的 3 表示 IP 向后移动 3 个偏移地址。</li>
 </ol>
 <p>段内跳转方法：当前IP + 位移</p>
-<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># "entry:" 的术语叫标号，表示将一段程序做一个标识。</span>
-<span class="token comment" spellcheck="true"># 当我需要用这段程序的时候，可以使用 "指令 标号"来执行这段程序。</span>
+<pre class=" language-bash"><code class="language-bash">
+<span class="token punctuation">;</span> <span class="token string">"entry:"</span> 的术语叫标号，表示将一段程序做一个标识。
+<span class="token punctuation">;</span> 当我需要用这段程序的时候，可以使用 <span class="token string">"指令 标号"</span>来执行这段程序。
+
 jmp entry</code></pre>
 <ol start="3">
 <li>MOV 指令：传送指令<br>工作原理：将一个寄存器或者内存单元中的值，传送到另一个寄存器或内存单元中。</li>
 </ol>
-<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 将值 0，传送到 ax 寄存器中。原来 ax 寄存器中的值会被覆盖</span>
+<pre class=" language-bash"><code class="language-bash"><span class="token punctuation">;</span> 将值 0，传送到 ax 寄存器中。原来 ax 寄存器中的值会被覆盖
 mov ax,0</code></pre>
 <ol start="4">
 <li>ADD 指令：加法指令<br>工作原理：将两个数值相加</li>
 </ol>
-<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># si=si+1</span>
+<pre class=" language-bash"><code class="language-bash"><span class="token punctuation">;</span> si<span class="token operator">=</span>si+1
 add si,1</code></pre>
 <ol start="5">
 <li>CMP 指令：比较指令</li>
 </ol>
-<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 将 al 中的值和 0 进行比较</span>
+<pre class=" language-bash"><code class="language-bash"><span class="token punctuation">;</span> 将 al 中的值和 0 进行比较
 <span class="token function">cmp</span> al,0</code></pre>
 <ol start="6">
 <li>JE 指令：有条件跳转指令，根据比较结果进行指令跳转。如果比较结果相等，则跳转到制定地址；如果跳转指令不相等，则不跳转，继续执行下一条指令。</li>
 </ol>
-<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 如果 al=0，就跳转到 fin 标号处</span>
+<pre class=" language-bash"><code class="language-bash">
+<span class="token punctuation">;</span> 如果 al<span class="token operator">=</span>0，就跳转到 fin 标号处
 <span class="token function">cmp</span> al,0
 je fin</code></pre>
 <ol start="7">
@@ -336,8 +342,71 @@ je fin</code></pre>
 <p><code>make -r 规则名</code></p>
 <p><strong>优点：</strong></p>
 <p>使用灵活方便：当规则执行，找不到需要的文件时。程序会自动需找并执行所需文件的规则。Makefile 可集成多个规则，并按要求执行。</p>
+<h1 id="第-3-天：进入-32-位模式并导入-C-语言"><a href="#第-3-天：进入-32-位模式并导入-C-语言" class="headerlink" title="第 3 天：进入 32 位模式并导入 C 语言"></a>第 3 天：进入 32 位模式并导入 C 语言</h1><h2 id="制作真正的-IPL"><a href="#制作真正的-IPL" class="headerlink" title="制作真正的 IPL"></a>制作真正的 IPL</h2><p><img alt="10.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/09/13/AxDeoa95WsndFQN.png" data-index="9" data-src="https://i.loli.net/2020/09/13/AxDeoa95WsndFQN.png"></p>
+<h3 id="INT-0x13-中断指向的是磁盘服务程序。"><a href="#INT-0x13-中断指向的是磁盘服务程序。" class="headerlink" title="INT 0x13 中断指向的是磁盘服务程序。"></a>INT 0x13 中断指向的是磁盘服务程序。</h3><p>用途：将指定扇区的代码加载到内存指定位置</p>
+<p>参数表：<br>| 值    | 功能 |<br>| :—: |:—: |<br>| 00H | 磁盘系统复位|<br>| 01H | 读取磁盘系统状态|<br>| 02H | 读扇区|<br>| 03H | 写扇区|<br>| 04H | 检验扇区|<br>| 05H | 格式化磁道|<br>| 06H | 格式化坏磁道|<br>| 07H | 格式化驱动器|<br>| 08H | 读取驱动器参数|<br>| 09H | 初始化硬盘参数|<br>| 0AH | 读长扇区|<br>| 0BH | 写长扇区|<br>| 0CH | 查寻|<br>| 0DH | 硬盘系统复位|<br>| 0EH | 读扇区缓冲区|<br>| 0FH | 写扇区缓冲区|<br>| 10H | 读取驱动器状态|<br>| 11H | 校准驱动器|<br>| 12H | 控制器 RAM 诊断|<br>| 13H | 控制器驱动诊断|<br>| 14H | 控制器内部诊断|<br>| 15H | 读取磁盘类型|<br>| 16H | 读取磁盘变化状态|<br>| 17H | 设置磁盘类型|<br>| 18H | 设置格式化媒体类型|<br>| 19H | 磁头保护|<br>| 1AH | 格式化 ESDI 驱动器|</p>
+<ul>
+<li><p>功能02H</p>
+<p>入口参数：AH=02H</p>
+<ul>
+<li>AL=扇区数</li>
+<li>CH=柱面</li>
+<li>CL=扇区</li>
+<li>DH=磁头</li>
+<li>DL=驱动器，00H~7FH:软盘；80H~0FFH:硬盘</li>
+<li>ES:BX=缓冲区地址</li>
+</ul>
+</li>
+</ul>
+<p>出口参数：CF=0 操作成功，AH=00H，AL=传输扇区数，否则，AH=状态码。</p>
+<p><img alt="12.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/09/15/F4rObqo2JdWTt8I.png" data-index="10" data-src="https://i.loli.net/2020/09/15/F4rObqo2JdWTt8I.png"></p>
+<p>上面的图片具体描述了一个软盘的结构图：柱面（环状），一个软盘有 0~79（共 80）个柱面；每个柱面会被分成 1~18（共 18）个扇区；一个软盘有 0~1（共 2）个磁头用来读取数据。</p>
+<h3 id="JC-指令"><a href="#JC-指令" class="headerlink" title="JC 指令"></a>JC 指令</h3><p>JC（jump if carry），意思是如果 CF（carry flag）是 1 的话就跳转。CF 是标志寄存器，通常用来做条件跳转或数据比较。</p>
+<p><img alt="11.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/09/14/8cHIWqkJOZemQPp.png" data-index="11" data-src="https://i.loli.net/2020/09/14/8cHIWqkJOZemQPp.png"></p>
+<p>从上面部分程序中可以看到：程序先读取扇区，如果成功了 CF=0。如果失败了 CF=1，程序会跳到 error 部分继续执行，最后程序跳到 msg 部分继续执行，最后输出 load error 的信息。</p>
+<p>简单来说就是：读扇区失败了，屏幕就会输出 load error 的信息。</p>
+<h3 id="新增内容解释"><a href="#新增内容解释" class="headerlink" title="新增内容解释"></a>新增内容解释</h3><pre class=" language-bash"><code class="language-bash">
+MOV        AX,0x0820   <span class="token punctuation">;</span> 将系统文件放到内存 0x0820~0x083ff
+MOV        ES,AX       
+MOV        CH,0        <span class="token punctuation">;</span> 定位到柱面 0
+MOV        DH,0        <span class="token punctuation">;</span> 定位到磁头 0
+MOV        CL,2        <span class="token punctuation">;</span> 定位到扇区 2（扇区1存放要IPL）
+
+MOV        AH,0x02     <span class="token punctuation">;</span> 执行读盘操作
+MOV        AL,1        <span class="token punctuation">;</span> 读取一个扇区
+MOV        BX,0
+MOV        DL,0x00     <span class="token punctuation">;</span> 设置驱动器名称为 A
+INT        0x13        <span class="token punctuation">;</span> 调用磁盘 BISO 程序
+JC        error        <span class="token punctuation">;</span> 如果程序执行错误，就跳到 error 标号处</code></pre>
+<h2 id="试错"><a href="#试错" class="headerlink" title="试错"></a>试错</h2><p>软盘很不可靠，有时会发生不能读取数据的状况，所以要多读取几次，这里尝试读取 5 次，如果还是报错，就会跳转到 error 部分提示错误信息。</p>
+<pre class=" language-bash"><code class="language-bash">
+        MOV        AX,0x0820
+        MOV        ES,AX
+        MOV        CH,0        <span class="token punctuation">;</span> 定位到柱面0
+        MOV        DH,0        <span class="token punctuation">;</span> 定位到磁头0
+        MOV        CL,2        <span class="token punctuation">;</span> 定位到扇区2
+readloop:        
+        MOV        SI,0        <span class="token punctuation">;</span> 记录失败次数的寄存器
+
+retry:
+        MOV        AH,0x02     <span class="token punctuation">;</span> AH<span class="token operator">=</span>0x02：读入磁盘
+        MOV        AL,1        <span class="token punctuation">;</span> 读取一个扇区
+        MOV        BX,0        
+        MOV        DL,0x00     <span class="token punctuation">;</span> 设置驱动器名为 A
+        INT        0x13        <span class="token punctuation">;</span> 调用中断，读取磁盘
+        JNC        fin         <span class="token punctuation">;</span> 没有出错的话跳转到 fin        
+        ADD        SI,1        <span class="token punctuation">;</span> 出错的话，失败次数加 1
+        CMP        SI,5        <span class="token punctuation">;</span> 比较 SI 与 5 的值
+        JAE        error       <span class="token punctuation">;</span> SI <span class="token operator">>=</span> 5 时，跳转到 error
+        MOV        AH,0x00     <span class="token punctuation">;</span> 磁盘系统复位
+        MOV        DL,0x00     <span class="token punctuation">;</span> 复位的驱动器为 A
+        INT        0x13        <span class="token punctuation">;</span> 执行中断开始复位
+        JMP        retry       <span class="token punctuation">;</span> 复位后再跳转，重新读盘</code></pre>
+<p>JNC 是 “Jump if not carry” 的缩写。也就是说进位标志是 0 的话就跳转。因为当读取磁盘报错时中断会将 cf 置为 1。</p>
 <h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a href="https://blog.csdn.net/weixin_30675247/article/details/99217620" target="_blank" rel="noopener">《30天自制操作系统》笔记1 — 准备阶段</a></p>
 <p><a href="https://blog.csdn.net/GerryLee93/article/details/106477483/" target="_blank" rel="noopener">org指令详解</a></p>
+<p><a href="https://blog.csdn.net/farmwang/article/details/49963967" target="_blank" rel="noopener">int 0x13 中断理解</a></p>
+<p><a href="https://blog.csdn.net/cherisegege/article/details/79835737" target="_blank" rel="noopener">BIOS系统服务 —— 直接磁盘服务（int 0x13）</a></p>
 
                 </article>
                 <ul class="tags-postTags">
@@ -387,7 +456,7 @@ je fin</code></pre>
         </a>
     </div>
     <div class="toc-main">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第-0-天：准备阶段"><span class="toc-text">第 0 天：准备阶段</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#下载工具和原版镜像"><span class="toc-text">下载工具和原版镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二进制编辑器"><span class="toc-text">二进制编辑器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工具目录-tolset"><span class="toc-text">工具目录 tolset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#制作运行-img-操作"><span class="toc-text">制作运行 img 操作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第-1-天：汇编入门"><span class="toc-text">第 1 天：汇编入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#NASM-简介"><span class="toc-text">NASM 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#知识学习"><span class="toc-text">知识学习</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#专业术语"><span class="toc-text">专业术语</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第-2-天：汇编语言学习-与-makefile-入门"><span class="toc-text">第 2 天：汇编语言学习 与 makefile 入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#知识点"><span class="toc-text">知识点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#指令"><span class="toc-text">指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Makefile-入门"><span class="toc-text">Makefile 入门</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#reference"><span class="toc-text">reference</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第-0-天：准备阶段"><span class="toc-text">第 0 天：准备阶段</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#下载工具和原版镜像"><span class="toc-text">下载工具和原版镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二进制编辑器"><span class="toc-text">二进制编辑器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工具目录-tolset"><span class="toc-text">工具目录 tolset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#制作运行-img-操作"><span class="toc-text">制作运行 img 操作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第-1-天：汇编入门"><span class="toc-text">第 1 天：汇编入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#NASM-简介"><span class="toc-text">NASM 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#知识学习"><span class="toc-text">知识学习</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#专业术语"><span class="toc-text">专业术语</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第-2-天：汇编语言学习-与-makefile-入门"><span class="toc-text">第 2 天：汇编语言学习 与 makefile 入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#知识点"><span class="toc-text">知识点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#指令"><span class="toc-text">指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Makefile-入门"><span class="toc-text">Makefile 入门</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第-3-天：进入-32-位模式并导入-C-语言"><span class="toc-text">第 3 天：进入 32 位模式并导入 C 语言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#制作真正的-IPL"><span class="toc-text">制作真正的 IPL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#INT-0x13-中断指向的是磁盘服务程序。"><span class="toc-text">INT 0x13 中断指向的是磁盘服务程序。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JC-指令"><span class="toc-text">JC 指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新增内容解释"><span class="toc-text">新增内容解释</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#试错"><span class="toc-text">试错</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#reference"><span class="toc-text">reference</span></a></li></ol>
     </div>
 </div>
 
@@ -422,20 +491,38 @@ je fin</code></pre>
       
       
       <li>
-        <a href="/2020/09/13/8086-hui-bian-di-yi-ge-cheng-xu/">8086 汇编-第一个程序</a>
+        <a href="/2020/10/10/80386-hui-bian-ji-chu-zhi-shi/">80386 汇编-基础知识</a>
       </li>
       
       
       
       <li>
-        <a href="/2020/09/13/8086-hui-bian-ji-cun-qi-nei-cun/">8086 汇编-寄存器(内存)</a>
+        <a href="/2020/10/07/8086-hui-bian-nei-zhong-duan/">8086汇编-内中断</a>
       </li>
       
       
       
       <li>
-        <a href="/2020/09/09/8086-hui-bian-ji-cun-qi/">8086 汇编-寄存器</a>
+        <a href="/2020/10/07/8086-hui-bian-biao-zhi-ji-cun-qi/">8086汇编-标志寄存器</a>
       </li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       
       
       
@@ -546,7 +633,7 @@ je fin</code></pre>
 		<h3 class="read-next-card-header-title">标签云</h3>
 	</header>
 	<div class="read-next-card-content-ext">
-		<a href="/tags/8086CPU/" style="font-size: 14px;">8086CPU</a> <a href="/tags/ELK/" style="font-size: 14px;">ELK</a> <a href="/tags/%E6%B1%87%E7%BC%96/" style="font-size: 19px;">汇编</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" style="font-size: 24px;">漏洞复现</a> <a href="/tags/%E9%9D%B6%E6%9C%BA/" style="font-size: 24px;">靶机</a>
+		<a href="/tags/8086CPU/" style="font-size: 14px;">8086CPU</a> <a href="/tags/ELK/" style="font-size: 14px;">ELK</a> <a href="/tags/%E6%B1%87%E7%BC%96/" style="font-size: 24px;">汇编</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" style="font-size: 19px;">漏洞复现</a> <a href="/tags/%E9%9D%B6%E6%9C%BA/" style="font-size: 19px;">靶机</a>
 	</div>
 </article>
 

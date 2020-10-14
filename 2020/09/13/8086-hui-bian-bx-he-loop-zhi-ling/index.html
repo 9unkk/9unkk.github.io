@@ -1,0 +1,554 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="preconnect" href="//www.googletagmanager.com">
+	<link rel="preconnect" href="//zz.bdstatic.com">
+	<link rel="preconnect" href="//sp0.baidu.com">
+	<link rel="preconnect" href="//www.google-analytics.com">
+	<link rel="preconnect" href="//cdn1.lncld.net">
+	<link rel="preconnect" href="//unpkg.com">
+	<link rel="preconnect" href="//app-router.leancloud.cn">
+	<link rel="preconnect" href="//9qpuwspm.api.lncld.net">
+	<link rel="preconnect" href="//gravatar.loli.net">
+
+	<title>8086汇编-[BX]和loop指令 | 9unk</title>
+
+	<meta name="HandheldFriendly" content="True">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+	<meta name="generator" content="hexo">
+	<meta name="author" content="9nuk">
+	<meta name="description" content>
+
+	
+	<meta name="keywords" content>
+	
+
+	
+	<link rel="shortcut icon" href="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png">
+	<link rel="apple-touch-icon" href="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png">
+	
+
+	
+	<meta name="theme-color" content="#3c484e">
+	<meta name="msapplication-TileColor" content="#3c484e">
+	
+
+	
+
+	
+
+	<meta property="og:site_name" content="9unk">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="8086汇编-[BX]和loop指令 | 9unk">
+	<meta property="og:description" content>
+	<meta property="og:url" content="http://yoursite.com/2020/09/13/8086-hui-bian-bx-he-loop-zhi-ling/">
+
+	
+	<meta property="article:published_time" content="2020-09-13T14:09:00+08:00"> 
+	<meta property="article:author" content="9nuk">
+	<meta property="article:published_first" content="9unk, /2020/09/13/8086-hui-bian-bx-he-loop-zhi-ling/">
+	
+
+	
+	
+	
+<link rel="stylesheet" href="/css/allinonecss.min.css">
+
+
+	
+	
+	
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+<body class="post-template">
+	<div class="site-wrapper">
+		
+
+
+
+
+<header class="site-header post-site-header outer">
+    <div class="inner">
+        
+<nav class="site-nav"> 
+    <div class="site-nav-left">
+        <ul class="nav">
+            <li>
+                
+                
+                <a class="site-nav-logo" href="/" title="9unk">
+                    <img src="https://pic2.zhimg.com/80/v2-41b7556078db198db3955539789490a8_720w.jpg" alt="9unk">
+                </a>
+                
+                
+            </li>
+            
+            
+            <li>
+                <a href="/about" title="关于">关于</a>
+            </li>
+            
+            <li>
+                <a href="/archives" title="文章">文章</a>
+            </li>
+            
+            
+        </ul> 
+    </div>
+    
+    <div class="search-button-area">
+        <a href="#search" class="search-button">Search ...</a>
+    </div>
+     
+    <div class="site-nav-right">
+        
+        <a href="#search" class="search-button">Search ...</a>
+         
+        
+<div class="social-links">
+    
+    
+    <a class="social-link" title="github" href="https://github.com/hhkk2334" target="_blank" rel="noopener">
+        <svg viewBox="0 0 1049 1024" xmlns="http://www.w3.org/2000/svg"><path d="M524.979332 0C234.676191 0 0 234.676191 0 524.979332c0 232.068678 150.366597 428.501342 358.967656 498.035028 26.075132 5.215026 35.636014-11.299224 35.636014-25.205961 0-12.168395-0.869171-53.888607-0.869171-97.347161-146.020741 31.290159-176.441729-62.580318-176.441729-62.580318-23.467619-60.841976-58.234462-76.487055-58.234463-76.487055-47.804409-32.15933 3.476684-32.15933 3.476685-32.15933 53.019436 3.476684 80.83291 53.888607 80.83291 53.888607 46.935238 79.963739 122.553122 57.365291 152.97411 43.458554 4.345855-33.897672 18.252593-57.365291 33.028501-70.402857-116.468925-12.168395-239.022047-57.365291-239.022047-259.012982 0-57.365291 20.860106-104.300529 53.888607-140.805715-5.215026-13.037566-23.467619-66.926173 5.215027-139.067372 0 0 44.327725-13.906737 144.282399 53.888607 41.720212-11.299224 86.917108-17.383422 131.244833-17.383422s89.524621 6.084198 131.244833 17.383422C756.178839 203.386032 800.506564 217.29277 800.506564 217.29277c28.682646 72.1412 10.430053 126.029806 5.215026 139.067372 33.897672 36.505185 53.888607 83.440424 53.888607 140.805715 0 201.64769-122.553122 245.975415-239.891218 259.012982 19.121764 16.514251 35.636014 47.804409 35.636015 97.347161 0 70.402857-0.869171 126.898978-0.869172 144.282399 0 13.906737 9.560882 30.420988 35.636015 25.205961 208.601059-69.533686 358.967656-265.96635 358.967655-498.035028C1049.958663 234.676191 814.413301 0 524.979332 0z"/></svg>
+    </a>
+    
+    
+    
+    
+    
+    
+</div>
+    </div>
+</nav>
+    </div>
+</header>
+
+
+<div id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+        <header class="post-full-header">
+            <div class="post-full-meta">
+                <time class="post-full-meta-date" datetime="2020-09-13T06:58:29.000Z">
+                    2020-09-13
+                </time>
+                
+                <span class="date-divider">/</span>
+                
+                
+            </div>
+            <h1 class="post-full-title">8086汇编-[BX]和loop指令</h1>
+        </header>
+        <div class="post-full no-image">
+            
+            <div class="post-full-content">
+                <article id="photoswipe" class="markdown-body">
+                    <h1 id="bx"><a href="#bx" class="headerlink" title="[bx]"></a>[bx]</h1><p>[bx]指的是，用 bx 值来指定内存单元的偏移地址。这样做的原因是 masm 编译器不能使用 <code>[0]</code> 来设置偏移地址。这也是 debug 与 汇编指令 之间的区别。</p>
+<p>示例演示：</p>
+<p><img alt="71.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/13/m4Awau9kLS2Ts5U.png" data-index="0" data-src="https://i.loli.net/2020/07/13/m4Awau9kLS2Ts5U.png"></p>
+<p><img alt="72.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/13/TAlNJRytb1Y7G8h.png" data-index="1" data-src="https://i.loli.net/2020/07/13/TAlNJRytb1Y7G8h.png"></p>
+<p>从上图可以发现汇编指令中的偏移地址 <code>[0]</code> 在运行的时候变成了数字 <code>00</code>。程序运行时就是读取偏移地址中的数据并传送到寄存器中。</p>
+<p><img alt="73.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/13/KcebvsOa4GtCy6l.png" data-index="2" data-src="https://i.loli.net/2020/07/13/KcebvsOa4GtCy6l.png"></p>
+<p><img alt="74.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/13/tozWCrig61xpEvS.png" data-index="3" data-src="https://i.loli.net/2020/07/13/tozWCrig61xpEvS.png"></p>
+<p>从上图中可以看到，程序将 <code>[bx]=[0]</code> 中的数据 “ A0 “ 传送到了 AL 中，寄存器 “ 20000 “ 变成了 “ 20A0 “。</p>
+<h1 id="loop-指令"><a href="#loop-指令" class="headerlink" title="loop 指令"></a>loop 指令</h1><p>loop：是循环指令，它可以循环执行一条或一段指令。<br>指令格式：loop 标号</p>
+<p>指令执行流程：</p>
+<ol>
+<li><p>cx=cx-1</p>
+</li>
+<li><p>判断 cx 中的值，不为零则转至标号处执行程序，如果为零则向下执行程序。</p>
+</li>
+</ol>
+<blockquote>
+<p>CX 寄存器不仅表示程序的长度，还可自定义循环次数。</p>
+</blockquote>
+<p>示例演示：</p>
+<p><img alt="75.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/14/PAoqgFxYyB4mdQf.png" data-index="4" data-src="https://i.loli.net/2020/07/14/PAoqgFxYyB4mdQf.png"></p>
+<p>上图的程序是计算 2^3 ；s: 指的是标号。</p>
+<blockquote>
+<p>这里 ax 的初始值有问题（ax=2），导致程序循环了两次就变成了 8。ax 的值应该设为 1。</p>
+</blockquote>
+<h2 id="debug-中跟踪用-loop-指令实现循环"><a href="#debug-中跟踪用-loop-指令实现循环" class="headerlink" title="debug 中跟踪用 loop 指令实现循环"></a>debug 中跟踪用 loop 指令实现循环</h2><p>从上面的示例可以看到，在 debug 中每循环一次都要使用 t 命令来执行汇编指令。如果要循环256次，那么就要执行256次 t 命令，显然这是不现实的。所以为了简化循环操作，在 debug 中可使用 g 或 p 命令来执行汇编指令。</p>
+<p>实例演示：</p>
+<ul>
+<li>g 命令表示执行程序到当前代码段</li>
+</ul>
+<p><img alt="76.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/15/DGCwyYmrbQJpXek.png" data-index="5" data-src="https://i.loli.net/2020/07/15/DGCwyYmrbQJpXek.png"></p>
+<ul>
+<li>当遇到 loop 指令时，p 命令会自动重复执行循环中的指令</li>
+</ul>
+<p><img alt="77.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/15/E1ZKX9tP5wQHFux.png" data-index="6" data-src="https://i.loli.net/2020/07/15/E1ZKX9tP5wQHFux.png"></p>
+<h2 id="loop-和-bx-的联合使用"><a href="#loop-和-bx-的联合使用" class="headerlink" title="loop 和 [bx] 的联合使用"></a>loop 和 [bx] 的联合使用</h2><p>问题1：计算 ffff:0~ffff:b 单元中的数据的和，并将结果存储在 dx 中。</p>
+<p><strong>分析：</strong></p>
+<ol>
+<li><p>首先 ffff:0~ffff:b 单元中的数据的和（一共 12 个字节数据：从 2^12 加到 2^1），不会超过 dx 16位寄存器（一共 16 个字节数据：2^16）。</p>
+</li>
+<li><p>其次内存单元的数据（8位的）不能直接累加到 DX （16位的）中</p>
+</li>
+<li><p>也不能将数据累加到 dl 中，因为 12 个字节数据超过了 dl 8位寄存器（2^8字节数据），根据 dl 寄存器特性超出的数据会被丢弃。</p>
+</li>
+</ol>
+<p><strong>解决方法：</strong><br>将内存单元中的 8 位数据赋值到一个16位寄存器 ax 中，然后再将数据加到 dx 上。</p>
+<p><strong>汇编代码：</strong></p>
+<p><img alt="78.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/15/5429dWNhplVBZHo.png" data-index="7" data-src="https://i.loli.net/2020/07/15/5429dWNhplVBZHo.png"></p>
+<p><img alt="79.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/15/8MCFzBRyNfscuSk.png" data-index="8" data-src="https://i.loli.net/2020/07/15/8MCFzBRyNfscuSk.png"><br><img alt="80.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/15/jUkKfJLqrMcsZIV.png" data-index="9" data-src="https://i.loli.net/2020/07/15/jUkKfJLqrMcsZIV.png"></p>
+<p><strong>使用 loop 简化操作：</strong></p>
+<p><img alt="81.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/15/zIcUhQFHXOW7skD.png" data-index="10" data-src="https://i.loli.net/2020/07/15/zIcUhQFHXOW7skD.png"></p>
+<blockquote>
+<p>在汇编中数值只能以数字开头，所以需要将段地址设为 0ffff，不然程序运行会报错</p>
+</blockquote>
+<h1 id="段前缀"><a href="#段前缀" class="headerlink" title="段前缀"></a>段前缀</h1><p>例如：<code>mov ax,ds:[0]</code>指令中，明确地指定了段地址 “ds:”，所以被称为段前缀。</p>
+<h2 id="一段安全的地址空间"><a href="#一段安全的地址空间" class="headerlink" title="一段安全的地址空间"></a>一段安全的地址空间</h2><p>之前的操作都是不安全的，如果不小心将系统数据或程序数据覆盖了，那将会导致系统或程序报错崩溃。所以为了安全起见，最好在 0:200~0:2ff 这段地址空间中进行操作。这是一个相对安全的地址空间，该段中一般不会有数据。</p>
+<h2 id="段前缀的使用"><a href="#段前缀的使用" class="headerlink" title="段前缀的使用"></a>段前缀的使用</h2><p><strong>问题2：</strong> 将内存 ffff:0~ffff:b 单元中的数据复制到 0:200~0:20b 单元中</p>
+<p><strong>分析：</strong></p>
+<ol>
+<li><p>0:200~0:20b 单元等同于 0020:0~0020:b 单元，它们描述的是同一段内存地址空间</p>
+</li>
+<li><p>将 ffff:0~ffff:b 的数据存到 8 位寄存器中，然后再将寄存器中的数据移动到 0020:0~0020:b 中</p>
+</li>
+<li><p>偏移地址都是 0～b，所以偏移地址可以设定为一个变量。即 ffff:x 中的数据可以复制<br>到 0020:x 中</p>
+</li>
+<li><p>既然数据复制都是有规律的，那么可以用循环来实现该功能</p>
+</li>
+<li><p>两个段地址的起始偏移地址都应该为 0</p>
+</li>
+</ol>
+<p><img alt="82.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/17/pn8wcbG4EvhPsfX.png" data-index="11" data-src="https://i.loli.net/2020/07/17/pn8wcbG4EvhPsfX.png"></p>
+<p><strong>程序优化：</strong></p>
+<p><strong>分析：</strong> 在汇编中可以使用多个段寄存器来分别执行指令和数据。</p>
+<p><img alt="83.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/17/Weu5VOUoNSqYx2j.png" data-index="12" data-src="https://i.loli.net/2020/07/17/Weu5VOUoNSqYx2j.png"></p>
+<blockquote>
+<p>es 是附加段寄存器，简单来说就是扩展段寄存器，当段寄存器不够用的时候就用这个。</p>
+</blockquote>
+
+                </article>
+                <ul class="tags-postTags">
+                    
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/" rel="tag"># 汇编</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    
+    <nav id="gobottom" class="pagination">
+        
+        <a class="prev-post" title="8086汇编-包含多个段的程序" href="/2020/09/26/8086-hui-bian-bao-han-duo-ge-duan-de-cheng-xu/">
+            ← 8086汇编-包含多个段的程序
+        </a>
+        
+        <span class="prev-next-post">·</span>
+        
+        <a class="next-post" title="8086 汇编-第一个程序" href="/2020/09/13/8086-hui-bian-di-yi-ge-cheng-xu/">
+            8086 汇编-第一个程序 →
+        </a>
+        
+    </nav>
+
+    
+    <div class="inner">
+        <div id="comment"></div>
+    </div>
+    
+</div>
+
+<div class="toc-bar">
+    <div class="toc-btn-bar">
+        <a href="#site-main" class="toc-btn">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M793.024 710.272a32 32 0 1 0 45.952-44.544l-310.304-320a32 32 0 0 0-46.4 0.48l-297.696 320a32 32 0 0 0 46.848 43.584l274.752-295.328 286.848 295.808z"/></svg>
+        </a>
+        <div class="toc-btn toc-switch">
+            <svg class="toc-open" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M779.776 480h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M779.776 672h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M256 288a32 32 0 1 0 0 64 32 32 0 0 0 0-64M392.576 352h387.2a32 32 0 0 0 0-64h-387.2a32 32 0 0 0 0 64M256 480a32 32 0 1 0 0 64 32 32 0 0 0 0-64M256 672a32 32 0 1 0 0 64 32 32 0 0 0 0-64"/></svg>
+            <svg class="toc-close hide" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M512 960c-247.039484 0-448-200.960516-448-448S264.960516 64 512 64 960 264.960516 960 512 759.039484 960 512 960zM512 128.287273c-211.584464 0-383.712727 172.128262-383.712727 383.712727 0 211.551781 172.128262 383.712727 383.712727 383.712727 211.551781 0 383.712727-172.159226 383.712727-383.712727C895.712727 300.415536 723.551781 128.287273 512 128.287273z"/><path d="M557.05545 513.376159l138.367639-136.864185c12.576374-12.416396 12.672705-32.671738 0.25631-45.248112s-32.704421-12.672705-45.248112-0.25631l-138.560301 137.024163-136.447897-136.864185c-12.512727-12.512727-32.735385-12.576374-45.248112-0.063647-12.512727 12.480043-12.54369 32.735385-0.063647 45.248112l136.255235 136.671523-137.376804 135.904314c-12.576374 12.447359-12.672705 32.671738-0.25631 45.248112 6.271845 6.335493 14.496116 9.504099 22.751351 9.504099 8.12794 0 16.25588-3.103239 22.496761-9.247789l137.567746-136.064292 138.687596 139.136568c6.240882 6.271845 14.432469 9.407768 22.65674 9.407768 8.191587 0 16.352211-3.135923 22.591372-9.34412 12.512727-12.480043 12.54369-32.704421 0.063647-45.248112L557.05545 513.376159z"/></svg>
+        </div>
+        <a href="#gobottom" class="toc-btn">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M231.424 346.208a32 32 0 0 0-46.848 43.584l297.696 320a32 32 0 0 0 46.4 0.48l310.304-320a32 32 0 1 0-45.952-44.544l-286.848 295.808-274.752-295.36z"/></svg>
+        </a>
+    </div>
+    <div class="toc-main">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#bx"><span class="toc-text">[bx]</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#loop-指令"><span class="toc-text">loop 指令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#debug-中跟踪用-loop-指令实现循环"><span class="toc-text">debug 中跟踪用 loop 指令实现循环</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#loop-和-bx-的联合使用"><span class="toc-text">loop 和 [bx] 的联合使用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#段前缀"><span class="toc-text">段前缀</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一段安全的地址空间"><span class="toc-text">一段安全的地址空间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#段前缀的使用"><span class="toc-text">段前缀的使用</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+
+
+
+
+
+	</div>
+	
+
+
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+  <header class="read-next-card-header">
+    <small class="read-next-card-header-sitetitle">— 9unk —</small>
+    <h3 class="read-next-card-header-title">最新文章</h3>
+  </header>
+  <div class="read-next-divider">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/>
+    </svg>
+  </div>
+  <div class="read-next-card-content">
+    <ul>
+      
+      
+      
+      <li>
+        <a href="/2020/10/10/80386-hui-bian-ji-chu-zhi-shi/">80386 汇编-基础知识</a>
+      </li>
+      
+      
+      
+      <li>
+        <a href="/2020/10/07/8086-hui-bian-nei-zhong-duan/">8086汇编-内中断</a>
+      </li>
+      
+      
+      
+      <li>
+        <a href="/2020/10/07/8086-hui-bian-biao-zhi-ji-cun-qi/">8086汇编-标志寄存器</a>
+      </li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+  </div>
+  <footer class="read-next-card-footer">
+    <a href="/archives">  MORE  → </a>
+  </footer>
+</article>
+
+            
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+    <header class="read-next-card-header tagcloud-card">
+        <h3 class="read-next-card-header-title">分类</h3>
+    </header>
+    <div class="read-next-card-content">
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Citrix/">Citrix</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web-Security/">Web Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/github/">github</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/system-security/">system security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%97%E9%80%8F%E5%B7%A5%E5%85%B7/">渗透工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E6%99%AE/">科普</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A0%81/">编码</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%B6%85%E8%9E%8D%E5%90%88/">超融合</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%9A%E4%BF%A1/">通信</a></li></ul>
+    </div>
+</article>
+
+
+            
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+	<header class="read-next-card-header tagcloud-card">
+		<h3 class="read-next-card-header-title">标签云</h3>
+	</header>
+	<div class="read-next-card-content-ext">
+		<a href="/tags/8086CPU/" style="font-size: 14px;">8086CPU</a> <a href="/tags/ELK/" style="font-size: 14px;">ELK</a> <a href="/tags/%E6%B1%87%E7%BC%96/" style="font-size: 24px;">汇编</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" style="font-size: 19px;">漏洞复现</a> <a href="/tags/%E9%9D%B6%E6%9C%BA/" style="font-size: 19px;">靶机</a>
+	</div>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+	
+
+
+
+
+<div id="search" class="search-overlay">
+    <div class="search-form">
+        
+        <div class="search-overlay-logo">
+        	<img src="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png" alt="9unk">
+        </div>
+        
+        <input id="local-search-input" class="search-input" type="text" name="search" placeholder="搜索 ...">
+        <a class="search-overlay-close" href="#"></a>
+    </div>
+    <div id="local-search-result"></div>
+</div>
+
+<footer class="site-footer outer">
+	<div class="site-footer-content inner">
+		<div class="copyright">
+			<a href="/" title="9unk">9unk © 2020</a>
+			
+				
+    		
+		</div>
+		<nav class="site-footer-nav">
+			
+			<a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+			<a href="https://github.com/xzhih/hexo-theme-casper" title="Casper" target="_blank" rel="noopener">Casper</a>
+		</nav>
+	</div>
+</footer>
+	
+
+
+<script>
+    if(window.navigator && navigator.serviceWorker) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for(let registration of registrations) {
+                registration.unregister()
+            }
+        })
+    }
+</script>
+
+
+<script id="scriptLoad" src="/js/allinone.min.js" async></script>
+
+
+<script>
+    document.getElementById('scriptLoad').addEventListener('load', function () {
+        
+        
+            var bLazy = new Blazy();
+        
+
+        
+        
+
+        
+        
+        
+            searchFunc("/");
+        
+        
+    })
+</script>
+
+
+
+
+
+
+<script id="valineScript" src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+<script>
+    document.getElementById('valineScript').addEventListener("load", function() {
+        new Valine({
+            el: '#comment' ,
+            verify: false,
+            notify: false,
+            appId: 'lhq4C91rscRdbbVHPYesVhOz-gzGzoHsz',
+            appKey: 'EHeksCG71RId7DpUxMiocJQ4',
+            placeholder: '你是魔鬼吧，都不留言！',
+            pageSize: 10,
+            avatar: 'mm',
+            visitor: 
+        })
+    });
+</script>
+
+
+
+
+
+
+
+</body></html>

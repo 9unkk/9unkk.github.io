@@ -1,0 +1,630 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="preconnect" href="//www.googletagmanager.com">
+	<link rel="preconnect" href="//zz.bdstatic.com">
+	<link rel="preconnect" href="//sp0.baidu.com">
+	<link rel="preconnect" href="//www.google-analytics.com">
+	<link rel="preconnect" href="//cdn1.lncld.net">
+	<link rel="preconnect" href="//unpkg.com">
+	<link rel="preconnect" href="//app-router.leancloud.cn">
+	<link rel="preconnect" href="//9qpuwspm.api.lncld.net">
+	<link rel="preconnect" href="//gravatar.loli.net">
+
+	<title>8086汇编-更灵活的定位内存地址的方法 | 9unk</title>
+
+	<meta name="HandheldFriendly" content="True">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+	<meta name="generator" content="hexo">
+	<meta name="author" content="9nuk">
+	<meta name="description" content>
+
+	
+	<meta name="keywords" content>
+	
+
+	
+	<link rel="shortcut icon" href="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png">
+	<link rel="apple-touch-icon" href="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png">
+	
+
+	
+	<meta name="theme-color" content="#3c484e">
+	<meta name="msapplication-TileColor" content="#3c484e">
+	
+
+	
+
+	
+
+	<meta property="og:site_name" content="9unk">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="8086汇编-更灵活的定位内存地址的方法 | 9unk">
+	<meta property="og:description" content>
+	<meta property="og:url" content="http://yoursite.com/2020/09/26/8086-hui-bian-geng-ling-huo-de-ding-wei-nei-cun-di-zhi-de-fang-fa/">
+
+	
+	<meta property="article:published_time" content="2020-09-26T17:09:00+08:00"> 
+	<meta property="article:author" content="9nuk">
+	<meta property="article:published_first" content="9unk, /2020/09/26/8086-hui-bian-geng-ling-huo-de-ding-wei-nei-cun-di-zhi-de-fang-fa/">
+	
+
+	
+	
+	
+<link rel="stylesheet" href="/css/allinonecss.min.css">
+
+
+	
+	
+	
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+<body class="post-template">
+	<div class="site-wrapper">
+		
+
+
+
+
+<header class="site-header post-site-header outer">
+    <div class="inner">
+        
+<nav class="site-nav"> 
+    <div class="site-nav-left">
+        <ul class="nav">
+            <li>
+                
+                
+                <a class="site-nav-logo" href="/" title="9unk">
+                    <img src="https://pic2.zhimg.com/80/v2-41b7556078db198db3955539789490a8_720w.jpg" alt="9unk">
+                </a>
+                
+                
+            </li>
+            
+            
+            <li>
+                <a href="/about" title="关于">关于</a>
+            </li>
+            
+            <li>
+                <a href="/archives" title="文章">文章</a>
+            </li>
+            
+            
+        </ul> 
+    </div>
+    
+    <div class="search-button-area">
+        <a href="#search" class="search-button">Search ...</a>
+    </div>
+     
+    <div class="site-nav-right">
+        
+        <a href="#search" class="search-button">Search ...</a>
+         
+        
+<div class="social-links">
+    
+    
+    <a class="social-link" title="github" href="https://github.com/hhkk2334" target="_blank" rel="noopener">
+        <svg viewBox="0 0 1049 1024" xmlns="http://www.w3.org/2000/svg"><path d="M524.979332 0C234.676191 0 0 234.676191 0 524.979332c0 232.068678 150.366597 428.501342 358.967656 498.035028 26.075132 5.215026 35.636014-11.299224 35.636014-25.205961 0-12.168395-0.869171-53.888607-0.869171-97.347161-146.020741 31.290159-176.441729-62.580318-176.441729-62.580318-23.467619-60.841976-58.234462-76.487055-58.234463-76.487055-47.804409-32.15933 3.476684-32.15933 3.476685-32.15933 53.019436 3.476684 80.83291 53.888607 80.83291 53.888607 46.935238 79.963739 122.553122 57.365291 152.97411 43.458554 4.345855-33.897672 18.252593-57.365291 33.028501-70.402857-116.468925-12.168395-239.022047-57.365291-239.022047-259.012982 0-57.365291 20.860106-104.300529 53.888607-140.805715-5.215026-13.037566-23.467619-66.926173 5.215027-139.067372 0 0 44.327725-13.906737 144.282399 53.888607 41.720212-11.299224 86.917108-17.383422 131.244833-17.383422s89.524621 6.084198 131.244833 17.383422C756.178839 203.386032 800.506564 217.29277 800.506564 217.29277c28.682646 72.1412 10.430053 126.029806 5.215026 139.067372 33.897672 36.505185 53.888607 83.440424 53.888607 140.805715 0 201.64769-122.553122 245.975415-239.891218 259.012982 19.121764 16.514251 35.636014 47.804409 35.636015 97.347161 0 70.402857-0.869171 126.898978-0.869172 144.282399 0 13.906737 9.560882 30.420988 35.636015 25.205961 208.601059-69.533686 358.967656-265.96635 358.967655-498.035028C1049.958663 234.676191 814.413301 0 524.979332 0z"/></svg>
+    </a>
+    
+    
+    
+    
+    
+    
+</div>
+    </div>
+</nav>
+    </div>
+</header>
+
+
+<div id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+        <header class="post-full-header">
+            <div class="post-full-meta">
+                <time class="post-full-meta-date" datetime="2020-09-26T09:23:05.000Z">
+                    2020-09-26
+                </time>
+                
+                <span class="date-divider">/</span>
+                
+                
+            </div>
+            <h1 class="post-full-title">8086汇编-更灵活的定位内存地址的方法</h1>
+        </header>
+        <div class="post-full no-image">
+            
+            <div class="post-full-content">
+                <article id="photoswipe" class="markdown-body">
+                    <h1 id="and-和-or-指令"><a href="#and-和-or-指令" class="headerlink" title="and 和 or 指令"></a>and 和 or 指令</h1><ol>
+<li>and 指令：逻辑与指令，按位进行与运算。</li>
+</ol>
+<p>例如指令：</p>
+<pre class=" language-asm"><code class="language-asm">mov al, 01100011B
+and  al, 00111011B</code></pre>
+<p>执行后：al=00100011B</p>
+<blockquote>
+<p>与运算规则：0&0=0；0&1=0；1&0=0；1&1=1</p>
+</blockquote>
+<ol start="2">
+<li>or 指令：逻辑或指令，按位进行或运算</li>
+</ol>
+<p>例如指令：</p>
+<pre class=" language-asm"><code class="language-asm">mov al, 01100011B
+or al,      00111011B</code></pre>
+<p>指令后：al=01111011B</p>
+<blockquote>
+<p>或运算规则：0|0=0；0|1=1；1|0=1；1|1=1</p>
+</blockquote>
+<h1 id="以字符形式给出数据"><a href="#以字符形式给出数据" class="headerlink" title="以字符形式给出数据"></a>以字符形式给出数据</h1><p>在汇编程序中，可以使用单引号来指明数据是以字符形式给出的，编译器将把它们转化为相对应的 ASCII 码。如下面的程序。</p>
+<p><img alt="92.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/20/Mgos2ma3IA8P6np.png" data-index="0" data-src="https://i.loli.net/2020/07/20/Mgos2ma3IA8P6np.png"></p>
+<p><img alt="93.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/20/ZJc8q1jwQe9obGX.png" data-index="1" data-src="https://i.loli.net/2020/07/20/ZJc8q1jwQe9obGX.png"></p>
+<h1 id="大小写转换"><a href="#大小写转换" class="headerlink" title="大小写转换"></a>大小写转换</h1><p>问题1：<br>在 codesg 中填写代码，将 datasg 中的第一个字符串转化为大写，第二个字符串转化为小写。</p>
+<pre class=" language-asm"><code class="language-asm">assume cs:codesg,ds:datasg
+
+datasg Segment
+  db 'BaSiC'
+  db 'iNfOrMaTiOn'
+datasg ends
+
+codesg Segment
+ start:
+ codesg ends
+ end start</code></pre>
+<p>解析：<br>首先需要对比一下大小写字符对应的 ASCII 码有什么不同<br><img alt="94.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/23/DyXYSN8qblRBrx4.png" data-index="2" data-src="https://i.loli.net/2020/07/23/DyXYSN8qblRBrx4.png"></p>
+<blockquote>
+<p>十六进制对比：小写字母比大写字母大 20H；二进制对比：大写字母第五位为 0，小写字母第五位为 1</p>
+</blockquote>
+<p><img alt="95.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/23/wmCylr8I5MK32S6.png" data-index="3" data-src="https://i.loli.net/2020/07/23/wmCylr8I5MK32S6.png"><br><img alt="96.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/23/ARD7N5bL6syXxvg.png" data-index="4" data-src="https://i.loli.net/2020/07/23/ARD7N5bL6syXxvg.png"></p>
+<p><img alt="97.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/24/itTQSZ7nIYrCDdq.png" data-index="5" data-src="https://i.loli.net/2020/07/24/itTQSZ7nIYrCDdq.png"><br><img alt="98.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/24/NlvPi8FJCmEehsV.png" data-index="6" data-src="https://i.loli.net/2020/07/24/NlvPi8FJCmEehsV.png"><br><img alt="99.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/24/z2K8BLl3IF4rtjv.png" data-index="7" data-src="https://i.loli.net/2020/07/24/z2K8BLl3IF4rtjv.png"></p>
+<h1 id="bx-idata"><a href="#bx-idata" class="headerlink" title="[bx+idata]"></a>[bx+idata]</h1><p>在汇编中不仅可以使用 [bx] 来指定内存单元，还可以使用 [bs+idata] 来指定内存单元。常量用 idata 来表示。</p>
+<p>这里修改一下上面的例子来举例：<br><img alt="100.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/24/EpWQMc5iz12FfuS.png" data-index="8" data-src="https://i.loli.net/2020/07/24/EpWQMc5iz12FfuS.png"><br><img alt="101.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/24/9YslNwMGPDBHWjq.png" data-index="9" data-src="https://i.loli.net/2020/07/24/9YslNwMGPDBHWjq.png"></p>
+<p><img alt="102.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/24/Im6a2sJdlUOBAQX.png" data-index="10" data-src="https://i.loli.net/2020/07/24/Im6a2sJdlUOBAQX.png"><br><img alt="103.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/24/LBpMFaWD196xj7z.png" data-index="11" data-src="https://i.loli.net/2020/07/24/LBpMFaWD196xj7z.png"></p>
+<blockquote>
+<p>[bx+5] 还有其他写法，[5+bx]、5[bx]、[bx].5 它们表示一个意思</p>
+</blockquote>
+<h2 id="SI-和-DI"><a href="#SI-和-DI" class="headerlink" title="SI 和 DI"></a>SI 和 DI</h2><p>si 和 di 是 8086CPU 中和 bx 功能相近的寄存器，但是 si 和 di 不能够分成两个 8 位 寄存器来使用。</p>
+<p>问题1：</p>
+<p>用 si 和 di 实现将字符串 ‘welcome to masm！’复制到它后面的数据区中</p>
+<pre class=" language-asm"><code class="language-asm">assume cs:codesg,ds:datasg
+
+datasg Segment
+  db 'welcome to masm!'
+  db '................'
+datasg ends</code></pre>
+<p><strong>分析：</strong><br>第一个字符串的偏移地址：0<del>f<br>第二个字符串偏移地址：10</del>2f<br>一共要传送 16 字节，可以使用 16 位寄存器<br>复制方法，将第一个字符串复制到寄存器中，然后再从寄存器中复制到第二个字符串中</p>
+<p><img alt="104.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/25/LINge9usRhoMt5a.png" data-index="12" data-src="https://i.loli.net/2020/07/25/LINge9usRhoMt5a.png"></p>
+<h1 id="bx-si-和-bx-di"><a href="#bx-si-和-bx-di" class="headerlink" title="[bx+si] 和 [bx+di]"></a>[bx+si] 和 [bx+di]</h1><p>前面使用过 <code>[bx+idata]</code>、<code>[si+idata]</code>、<code>[di+idata]</code> 来指定一个内存单元，我们还可以使用更为灵活的方式： <code>[bx+si]</code> 和 <code>[bx+di]</code>。</p>
+<p>例如 ：<code>mov ax,[bx+si]</code></p>
+<p>指令格式还可写成如下格式：</p>
+<pre class=" language-asm"><code class="language-asm">mov ax, [bx] [si]
+mov ax, [bx] [di]</code></pre>
+<h1 id="bx-si-idata-和-bx-di-idata"><a href="#bx-si-idata-和-bx-di-idata" class="headerlink" title="[bx+si+idata] 和 [bx+di+idata]"></a>[bx+si+idata] 和 [bx+di+idata]</h1><p> <code>[bx+si+idata]</code> 和 <code>[bx+di+idata]</code> 的含义相似，这里的内存单元中添加了常量 idata 使得指定内存单元的更加灵活。</p>
+<p>例如：<code>mov ax, [bx+si+idata]</code></p>
+<p>指令还可以写成如下格式：</p>
+<pre class=" language-asm"><code class="language-asm">mov ax, [bx+200+si]
+mov ax, [200+bx+si]
+mov ax, 200 [bx] [si]
+mov ax, [bx].200 [si]
+mov ax, [bx] [si].200</code></pre>
+<h1 id="不同的须知方式的灵活应用"><a href="#不同的须知方式的灵活应用" class="headerlink" title="不同的须知方式的灵活应用"></a>不同的须知方式的灵活应用</h1><p>问题1：<br>将 datasg 段中的每个单词的头一个字母改为大写字母。</p>
+<pre class=" language-asm"><code class="language-asm">assume cs:codesg,ds:datasg
+
+datasg segment
+  db '1. file.........'
+  db '2. edit.........'
+  db '3. search.......'
+  db '4. view.........'
+  db '5. options......'
+  db '6. help.........'
+datasg ends
+
+codesg Segment
+  start:
+dodesg ends
+
+end start</code></pre>
+<p><strong>分析：</strong><br>datasg 中定义了 6 个字符串，每个长度 16 个字节。这里的程序依然是使用循环，定位到第一个字母并转换成大写字母。</p>
+<p><img alt="105.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/25/F6dxmYhqCfZPXvg.png" data-index="13" data-src="https://i.loli.net/2020/07/25/F6dxmYhqCfZPXvg.png"></p>
+<p><img alt="106.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/25/XKByYCt6dAo9z3I.png" data-index="14" data-src="https://i.loli.net/2020/07/25/XKByYCt6dAo9z3I.png"><br><img alt="107.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/25/pvhbaGOFgq8TDfx.png" data-index="15" data-src="https://i.loli.net/2020/07/25/pvhbaGOFgq8TDfx.png"></p>
+<p><strong>问题2：</strong></p>
+<p>将 datasg 段中的每个单词改为大写字母。</p>
+<pre class=" language-bash"><code class="language-bash">assume cs:codesg,ds:datasg
+
+datasg segment
+  db <span class="token string">'ibm.............'</span>
+  db <span class="token string">'dec.............'</span>
+  db <span class="token string">'dos.............'</span>
+  db <span class="token string">'vax.............'</span>
+datasg ends
+
+codesg Segment
+  start:
+codesg ends
+
+end start</code></pre>
+<p><strong>分析：</strong><br>在 data 中定义了 4 个字符串，每个长度为 16 个字节。我们可以将这组字符串看做 4 行，16 列的二位数组。按照题目要求需要修改每个单词，即二维数组的每一行前 3 列。</p>
+<p><img alt="108.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/25/wcL4tqUpgiNjkMd.png" data-index="16" data-src="https://i.loli.net/2020/07/25/wcL4tqUpgiNjkMd.png"></p>
+<p>如上图所示 00<del>0f、10</del>1f、20<del>2f、30</del>3f 分为 4 行，字符在 0 、1 、2 三个列中。我们可以使用 4X3 次的二重循环，用变量 R 定位行，变量 C 定位列。</p>
+<p><strong>程序结构：</strong></p>
+<pre><code>R 定位第一行
+c 定位第一个字母
+修改字符串
+c 定位第二个字母
+修改字符串
+c 定位第三个字母
+修改字母
+R定位第二行
+..............</code></pre><blockquote>
+<p>这里使用 bx 作为变量来定位行，使用 si 作为变量来定位列</p>
+</blockquote>
+<p><img alt="109.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/JBgNQrUEWfqRvo5.png" data-index="17" data-src="https://i.loli.net/2020/07/26/JBgNQrUEWfqRvo5.png"><br><img alt="110.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/P8w3qgNMU2rdnB1.png" data-index="18" data-src="https://i.loli.net/2020/07/26/P8w3qgNMU2rdnB1.png"></p>
+<p><img alt="111.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/mEixvlyh5bRpCsJ.png" data-index="19" data-src="https://i.loli.net/2020/07/26/mEixvlyh5bRpCsJ.png"></p>
+<p>当程序执行第二次循环的时候，发现循环无法继续执行了，此时的 CX 已为 0。</p>
+<p><strong>程序分析：</strong></p>
+<ol>
+<li><p>设 cx=4<br><img alt="112.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/tHisvUoAdW9KBM3.png" data-index="20" data-src="https://i.loli.net/2020/07/26/tHisvUoAdW9KBM3.png"></p>
+</li>
+<li><p>设 cx=3<br><img alt="113.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/PL6pvuHWQU8jG3s.png" data-index="21" data-src="https://i.loli.net/2020/07/26/PL6pvuHWQU8jG3s.png"></p>
+</li>
+<li><p>执行完第一次内循环，此时 cx=2<br><img alt="114.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/uqLcWOMiFDbUHeo.png" data-index="22" data-src="https://i.loli.net/2020/07/26/uqLcWOMiFDbUHeo.png"></p>
+</li>
+<li><p>执行完第二次内循环，此时 cx=1<br><img alt="115.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/rm9KRqkF1WwNh4A.png" data-index="23" data-src="https://i.loli.net/2020/07/26/rm9KRqkF1WwNh4A.png"></p>
+</li>
+<li><p>执行完第三次内循环，此时 cx=0<br><img alt="116.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/vOsnaWuiNCgTVd2.png" data-index="24" data-src="https://i.loli.net/2020/07/26/vOsnaWuiNCgTVd2.png"></p>
+</li>
+<li><p>执行完第一次外循环，此时 cx=FFFF<br><img alt="117.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/97WnwNUYcb3CfTK.png" data-index="25" data-src="https://i.loli.net/2020/07/26/97WnwNUYcb3CfTK.png"></p>
+</li>
+</ol>
+<p>可以看到 外循环 和 内循环 用的都是 cx 寄存器，当内循环结束时，外循环依然使用内循环 cx 的值（0000）。此时 cx 再继续减 1 值就会变成 FFFF，使程序陷入死循环。</p>
+<p><strong>程序优化1：</strong><br>既然 CX 内循环结束后会变为 0 ，那内循环结束后，再把 cx 重置为外循环的值不就行了。</p>
+<p><img alt="118.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/rRsqGK7Ea1izcDC.png" data-index="26" data-src="https://i.loli.net/2020/07/26/rRsqGK7Ea1izcDC.png"></p>
+<p><img alt="119.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/5oR249XzQeAT7ln.png" data-index="27" data-src="https://i.loli.net/2020/07/26/5oR249XzQeAT7ln.png"></p>
+<p><img alt="120.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/8AIBd2iNXVDyHab.png" data-index="28" data-src="https://i.loli.net/2020/07/26/8AIBd2iNXVDyHab.png"></p>
+<p><strong>程序优化2：</strong><br>寄存器是一个有限且重要的资源，所以最好不要用寄存器来存储 cx 的值。这里使用 dw 来开辟一个内存空间来存储 cx 的值。</p>
+<p><img alt="123.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/ZvaQ6lAw35LipSz.png" data-index="29" data-src="https://i.loli.net/2020/07/26/ZvaQ6lAw35LipSz.png"><br><img alt="124.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/deonvzhYQZBOgS1.png" data-index="30" data-src="https://i.loli.net/2020/07/26/deonvzhYQZBOgS1.png"></p>
+<p><img alt="121.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/5eNLVhxIGMR8Ey1.png" data-index="31" data-src="https://i.loli.net/2020/07/26/5eNLVhxIGMR8Ey1.png"><br><img alt="122.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/1Evqsalb85HBXKt.png" data-index="32" data-src="https://i.loli.net/2020/07/26/1Evqsalb85HBXKt.png"></p>
+<p><strong>程序优化3</strong><br>一般来说，在需要暂存数据的时候应该使用栈。</p>
+<p><img alt="125.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/Ao5NWx4sOTEB9rf.png" data-index="33" data-src="https://i.loli.net/2020/07/26/Ao5NWx4sOTEB9rf.png"></p>
+<p><img alt="126.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/JLC6k5ZwiD3bQq1.png" data-index="34" data-src="https://i.loli.net/2020/07/26/JLC6k5ZwiD3bQq1.png"></p>
+<p><strong>问题3：</strong><br><img alt="127.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/yn4slR3cSLYQAV1.png" data-index="35" data-src="https://i.loli.net/2020/07/26/yn4slR3cSLYQAV1.png"><br><img alt="128.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/LU7cvZHoJi8ONh4.png" data-index="36" data-src="https://i.loli.net/2020/07/26/LU7cvZHoJi8ONh4.png"></p>
+<p><img alt="129.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/26/OM3LiCzwJxSTyDv.png" data-index="37" data-src="https://i.loli.net/2020/07/26/OM3LiCzwJxSTyDv.png"></p>
+
+                </article>
+                <ul class="tags-postTags">
+                    
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/" rel="tag"># 汇编</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    
+    <nav id="gobottom" class="pagination">
+        
+        <a class="prev-post" title="8086汇编-数据处理的两个基本问题" href="/2020/10/04/8086-hui-bian-shu-ju-chu-li-de-liang-ge-ji-ben-wen-ti/">
+            ← 8086汇编-数据处理的两个基本问题
+        </a>
+        
+        <span class="prev-next-post">·</span>
+        
+        <a class="next-post" title="8086汇编-包含多个段的程序" href="/2020/09/26/8086-hui-bian-bao-han-duo-ge-duan-de-cheng-xu/">
+            8086汇编-包含多个段的程序 →
+        </a>
+        
+    </nav>
+
+    
+    <div class="inner">
+        <div id="comment"></div>
+    </div>
+    
+</div>
+
+<div class="toc-bar">
+    <div class="toc-btn-bar">
+        <a href="#site-main" class="toc-btn">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M793.024 710.272a32 32 0 1 0 45.952-44.544l-310.304-320a32 32 0 0 0-46.4 0.48l-297.696 320a32 32 0 0 0 46.848 43.584l274.752-295.328 286.848 295.808z"/></svg>
+        </a>
+        <div class="toc-btn toc-switch">
+            <svg class="toc-open" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M779.776 480h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M779.776 672h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M256 288a32 32 0 1 0 0 64 32 32 0 0 0 0-64M392.576 352h387.2a32 32 0 0 0 0-64h-387.2a32 32 0 0 0 0 64M256 480a32 32 0 1 0 0 64 32 32 0 0 0 0-64M256 672a32 32 0 1 0 0 64 32 32 0 0 0 0-64"/></svg>
+            <svg class="toc-close hide" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M512 960c-247.039484 0-448-200.960516-448-448S264.960516 64 512 64 960 264.960516 960 512 759.039484 960 512 960zM512 128.287273c-211.584464 0-383.712727 172.128262-383.712727 383.712727 0 211.551781 172.128262 383.712727 383.712727 383.712727 211.551781 0 383.712727-172.159226 383.712727-383.712727C895.712727 300.415536 723.551781 128.287273 512 128.287273z"/><path d="M557.05545 513.376159l138.367639-136.864185c12.576374-12.416396 12.672705-32.671738 0.25631-45.248112s-32.704421-12.672705-45.248112-0.25631l-138.560301 137.024163-136.447897-136.864185c-12.512727-12.512727-32.735385-12.576374-45.248112-0.063647-12.512727 12.480043-12.54369 32.735385-0.063647 45.248112l136.255235 136.671523-137.376804 135.904314c-12.576374 12.447359-12.672705 32.671738-0.25631 45.248112 6.271845 6.335493 14.496116 9.504099 22.751351 9.504099 8.12794 0 16.25588-3.103239 22.496761-9.247789l137.567746-136.064292 138.687596 139.136568c6.240882 6.271845 14.432469 9.407768 22.65674 9.407768 8.191587 0 16.352211-3.135923 22.591372-9.34412 12.512727-12.480043 12.54369-32.704421 0.063647-45.248112L557.05545 513.376159z"/></svg>
+        </div>
+        <a href="#gobottom" class="toc-btn">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M231.424 346.208a32 32 0 0 0-46.848 43.584l297.696 320a32 32 0 0 0 46.4 0.48l310.304-320a32 32 0 1 0-45.952-44.544l-286.848 295.808-274.752-295.36z"/></svg>
+        </a>
+    </div>
+    <div class="toc-main">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#and-和-or-指令"><span class="toc-text">and 和 or 指令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#以字符形式给出数据"><span class="toc-text">以字符形式给出数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#大小写转换"><span class="toc-text">大小写转换</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bx-idata"><span class="toc-text">[bx+idata]</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SI-和-DI"><span class="toc-text">SI 和 DI</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bx-si-和-bx-di"><span class="toc-text">[bx+si] 和 [bx+di]</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bx-si-idata-和-bx-di-idata"><span class="toc-text">[bx+si+idata] 和 [bx+di+idata]</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#不同的须知方式的灵活应用"><span class="toc-text">不同的须知方式的灵活应用</span></a></li></ol>
+    </div>
+</div>
+
+
+
+
+
+
+	</div>
+	
+
+
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+  <header class="read-next-card-header">
+    <small class="read-next-card-header-sitetitle">— 9unk —</small>
+    <h3 class="read-next-card-header-title">最新文章</h3>
+  </header>
+  <div class="read-next-divider">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/>
+    </svg>
+  </div>
+  <div class="read-next-card-content">
+    <ul>
+      
+      
+      
+      <li>
+        <a href="/2020/10/10/80386-hui-bian-ji-chu-zhi-shi/">80386 汇编-基础知识</a>
+      </li>
+      
+      
+      
+      <li>
+        <a href="/2020/10/07/8086-hui-bian-nei-zhong-duan/">8086汇编-内中断</a>
+      </li>
+      
+      
+      
+      <li>
+        <a href="/2020/10/07/8086-hui-bian-biao-zhi-ji-cun-qi/">8086汇编-标志寄存器</a>
+      </li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+  </div>
+  <footer class="read-next-card-footer">
+    <a href="/archives">  MORE  → </a>
+  </footer>
+</article>
+
+            
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+    <header class="read-next-card-header tagcloud-card">
+        <h3 class="read-next-card-header-title">分类</h3>
+    </header>
+    <div class="read-next-card-content">
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Citrix/">Citrix</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web-Security/">Web Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/github/">github</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/system-security/">system security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%97%E9%80%8F%E5%B7%A5%E5%85%B7/">渗透工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E6%99%AE/">科普</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A0%81/">编码</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%B6%85%E8%9E%8D%E5%90%88/">超融合</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%9A%E4%BF%A1/">通信</a></li></ul>
+    </div>
+</article>
+
+
+            
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+	<header class="read-next-card-header tagcloud-card">
+		<h3 class="read-next-card-header-title">标签云</h3>
+	</header>
+	<div class="read-next-card-content-ext">
+		<a href="/tags/8086CPU/" style="font-size: 14px;">8086CPU</a> <a href="/tags/ELK/" style="font-size: 14px;">ELK</a> <a href="/tags/%E6%B1%87%E7%BC%96/" style="font-size: 24px;">汇编</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" style="font-size: 19px;">漏洞复现</a> <a href="/tags/%E9%9D%B6%E6%9C%BA/" style="font-size: 19px;">靶机</a>
+	</div>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+	
+
+
+
+
+<div id="search" class="search-overlay">
+    <div class="search-form">
+        
+        <div class="search-overlay-logo">
+        	<img src="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png" alt="9unk">
+        </div>
+        
+        <input id="local-search-input" class="search-input" type="text" name="search" placeholder="搜索 ...">
+        <a class="search-overlay-close" href="#"></a>
+    </div>
+    <div id="local-search-result"></div>
+</div>
+
+<footer class="site-footer outer">
+	<div class="site-footer-content inner">
+		<div class="copyright">
+			<a href="/" title="9unk">9unk © 2020</a>
+			
+				
+    		
+		</div>
+		<nav class="site-footer-nav">
+			
+			<a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+			<a href="https://github.com/xzhih/hexo-theme-casper" title="Casper" target="_blank" rel="noopener">Casper</a>
+		</nav>
+	</div>
+</footer>
+	
+
+
+<script>
+    if(window.navigator && navigator.serviceWorker) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for(let registration of registrations) {
+                registration.unregister()
+            }
+        })
+    }
+</script>
+
+
+<script id="scriptLoad" src="/js/allinone.min.js" async></script>
+
+
+<script>
+    document.getElementById('scriptLoad').addEventListener('load', function () {
+        
+        
+            var bLazy = new Blazy();
+        
+
+        
+        
+
+        
+        
+        
+            searchFunc("/");
+        
+        
+    })
+</script>
+
+
+
+
+
+
+<script id="valineScript" src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+<script>
+    document.getElementById('valineScript').addEventListener("load", function() {
+        new Valine({
+            el: '#comment' ,
+            verify: false,
+            notify: false,
+            appId: 'lhq4C91rscRdbbVHPYesVhOz-gzGzoHsz',
+            appKey: 'EHeksCG71RId7DpUxMiocJQ4',
+            placeholder: '你是魔鬼吧，都不留言！',
+            pageSize: 10,
+            avatar: 'mm',
+            visitor: 
+        })
+    });
+</script>
+
+
+
+
+
+
+
+</body></html>

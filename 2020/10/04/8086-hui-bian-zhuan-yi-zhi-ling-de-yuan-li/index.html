@@ -1,0 +1,556 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="preconnect" href="//www.googletagmanager.com">
+	<link rel="preconnect" href="//zz.bdstatic.com">
+	<link rel="preconnect" href="//sp0.baidu.com">
+	<link rel="preconnect" href="//www.google-analytics.com">
+	<link rel="preconnect" href="//cdn1.lncld.net">
+	<link rel="preconnect" href="//unpkg.com">
+	<link rel="preconnect" href="//app-router.leancloud.cn">
+	<link rel="preconnect" href="//9qpuwspm.api.lncld.net">
+	<link rel="preconnect" href="//gravatar.loli.net">
+
+	<title>8086汇编-转移指令的原理 | 9unk</title>
+
+	<meta name="HandheldFriendly" content="True">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+	<meta name="generator" content="hexo">
+	<meta name="author" content="9nuk">
+	<meta name="description" content>
+
+	
+	<meta name="keywords" content>
+	
+
+	
+	<link rel="shortcut icon" href="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png">
+	<link rel="apple-touch-icon" href="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png">
+	
+
+	
+	<meta name="theme-color" content="#3c484e">
+	<meta name="msapplication-TileColor" content="#3c484e">
+	
+
+	
+
+	
+
+	<meta property="og:site_name" content="9unk">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="8086汇编-转移指令的原理 | 9unk">
+	<meta property="og:description" content>
+	<meta property="og:url" content="http://yoursite.com/2020/10/04/8086-hui-bian-zhuan-yi-zhi-ling-de-yuan-li/">
+
+	
+	<meta property="article:published_time" content="2020-10-04T22:10:00+08:00"> 
+	<meta property="article:author" content="9nuk">
+	<meta property="article:published_first" content="9unk, /2020/10/04/8086-hui-bian-zhuan-yi-zhi-ling-de-yuan-li/">
+	
+
+	
+	
+	
+<link rel="stylesheet" href="/css/allinonecss.min.css">
+
+
+	
+	
+	
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+<body class="post-template">
+	<div class="site-wrapper">
+		
+
+
+
+
+<header class="site-header post-site-header outer">
+    <div class="inner">
+        
+<nav class="site-nav"> 
+    <div class="site-nav-left">
+        <ul class="nav">
+            <li>
+                
+                
+                <a class="site-nav-logo" href="/" title="9unk">
+                    <img src="https://pic2.zhimg.com/80/v2-41b7556078db198db3955539789490a8_720w.jpg" alt="9unk">
+                </a>
+                
+                
+            </li>
+            
+            
+            <li>
+                <a href="/about" title="关于">关于</a>
+            </li>
+            
+            <li>
+                <a href="/archives" title="文章">文章</a>
+            </li>
+            
+            
+        </ul> 
+    </div>
+    
+    <div class="search-button-area">
+        <a href="#search" class="search-button">Search ...</a>
+    </div>
+     
+    <div class="site-nav-right">
+        
+        <a href="#search" class="search-button">Search ...</a>
+         
+        
+<div class="social-links">
+    
+    
+    <a class="social-link" title="github" href="https://github.com/hhkk2334" target="_blank" rel="noopener">
+        <svg viewBox="0 0 1049 1024" xmlns="http://www.w3.org/2000/svg"><path d="M524.979332 0C234.676191 0 0 234.676191 0 524.979332c0 232.068678 150.366597 428.501342 358.967656 498.035028 26.075132 5.215026 35.636014-11.299224 35.636014-25.205961 0-12.168395-0.869171-53.888607-0.869171-97.347161-146.020741 31.290159-176.441729-62.580318-176.441729-62.580318-23.467619-60.841976-58.234462-76.487055-58.234463-76.487055-47.804409-32.15933 3.476684-32.15933 3.476685-32.15933 53.019436 3.476684 80.83291 53.888607 80.83291 53.888607 46.935238 79.963739 122.553122 57.365291 152.97411 43.458554 4.345855-33.897672 18.252593-57.365291 33.028501-70.402857-116.468925-12.168395-239.022047-57.365291-239.022047-259.012982 0-57.365291 20.860106-104.300529 53.888607-140.805715-5.215026-13.037566-23.467619-66.926173 5.215027-139.067372 0 0 44.327725-13.906737 144.282399 53.888607 41.720212-11.299224 86.917108-17.383422 131.244833-17.383422s89.524621 6.084198 131.244833 17.383422C756.178839 203.386032 800.506564 217.29277 800.506564 217.29277c28.682646 72.1412 10.430053 126.029806 5.215026 139.067372 33.897672 36.505185 53.888607 83.440424 53.888607 140.805715 0 201.64769-122.553122 245.975415-239.891218 259.012982 19.121764 16.514251 35.636014 47.804409 35.636015 97.347161 0 70.402857-0.869171 126.898978-0.869172 144.282399 0 13.906737 9.560882 30.420988 35.636015 25.205961 208.601059-69.533686 358.967656-265.96635 358.967655-498.035028C1049.958663 234.676191 814.413301 0 524.979332 0z"/></svg>
+    </a>
+    
+    
+    
+    
+    
+    
+</div>
+    </div>
+</nav>
+    </div>
+</header>
+
+
+<div id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+        <header class="post-full-header">
+            <div class="post-full-meta">
+                <time class="post-full-meta-date" datetime="2020-10-04T14:15:01.000Z">
+                    2020-10-4
+                </time>
+                
+                <span class="date-divider">/</span>
+                
+                
+            </div>
+            <h1 class="post-full-title">8086汇编-转移指令的原理</h1>
+        </header>
+        <div class="post-full no-image">
+            
+            <div class="post-full-content">
+                <article id="photoswipe" class="markdown-body">
+                    <h1 id="转移的定义"><a href="#转移的定义" class="headerlink" title="转移的定义"></a>转移的定义</h1><ol>
+<li>只修改 IP 时，称为段内转移；由于转移指令对 IP 的修改范围不同，段内转移又分为：短转移 和 近转移</li>
+</ol>
+<ul>
+<li>短转移 IP 的修改范围 -128~127</li>
+<li>近转移 IP 的修改范围 -32768~32767</li>
+</ul>
+<ol start="2">
+<li><p>同时修改 CS 和 IP ，称为段间转移</p>
+</li>
+<li><p>8086CPU 的转移指令有如下几类：</p>
+</li>
+</ol>
+<ul>
+<li>无条件转移指令 </li>
+<li>条件转移指令</li>
+<li>循环指令</li>
+<li>过程</li>
+<li>中断</li>
+</ul>
+<h1 id="操作符-offset"><a href="#操作符-offset" class="headerlink" title="操作符 offset"></a>操作符 offset</h1><p>offset 在汇编语言中是由编译器处理的符号，它的功能是获取标号的偏移地址。</p>
+<p><img alt="132.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/08/13/wEbpVK3YeJkNCUn.png" data-index="0" data-src="https://i.loli.net/2020/08/13/wEbpVK3YeJkNCUn.png"></p>
+<ol>
+<li><p>获取 start 标号处的偏移地址，并覆盖到 ax 中</p>
+</li>
+<li><p>获取 s 标号处的偏移地址，并覆盖到 ax 中</p>
+</li>
+</ol>
+<h1 id="jmp-指令"><a href="#jmp-指令" class="headerlink" title="jmp 指令"></a>jmp 指令</h1><p>jmp 为无条件转移指令，可只修改 IP，也可同时修改 CS 和 IP。</p>
+<p>执行 jmp 指令需要提供两种信息：</p>
+<ol>
+<li><p>转移的目的地址</p>
+</li>
+<li><p>转移的距离（段间转移、段内短转移、段内近转移）</p>
+</li>
+</ol>
+<blockquote>
+<p>不同的给出目的地址的方法，和不同的转移位置，对应有不同格式的 jmp 指令。</p>
+</blockquote>
+<h2 id="依据位移进行转移的-jmp-指令"><a href="#依据位移进行转移的-jmp-指令" class="headerlink" title="依据位移进行转移的 jmp 指令"></a>依据位移进行转移的 jmp 指令</h2><p><code>jmp short 标号（转到标号处执行指令）</code></p>
+<p>这种格式的 jmp 指令实现的是段内短转移，它对 IP 的修改范围是 -128~127。</p>
+<p><img alt="133.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/08/13/Xbfg2TIeEiDB5Sd.png" data-index="1" data-src="https://i.loli.net/2020/08/13/Xbfg2TIeEiDB5Sd.png"></p>
+<p>上面的程序执行后，ax 中的值为1，执行 jmp short s 后，IP 指向了标号 s 处的 inc ax。</p>
+<h2 id="jmp-指令运行原理"><a href="#jmp-指令运行原理" class="headerlink" title="jmp 指令运行原理"></a>jmp 指令运行原理</h2><p>在一般汇编指令中，汇编指令的 idata（立即数），不论是它是表示一个数据还是内存单元中的偏移地址，都会在对应的机器指令中出现，因为 CPU 执行的是机器指令。</p>
+<p>如下面的示例：</p>
+<p><img alt="136.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/08/13/fqOhcwC4GTP8Fgv.png" data-index="2" data-src="https://i.loli.net/2020/08/13/fqOhcwC4GTP8Fgv.png"></p>
+<p>但是 <code>jmp  short s</code> 对应的机器码是 EB03 ，这个机器码中竟然不包含转移的目的地址，而且 IP 正确指向了标号 s 处。</p>
+<p><img alt="134.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/08/13/rYhlGK2P8vz4aTM.png" data-index="3" data-src="https://i.loli.net/2020/08/13/rYhlGK2P8vz4aTM.png"></p>
+<p>为了进一步验证，程序修改如下:</p>
+<p><img alt="135.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/08/13/QXHlM4rBU6hSDdN.png" data-index="4" data-src="https://i.loli.net/2020/08/13/QXHlM4rBU6hSDdN.png"></p>
+<p>可以发现此时对应的机器码变成 EB06（机器码+3），根据程序的变动很快就发现 <code>add ax,1</code>正好是 3 个字节，也就是说 <code>jmp short 标号</code>指令是通过向后位移了 6 个字节来确定 IP 的。</p>
+<p>所以在<code>jmp short 标号</code> 指令对应的机器码中，并不包含转移的目的地址，而包含的是转移的位移。这个位移，是编译器根据汇编指令中的 “标号” 计算出来的。</p>
+<p>具体计算方法如下图所示：</p>
+<p><img alt="137.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/08/13/5bjKNAvk2GU7f1C.png" data-index="5" data-src="https://i.loli.net/2020/08/13/5bjKNAvk2GU7f1C.png"></p>
+<h2 id="转移目的地址在在指令中的-jmp-指令"><a href="#转移目的地址在在指令中的-jmp-指令" class="headerlink" title="转移目的地址在在指令中的 jmp 指令"></a>转移目的地址在在指令中的 jmp 指令</h2><p><code>jmp far ptr 标号</code> 实现的是段间转移，又称为远转移。功能如下：(CS)=标号所在段的段地址；（IP）=标号在段中的偏移地址。far ptr 指明了指令使用标号的段地址和偏移地址修改 CS 和 IP。</p>
+<p><img alt="138.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/08/13/nbjiPKLZ3upc4Qv.png" data-index="6" data-src="https://i.loli.net/2020/08/13/nbjiPKLZ3upc4Qv.png"></p>
+<p>如上图所示 jmp far ptr s 所对应的机器码：EA0B016A0B，其中包含了转移目的地址”0B 01 6A 0B”，高地址 “0B6A” 是转移的段地址，”010B” 是转移的偏移地址。</p>
+<h2 id="转移地址在寄存器中的-jmp-指令"><a href="#转移地址在寄存器中的-jmp-指令" class="headerlink" title="转移地址在寄存器中的 jmp 指令"></a>转移地址在寄存器中的 jmp 指令</h2><p>转移地址在内存中的 jmp 指令有两种格式：</p>
+<ol>
+<li>jmp word ptr 内存单元地址（段内转移）<br>功能：从内存单元地址处开始存放一个字，是转移的目的偏移地孩子</li>
+</ol>
+<ol start="2">
+<li>jmp dword ptr 内存单元地址（段间转移）<br>功能：从内存单元地址处开始存放着两个字，高地址处的字是转移的目的段地址，低地址处是转移的目的偏移地址。</li>
+</ol>
+<p>（CS）=（内存单元地址+2）<br>（IP）=（内存单元地址）</p>
+<p>内存单元地址可用寻址方式的任一格式给出。</p>
+<h1 id="jcxz-指令"><a href="#jcxz-指令" class="headerlink" title="jcxz 指令"></a>jcxz 指令</h1><p>jcxz 指令为有条件转移指令，所有的有条件转移指令都是短转移，再对一个的机器码中包含转移的位移，而不是目的地址。</p>
+<p>对 IP 的修改范围为：-128~27</p>
+<p>指令格式：jcxz 标号</p>
+<p>当 cx=0 时，执行指令。</p>
+<h1 id="loop-指令"><a href="#loop-指令" class="headerlink" title="loop 指令"></a>loop 指令</h1><p>loop 指令为循环指令，所有循环指令都是短转移，在对应的机器码中包含转移的位移，而不是目的地址。对 IP 的修改范围都为：-128~127</p>
+<p>指令格式：loop 标号<br>当 cx 不等于 0 时，转移到标号处执行命令。</p>
+<h1 id="根据位移进行转移的意义"><a href="#根据位移进行转移的意义" class="headerlink" title="根据位移进行转移的意义"></a>根据位移进行转移的意义</h1><pre class=" language-asm"><code class="language-asm">jmp short 标号
+jmp near ptr 标号
+jcxz 标号
+loop 标号</code></pre>
+<p>等几种汇编指令，它们是对 IP 的修改是根据位移来进行的。在它们对应的机器码中不包含转移的目的地址，而包含的是到目的地址的位移。这样做的意义就是程序无论在内存中的哪个位置都能正确执行。</p>
+<p>例如：loop s 执行时，标号 s 的地址不在预期的目的地址中，程序就会运行报错。但是以位移来算的话，标号 s 无论在哪个位置都能正确执行。</p>
+<h1 id="编译器对转移位移超界检测"><a href="#编译器对转移位移超界检测" class="headerlink" title="编译器对转移位移超界检测"></a>编译器对转移位移超界检测</h1><p>根据位移进行转移的指令，它们的转移范围受到转移位移的限制，如果在源程序中出现了转移范围超界的问题，在编译的时候，编译器将报错。</p>
+
+                </article>
+                <ul class="tags-postTags">
+                    
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/" rel="tag"># 汇编</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    
+    <nav id="gobottom" class="pagination">
+        
+        <a class="prev-post" title="8086汇编-CALL和RET指令" href="/2020/10/04/8086-hui-bian-call-he-ret-zhi-ling/">
+            ← 8086汇编-CALL和RET指令
+        </a>
+        
+        <span class="prev-next-post">·</span>
+        
+        <a class="next-post" title="8086汇编-数据处理的两个基本问题" href="/2020/10/04/8086-hui-bian-shu-ju-chu-li-de-liang-ge-ji-ben-wen-ti/">
+            8086汇编-数据处理的两个基本问题 →
+        </a>
+        
+    </nav>
+
+    
+    <div class="inner">
+        <div id="comment"></div>
+    </div>
+    
+</div>
+
+<div class="toc-bar">
+    <div class="toc-btn-bar">
+        <a href="#site-main" class="toc-btn">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M793.024 710.272a32 32 0 1 0 45.952-44.544l-310.304-320a32 32 0 0 0-46.4 0.48l-297.696 320a32 32 0 0 0 46.848 43.584l274.752-295.328 286.848 295.808z"/></svg>
+        </a>
+        <div class="toc-btn toc-switch">
+            <svg class="toc-open" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M779.776 480h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M779.776 672h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M256 288a32 32 0 1 0 0 64 32 32 0 0 0 0-64M392.576 352h387.2a32 32 0 0 0 0-64h-387.2a32 32 0 0 0 0 64M256 480a32 32 0 1 0 0 64 32 32 0 0 0 0-64M256 672a32 32 0 1 0 0 64 32 32 0 0 0 0-64"/></svg>
+            <svg class="toc-close hide" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M512 960c-247.039484 0-448-200.960516-448-448S264.960516 64 512 64 960 264.960516 960 512 759.039484 960 512 960zM512 128.287273c-211.584464 0-383.712727 172.128262-383.712727 383.712727 0 211.551781 172.128262 383.712727 383.712727 383.712727 211.551781 0 383.712727-172.159226 383.712727-383.712727C895.712727 300.415536 723.551781 128.287273 512 128.287273z"/><path d="M557.05545 513.376159l138.367639-136.864185c12.576374-12.416396 12.672705-32.671738 0.25631-45.248112s-32.704421-12.672705-45.248112-0.25631l-138.560301 137.024163-136.447897-136.864185c-12.512727-12.512727-32.735385-12.576374-45.248112-0.063647-12.512727 12.480043-12.54369 32.735385-0.063647 45.248112l136.255235 136.671523-137.376804 135.904314c-12.576374 12.447359-12.672705 32.671738-0.25631 45.248112 6.271845 6.335493 14.496116 9.504099 22.751351 9.504099 8.12794 0 16.25588-3.103239 22.496761-9.247789l137.567746-136.064292 138.687596 139.136568c6.240882 6.271845 14.432469 9.407768 22.65674 9.407768 8.191587 0 16.352211-3.135923 22.591372-9.34412 12.512727-12.480043 12.54369-32.704421 0.063647-45.248112L557.05545 513.376159z"/></svg>
+        </div>
+        <a href="#gobottom" class="toc-btn">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M231.424 346.208a32 32 0 0 0-46.848 43.584l297.696 320a32 32 0 0 0 46.4 0.48l310.304-320a32 32 0 1 0-45.952-44.544l-286.848 295.808-274.752-295.36z"/></svg>
+        </a>
+    </div>
+    <div class="toc-main">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#转移的定义"><span class="toc-text">转移的定义</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#操作符-offset"><span class="toc-text">操作符 offset</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#jmp-指令"><span class="toc-text">jmp 指令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#依据位移进行转移的-jmp-指令"><span class="toc-text">依据位移进行转移的 jmp 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jmp-指令运行原理"><span class="toc-text">jmp 指令运行原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#转移目的地址在在指令中的-jmp-指令"><span class="toc-text">转移目的地址在在指令中的 jmp 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#转移地址在寄存器中的-jmp-指令"><span class="toc-text">转移地址在寄存器中的 jmp 指令</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#jcxz-指令"><span class="toc-text">jcxz 指令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#loop-指令"><span class="toc-text">loop 指令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#根据位移进行转移的意义"><span class="toc-text">根据位移进行转移的意义</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#编译器对转移位移超界检测"><span class="toc-text">编译器对转移位移超界检测</span></a></li></ol>
+    </div>
+</div>
+
+
+
+
+
+
+	</div>
+	
+
+
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+  <header class="read-next-card-header">
+    <small class="read-next-card-header-sitetitle">— 9unk —</small>
+    <h3 class="read-next-card-header-title">最新文章</h3>
+  </header>
+  <div class="read-next-divider">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/>
+    </svg>
+  </div>
+  <div class="read-next-card-content">
+    <ul>
+      
+      
+      
+      <li>
+        <a href="/2020/10/10/80386-hui-bian-ji-chu-zhi-shi/">80386 汇编-基础知识</a>
+      </li>
+      
+      
+      
+      <li>
+        <a href="/2020/10/07/8086-hui-bian-nei-zhong-duan/">8086汇编-内中断</a>
+      </li>
+      
+      
+      
+      <li>
+        <a href="/2020/10/07/8086-hui-bian-biao-zhi-ji-cun-qi/">8086汇编-标志寄存器</a>
+      </li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+  </div>
+  <footer class="read-next-card-footer">
+    <a href="/archives">  MORE  → </a>
+  </footer>
+</article>
+
+            
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+    <header class="read-next-card-header tagcloud-card">
+        <h3 class="read-next-card-header-title">分类</h3>
+    </header>
+    <div class="read-next-card-content">
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Citrix/">Citrix</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web-Security/">Web Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/github/">github</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/system-security/">system security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%97%E9%80%8F%E5%B7%A5%E5%85%B7/">渗透工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E6%99%AE/">科普</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A0%81/">编码</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%B6%85%E8%9E%8D%E5%90%88/">超融合</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%9A%E4%BF%A1/">通信</a></li></ul>
+    </div>
+</article>
+
+
+            
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+	<header class="read-next-card-header tagcloud-card">
+		<h3 class="read-next-card-header-title">标签云</h3>
+	</header>
+	<div class="read-next-card-content-ext">
+		<a href="/tags/8086CPU/" style="font-size: 14px;">8086CPU</a> <a href="/tags/ELK/" style="font-size: 14px;">ELK</a> <a href="/tags/%E6%B1%87%E7%BC%96/" style="font-size: 24px;">汇编</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" style="font-size: 19px;">漏洞复现</a> <a href="/tags/%E9%9D%B6%E6%9C%BA/" style="font-size: 19px;">靶机</a>
+	</div>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+	
+
+
+
+
+<div id="search" class="search-overlay">
+    <div class="search-form">
+        
+        <div class="search-overlay-logo">
+        	<img src="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png" alt="9unk">
+        </div>
+        
+        <input id="local-search-input" class="search-input" type="text" name="search" placeholder="搜索 ...">
+        <a class="search-overlay-close" href="#"></a>
+    </div>
+    <div id="local-search-result"></div>
+</div>
+
+<footer class="site-footer outer">
+	<div class="site-footer-content inner">
+		<div class="copyright">
+			<a href="/" title="9unk">9unk © 2020</a>
+			
+				
+    		
+		</div>
+		<nav class="site-footer-nav">
+			
+			<a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+			<a href="https://github.com/xzhih/hexo-theme-casper" title="Casper" target="_blank" rel="noopener">Casper</a>
+		</nav>
+	</div>
+</footer>
+	
+
+
+<script>
+    if(window.navigator && navigator.serviceWorker) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for(let registration of registrations) {
+                registration.unregister()
+            }
+        })
+    }
+</script>
+
+
+<script id="scriptLoad" src="/js/allinone.min.js" async></script>
+
+
+<script>
+    document.getElementById('scriptLoad').addEventListener('load', function () {
+        
+        
+            var bLazy = new Blazy();
+        
+
+        
+        
+
+        
+        
+        
+            searchFunc("/");
+        
+        
+    })
+</script>
+
+
+
+
+
+
+<script id="valineScript" src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+<script>
+    document.getElementById('valineScript').addEventListener("load", function() {
+        new Valine({
+            el: '#comment' ,
+            verify: false,
+            notify: false,
+            appId: 'lhq4C91rscRdbbVHPYesVhOz-gzGzoHsz',
+            appKey: 'EHeksCG71RId7DpUxMiocJQ4',
+            placeholder: '你是魔鬼吧，都不留言！',
+            pageSize: 10,
+            avatar: 'mm',
+            visitor: 
+        })
+    });
+</script>
+
+
+
+
+
+
+
+</body></html>

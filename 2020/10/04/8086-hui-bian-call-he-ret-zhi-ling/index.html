@@ -1,0 +1,606 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="preconnect" href="//www.googletagmanager.com">
+	<link rel="preconnect" href="//zz.bdstatic.com">
+	<link rel="preconnect" href="//sp0.baidu.com">
+	<link rel="preconnect" href="//www.google-analytics.com">
+	<link rel="preconnect" href="//cdn1.lncld.net">
+	<link rel="preconnect" href="//unpkg.com">
+	<link rel="preconnect" href="//app-router.leancloud.cn">
+	<link rel="preconnect" href="//9qpuwspm.api.lncld.net">
+	<link rel="preconnect" href="//gravatar.loli.net">
+
+	<title>8086汇编-CALL和RET指令 | 9unk</title>
+
+	<meta name="HandheldFriendly" content="True">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+	<meta name="generator" content="hexo">
+	<meta name="author" content="9nuk">
+	<meta name="description" content>
+
+	
+	<meta name="keywords" content>
+	
+
+	
+	<link rel="shortcut icon" href="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png">
+	<link rel="apple-touch-icon" href="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png">
+	
+
+	
+	<meta name="theme-color" content="#3c484e">
+	<meta name="msapplication-TileColor" content="#3c484e">
+	
+
+	
+
+	
+
+	<meta property="og:site_name" content="9unk">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="8086汇编-CALL和RET指令 | 9unk">
+	<meta property="og:description" content>
+	<meta property="og:url" content="http://yoursite.com/2020/10/04/8086-hui-bian-call-he-ret-zhi-ling/">
+
+	
+	<meta property="article:published_time" content="2020-10-04T22:10:00+08:00"> 
+	<meta property="article:author" content="9nuk">
+	<meta property="article:published_first" content="9unk, /2020/10/04/8086-hui-bian-call-he-ret-zhi-ling/">
+	
+
+	
+	
+	
+<link rel="stylesheet" href="/css/allinonecss.min.css">
+
+
+	
+	
+	
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+<body class="post-template">
+	<div class="site-wrapper">
+		
+
+
+
+
+<header class="site-header post-site-header outer">
+    <div class="inner">
+        
+<nav class="site-nav"> 
+    <div class="site-nav-left">
+        <ul class="nav">
+            <li>
+                
+                
+                <a class="site-nav-logo" href="/" title="9unk">
+                    <img src="https://pic2.zhimg.com/80/v2-41b7556078db198db3955539789490a8_720w.jpg" alt="9unk">
+                </a>
+                
+                
+            </li>
+            
+            
+            <li>
+                <a href="/about" title="关于">关于</a>
+            </li>
+            
+            <li>
+                <a href="/archives" title="文章">文章</a>
+            </li>
+            
+            
+        </ul> 
+    </div>
+    
+    <div class="search-button-area">
+        <a href="#search" class="search-button">Search ...</a>
+    </div>
+     
+    <div class="site-nav-right">
+        
+        <a href="#search" class="search-button">Search ...</a>
+         
+        
+<div class="social-links">
+    
+    
+    <a class="social-link" title="github" href="https://github.com/hhkk2334" target="_blank" rel="noopener">
+        <svg viewBox="0 0 1049 1024" xmlns="http://www.w3.org/2000/svg"><path d="M524.979332 0C234.676191 0 0 234.676191 0 524.979332c0 232.068678 150.366597 428.501342 358.967656 498.035028 26.075132 5.215026 35.636014-11.299224 35.636014-25.205961 0-12.168395-0.869171-53.888607-0.869171-97.347161-146.020741 31.290159-176.441729-62.580318-176.441729-62.580318-23.467619-60.841976-58.234462-76.487055-58.234463-76.487055-47.804409-32.15933 3.476684-32.15933 3.476685-32.15933 53.019436 3.476684 80.83291 53.888607 80.83291 53.888607 46.935238 79.963739 122.553122 57.365291 152.97411 43.458554 4.345855-33.897672 18.252593-57.365291 33.028501-70.402857-116.468925-12.168395-239.022047-57.365291-239.022047-259.012982 0-57.365291 20.860106-104.300529 53.888607-140.805715-5.215026-13.037566-23.467619-66.926173 5.215027-139.067372 0 0 44.327725-13.906737 144.282399 53.888607 41.720212-11.299224 86.917108-17.383422 131.244833-17.383422s89.524621 6.084198 131.244833 17.383422C756.178839 203.386032 800.506564 217.29277 800.506564 217.29277c28.682646 72.1412 10.430053 126.029806 5.215026 139.067372 33.897672 36.505185 53.888607 83.440424 53.888607 140.805715 0 201.64769-122.553122 245.975415-239.891218 259.012982 19.121764 16.514251 35.636014 47.804409 35.636015 97.347161 0 70.402857-0.869171 126.898978-0.869172 144.282399 0 13.906737 9.560882 30.420988 35.636015 25.205961 208.601059-69.533686 358.967656-265.96635 358.967655-498.035028C1049.958663 234.676191 814.413301 0 524.979332 0z"/></svg>
+    </a>
+    
+    
+    
+    
+    
+    
+</div>
+    </div>
+</nav>
+    </div>
+</header>
+
+
+<div id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+        <header class="post-full-header">
+            <div class="post-full-meta">
+                <time class="post-full-meta-date" datetime="2020-10-04T14:28:39.000Z">
+                    2020-10-4
+                </time>
+                
+                <span class="date-divider">/</span>
+                
+                
+            </div>
+            <h1 class="post-full-title">8086汇编-CALL和RET指令</h1>
+        </header>
+        <div class="post-full no-image">
+            
+            <div class="post-full-content">
+                <article id="photoswipe" class="markdown-body">
+                    <h1 id="ret-和-retf"><a href="#ret-和-retf" class="headerlink" title="ret 和 retf"></a>ret 和 retf</h1><p>ret 指令用栈中的数据，修改 IP 的内容，从而实现近转移；<br>retf 指令用栈中的数据，修改 CS 和 IP 的内容，从而实现远转移。</p>
+<p>CPU 执行 ret 指令时，进行下面两部操作：</p>
+<ol>
+<li><p>(IP)=((ss)*16+(sp))</p>
+</li>
+<li><p>(sp)=(sp)+2</p>
+</li>
+</ol>
+<p>CPU 执行 retf 指令时，进行下面 4 步操作：</p>
+<ol>
+<li><p>(IP)=((ss)*16+(sp))</p>
+</li>
+<li><p>(sp)=(sp)+2</p>
+</li>
+<li><p>(CS)=((ss)*16+(sp))</p>
+</li>
+<li><p>(sp)=(sp)+2</p>
+</li>
+</ol>
+<p>CPU 执行 ret 指令时，相当于进行：<br>pop IP</p>
+<p>CPU 执行 retf 指令时，相当于进行：<br>pop IP<br>pop CS</p>
+<h1 id="call-指令"><a href="#call-指令" class="headerlink" title="call 指令"></a>call 指令</h1><p>CPU 执行 call 指令时，进行两步操作：</p>
+<ol>
+<li><p>将当前的 IP 或 CS 和 压入栈中；</p>
+</li>
+<li><p>转移</p>
+</li>
+</ol>
+<p>call 指令不能实现短转移，除此之外，call 指令实现转移的方法和 jmp 指令的原理相同。</p>
+<h2 id="根据位移进行转移的-call-指令"><a href="#根据位移进行转移的-call-指令" class="headerlink" title="根据位移进行转移的 call 指令"></a>根据位移进行转移的 call 指令</h2><p>call 标号（将当前 IP 的值压入栈中，然后转移到标号处执行指令）</p>
+<p>CPU 执行 “call 标号” 时，相当于进行：<br>push IP<br>jmp near ptr 标号</p>
+<h2 id="根据目的地址转移的-call-指令"><a href="#根据目的地址转移的-call-指令" class="headerlink" title="根据目的地址转移的 call 指令"></a>根据目的地址转移的 call 指令</h2><p>“call far ptr 标号” 实现的是段间转移。</p>
+<p>CPU 执行 “call far ptr 标号” 时，相当于进行：<br>push cs<br>push IP<br>call far ptr 标号</p>
+<h2 id="转移地址在寄存器中的-call-指令"><a href="#转移地址在寄存器中的-call-指令" class="headerlink" title="转移地址在寄存器中的 call 指令"></a>转移地址在寄存器中的 call 指令</h2><p>指令格式：call 16 位 reg</p>
+<p>CPU 执行 “call 16 位 reg” 时，相当于进行：<br>push IP<br>jmp 16 位 reg</p>
+<h2 id="转移地址在内存中的-call-指令"><a href="#转移地址在内存中的-call-指令" class="headerlink" title="转移地址在内存中的 call 指令"></a>转移地址在内存中的 call 指令</h2><p>转移地址在内存中的 call 指令有两种格式。</p>
+<ol>
+<li>call word ptr 内存单元地址</li>
+</ol>
+<p>CPU 执行 “call word ptr 内存单元地址”时，相当于进行：<br>push IP<br>jmp  word ptr 内存单元地址</p>
+<ol start="2">
+<li>call dword ptr 内存单元地址<br>CPU 执行 “call dword ptr 内存单元地址”时，相当于进行：<br>push CS<br>push IP<br>jmp dword ptr 内存单元地址</li>
+</ol>
+<h2 id="call-和-ret-的配合使用"><a href="#call-和-ret-的配合使用" class="headerlink" title="call 和 ret 的配合使用"></a>call 和 ret 的配合使用</h2><p>下面的程序返回前，bx 中的值是多少？</p>
+<pre class=" language-bash"><code class="language-bash">
+assume cs:code
+code segment
+  start: mov ax,1
+         mov cx,3
+         call s
+         mov bx,ax
+         mov ax,4c00h
+         int 21h
+      s: add ax,ax
+         loop s
+         ret
+code ends
+end start</code></pre>
+<p><img alt="142.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/09/02/EO2thXljafyn7Ng.png" data-index="0" data-src="https://i.loli.net/2020/09/02/EO2thXljafyn7Ng.png"></p>
+<p><img alt="143.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/09/02/eI1OabLZofyNXlS.png" data-index="1" data-src="https://i.loli.net/2020/09/02/eI1OabLZofyNXlS.png"></p>
+<ol>
+<li><p>当执行 <code>call s</code> 执行时，会将 IP 压入栈中，然后再跳转，需要注意的是压入栈的 IP 是 call 下一条指令的 IP。也就是说此时压入栈的 IP，指向的是指令 <code>mov ax,bx</code>。</p>
+</li>
+<li><p>ret 指令执行时，会将栈中的 IP 拿出，并跳转到相应的位置。也就是说 ret 执行后，跳转到指令 <code>mov bx,ax</code>。</p>
+</li>
+</ol>
+<blockquote>
+<p>这个也就是子程序（函数调用）的运行机制。先跳转执行子函数，子函数执行完成后再跳转执行父函数并结束运行。同时也因此实现了多个相互联系、功能独立的子程序来解决一个复杂的问题（模块化程序的设计）。</p>
+</blockquote>
+<h2 id="mul-指令"><a href="#mul-指令" class="headerlink" title="mul 指令"></a>mul 指令</h2><p>mul 是乘法指令，使用 mul 做乘法的时候，注意以下两点：</p>
+<ol>
+<li><p>两个相乘的数：两个相乘的数，要么都是 8 位，要么都是 16 位。如果是 8 位，一个默认放在 AL 中，另一个放在 8 位 reg 或内存字节单元中；如果是 16 位，一个默认在 AX 中，另一个放在 16 位 reg 或内存单元中。</p>
+</li>
+<li><p>结果：如果是 8 位乘法，结果默认放在 AX 中；如果是 16 位乘法，结果高位默认在 DX 中存放，低位在 AX 中存放。</p>
+</li>
+</ol>
+<p>格式如下：</p>
+<pre class=" language-bash"><code class="language-bash">
+mul reg
+mul 内存单元</code></pre>
+<p>内存单元可以用不同的寻址方式，比如： </p>
+<pre class=" language-bash"><code class="language-bash">
+mul byte ptr ds:<span class="token punctuation">[</span>0<span class="token punctuation">]</span>
+mul word ptr ds:<span class="token punctuation">[</span>bx+si+8<span class="token punctuation">]</span></code></pre>
+<h1 id="模块化程序设计"><a href="#模块化程序设计" class="headerlink" title="模块化程序设计"></a>模块化程序设计</h1><p>call 与 ret 指令共同支持了汇编语言编程中的模块化设计。在实际编程中，程序的模块化是必不可少的。因为实现的问题比较复杂，对现实问题进行分析时，把它转化成相互联系不同层次的子问题，是必须解决的方法。而 call 与 ret 指令对这种分析方法提供了程序实现上的支持。利用 call 和 ret 指令，我们可以用简捷的方法实现多个相互联系、功能独立的子程序来解决一个复杂的问题。</p>
+<h2 id="参数和结果传递的问题"><a href="#参数和结果传递的问题" class="headerlink" title="参数和结果传递的问题"></a>参数和结果传递的问题</h2><p>子程序需要根据提供的参数处理一定事务，处理后，将结果（返回值）提供给调用者。</p>
+<p>比如，设计一个子程序，可以根据提供的 N，来计算 N 的 3 次方。</p>
+<pre class=" language-bash"><code class="language-bash">
+<span class="token comment" spellcheck="true">#说明：计算 N 的 3 次方</span>
+<span class="token comment" spellcheck="true">#参数：(BX)=N</span>
+<span class="token comment" spellcheck="true">#结果：（DX:AX）=N^3</span>
+
+cube:mov ax,bx
+     mul bx
+     mul bx
+     ret</code></pre>
+<p>编程，计算 data 段中第一组数据的 3 次方，结果保存在后面一组的 dword 单元中。</p>
+<pre class=" language-bash"><code class="language-bash">
+assume cs:code
+datta segment
+    dw 1,2,3,4,5,6,7,8
+    <span class="token function">dd</span> 0,0,0,0,0,0,0,0
+data ends
+
+code segment
+    start:mov ax,data
+          mov ds,ax
+          mov si,0        <span class="token comment" spellcheck="true">#ds:si 指向第一组 word 单元</span>
+          mov di,16        <span class="token comment" spellcheck="true">#ds:di 指向第二组 dword 单元</span>
+
+          mov cx,8
+        s:mov bx,<span class="token punctuation">[</span>si<span class="token punctuation">]</span>
+          call cube
+          mov <span class="token punctuation">[</span>di<span class="token punctuation">]</span>,ax
+          mov <span class="token punctuation">[</span>di<span class="token punctuation">]</span>.2,dx
+          add si,2        <span class="token comment" spellcheck="true">#ds:si 指向下一个 word 单元</span>
+          add si,4        <span class="token comment" spellcheck="true">#ds:di 指向下一个 dword 单元</span>
+          loop s
+
+          mov ax,4c00h
+          int 21h
+
+    cube: mov ax,bx
+          mul bx
+          mul bx
+          ret
+
+code ends
+end start</code></pre>
+
+                </article>
+                <ul class="tags-postTags">
+                    
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/" rel="tag"># 汇编</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    
+    <nav id="gobottom" class="pagination">
+        
+        <a class="prev-post" title="8086汇编-标志寄存器" href="/2020/10/07/8086-hui-bian-biao-zhi-ji-cun-qi/">
+            ← 8086汇编-标志寄存器
+        </a>
+        
+        <span class="prev-next-post">·</span>
+        
+        <a class="next-post" title="8086汇编-转移指令的原理" href="/2020/10/04/8086-hui-bian-zhuan-yi-zhi-ling-de-yuan-li/">
+            8086汇编-转移指令的原理 →
+        </a>
+        
+    </nav>
+
+    
+    <div class="inner">
+        <div id="comment"></div>
+    </div>
+    
+</div>
+
+<div class="toc-bar">
+    <div class="toc-btn-bar">
+        <a href="#site-main" class="toc-btn">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M793.024 710.272a32 32 0 1 0 45.952-44.544l-310.304-320a32 32 0 0 0-46.4 0.48l-297.696 320a32 32 0 0 0 46.848 43.584l274.752-295.328 286.848 295.808z"/></svg>
+        </a>
+        <div class="toc-btn toc-switch">
+            <svg class="toc-open" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M779.776 480h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M779.776 672h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M256 288a32 32 0 1 0 0 64 32 32 0 0 0 0-64M392.576 352h387.2a32 32 0 0 0 0-64h-387.2a32 32 0 0 0 0 64M256 480a32 32 0 1 0 0 64 32 32 0 0 0 0-64M256 672a32 32 0 1 0 0 64 32 32 0 0 0 0-64"/></svg>
+            <svg class="toc-close hide" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M512 960c-247.039484 0-448-200.960516-448-448S264.960516 64 512 64 960 264.960516 960 512 759.039484 960 512 960zM512 128.287273c-211.584464 0-383.712727 172.128262-383.712727 383.712727 0 211.551781 172.128262 383.712727 383.712727 383.712727 211.551781 0 383.712727-172.159226 383.712727-383.712727C895.712727 300.415536 723.551781 128.287273 512 128.287273z"/><path d="M557.05545 513.376159l138.367639-136.864185c12.576374-12.416396 12.672705-32.671738 0.25631-45.248112s-32.704421-12.672705-45.248112-0.25631l-138.560301 137.024163-136.447897-136.864185c-12.512727-12.512727-32.735385-12.576374-45.248112-0.063647-12.512727 12.480043-12.54369 32.735385-0.063647 45.248112l136.255235 136.671523-137.376804 135.904314c-12.576374 12.447359-12.672705 32.671738-0.25631 45.248112 6.271845 6.335493 14.496116 9.504099 22.751351 9.504099 8.12794 0 16.25588-3.103239 22.496761-9.247789l137.567746-136.064292 138.687596 139.136568c6.240882 6.271845 14.432469 9.407768 22.65674 9.407768 8.191587 0 16.352211-3.135923 22.591372-9.34412 12.512727-12.480043 12.54369-32.704421 0.063647-45.248112L557.05545 513.376159z"/></svg>
+        </div>
+        <a href="#gobottom" class="toc-btn">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M231.424 346.208a32 32 0 0 0-46.848 43.584l297.696 320a32 32 0 0 0 46.4 0.48l310.304-320a32 32 0 1 0-45.952-44.544l-286.848 295.808-274.752-295.36z"/></svg>
+        </a>
+    </div>
+    <div class="toc-main">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ret-和-retf"><span class="toc-text">ret 和 retf</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#call-指令"><span class="toc-text">call 指令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#根据位移进行转移的-call-指令"><span class="toc-text">根据位移进行转移的 call 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#根据目的地址转移的-call-指令"><span class="toc-text">根据目的地址转移的 call 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#转移地址在寄存器中的-call-指令"><span class="toc-text">转移地址在寄存器中的 call 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#转移地址在内存中的-call-指令"><span class="toc-text">转移地址在内存中的 call 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#call-和-ret-的配合使用"><span class="toc-text">call 和 ret 的配合使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mul-指令"><span class="toc-text">mul 指令</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#模块化程序设计"><span class="toc-text">模块化程序设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#参数和结果传递的问题"><span class="toc-text">参数和结果传递的问题</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+
+
+
+
+
+	</div>
+	
+
+
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+  <header class="read-next-card-header">
+    <small class="read-next-card-header-sitetitle">— 9unk —</small>
+    <h3 class="read-next-card-header-title">最新文章</h3>
+  </header>
+  <div class="read-next-divider">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/>
+    </svg>
+  </div>
+  <div class="read-next-card-content">
+    <ul>
+      
+      
+      
+      <li>
+        <a href="/2020/10/10/80386-hui-bian-ji-chu-zhi-shi/">80386 汇编-基础知识</a>
+      </li>
+      
+      
+      
+      <li>
+        <a href="/2020/10/07/8086-hui-bian-nei-zhong-duan/">8086汇编-内中断</a>
+      </li>
+      
+      
+      
+      <li>
+        <a href="/2020/10/07/8086-hui-bian-biao-zhi-ji-cun-qi/">8086汇编-标志寄存器</a>
+      </li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+  </div>
+  <footer class="read-next-card-footer">
+    <a href="/archives">  MORE  → </a>
+  </footer>
+</article>
+
+            
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+    <header class="read-next-card-header tagcloud-card">
+        <h3 class="read-next-card-header-title">分类</h3>
+    </header>
+    <div class="read-next-card-content">
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Citrix/">Citrix</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web-Security/">Web Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/github/">github</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/system-security/">system security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%97%E9%80%8F%E5%B7%A5%E5%85%B7/">渗透工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E6%99%AE/">科普</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A0%81/">编码</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%B6%85%E8%9E%8D%E5%90%88/">超融合</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%9A%E4%BF%A1/">通信</a></li></ul>
+    </div>
+</article>
+
+
+            
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+	<header class="read-next-card-header tagcloud-card">
+		<h3 class="read-next-card-header-title">标签云</h3>
+	</header>
+	<div class="read-next-card-content-ext">
+		<a href="/tags/8086CPU/" style="font-size: 14px;">8086CPU</a> <a href="/tags/ELK/" style="font-size: 14px;">ELK</a> <a href="/tags/%E6%B1%87%E7%BC%96/" style="font-size: 24px;">汇编</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" style="font-size: 19px;">漏洞复现</a> <a href="/tags/%E9%9D%B6%E6%9C%BA/" style="font-size: 19px;">靶机</a>
+	</div>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+	
+
+
+
+
+<div id="search" class="search-overlay">
+    <div class="search-form">
+        
+        <div class="search-overlay-logo">
+        	<img src="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png" alt="9unk">
+        </div>
+        
+        <input id="local-search-input" class="search-input" type="text" name="search" placeholder="搜索 ...">
+        <a class="search-overlay-close" href="#"></a>
+    </div>
+    <div id="local-search-result"></div>
+</div>
+
+<footer class="site-footer outer">
+	<div class="site-footer-content inner">
+		<div class="copyright">
+			<a href="/" title="9unk">9unk © 2020</a>
+			
+				
+    		
+		</div>
+		<nav class="site-footer-nav">
+			
+			<a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+			<a href="https://github.com/xzhih/hexo-theme-casper" title="Casper" target="_blank" rel="noopener">Casper</a>
+		</nav>
+	</div>
+</footer>
+	
+
+
+<script>
+    if(window.navigator && navigator.serviceWorker) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for(let registration of registrations) {
+                registration.unregister()
+            }
+        })
+    }
+</script>
+
+
+<script id="scriptLoad" src="/js/allinone.min.js" async></script>
+
+
+<script>
+    document.getElementById('scriptLoad').addEventListener('load', function () {
+        
+        
+            var bLazy = new Blazy();
+        
+
+        
+        
+
+        
+        
+        
+            searchFunc("/");
+        
+        
+    })
+</script>
+
+
+
+
+
+
+<script id="valineScript" src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+<script>
+    document.getElementById('valineScript').addEventListener("load", function() {
+        new Valine({
+            el: '#comment' ,
+            verify: false,
+            notify: false,
+            appId: 'lhq4C91rscRdbbVHPYesVhOz-gzGzoHsz',
+            appKey: 'EHeksCG71RId7DpUxMiocJQ4',
+            placeholder: '你是魔鬼吧，都不留言！',
+            pageSize: 10,
+            avatar: 'mm',
+            visitor: 
+        })
+    });
+</script>
+
+
+
+
+
+
+
+</body></html>
