@@ -1,0 +1,652 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="preconnect" href="//www.googletagmanager.com">
+	<link rel="preconnect" href="//zz.bdstatic.com">
+	<link rel="preconnect" href="//sp0.baidu.com">
+	<link rel="preconnect" href="//www.google-analytics.com">
+	<link rel="preconnect" href="//cdn1.lncld.net">
+	<link rel="preconnect" href="//unpkg.com">
+	<link rel="preconnect" href="//app-router.leancloud.cn">
+	<link rel="preconnect" href="//9qpuwspm.api.lncld.net">
+	<link rel="preconnect" href="//gravatar.loli.net">
+
+	<title>认识 x64dbg | 9unk</title>
+
+	<meta name="HandheldFriendly" content="True">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+	<meta name="generator" content="hexo">
+	<meta name="author" content="9nuk">
+	<meta name="description" content>
+
+	
+	<meta name="keywords" content>
+	
+
+	
+	<link rel="shortcut icon" href="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png">
+	<link rel="apple-touch-icon" href="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png">
+	
+
+	
+	<meta name="theme-color" content="#3c484e">
+	<meta name="msapplication-TileColor" content="#3c484e">
+	
+
+	
+
+	
+
+	<meta property="og:site_name" content="9unk">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="认识 x64dbg | 9unk">
+	<meta property="og:description" content>
+	<meta property="og:url" content="http://yoursite.com/2020/12/03/ren-shi-x64dbg/">
+
+	
+	<meta property="article:published_time" content="2020-12-03T11:12:00+08:00"> 
+	<meta property="article:author" content="9nuk">
+	<meta property="article:published_first" content="9unk, /2020/12/03/ren-shi-x64dbg/">
+	
+
+	
+	
+	
+<link rel="stylesheet" href="/css/allinonecss.min.css">
+
+
+	
+	
+	
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+<body class="post-template">
+	<div class="site-wrapper">
+		
+
+
+
+
+<header class="site-header post-site-header outer">
+    <div class="inner">
+        
+<nav class="site-nav"> 
+    <div class="site-nav-left">
+        <ul class="nav">
+            <li>
+                
+                
+                <a class="site-nav-logo" href="/" title="9unk">
+                    <img src="https://pic2.zhimg.com/80/v2-41b7556078db198db3955539789490a8_720w.jpg" alt="9unk">
+                </a>
+                
+                
+            </li>
+            
+            
+            <li>
+                <a href="/about" title="关于">关于</a>
+            </li>
+            
+            <li>
+                <a href="/archives" title="文章">文章</a>
+            </li>
+            
+            
+        </ul> 
+    </div>
+    
+    <div class="search-button-area">
+        <a href="#search" class="search-button">Search ...</a>
+    </div>
+     
+    <div class="site-nav-right">
+        
+        <a href="#search" class="search-button">Search ...</a>
+         
+        
+<div class="social-links">
+    
+    
+    <a class="social-link" title="github" href="https://github.com/hhkk2334" target="_blank" rel="noopener">
+        <svg viewBox="0 0 1049 1024" xmlns="http://www.w3.org/2000/svg"><path d="M524.979332 0C234.676191 0 0 234.676191 0 524.979332c0 232.068678 150.366597 428.501342 358.967656 498.035028 26.075132 5.215026 35.636014-11.299224 35.636014-25.205961 0-12.168395-0.869171-53.888607-0.869171-97.347161-146.020741 31.290159-176.441729-62.580318-176.441729-62.580318-23.467619-60.841976-58.234462-76.487055-58.234463-76.487055-47.804409-32.15933 3.476684-32.15933 3.476685-32.15933 53.019436 3.476684 80.83291 53.888607 80.83291 53.888607 46.935238 79.963739 122.553122 57.365291 152.97411 43.458554 4.345855-33.897672 18.252593-57.365291 33.028501-70.402857-116.468925-12.168395-239.022047-57.365291-239.022047-259.012982 0-57.365291 20.860106-104.300529 53.888607-140.805715-5.215026-13.037566-23.467619-66.926173 5.215027-139.067372 0 0 44.327725-13.906737 144.282399 53.888607 41.720212-11.299224 86.917108-17.383422 131.244833-17.383422s89.524621 6.084198 131.244833 17.383422C756.178839 203.386032 800.506564 217.29277 800.506564 217.29277c28.682646 72.1412 10.430053 126.029806 5.215026 139.067372 33.897672 36.505185 53.888607 83.440424 53.888607 140.805715 0 201.64769-122.553122 245.975415-239.891218 259.012982 19.121764 16.514251 35.636014 47.804409 35.636015 97.347161 0 70.402857-0.869171 126.898978-0.869172 144.282399 0 13.906737 9.560882 30.420988 35.636015 25.205961 208.601059-69.533686 358.967656-265.96635 358.967655-498.035028C1049.958663 234.676191 814.413301 0 524.979332 0z"/></svg>
+    </a>
+    
+    
+    
+    
+    
+    
+</div>
+    </div>
+</nav>
+    </div>
+</header>
+
+
+<div id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+        <header class="post-full-header">
+            <div class="post-full-meta">
+                <time class="post-full-meta-date" datetime="2020-12-03T03:00:07.000Z">
+                    2020-12-3
+                </time>
+                
+                <span class="date-divider">/</span>
+                
+                
+            </div>
+            <h1 class="post-full-title">认识 x64dbg</h1>
+        </header>
+        <div class="post-full no-image">
+            
+            <div class="post-full-content">
+                <article id="photoswipe" class="markdown-body">
+                    <h1 id="下载安装-x64dbg"><a href="#下载安装-x64dbg" class="headerlink" title="下载安装 x64dbg"></a>下载安装 x64dbg</h1><p><a href="https://x64dbg.com/" target="_blank" rel="noopener">x64dbg 下载地址</a></p>
+<p><img alt="4.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/03/7tocAxST6d8pXIY.jpg" data-index="0" data-src="https://i.loli.net/2020/12/03/7tocAxST6d8pXIY.jpg"></p>
+<p>下载完成后，直接解压运行 x96dbg.exe。运行 x32dbg/x64dbg 出现如下界面表示运行成功：</p>
+<p><img alt="5.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/03/WcUeZp8GMj35fVo.jpg" data-index="1" data-src="https://i.loli.net/2020/12/03/WcUeZp8GMj35fVo.jpg"></p>
+<p><img alt="6.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/03/ak2SGt3R576Uncf.jpg" data-index="2" data-src="https://i.loli.net/2020/12/03/ak2SGt3R576Uncf.jpg"></p>
+<h1 id="x64dbg-界面介绍"><a href="#x64dbg-界面介绍" class="headerlink" title="x64dbg 界面介绍"></a>x64dbg 界面介绍</h1><p><img alt="7.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/03/or69yObMDYKdesu.jpg" data-index="3" data-src="https://i.loli.net/2020/12/03/or69yObMDYKdesu.jpg"></p>
+<ol>
+<li>反汇编窗口</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th align="center">第一列</th>
+<th align="center">第二列</th>
+<th align="center">第三列</th>
+<th align="center">第四列</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">内存地址</td>
+<td align="center">汇编指令的机器码</td>
+<td align="center">汇编指令</td>
+<td align="center">注释</td>
+</tr>
+</tbody></table>
+<br>
+
+<ul>
+<li><p>内存地址：内存是被划分成多个内存单元来存储数据的。每个内存单元有 1byte 的空间来存储数据。为了读取内存单元的数据，所以使用内存地址来给内存单元编号，这样就能读取到相对应的内存单元中的数据。</p>
+</li>
+<li><p>机器码：汇编也是编程，只不过是最底层的编程。因为 CPU 只能识别 0 和 1组成的机器码，所以汇编指令需要转换成机器码 CPU 才能识别。</p>
+</li>
+<li><p>汇编指令：就是汇编编程的指令，指令这块的学习，可以边逆向边学习。</p>
+</li>
+<li><p>注释：x64dbg 可以对程序进行智能分析，并设置相应的注释。如：字符串、汇编指令等。也可自定注释内容，在逆向过程中非常有用。美国方面模</p>
+</li>
+</ul>
+<ol start="2">
+<li>寄存器窗口</li>
+</ol>
+<p>这里显示的是当前所调试程序的寄存器信息。</p>
+<p><img alt="8.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/03/bewcoRflXEJPaSz.jpg" data-index="4" data-src="https://i.loli.net/2020/12/03/bewcoRflXEJPaSz.jpg"></p>
+<table>
+<thead>
+<tr>
+<th align="center">第一块</th>
+<th align="center">第二块</th>
+<th align="center">第三块</th>
+<th align="center">第四块</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">常用寄存器</td>
+<td align="center">EIP寄存器</td>
+<td align="center">标志寄存器</td>
+<td align="center">调试寄存器</td>
+</tr>
+</tbody></table>
+<br>
+
+<ul>
+<li><p>常用寄存器：EAX~EDX（一般寄存器）、EBP和ESP（堆栈寄存器）、ESI/EDI（源目标索引字符串）</p>
+</li>
+<li><p>EIP 寄存器：用来存储CPU要读取指令的地址。这里就表示程序将要读取执行 00401000 地址的指令。</p>
+</li>
+<li><p>标志寄存器：标志寄存器又称程序状态字，主要是反应处理器的状态和逻辑计算结果。在逆向过程中通常用在程序的跳转和算法中。</p>
+</li>
+<li><p>调试寄存器：对于 Dr0-Dr3 的四个调试寄存器，他们的作用是存放中断的地址；对于 Dr4，Dr5 这两个寄存器我们一般不使用他们，保留；对于 Dr6，Dr7 这两个寄存器的作用是用来记录你在 Dr0-Dr3 中下断的地址的属性。</p>
+</li>
+</ul>
+<ol start="3">
+<li>数据窗口</li>
+</ol>
+<p>这里一般查看的是内存地址的内容。最左边是地址，接着是对应地址的十六进制数据，最右侧是十六进制对应的 ASCII 码。</p>
+<ol start="4">
+<li>堆栈窗口</li>
+</ol>
+<p>显示一些堆栈的信息。</p>
+<h1 id="常用快捷键"><a href="#常用快捷键" class="headerlink" title="常用快捷键"></a>常用快捷键</h1><table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="left">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">F2</td>
+<td align="left">下断点（指定断点地址）</td>
+</tr>
+<tr>
+<td align="center">F3</td>
+<td align="left">加载一个可执行程序，进行调试分析</td>
+</tr>
+<tr>
+<td align="center">F4</td>
+<td align="left">程序执行到光标处</td>
+</tr>
+<tr>
+<td align="center">F5</td>
+<td align="left">缩小、还原当前窗口</td>
+</tr>
+<tr>
+<td align="center">F7</td>
+<td align="left">单步步入</td>
+</tr>
+<tr>
+<td align="center">F8</td>
+<td align="left">单步步过</td>
+</tr>
+<tr>
+<td align="center">F9</td>
+<td align="left">直接运行程序，遇到断点处，程序暂停</td>
+</tr>
+<tr>
+<td align="center">Ctrl+F2</td>
+<td align="left">重新运行程序到起始处，一般用于重新调试程序</td>
+</tr>
+<tr>
+<td align="center">Ctrl+F9</td>
+<td align="left">执行到函数返回处，用于跳出函数实现</td>
+</tr>
+<tr>
+<td align="center">Alt+F9</td>
+<td align="left">执行到用户代码处，用于快速跳出系统函数</td>
+</tr>
+<tr>
+<td align="center">Ctrl+G</td>
+<td align="left">输入十六进制地址，快速定位到该地址处</td>
+</tr>
+<tr>
+<td align="center">Alt+b</td>
+<td align="left">打开断点窗口（用户修改当前所设置的断点）</td>
+</tr>
+</tbody></table>
+<br>
+
+<p>把程序拖到 x64dbg 中可以看到如下图所示的界面。这个时候我们需要注意的是它并不是在要调试程序的模块内，这个时候我们直接 F9 运行。</p>
+<p><img alt="9.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/03/YMTup14xrhFgKlG.jpg" data-index="5" data-src="https://i.loli.net/2020/12/03/YMTup14xrhFgKlG.jpg"></p>
+<p>当显示下图的界面才真正进入我们的程序内部。这个时候我们就可以开始分析啦。</p>
+<p><img alt="10.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/03/SL4l5isbMqXuj6K.jpg" data-index="6" data-src="https://i.loli.net/2020/12/03/SL4l5isbMqXuj6K.jpg"></p>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a href="https://bbs.pediy.com/thread-259952.htm" target="_blank" rel="noopener">x64dbg入门系列（一）-认识x64dbg</a></p>
+
+                </article>
+                <ul class="tags-postTags">
+                    
+                    <li>
+                        <a href="/tags/%E9%80%86%E5%90%91/" rel="tag"># 逆向</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/x64dbg/" rel="tag"># x64dbg</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    
+    <nav id="gobottom" class="pagination">
+        
+        <a class="prev-post" title="x64dbg-字符串搜索" href="/2020/12/03/x64dbg-zi-fu-chuan-sou-suo/">
+            ← x64dbg-字符串搜索
+        </a>
+        
+        <span class="prev-next-post">·</span>
+        
+        <a class="next-post" title="OD调试-基础篇" href="/2020/11/03/od-diao-shi-ji-chu-pian/">
+            OD调试-基础篇 →
+        </a>
+        
+    </nav>
+
+    
+    <div class="inner">
+        <div id="comment"></div>
+    </div>
+    
+</div>
+
+<div class="toc-bar">
+    <div class="toc-btn-bar">
+        <a href="#site-main" class="toc-btn">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M793.024 710.272a32 32 0 1 0 45.952-44.544l-310.304-320a32 32 0 0 0-46.4 0.48l-297.696 320a32 32 0 0 0 46.848 43.584l274.752-295.328 286.848 295.808z"/></svg>
+        </a>
+        <div class="toc-btn toc-switch">
+            <svg class="toc-open" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M779.776 480h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M779.776 672h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M256 288a32 32 0 1 0 0 64 32 32 0 0 0 0-64M392.576 352h387.2a32 32 0 0 0 0-64h-387.2a32 32 0 0 0 0 64M256 480a32 32 0 1 0 0 64 32 32 0 0 0 0-64M256 672a32 32 0 1 0 0 64 32 32 0 0 0 0-64"/></svg>
+            <svg class="toc-close hide" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M512 960c-247.039484 0-448-200.960516-448-448S264.960516 64 512 64 960 264.960516 960 512 759.039484 960 512 960zM512 128.287273c-211.584464 0-383.712727 172.128262-383.712727 383.712727 0 211.551781 172.128262 383.712727 383.712727 383.712727 211.551781 0 383.712727-172.159226 383.712727-383.712727C895.712727 300.415536 723.551781 128.287273 512 128.287273z"/><path d="M557.05545 513.376159l138.367639-136.864185c12.576374-12.416396 12.672705-32.671738 0.25631-45.248112s-32.704421-12.672705-45.248112-0.25631l-138.560301 137.024163-136.447897-136.864185c-12.512727-12.512727-32.735385-12.576374-45.248112-0.063647-12.512727 12.480043-12.54369 32.735385-0.063647 45.248112l136.255235 136.671523-137.376804 135.904314c-12.576374 12.447359-12.672705 32.671738-0.25631 45.248112 6.271845 6.335493 14.496116 9.504099 22.751351 9.504099 8.12794 0 16.25588-3.103239 22.496761-9.247789l137.567746-136.064292 138.687596 139.136568c6.240882 6.271845 14.432469 9.407768 22.65674 9.407768 8.191587 0 16.352211-3.135923 22.591372-9.34412 12.512727-12.480043 12.54369-32.704421 0.063647-45.248112L557.05545 513.376159z"/></svg>
+        </div>
+        <a href="#gobottom" class="toc-btn">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M231.424 346.208a32 32 0 0 0-46.848 43.584l297.696 320a32 32 0 0 0 46.4 0.48l310.304-320a32 32 0 1 0-45.952-44.544l-286.848 295.808-274.752-295.36z"/></svg>
+        </a>
+    </div>
+    <div class="toc-main">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#下载安装-x64dbg"><span class="toc-text">下载安装 x64dbg</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#x64dbg-界面介绍"><span class="toc-text">x64dbg 界面介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#常用快捷键"><span class="toc-text">常用快捷键</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#reference"><span class="toc-text">reference</span></a></li></ol>
+    </div>
+</div>
+
+
+
+
+
+
+	</div>
+	
+
+
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+  <header class="read-next-card-header">
+    <small class="read-next-card-header-sitetitle">— 9unk —</small>
+    <h3 class="read-next-card-header-title">最新文章</h3>
+  </header>
+  <div class="read-next-divider">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/>
+    </svg>
+  </div>
+  <div class="read-next-card-content">
+    <ul>
+      
+      
+      
+      <li>
+        <a href="/2020/12/27/x64dbg-suan-fa-fen-xi-yi/">x64dbg-算法分析一</a>
+      </li>
+      
+      
+      
+      <li>
+        <a href="/2020/12/21/x64dbg-ying-jian-bian-ma-xu-lie-hao-xun-zong-wu/">x64dbg-硬件编码序列号寻踪五</a>
+      </li>
+      
+      
+      
+      <li>
+        <a href="/2020/12/21/x64dbg-ying-jian-bian-ma-xu-lie-hao-xun-zong-si/">x64dbg-硬件编码序列号寻踪四</a>
+      </li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+  </div>
+  <footer class="read-next-card-footer">
+    <a href="/archives">  MORE  → </a>
+  </footer>
+</article>
+
+            
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+    <header class="read-next-card-header tagcloud-card">
+        <h3 class="read-next-card-header-title">分类</h3>
+    </header>
+    <div class="read-next-card-content">
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Citrix/">Citrix</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web-Security/">Web Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/github/">github</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/system-security/">system security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%97%E9%80%8F%E5%B7%A5%E5%85%B7/">渗透工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E6%99%AE/">科普</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A0%81/">编码</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%B6%85%E8%9E%8D%E5%90%88/">超融合</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%9A%E4%BF%A1/">通信</a></li></ul>
+    </div>
+</article>
+
+
+            
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+	<header class="read-next-card-header tagcloud-card">
+		<h3 class="read-next-card-header-title">标签云</h3>
+	</header>
+	<div class="read-next-card-content-ext">
+		<a href="/tags/8086CPU/" style="font-size: 14px;">8086CPU</a> <a href="/tags/ELK/" style="font-size: 14px;">ELK</a> <a href="/tags/OllyDdbg/" style="font-size: 14px;">OllyDdbg</a> <a href="/tags/x64dbg/" style="font-size: 16.5px;">x64dbg</a> <a href="/tags/%E6%B1%87%E7%BC%96/" style="font-size: 24px;">汇编</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" style="font-size: 19px;">漏洞复现</a> <a href="/tags/%E9%80%86%E5%90%91/" style="font-size: 21.5px;">逆向</a> <a href="/tags/%E9%9D%B6%E6%9C%BA/" style="font-size: 19px;">靶机</a>
+	</div>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+	
+
+
+
+
+<div id="search" class="search-overlay">
+    <div class="search-form">
+        
+        <div class="search-overlay-logo">
+        	<img src="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png" alt="9unk">
+        </div>
+        
+        <input id="local-search-input" class="search-input" type="text" name="search" placeholder="搜索 ...">
+        <a class="search-overlay-close" href="#"></a>
+    </div>
+    <div id="local-search-result"></div>
+</div>
+
+<footer class="site-footer outer">
+	<div class="site-footer-content inner">
+		<div class="copyright">
+			<a href="/" title="9unk">9unk © 2020</a>
+			
+				
+    		
+		</div>
+		<nav class="site-footer-nav">
+			
+			<a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+			<a href="https://github.com/xzhih/hexo-theme-casper" title="Casper" target="_blank" rel="noopener">Casper</a>
+		</nav>
+	</div>
+</footer>
+	
+
+
+<script>
+    if(window.navigator && navigator.serviceWorker) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for(let registration of registrations) {
+                registration.unregister()
+            }
+        })
+    }
+</script>
+
+
+<script id="scriptLoad" src="/js/allinone.min.js" async></script>
+
+
+<script>
+    document.getElementById('scriptLoad').addEventListener('load', function () {
+        
+        
+            var bLazy = new Blazy();
+        
+
+        
+        
+
+        
+        
+        
+            searchFunc("/");
+        
+        
+    })
+</script>
+
+
+
+
+
+
+<script id="valineScript" src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+<script>
+    document.getElementById('valineScript').addEventListener("load", function() {
+        new Valine({
+            el: '#comment' ,
+            verify: false,
+            notify: false,
+            appId: 'lhq4C91rscRdbbVHPYesVhOz-gzGzoHsz',
+            appKey: 'EHeksCG71RId7DpUxMiocJQ4',
+            placeholder: '你是魔鬼吧，都不留言！',
+            pageSize: 10,
+            avatar: 'mm',
+            visitor: 
+        })
+    });
+</script>
+
+
+
+
+
+
+
+</body></html>
