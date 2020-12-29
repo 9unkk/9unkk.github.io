@@ -1,0 +1,625 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="preconnect" href="//www.googletagmanager.com">
+	<link rel="preconnect" href="//zz.bdstatic.com">
+	<link rel="preconnect" href="//sp0.baidu.com">
+	<link rel="preconnect" href="//www.google-analytics.com">
+	<link rel="preconnect" href="//cdn1.lncld.net">
+	<link rel="preconnect" href="//unpkg.com">
+	<link rel="preconnect" href="//app-router.leancloud.cn">
+	<link rel="preconnect" href="//9qpuwspm.api.lncld.net">
+	<link rel="preconnect" href="//gravatar.loli.net">
+
+	<title>x64dbg-算法分析三 | 9unk</title>
+
+	<meta name="HandheldFriendly" content="True">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+	<meta name="generator" content="hexo">
+	<meta name="author" content="9nuk">
+	<meta name="description" content>
+
+	
+	<meta name="keywords" content>
+	
+
+	
+	<link rel="shortcut icon" href="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png">
+	<link rel="apple-touch-icon" href="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png">
+	
+
+	
+	<meta name="theme-color" content="#3c484e">
+	<meta name="msapplication-TileColor" content="#3c484e">
+	
+
+	
+
+	
+
+	<meta property="og:site_name" content="9unk">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="x64dbg-算法分析三 | 9unk">
+	<meta property="og:description" content>
+	<meta property="og:url" content="http://yoursite.com/1970/01/01/x64dbg-suan-fa-fen-xi-san/">
+
+	
+	<meta property="article:published_time" content="1970-01-01T08:01:00+08:00"> 
+	<meta property="article:author" content="9nuk">
+	<meta property="article:published_first" content="9unk, /1970/01/01/x64dbg-suan-fa-fen-xi-san/">
+	
+
+	
+	
+	
+<link rel="stylesheet" href="/css/allinonecss.min.css">
+
+
+	
+	
+	
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+<body class="post-template">
+	<div class="site-wrapper">
+		
+
+
+
+
+<header class="site-header post-site-header outer">
+    <div class="inner">
+        
+<nav class="site-nav"> 
+    <div class="site-nav-left">
+        <ul class="nav">
+            <li>
+                
+                
+                <a class="site-nav-logo" href="/" title="9unk">
+                    <img src="https://pic2.zhimg.com/80/v2-41b7556078db198db3955539789490a8_720w.jpg" alt="9unk">
+                </a>
+                
+                
+            </li>
+            
+            
+            <li>
+                <a href="/about" title="关于">关于</a>
+            </li>
+            
+            <li>
+                <a href="/archives" title="文章">文章</a>
+            </li>
+            
+            
+        </ul> 
+    </div>
+    
+    <div class="search-button-area">
+        <a href="#search" class="search-button">Search ...</a>
+    </div>
+     
+    <div class="site-nav-right">
+        
+        <a href="#search" class="search-button">Search ...</a>
+         
+        
+<div class="social-links">
+    
+    
+    <a class="social-link" title="github" href="https://github.com/hhkk2334" target="_blank" rel="noopener">
+        <svg viewBox="0 0 1049 1024" xmlns="http://www.w3.org/2000/svg"><path d="M524.979332 0C234.676191 0 0 234.676191 0 524.979332c0 232.068678 150.366597 428.501342 358.967656 498.035028 26.075132 5.215026 35.636014-11.299224 35.636014-25.205961 0-12.168395-0.869171-53.888607-0.869171-97.347161-146.020741 31.290159-176.441729-62.580318-176.441729-62.580318-23.467619-60.841976-58.234462-76.487055-58.234463-76.487055-47.804409-32.15933 3.476684-32.15933 3.476685-32.15933 53.019436 3.476684 80.83291 53.888607 80.83291 53.888607 46.935238 79.963739 122.553122 57.365291 152.97411 43.458554 4.345855-33.897672 18.252593-57.365291 33.028501-70.402857-116.468925-12.168395-239.022047-57.365291-239.022047-259.012982 0-57.365291 20.860106-104.300529 53.888607-140.805715-5.215026-13.037566-23.467619-66.926173 5.215027-139.067372 0 0 44.327725-13.906737 144.282399 53.888607 41.720212-11.299224 86.917108-17.383422 131.244833-17.383422s89.524621 6.084198 131.244833 17.383422C756.178839 203.386032 800.506564 217.29277 800.506564 217.29277c28.682646 72.1412 10.430053 126.029806 5.215026 139.067372 33.897672 36.505185 53.888607 83.440424 53.888607 140.805715 0 201.64769-122.553122 245.975415-239.891218 259.012982 19.121764 16.514251 35.636014 47.804409 35.636015 97.347161 0 70.402857-0.869171 126.898978-0.869172 144.282399 0 13.906737 9.560882 30.420988 35.636015 25.205961 208.601059-69.533686 358.967656-265.96635 358.967655-498.035028C1049.958663 234.676191 814.413301 0 524.979332 0z"/></svg>
+    </a>
+    
+    
+    
+    
+    
+    
+</div>
+    </div>
+</nav>
+    </div>
+</header>
+
+
+<div id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+        <header class="post-full-header">
+            <div class="post-full-meta">
+                <time class="post-full-meta-date" datetime="1970-01-01T00:00:00.000Z">
+                    1970-01-1
+                </time>
+                
+                <span class="date-divider">/</span>
+                
+                
+            </div>
+            <h1 class="post-full-title">x64dbg-算法分析三</h1>
+        </header>
+        <div class="post-full no-image">
+            
+            <div class="post-full-content">
+                <article id="photoswipe" class="markdown-body">
+                    <hr>
+<p>title: x64dbg-算法分析三<br>date: 2020-12-30 01:26:28<br>tags:</p>
+<ul>
+<li>逆向</li>
+<li>汇编<br>cover_img: <a href="https://i.loli.net/2020/12/03/6NHUkKOqFZ1ETyV.jpg" target="_blank" rel="noopener">https://i.loli.net/2020/12/03/6NHUkKOqFZ1ETyV.jpg</a><br>summary: 本章分析的 CrackMe 是 CraclMe2 。</li>
+</ul>
+<hr>
+<h1 id="观察程序"><a href="#观察程序" class="headerlink" title="观察程序"></a>观察程序</h1><p><img alt="1.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/29/93JDZxYwr4Ech5A.jpg" data-index="0" data-src="https://i.loli.net/2020/12/29/93JDZxYwr4Ech5A.jpg"></p>
+<h1 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h1><p>加载程序到入口点</p>
+<p><img alt="2.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/29/p2ofXr1bNIY6kwy.jpg" data-index="1" data-src="https://i.loli.net/2020/12/29/p2ofXr1bNIY6kwy.jpg"></p>
+<p>查看程序的 API ，并设置断点</p>
+<p><img alt="3.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/29/pEc9HIJAW4ZozPe.jpg" data-index="2" data-src="https://i.loli.net/2020/12/29/pEc9HIJAW4ZozPe.jpg"></p>
+<p>继续运行程序</p>
+<p><img alt="4.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/29/p8xjF7TBltMW5NJ.jpg" data-index="3" data-src="https://i.loli.net/2020/12/29/p8xjF7TBltMW5NJ.jpg"></p>
+<p>执行到返回，查看程序返回的参数</p>
+<p><img alt="5.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/29/LsE1fZIXKWGN8vz.jpg" data-index="4" data-src="https://i.loli.net/2020/12/29/LsE1fZIXKWGN8vz.jpg"></p>
+<p>转到内存数据窗口，然后将对 password 设置内存访问断点</p>
+<p><img alt="6.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/29/tWMN3JZ28VPuSA1.jpg" data-index="5" data-src="https://i.loli.net/2020/12/29/tWMN3JZ28VPuSA1.jpg"></p>
+<p><img alt="7.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/29/x4CnsHkyiEI7fpD.jpg" data-index="6" data-src="https://i.loli.net/2020/12/29/x4CnsHkyiEI7fpD.jpg"></p>
+<p>“F9” 继续运行程序，此时程序来到了判断序列号的地方。并单步运行并分析程序。</p>
+<pre class=" language-c"><code class="language-c">mov byte ptr ds<span class="token punctuation">:</span><span class="token punctuation">[</span><span class="token number">0x00402118</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">0x0</span>
+mov esi<span class="token punctuation">,</span> dword ptr ss<span class="token punctuation">:</span><span class="token punctuation">[</span>esp<span class="token operator">+</span><span class="token number">0x4</span><span class="token punctuation">]</span>
+push esi
+<span class="token comment" spellcheck="true">// 先把 password 存到栈中</span></code></pre>
+<p><img alt="8.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/29/X8w3xCdvarBh5gc.jpg" data-index="7" data-src="https://i.loli.net/2020/12/29/X8w3xCdvarBh5gc.jpg"></p>
+<pre class=" language-c"><code class="language-c">mov al<span class="token punctuation">,</span> byte ptr ds<span class="token punctuation">:</span><span class="token punctuation">[</span>esi<span class="token punctuation">]</span>   <span class="token comment" spellcheck="true">// 把 password 传入 al 中</span>
+test al<span class="token punctuation">,</span> al                 <span class="token comment" spellcheck="true">// 测试 al 是否为空</span>
+je <span class="token number">0x00401390</span>               <span class="token comment" spellcheck="true">// 如果 al 为空就跳转循环</span>
+inc byte ptr ds<span class="token punctuation">:</span><span class="token punctuation">[</span><span class="token number">0x00402118</span><span class="token punctuation">]</span>    <span class="token comment" spellcheck="true">// al 不为零 00402118 内存地址的数据加 1。也就是说每循环一次加1，是用来记录循环的次数。</span>
+<span class="token comment" spellcheck="true">// 可以看到我们之前的 00402118 内存地址的数据设为 0</span></code></pre>
+<p><img alt="9.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/29/t6G4lXzPZqIb5VN.jpg" data-index="8" data-src="https://i.loli.net/2020/12/29/t6G4lXzPZqIb5VN.jpg"></p>
+<pre class=" language-c"><code class="language-c">cmp al<span class="token punctuation">,</span> <span class="token number">0x41</span>    <span class="token comment" spellcheck="true">// al 的值和 A(0x41) 比较</span>
+jb <span class="token number">0x00401385</span>   <span class="token comment" spellcheck="true">// 如果小于就跳转</span>
+cmp al<span class="token punctuation">,</span> <span class="token number">0x5A</span>    <span class="token comment" spellcheck="true">// al 的值和 Z(0x5A) 比较</span>
+jae <span class="token number">0x00401388</span>  <span class="token comment" spellcheck="true">// 如果高于等于就跳转</span></code></pre>
+<p><img alt="10.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/29/7Jxc5wNlHg8nbIr.jpg" data-index="9" data-src="https://i.loli.net/2020/12/29/7Jxc5wNlHg8nbIr.jpg"></p>
+<p><img alt="11.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/29/SYdDJfinZja3pvG.jpg" data-index="10" data-src="https://i.loli.net/2020/12/29/SYdDJfinZja3pvG.jpg"></p>
+<p>我们这里还需要再注意一下它跳转的地址，加上我们之前的跳转一共有三个。第一个跳转（程序正常循环结束：pop esi，并跳转到 call-2）；第二个跳转（password 的值是数字：esi+1，并跳转循环）；第三个跳转（password 的值是字母：跳转到 call-1）</p>
+<p>很明显这里的第三次跳转是错误的，因为它没有正常的进行循环判断；第一次跳转可能是用来生成正确的序列号；第二次跳转可能是正常的序列号判断。</p>
+<blockquote>
+<p>这里没判断到 A~Z 之间的字符串</p>
+</blockquote>
+<p>我们正常循环结束到 call 指令处，可以看到这里把之前压入栈中的 password ，又重新弹出给 esi 寄存器了。</p>
+<p><img alt="12.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/29/DwpvFZIg4ySu6t9.jpg" data-index="11" data-src="https://i.loli.net/2020/12/29/DwpvFZIg4ySu6t9.jpg"></p>
+<p>步入 call-2 的部分，查看其中的算法。</p>
+<p><img alt="13.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/29/64Avk9RWryYsnuK.jpg" data-index="12" data-src="https://i.loli.net/2020/12/29/64Avk9RWryYsnuK.jpg"></p>
+<p>先把寄存器清零</p>
+<p><img alt="14.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/29/q395OkYLdn7HGPv.jpg" data-index="13" data-src="https://i.loli.net/2020/12/29/q395OkYLdn7HGPv.jpg"></p>
+<p>然后将 4021A3 内存地址中的数据（Messing_in_byte）存入 cl</p>
+<p><img alt="15.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/29/KNujaBLfdzwhMP1.jpg" data-index="14" data-src="https://i.loli.net/2020/12/29/KNujaBLfdzwhMP1.jpg"></p>
+<pre class=" language-c"><code class="language-c">mov bl<span class="token punctuation">,</span> byte ptr ds<span class="token punctuation">:</span><span class="token punctuation">[</span>esi<span class="token punctuation">]</span>   <span class="token comment" spellcheck="true">// password 存入 bl 中</span>
+test bl<span class="token punctuation">,</span> bl                 <span class="token comment" spellcheck="true">// 测试 bl 是否为空</span>
+je <span class="token number">0x004013B1</span>               <span class="token comment" spellcheck="true">// 值为空就跳出循环</span></code></pre>
+<p><img alt="16.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/joCR3OvK94uxIDk.jpg" data-index="15" data-src="https://i.loli.net/2020/12/30/joCR3OvK94uxIDk.jpg"></p>
+<pre class=" language-c"><code class="language-c">xor bl<span class="token punctuation">,</span> cl      <span class="token comment" spellcheck="true">// bl = bl xor cl</span>
+mov byte ptr ds<span class="token punctuation">:</span><span class="token punctuation">[</span>esi<span class="token punctuation">]</span><span class="token punctuation">,</span> bl   <span class="token comment" spellcheck="true">// 把 bl 存入 esi 内存地址处。</span></code></pre>
+<p>可以看到这里把异或出来的值替换到原来的 password 处</p>
+<p><img alt="18.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/9YkWf6uSo7AdLzm.jpg" data-index="16" data-src="https://i.loli.net/2020/12/30/9YkWf6uSo7AdLzm.jpg"></p>
+<p><img alt="17.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/wNSLAvhqz3BCinW.jpg" data-index="17" data-src="https://i.loli.net/2020/12/30/wNSLAvhqz3BCinW.jpg"></p>
+<p><img alt="19.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/g4OzJwjXm1aE97x.jpg" data-index="18" data-src="https://i.loli.net/2020/12/30/g4OzJwjXm1aE97x.jpg"></p>
+<pre class=" language-c"><code class="language-c">inc esi
+inc edi
+jmp <span class="token number">0x0040139D</span></code></pre>
+<p>结束第一次循环</p>
+<p><img alt="20.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/l3Rr7TSFMNkt4zE.jpg" data-index="19" data-src="https://i.loli.net/2020/12/30/l3Rr7TSFMNkt4zE.jpg"></p>
+<p>循环结束后，可以看到此时的 “123456” 计算成了 “|W@G\X”。继续单步运行</p>
+<p><img alt="21.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/AXLKdTMkvWsOCBj.jpg" data-index="20" data-src="https://i.loli.net/2020/12/30/AXLKdTMkvWsOCBj.jpg"></p>
+<p>继续单步运行</p>
+<p><img alt="22.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/MjQPyTUGZAlaerK.jpg" data-index="21" data-src="https://i.loli.net/2020/12/30/MjQPyTUGZAlaerK.jpg"></p>
+<p>执行到 call 指令处</p>
+<p><img alt="23.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/58FBtD4QGHplMUS.jpg" data-index="22" data-src="https://i.loli.net/2020/12/30/58FBtD4QGHplMUS.jpg"></p>
+<p>单步步入，寄存器清零</p>
+<p><img alt="24.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/OwARMq3kDSxopnN.jpg" data-index="23" data-src="https://i.loli.net/2020/12/30/OwARMq3kDSxopnN.jpg"></p>
+<pre class=" language-c"><code class="language-c">mov cl<span class="token punctuation">,</span> byte ptr ds<span class="token punctuation">:</span><span class="token punctuation">[</span><span class="token number">0x00402118</span><span class="token punctuation">]</span></code></pre>
+<p>我们转到内存数据窗口查看这个数据，发现这个就是我们输入序列号的字符数</p>
+<p><img alt="25.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/RmEPciWBh8XlKea.jpg" data-index="24" data-src="https://i.loli.net/2020/12/30/RmEPciWBh8XlKea.jpg"></p>
+<pre class=" language-c"><code class="language-c">mov esi<span class="token punctuation">,</span> dword ptr ss<span class="token punctuation">:</span><span class="token punctuation">[</span>esp<span class="token operator">+</span><span class="token number">0x4</span><span class="token punctuation">]</span></code></pre>
+<p>生成的序列号存到 esi 中</p>
+<p><img alt="26.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/lg8IM37TaqibFXR.jpg" data-index="25" data-src="https://i.loli.net/2020/12/30/lg8IM37TaqibFXR.jpg"></p>
+<blockquote>
+<p>这里多个反斜杠，这个应该是转义字符串</p>
+</blockquote>
+<pre class=" language-c"><code class="language-c">mov edi<span class="token punctuation">,</span> <span class="token number">0x402150</span></code></pre>
+<p><img alt="27.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/61K7igoLNs9DOHA.jpg" data-index="26" data-src="https://i.loli.net/2020/12/30/61K7igoLNs9DOHA.jpg"></p>
+<pre class=" language-c"><code class="language-c"><span class="token comment" spellcheck="true">// repe 是一个串操作前缀，它重复串操作指令，每重复一次 ECX 的值就减 1，一直到 CX 为 0 或 ZF 为 0 时停止。</span>
+<span class="token comment" spellcheck="true">// cmpsb 是字符串比较指令，把 ESI 指向的数据与 EDI 指向的数一个一个的进行比较。</span>
+repe cmpsb     <span class="token comment" spellcheck="true">// 比较 esi 和 edi 的字符串。如果值相同就继续比较，如果不相同就不继续比较</span>
+<span class="token comment" spellcheck="true">// 也就是说如果 ecx 循环的值是 0 ，就说明两个值相同。ecx 的值不为 0，两个值就是不相同的。</span></code></pre>
+<p><img alt="28.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/KZ4UrGQiYIzOxFJ.jpg" data-index="27" data-src="https://i.loli.net/2020/12/30/KZ4UrGQiYIzOxFJ.jpg"></p>
+<p><img alt="29.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/1qyuxIRgd5tDkb9.jpg" data-index="28" data-src="https://i.loli.net/2020/12/30/1qyuxIRgd5tDkb9.jpg"></p>
+<p>我们这里把之前 xor 的值 和 比较的值都记录下来。</p>
+<pre class=" language-c"><code class="language-c">异或值：Messing_in_bytes
+比较值：<span class="token number">31</span>（<span class="token number">0x1F</span>）、<span class="token number">44</span>（<span class="token number">0x2C</span>）、<span class="token number">55</span>（<span class="token number">0x37</span>）、<span class="token number">54</span>（<span class="token number">0x36</span>）、<span class="token number">59</span>（<span class="token number">0x3B</span>）、<span class="token number">61</span>（<span class="token number">0x3D</span>）、<span class="token number">40</span>（<span class="token number">0x28</span>）、<span class="token number">25</span>（<span class="token number">0x19</span>）、<span class="token number">61</span>（<span class="token number">0x3D</span>）、<span class="token number">38</span>（<span class="token number">0x26</span>）、<span class="token number">26</span>（<span class="token number">0x1A</span>）、<span class="token number">49</span>（<span class="token number">0x31</span>）、<span class="token number">45</span>（<span class="token number">0x2D</span>）、<span class="token number">59</span>（<span class="token number">0x3B</span>）、<span class="token function">55</span><span class="token punctuation">(</span><span class="token number">0x37</span><span class="token punctuation">)</span>、<span class="token function">62</span><span class="token punctuation">(</span><span class="token number">0x3E</span><span class="token punctuation">)</span></code></pre>
+<p>继续单步执行</p>
+<pre class=" language-c"><code class="language-c">add esp<span class="token punctuation">,</span> <span class="token number">0x4</span>    <span class="token comment" spellcheck="true">// esp + 4</span>
+test cl<span class="token punctuation">,</span> cl     <span class="token comment" spellcheck="true">// 判断 cl 是否为 0</span>
+je <span class="token number">0x0040124A</span>   <span class="token comment" spellcheck="true">// cl 为 0 跳转正确，cl 不为 0 跳转错误</span></code></pre>
+<p><img alt="30.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/tvifwVrgBSxDoQq.jpg" data-index="29" data-src="https://i.loli.net/2020/12/30/tvifwVrgBSxDoQq.jpg"></p>
+<p>我们现在再来分析一下算法部分：</p>
+<pre class=" language-c"><code class="language-c">序列号 xor Messing_in_bytes <span class="token operator">=</span> 比较值
+
+也就是说：序列号 <span class="token operator">=</span> Messing_in_bytes xor 比较值
+
+
+<span class="token comment" spellcheck="true">// 正确序列号</span>
+<span class="token function">M</span><span class="token punctuation">(</span><span class="token number">0x4D</span><span class="token punctuation">)</span> xor <span class="token number">1F</span> <span class="token operator">=</span> <span class="token number">82</span> <span class="token operator">=</span> R
+<span class="token function">e</span><span class="token punctuation">(</span><span class="token number">0x65</span><span class="token punctuation">)</span> xor 2C <span class="token operator">=</span> <span class="token number">73</span> <span class="token operator">=</span> I
+<span class="token function">s</span><span class="token punctuation">(</span><span class="token number">0x73</span><span class="token punctuation">)</span> xor <span class="token number">37</span> <span class="token operator">=</span> <span class="token number">68</span> <span class="token operator">=</span> D
+<span class="token function">s</span><span class="token punctuation">(</span><span class="token number">0x73</span><span class="token punctuation">)</span> xor <span class="token number">36</span> <span class="token operator">=</span> <span class="token number">69</span> <span class="token operator">=</span> E
+<span class="token function">i</span><span class="token punctuation">(</span><span class="token number">0x69</span><span class="token punctuation">)</span> xor 3B <span class="token operator">=</span> <span class="token number">59</span> <span class="token operator">=</span> <span class="token punctuation">;</span>
+<span class="token function">n</span><span class="token punctuation">(</span><span class="token number">0x6E</span><span class="token punctuation">)</span> xor 3D <span class="token operator">=</span> <span class="token number">83</span> <span class="token operator">=</span> S
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre>
+<p><img alt="31.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/Ga7vMKJLO2norpA.jpg" data-index="30" data-src="https://i.loli.net/2020/12/30/Ga7vMKJLO2norpA.jpg"></p>
+<p><img alt="32.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/9jronepFdgA6TDt.jpg" data-index="31" data-src="https://i.loli.net/2020/12/30/9jronepFdgA6TDt.jpg"></p>
+<blockquote>
+<p>这里的序列号是固定值，就不编写注册机了。</p>
+</blockquote>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a href="https://blog.csdn.net/fulinus/article/details/8277442" target="_blank" rel="noopener">repe cmpsb指令解析</a></p>
+
+                </article>
+                <ul class="tags-postTags">
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    
+    <nav id="gobottom" class="pagination">
+        
+        <a class="prev-post" title="搭建个人博客" href="/2019/08/06/da-jian-ge-ren-bo-ke/">
+            ← 搭建个人博客
+        </a>
+        
+        <span class="prev-next-post">·</span>
+        
+        <a class="next-post" title="x64dbg-算法分析二" href="/1970/01/01/x64dbg-suan-fa-fen-xi-er/">
+            x64dbg-算法分析二 →
+        </a>
+        
+    </nav>
+
+    
+    <div class="inner">
+        <div id="comment"></div>
+    </div>
+    
+</div>
+
+<div class="toc-bar">
+    <div class="toc-btn-bar">
+        <a href="#site-main" class="toc-btn">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M793.024 710.272a32 32 0 1 0 45.952-44.544l-310.304-320a32 32 0 0 0-46.4 0.48l-297.696 320a32 32 0 0 0 46.848 43.584l274.752-295.328 286.848 295.808z"/></svg>
+        </a>
+        <div class="toc-btn toc-switch">
+            <svg class="toc-open" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M779.776 480h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M779.776 672h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M256 288a32 32 0 1 0 0 64 32 32 0 0 0 0-64M392.576 352h387.2a32 32 0 0 0 0-64h-387.2a32 32 0 0 0 0 64M256 480a32 32 0 1 0 0 64 32 32 0 0 0 0-64M256 672a32 32 0 1 0 0 64 32 32 0 0 0 0-64"/></svg>
+            <svg class="toc-close hide" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M512 960c-247.039484 0-448-200.960516-448-448S264.960516 64 512 64 960 264.960516 960 512 759.039484 960 512 960zM512 128.287273c-211.584464 0-383.712727 172.128262-383.712727 383.712727 0 211.551781 172.128262 383.712727 383.712727 383.712727 211.551781 0 383.712727-172.159226 383.712727-383.712727C895.712727 300.415536 723.551781 128.287273 512 128.287273z"/><path d="M557.05545 513.376159l138.367639-136.864185c12.576374-12.416396 12.672705-32.671738 0.25631-45.248112s-32.704421-12.672705-45.248112-0.25631l-138.560301 137.024163-136.447897-136.864185c-12.512727-12.512727-32.735385-12.576374-45.248112-0.063647-12.512727 12.480043-12.54369 32.735385-0.063647 45.248112l136.255235 136.671523-137.376804 135.904314c-12.576374 12.447359-12.672705 32.671738-0.25631 45.248112 6.271845 6.335493 14.496116 9.504099 22.751351 9.504099 8.12794 0 16.25588-3.103239 22.496761-9.247789l137.567746-136.064292 138.687596 139.136568c6.240882 6.271845 14.432469 9.407768 22.65674 9.407768 8.191587 0 16.352211-3.135923 22.591372-9.34412 12.512727-12.480043 12.54369-32.704421 0.063647-45.248112L557.05545 513.376159z"/></svg>
+        </div>
+        <a href="#gobottom" class="toc-btn">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M231.424 346.208a32 32 0 0 0-46.848 43.584l297.696 320a32 32 0 0 0 46.4 0.48l310.304-320a32 32 0 1 0-45.952-44.544l-286.848 295.808-274.752-295.36z"/></svg>
+        </a>
+    </div>
+    <div class="toc-main">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#观察程序"><span class="toc-text">观察程序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#算法分析"><span class="toc-text">算法分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#reference"><span class="toc-text">reference</span></a></li></ol>
+    </div>
+</div>
+
+
+
+
+
+
+	</div>
+	
+
+
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+  <header class="read-next-card-header">
+    <small class="read-next-card-header-sitetitle">— 9unk —</small>
+    <h3 class="read-next-card-header-title">最新文章</h3>
+  </header>
+  <div class="read-next-divider">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/>
+    </svg>
+  </div>
+  <div class="read-next-card-content">
+    <ul>
+      
+      
+      
+      <li>
+        <a href="/2020/12/27/x64dbg-suan-fa-fen-xi-yi/">x64dbg-算法分析一</a>
+      </li>
+      
+      
+      
+      <li>
+        <a href="/2020/12/21/x64dbg-ying-jian-bian-ma-xu-lie-hao-xun-zong-wu/">x64dbg-硬件编码序列号寻踪五</a>
+      </li>
+      
+      
+      
+      <li>
+        <a href="/2020/12/21/x64dbg-ying-jian-bian-ma-xu-lie-hao-xun-zong-si/">x64dbg-硬件编码序列号寻踪四</a>
+      </li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+  </div>
+  <footer class="read-next-card-footer">
+    <a href="/archives">  MORE  → </a>
+  </footer>
+</article>
+
+            
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+    <header class="read-next-card-header tagcloud-card">
+        <h3 class="read-next-card-header-title">分类</h3>
+    </header>
+    <div class="read-next-card-content">
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Citrix/">Citrix</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web-Security/">Web Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/github/">github</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/system-security/">system security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%97%E9%80%8F%E5%B7%A5%E5%85%B7/">渗透工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E6%99%AE/">科普</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A0%81/">编码</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%B6%85%E8%9E%8D%E5%90%88/">超融合</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%9A%E4%BF%A1/">通信</a></li></ul>
+    </div>
+</article>
+
+
+            
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+	<header class="read-next-card-header tagcloud-card">
+		<h3 class="read-next-card-header-title">标签云</h3>
+	</header>
+	<div class="read-next-card-content-ext">
+		<a href="/tags/8086CPU/" style="font-size: 14px;">8086CPU</a> <a href="/tags/ELK/" style="font-size: 14px;">ELK</a> <a href="/tags/OllyDdbg/" style="font-size: 14px;">OllyDdbg</a> <a href="/tags/x64dbg/" style="font-size: 16.5px;">x64dbg</a> <a href="/tags/%E6%B1%87%E7%BC%96/" style="font-size: 24px;">汇编</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" style="font-size: 19px;">漏洞复现</a> <a href="/tags/%E9%80%86%E5%90%91/" style="font-size: 21.5px;">逆向</a> <a href="/tags/%E9%9D%B6%E6%9C%BA/" style="font-size: 19px;">靶机</a>
+	</div>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+	
+
+
+
+
+<div id="search" class="search-overlay">
+    <div class="search-form">
+        
+        <div class="search-overlay-logo">
+        	<img src="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png" alt="9unk">
+        </div>
+        
+        <input id="local-search-input" class="search-input" type="text" name="search" placeholder="搜索 ...">
+        <a class="search-overlay-close" href="#"></a>
+    </div>
+    <div id="local-search-result"></div>
+</div>
+
+<footer class="site-footer outer">
+	<div class="site-footer-content inner">
+		<div class="copyright">
+			<a href="/" title="9unk">9unk © 2020</a>
+			
+				
+    		
+		</div>
+		<nav class="site-footer-nav">
+			
+			<a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+			<a href="https://github.com/xzhih/hexo-theme-casper" title="Casper" target="_blank" rel="noopener">Casper</a>
+		</nav>
+	</div>
+</footer>
+	
+
+
+<script>
+    if(window.navigator && navigator.serviceWorker) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for(let registration of registrations) {
+                registration.unregister()
+            }
+        })
+    }
+</script>
+
+
+<script id="scriptLoad" src="/js/allinone.min.js" async></script>
+
+
+<script>
+    document.getElementById('scriptLoad').addEventListener('load', function () {
+        
+        
+            var bLazy = new Blazy();
+        
+
+        
+        
+
+        
+        
+        
+            searchFunc("/");
+        
+        
+    })
+</script>
+
+
+
+
+
+
+<script id="valineScript" src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+<script>
+    document.getElementById('valineScript').addEventListener("load", function() {
+        new Valine({
+            el: '#comment' ,
+            verify: false,
+            notify: false,
+            appId: 'lhq4C91rscRdbbVHPYesVhOz-gzGzoHsz',
+            appKey: 'EHeksCG71RId7DpUxMiocJQ4',
+            placeholder: '你是魔鬼吧，都不留言！',
+            pageSize: 10,
+            avatar: 'mm',
+            visitor: 
+        })
+    });
+</script>
+
+
+
+
+
+
+
+</body></html>
