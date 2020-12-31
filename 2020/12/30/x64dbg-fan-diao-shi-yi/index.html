@@ -11,7 +11,7 @@
 	<link rel="preconnect" href="//9qpuwspm.api.lncld.net">
 	<link rel="preconnect" href="//gravatar.loli.net">
 
-	<title>8086汇编-数据处理的两个基本问题 | 9unk</title>
+	<title>x64dbg-反调试一 | 9unk</title>
 
 	<meta name="HandheldFriendly" content="True">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -39,14 +39,14 @@
 
 	<meta property="og:site_name" content="9unk">
 	<meta property="og:type" content="article">
-	<meta property="og:title" content="8086汇编-数据处理的两个基本问题 | 9unk">
+	<meta property="og:title" content="x64dbg-反调试一 | 9unk">
 	<meta property="og:description" content>
-	<meta property="og:url" content="http://yoursite.com/2020/10/04/8086-hui-bian-shu-ju-chu-li-de-liang-ge-ji-ben-wen-ti/">
+	<meta property="og:url" content="http://yoursite.com/2020/12/30/x64dbg-fan-diao-shi-yi/">
 
 	
-	<meta property="article:published_time" content="2020-10-04T21:10:00+08:00"> 
+	<meta property="article:published_time" content="2020-12-30T18:12:00+08:00"> 
 	<meta property="article:author" content="9nuk">
-	<meta property="article:published_first" content="9unk, /2020/10/04/8086-hui-bian-shu-ju-chu-li-de-liang-ge-ji-ben-wen-ti/">
+	<meta property="article:published_first" content="9unk, /2020/12/30/x64dbg-fan-diao-shi-yi/">
 	
 
 	
@@ -128,179 +128,158 @@
     <div class="inner">
         <header class="post-full-header">
             <div class="post-full-meta">
-                <time class="post-full-meta-date" datetime="2020-10-04T13:41:05.000Z">
-                    2020-10-4
+                <time class="post-full-meta-date" datetime="2020-12-30T10:26:28.000Z">
+                    2020-12-30
                 </time>
                 
                 <span class="date-divider">/</span>
                 
                 
             </div>
-            <h1 class="post-full-title">8086汇编-数据处理的两个基本问题</h1>
+            <h1 class="post-full-title">x64dbg-反调试一</h1>
         </header>
         <div class="post-full no-image">
             
             <div class="post-full-content">
                 <article id="photoswipe" class="markdown-body">
-                    <h1 id="bx、si、di-和-bp"><a href="#bx、si、di-和-bp" class="headerlink" title="bx、si、di 和 bp"></a>bx、si、di 和 bp</h1><ol>
-<li>在 8086CPU 中，只有 bx、si、di、bp 这  4 个寄存器可以使用在“[…]” 中来进行内存单元寻址。</li>
-</ol>
-<p>比如下面的指令是正确的：</p>
-<pre class=" language-asm"><code class="language-asm">mov ax, [bx]
-mov ax, [bx+si]
-mov ax, [bx+di]
-mov ax, [bp]
-mov ax, [bp+si]
-mov ax, [bp+di]</code></pre>
-<p>下面的指令是错误的：</p>
-<pre class=" language-asm"><code class="language-asm">mov ax, [cx]
-mov ax, [ax]
-mov ax, [dx]
-mov ax, [ds]</code></pre>
-<ol start="2">
-<li>在 “[…]”中，这 4 个寄存器可以单个出现，或只能以 4 中组合出现：bx 和 si、bx 和 di、bp 和 si 、bp 和 di。</li>
-</ol>
-<p>比如下面的指令是正确的：</p>
-<pre class=" language-asm"><code class="language-asm">mov ax, [bx]
-mov ax, [si]
-mov ax, [di]
-mov ax, [bp]
-mov ax, [bx+si]
-mov ax, [bx+di]
-mov ax, [bp+si]
-mov ax, [bp+di]
-mov ax, [bx+si+idata]
-mov ax, [bx+di+idata]]
-mov ax, [bp+si+idata]]
-mov ax, [bp+di+idata]]</code></pre>
-<p>下面的指令是错误的：</p>
-<pre class=" language-asm"><code class="language-asm">mov ax, [bx+bp]
-mov ax, [si+di]</code></pre>
-<ol start="3">
-<li>只要在“[…]”中使用寄存器 bp，而指令中没有给出段地址，段地址默认就在 ss 中。</li>
-</ol>
-<p>比如下面的指令：</p>
-<pre class=" language-asm"><code class="language-asm">mov ax, [bp]
-mov ax, [bp+idata]
-mov ax, [bp+si]
-mov ax, [bp+si+idata]        ;这些偏移地址的段地址都是 ss</code></pre>
-<h2 id="机器指令处理数据在什么地方"><a href="#机器指令处理数据在什么地方" class="headerlink" title="机器指令处理数据在什么地方"></a>机器指令处理数据在什么地方</h2><p>绝大部分机器指令都是进行数据处理的指令，处理大致可分为 3 类：读取、写入、运算。在机器指令这一层来讲，并不关心数据的值是多少，而关心指令执行前一刻，它将要处理的数据所在的位置。指令执行前，所要处理的数据可以在 3 个地方：CPU 内部、内存、端口。</p>
-<p>比如下表所列的指令：</p>
-<p><img alt="130.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/27/utSKIH19Y3kE8xb.png" data-index="0" data-src="https://i.loli.net/2020/07/27/utSKIH19Y3kE8xb.png"></p>
-<h2 id="汇编语言中数据位置的表达"><a href="#汇编语言中数据位置的表达" class="headerlink" title="汇编语言中数据位置的表达"></a>汇编语言中数据位置的表达</h2><p>在汇编语言中有  3  个概念来表达数据的位置。</p>
-<ol>
-<li>立即数（idata）<br>对于机器指令中的数据（即指令中的进制数、常量）（执行前在 CPU 的指令缓存器中），在汇编语言中称为：立即数（idata），在汇编指令中直接给出。</li>
-</ol>
-<p>例：</p>
-<pre class=" language-asm"><code class="language-asm">mov ax, 1
-add bx, 2000H
-or bx, 00010000b
-mov al, 'a'</code></pre>
-<ol start="2">
-<li>寄存器<br>指令要处理数据在寄存器中，在汇编指令中给出相应的寄存器名。</li>
-</ol>
-<p>例：</p>
-<pre class=" language-asm"><code class="language-asm">mov ax, bx
-mov ds, ax
-mov ds:[0], [bx]</code></pre>
-<ol start="3">
-<li>段寄存器（SA）和偏移地址（EA）<br>指令要处理的数据在内存中，在汇编中指令中可用 [X] 的格式给出 EA、SA 在某个寄存器中。</li>
-</ol>
-<p>存放段地址的寄存器可以是默认的，比如：</p>
-<pre class=" language-asm"><code class="language-asm">mov ax, [0]
-mov ax, [di]
-mov ax, [bx+8]
-mov ax, [bx+si]
-mov ax, [bx+si+8]</code></pre>
-<p>等指令，段地址默认在 ds 中；</p>
-<pre class=" language-asm"><code class="language-asm">mov ax, [bp]
-mov ax, [bp+8]
-mov ax, [bp+si]
-mov ax, [bp+si+8]</code></pre>
-<p>等指令，段地址默认在 ss 中</p>
-<p>也可以指定寄存器存放的段地址，比如以下指令：</p>
-<pre class=" language-asm"><code class="language-asm">mov ax, ds:[bp]
-mov ax, es:[bx]
-mov ax, ss:[bx+si]
-mov ax, cs:[bx+si+8]</code></pre>
-<h2 id="寻址方式"><a href="#寻址方式" class="headerlink" title="寻址方式"></a>寻址方式</h2><p>当数据放在内存的时候，我么可以用多种方式来给定这个内存单元的偏移地址，这种定位内存单元的方法被称为寻址方式。</p>
-<p>8086CPU 有多种寻址方式，这里进行以下总结：<br><img alt="131.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/07/27/yj7sVielwquFhJI.png" data-index="1" data-src="https://i.loli.net/2020/07/27/yj7sVielwquFhJI.png"></p>
-<h2 id="指令要处理的数据有多长"><a href="#指令要处理的数据有多长" class="headerlink" title="指令要处理的数据有多长"></a>指令要处理的数据有多长</h2><p>8086CPU 的指令，可以处理两种尺寸的数据，byte 和 word。所以在机器指令中要指明，指令进行的是字操作还是字节操作。对于这个问题，汇编语言中用以下方法处理。</p>
-<ol>
-<li>通过寄存器名指明要处理的数据尺寸。</li>
-</ol>
-<p>例如下面的指令中，寄存器名指明了指令进行的是字操作。</p>
-<pre class=" language-asm"><code class="language-asm">mov ax, 1
-mov bx, ds:[0]
-mov ds, ax
-mov ds:[0], ax
-inc ax
-add ax, 1000</code></pre>
-<p>下面指令是字节操作</p>
-<pre class=" language-asm"><code class="language-asm">mov al, 1
-mov al, bl
-mov al, ds:[0]
-mov ds:[0], al
-inc al
-add al, 100</code></pre>
-<ol start="2">
-<li>在没有寄存器名存在的情况下，使用操作符 X ptr 指内存单元的长度，X 在汇编中的指令可以为 word 或 byte。</li>
-</ol>
-<p>例如，下面的指令中，用 word ptr 指明了指令访问的内存单元是一个字单元。</p>
-<pre class=" language-asm"><code class="language-asm">mov word ptr ds:[0], 1
-inc word ptr [bx]
-inc word ptr ds:[0]
-add word ptr [bx], 2</code></pre>
-<p>下面的指令中，用 byte ptr 指明了指令访问的内存单元是一个字节单元。</p>
-<pre class=" language-asm"><code class="language-asm">mov byte ptr ds;[0], 1
-inc byte ptr [bx]
-inc byte ptr ds:[0]
-add byte ptr [bx], 2</code></pre>
-<ol start="3">
-<li>其他方法<br>有些指令默认了访问的字单元还是字节单元，比如 push [1000H] 就不用指明访问的是字单元还是字节单元，因为 push  指令只进行字操作。</li>
-</ol>
-<h2 id="div-指令"><a href="#div-指令" class="headerlink" title="div 指令"></a>div 指令</h2><p>div 是除法指令，使用 div 做除法的时候注意以下问题。</p>
-<ol>
-<li><p>除数：有 8 位和 16 位两种，在一个寄存器或内存单元中。</p>
-</li>
-<li><p>被除数：默认放在 AX 或 DX 和 AX 中，如果除数位 8 位，被除数则为16 位，默认在 AX 中存放，如果除数为 16 位，被除数则为 32 位，在 DX 和 AX 中存放，DX 存放在高 16 位，AX 存放 低 16位</p>
-</li>
-<li><p>结果：如果除数为 8 位，则 al 存储除法操作的商，AH 存储除法操作的余数；如果除法为 16 位，则 AX 存储除法操作的商，DX 存储除法操作的余数。</p>
-</li>
-</ol>
-<p>指令格式如下：</p>
-<pre class=" language-asm"><code class="language-asm">div reg
-div 内存单元</code></pre>
-<p>编程，利用除法指令计算 100001/100</p>
-<ol>
-<li><p>100001 > 65535，已经超出了一个 16 位，所以需要用 DX（存储高位） 和 AX（存储低位）</p>
-</li>
-<li><p>100 < 255，可以存储 8 位寄存器，但是因为被除数是 32 位的，除数必须为 16 位，所以要用一个 16 位寄存器来存放除数。</p>
-</li>
-</ol>
-<p><img alt="140.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/08/31/rZQ2c9WSjen6qPM.png" data-index="2" data-src="https://i.loli.net/2020/08/31/rZQ2c9WSjen6qPM.png"></p>
-<h2 id="伪指令-dd"><a href="#伪指令-dd" class="headerlink" title="伪指令 dd"></a>伪指令 dd</h2><p>dd（double word，双字）型数据，占 2 个字。</p>
-<p>使用 div 计算 data 段中的第一个数处以第二个数据后的结果，商存在第三个数据的存储单元中。</p>
-<pre class=" language-asm"><code class="language-asm">data segment
-  dd 100001
-  dw 100
-  dw 0
-data ends</code></pre>
-<p><img alt="141.png" class="post-img b-lazy" data-img="https://i.loli.net/2020/08/31/usnobtIGgZ1ziFf.png" data-index="3" data-src="https://i.loli.net/2020/08/31/usnobtIGgZ1ziFf.png"></p>
-<h2 id="dup"><a href="#dup" class="headerlink" title="dup"></a>dup</h2><p>dup 十一个操作符，在汇编语言中同 db、dw、dd 等一样，也是由编译器识别处理的符号。它是和 db、dw、dd等数据定义伪指令配合使用，用来进行数据的重复。</p>
-<p>指令格式：</p>
-<pre class=" language-asm"><code class="language-asm">db 重复的次数 dup (重复的字节型数据)
-dw 重复的次数 dup (重复的字型数据)
-dd 重复的次数 dup (重复的双字型数据)</code></pre>
-<p>示例：</p>
-<pre class=" language-asm"><code class="language-asm">//定义 200 个值为 0 的字节型数据
-db 200 dup (0)</code></pre>
+                    <h1 id="目标程序"><a href="#目标程序" class="headerlink" title="目标程序"></a>目标程序</h1><p>程序下载：</p>
+<p><a href="https://9unkk.github.io/Download/Anti-debug/Crackme1.7z" target="_blank" rel="noopener">Crackme1</a></p>
+<p><a href="https://9unkk.github.io/Download/Anti-debug/SharpOD%20x64.7z" target="_blank" rel="noopener">SharpOD x64</a></p>
+<p>解压密码：9unk</p>
+<p>程序简介：本程序使用 API 函（IsDebuggerPresent）数检测 x64dbg。</p>
+<p>任务目标：绕过反调试机制，正确运行程序。</p>
+<h1 id="方法一（修改指令）"><a href="#方法一（修改指令）" class="headerlink" title="方法一（修改指令）"></a>方法一（修改指令）</h1><p>使用 “F9” 运行程序的时候，程序自动停止调试，如下图所示（此时应该考虑软件可能是用 API 函数-IsDebuggerPresent 来检测调试软件）。</p>
+<p><img alt="1.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/09/OuERfHiWVKrn59e.jpg" data-index="0" data-src="https://i.loli.net/2020/12/09/OuERfHiWVKrn59e.jpg"></p>
+<p>重新加载程序到主模块，并使用 “ctrl+N” 查看程序的 API。此时可以看到 IsDebuggerPresent 这个 API。</p>
+<p><img alt="2.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/09/OnmAN6epBJgf91y.jpg" data-index="1" data-src="https://i.loli.net/2020/12/09/OnmAN6epBJgf91y.jpg"></p>
+<p>双击 IsDebuggerPresent 跳转到汇编窗口，并设置 “F2” 断点。</p>
+<p><img alt="3.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/09/Mm4ctedOLnZ3z7p.jpg" data-index="2" data-src="https://i.loli.net/2020/12/09/Mm4ctedOLnZ3z7p.jpg"></p>
+<p>“F9” 运行到断点处，此时的 eax=0 。</p>
+<p><img alt="5.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/09/lgC9TkAnGmhv3Bc.jpg" data-index="3" data-src="https://i.loli.net/2020/12/09/lgC9TkAnGmhv3Bc.jpg"></p>
+<p>“ctrl+f9” 运行程序到返回处，此时的 eax=1 。</p>
+<p><img alt="6.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/09/G7mz6DNCR9Qx4pv.jpg" data-index="4" data-src="https://i.loli.net/2020/12/09/G7mz6DNCR9Qx4pv.jpg"></p>
+<p>尝试把 eax 的值改为 0，并运行程序看看。</p>
+<p><img alt="7.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/09/vBeEjFKyPJrR4b2.jpg" data-index="5" data-src="https://i.loli.net/2020/12/09/vBeEjFKyPJrR4b2.jpg"></p>
+<p><img alt="8.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/09/e7yPoigaZ41pI3c.jpg" data-index="6" data-src="https://i.loli.net/2020/12/09/e7yPoigaZ41pI3c.jpg"></p>
+<p>如上图所示程序运行成功，我们重新加载程序，运行到断点处。</p>
+<p><img alt="9.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/09/h13mN8y92MkcdJB.jpg" data-index="7" data-src="https://i.loli.net/2020/12/09/h13mN8y92MkcdJB.jpg"></p>
+<p>“F8” 单步运行程序到 ret 处，可以看到此时程序运行在 kernel32.dll 处。</p>
+<p><img alt="10.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/09/ISq7Ne3FcHPsjlQ.jpg" data-index="8" data-src="https://i.loli.net/2020/12/09/ISq7Ne3FcHPsjlQ.jpg"></p>
+<p>继续单步执行，此时程序返回到主模块。可以看到此时程序的第一个指令就是判断 eax 是否等于 0，下一个指令就是根据返回值做出相应的操作。</p>
+<p><img alt="11.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/09/NwmoPJvZDzqleRi.jpg" data-index="9" data-src="https://i.loli.net/2020/12/09/NwmoPJvZDzqleRi.jpg"></p>
+<p>把 “je” 指令 改成 “jmp” 无条件跳转指令。</p>
+<p><img alt="12.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/09/iY2SGgV7nUc9hbm.jpg" data-index="10" data-src="https://i.loli.net/2020/12/09/iY2SGgV7nUc9hbm.jpg"></p>
+<p>另存文件，并测试程序是否能正常运行。</p>
+<p><img alt="13.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/09/1bQIzMKHx65sSuL.jpg" data-index="11" data-src="https://i.loli.net/2020/12/09/1bQIzMKHx65sSuL.jpg"></p>
+<p><img alt="14.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/09/4VtUDG6y7Ouj9kQ.jpg" data-index="12" data-src="https://i.loli.net/2020/12/09/4VtUDG6y7Ouj9kQ.jpg"></p>
+<h1 id="方法二（修改内存数据）"><a href="#方法二（修改内存数据）" class="headerlink" title="方法二（修改内存数据）"></a>方法二（修改内存数据）</h1><h2 id="FS-寄存器"><a href="#FS-寄存器" class="headerlink" title="FS 寄存器"></a>FS 寄存器</h2><p>FS 寄存器指向当前活动线程的 TEB 结构（线程结构）</p>
+<table>
+<thead>
+<tr>
+<th align="center">偏移</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">000</td>
+<td align="center">指向SEH链指针</td>
+</tr>
+<tr>
+<td align="center">004</td>
+<td align="center">线程堆栈顶部</td>
+</tr>
+<tr>
+<td align="center">008</td>
+<td align="center">线程堆栈底部</td>
+</tr>
+<tr>
+<td align="center">00C</td>
+<td align="center">SubSystemTib</td>
+</tr>
+<tr>
+<td align="center">010</td>
+<td align="center">FiberData</td>
+</tr>
+<tr>
+<td align="center">014</td>
+<td align="center">ArbitraryUserPointer</td>
+</tr>
+<tr>
+<td align="center">018</td>
+<td align="center">FS段寄存器在内存中的镜像地址</td>
+</tr>
+<tr>
+<td align="center">020</td>
+<td align="center">进程PID</td>
+</tr>
+<tr>
+<td align="center">024</td>
+<td align="center">线程ID</td>
+</tr>
+<tr>
+<td align="center">02C</td>
+<td align="center">指向线程局部存储指针</td>
+</tr>
+<tr>
+<td align="center">030</td>
+<td align="center">PEB 结构地址（进程结构）</td>
+</tr>
+<tr>
+<td align="center">034</td>
+<td align="center">上个错误号</td>
+</tr>
+</tbody></table>
+<h2 id="PEB-结构"><a href="#PEB-结构" class="headerlink" title="PEB 结构"></a>PEB 结构</h2><p>PEB（Process Envirorment Block Structure）进程环境信息块，这里包含了一些进程信息。这个结构体中主要包含了调试信息，获取到这个调试信息就能知道程序是否被调试。</p>
+<pre class=" language-c"><code class="language-c"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> _PEB <span class="token punctuation">{</span>
+  BYTE                          Reserved1<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  BYTE                          BeingDebugged<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//被调试状态</span>
+  BYTE                          Reserved2<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  PVOID                         Reserved3<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  PPEB_LDR_DATA                 Ldr<span class="token punctuation">;</span>
+  PRTL_USER_PROCESS_PARAMETERS  ProcessParameters<span class="token punctuation">;</span>
+  BYTE                          Reserved4<span class="token punctuation">[</span><span class="token number">104</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  PVOID                         Reserved5<span class="token punctuation">[</span><span class="token number">52</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  PPS_POST_PROCESS_INIT_ROUTINE PostProcessInitRoutine<span class="token punctuation">;</span>
+  BYTE                          Reserved6<span class="token punctuation">[</span><span class="token number">128</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  PVOID                         Reserved7<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  ULONG                         SessionId<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> PEB<span class="token punctuation">,</span> <span class="token operator">*</span>PPEB<span class="token punctuation">;</span></code></pre>
+<blockquote>
+<p>我们看到第一个参数定义了 2 个字节，到第二个参数（调试状态）是结构体的第 3 个字节。</p>
+</blockquote>
+<h2 id="IsDebuggerPresent-函数运行原理"><a href="#IsDebuggerPresent-函数运行原理" class="headerlink" title="IsDebuggerPresent 函数运行原理"></a>IsDebuggerPresent 函数运行原理</h2><p>在这里 IsDebuggerPresent 函数有两条指令：</p>
+<pre class=" language-c"><code class="language-c">mov eax<span class="token punctuation">,</span> dword ptr fs<span class="token punctuation">:</span><span class="token punctuation">[</span><span class="token number">0x00000030</span><span class="token punctuation">]</span>
+movzx eax<span class="token punctuation">,</span> byte ptr ds<span class="token punctuation">:</span><span class="token punctuation">[</span>eax<span class="token operator">+</span><span class="token number">0x2</span><span class="token punctuation">]</span></code></pre>
+<p>第一个命令：当前 fs 寄存器，选择 030 的偏移（PEB 结构）</p>
+<p>第二个命令：传送 [eax+2] 内存地址的字节给 eax 寄存器 </p>
+<p><img alt="15.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/K7ihc1kPQHv9Fnt.jpg" data-index="13" data-src="https://i.loli.net/2020/12/30/K7ihc1kPQHv9Fnt.jpg"></p>
+<blockquote>
+<p>可以看到这里将第三个字节 “01” 存到了 eax 中。1 表示程序被调试</p>
+</blockquote>
+<h2 id="修改特殊字节实现反调试"><a href="#修改特殊字节实现反调试" class="headerlink" title="修改特殊字节实现反调试"></a>修改特殊字节实现反调试</h2><p>该方法在程序刚刚启动的时候就可以定位到特殊字节，现在把该字节修改为 0</p>
+<p><img alt="16.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/2feCAgEni8QRo3W.jpg" data-index="14" data-src="https://i.loli.net/2020/12/30/2feCAgEni8QRo3W.jpg"></p>
+<p>继续 “F9” 运行程序</p>
+<p><img alt="17.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/aPujKYkyZ4w7beN.jpg" data-index="15" data-src="https://i.loli.net/2020/12/30/aPujKYkyZ4w7beN.jpg"></p>
+<h1 id="方法三（插件）"><a href="#方法三（插件）" class="headerlink" title="方法三（插件）"></a>方法三（插件）</h1><p>SharpOD x64</p>
+<p>将 SharpOD 插件放到相应的 plugins 目录中，并重启 x64dbg</p>
+<p><img alt="20.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/NjF5IDHfe1SkLla.jpg" data-index="16" data-src="https://i.loli.net/2020/12/30/NjF5IDHfe1SkLla.jpg"></p>
+<p>选中 插件 —> SharpOD x64 —> Options —> 勾选 “Hide PEB” —> “save”</p>
+<p><img alt="18.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/tXSW6fGlj18nVbT.jpg" data-index="17" data-src="https://i.loli.net/2020/12/30/tXSW6fGlj18nVbT.jpg"></p>
+<p><img alt="19.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/vL6tFSUQIf2gEwV.jpg" data-index="18" data-src="https://i.loli.net/2020/12/30/vL6tFSUQIf2gEwV.jpg"></p>
+<p>重启 x64dbg，加载运行程序</p>
+<p><img alt="21.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2020/12/30/o9T4BKxV1c5zdQD.jpg" data-index="19" data-src="https://i.loli.net/2020/12/30/o9T4BKxV1c5zdQD.jpg"></p>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a href="https://www.cnblogs.com/binlmmhc/p/6501545.html" target="_blank" rel="noopener">PEB结构学习</a></p>
+<p><a href="https://blog.csdn.net/yy_9117/article/details/85004899" target="_blank" rel="noopener">mov eax,dword ptr fs:[0] 指令</a></p>
 
                 </article>
                 <ul class="tags-postTags">
                     
                     <li>
                         <a href="/tags/%E6%B1%87%E7%BC%96/" rel="tag"># 汇编</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/%E9%80%86%E5%90%91/" rel="tag"># 逆向</a>
                     </li>
                     
                 </ul>
@@ -311,14 +290,10 @@ db 200 dup (0)</code></pre>
     
     <nav id="gobottom" class="pagination">
         
-        <a class="prev-post" title="8086汇编-转移指令的原理" href="/2020/10/04/8086-hui-bian-zhuan-yi-zhi-ling-de-yuan-li/">
-            ← 8086汇编-转移指令的原理
-        </a>
-        
         <span class="prev-next-post">·</span>
         
-        <a class="next-post" title="8086汇编-更灵活的定位内存地址的方法" href="/2020/09/26/8086-hui-bian-geng-ling-huo-de-ding-wei-nei-cun-di-zhi-de-fang-fa/">
-            8086汇编-更灵活的定位内存地址的方法 →
+        <a class="next-post" title="x64dbg-算法分析三.md" href="/2020/12/30/x64dbg-suan-fa-fen-xi-san/">
+            x64dbg-算法分析三.md →
         </a>
         
     </nav>
@@ -344,7 +319,7 @@ db 200 dup (0)</code></pre>
         </a>
     </div>
     <div class="toc-main">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#bx、si、di-和-bp"><span class="toc-text">bx、si、di 和 bp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#机器指令处理数据在什么地方"><span class="toc-text">机器指令处理数据在什么地方</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#汇编语言中数据位置的表达"><span class="toc-text">汇编语言中数据位置的表达</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#寻址方式"><span class="toc-text">寻址方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#指令要处理的数据有多长"><span class="toc-text">指令要处理的数据有多长</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#div-指令"><span class="toc-text">div 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#伪指令-dd"><span class="toc-text">伪指令 dd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dup"><span class="toc-text">dup</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#目标程序"><span class="toc-text">目标程序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#方法一（修改指令）"><span class="toc-text">方法一（修改指令）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#方法二（修改内存数据）"><span class="toc-text">方法二（修改内存数据）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#FS-寄存器"><span class="toc-text">FS 寄存器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PEB-结构"><span class="toc-text">PEB 结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IsDebuggerPresent-函数运行原理"><span class="toc-text">IsDebuggerPresent 函数运行原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改特殊字节实现反调试"><span class="toc-text">修改特殊字节实现反调试</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#方法三（插件）"><span class="toc-text">方法三（插件）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#reference"><span class="toc-text">reference</span></a></li></ol>
     </div>
 </div>
 
