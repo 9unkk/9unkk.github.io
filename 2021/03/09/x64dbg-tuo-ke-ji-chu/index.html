@@ -142,7 +142,12 @@
             
             <div class="post-full-content">
                 <article id="photoswipe" class="markdown-body">
-                    <h1 id="脱壳简介"><a href="#脱壳简介" class="headerlink" title="脱壳简介"></a>脱壳简介</h1><p>一个未加过壳的程序修改起来很方便，但是如果一个加过壳的或者自修改的程序，要想修改就比较困难，我们在调试器默认分析的入口点处修改程序时不起作用的，只有当壳把原程序区段解密完成后修改才能起作用。加过壳的程序，原程序代码段通常是被加密过的,我们想修改它就不那么容易了。</p>
+                    <h1 id="目标程序"><a href="#目标程序" class="headerlink" title="目标程序"></a>目标程序</h1><p>程序下载：</p>
+<p><a href="https://9unkk.github.io//Download/Basic/CRACKME.7z" target="_blank" rel="noopener">CRACKME</a></p>
+<p><a href="https://9unkk.github.io//Download/unpacking/CRACKME%20UPX.7z" target="_blank" rel="noopener">CRACKME UPX</a></p>
+<p>解压密码：9unk</p>
+<p>任务目标：学习了解脱壳步骤，以及理解 OEP、IAT 。</p>
+<h1 id="脱壳简介"><a href="#脱壳简介" class="headerlink" title="脱壳简介"></a>脱壳简介</h1><p>一个未加过壳的程序修改起来很方便，但是如果一个加过壳的或者自修改的程序，要想修改就比较困难，我们在调试器默认分析的入口点处修改程序时不起作用的，只有当壳把原程序区段解密完成后修改才能起作用。加过壳的程序，原程序代码段通常是被加密过的,我们想修改它就不那么容易了。</p>
 <p>加壳程序给目标程序加壳的原理通常是加密/压缩原程序各个区段,并且给目标程序添加一个或者多个区段作为原程序的引导代码(壳代码),然后将原程序入口点修改为外壳程序的入口点。如果我们将加过壳的程序用 x64dbg 加载的话, x64dbg 会停在壳的解密例程的入口点处,由此开始执行。</p>
 <p>壳的解密过程(外壳程序)首先会定位加密/压缩过的原程序的各个区段,将其解密/解压,然后跳转至 OEP(程序未加壳时的入口点)处开始执行。</p>
 <p>我们对比加壳前后的文件进行对比，可以发现加壳程序给原程序添加了额外的代码保护原程序，但是体积反而变小了。</p>
@@ -330,6 +335,10 @@
     
     <nav id="gobottom" class="pagination">
         
+        <a class="prev-post" title="x64dbg-手脱UPX" href="/2021/03/10/x64dbg-shou-tuo-upx/">
+            ← x64dbg-手脱UPX
+        </a>
+        
         <span class="prev-next-post">·</span>
         
         <a class="next-post" title="从零开始IDA-crackme分析" href="/2021/02/24/cong-ling-kai-shi-ida-crackme-fen-xi/">
@@ -359,7 +368,7 @@
         </a>
     </div>
     <div class="toc-main">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#脱壳简介"><span class="toc-text">脱壳简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#通常脱壳的基本步骤"><span class="toc-text">通常脱壳的基本步骤</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#OEP-寻踪总结"><span class="toc-text">OEP 寻踪总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#单步跟踪法"><span class="toc-text">单步跟踪法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ESP-定律法"><span class="toc-text">ESP 定律法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#操作步骤"><span class="toc-text">操作步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内存镜像法"><span class="toc-text">内存镜像法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#操作步骤-1"><span class="toc-text">操作步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一步到达-OEP"><span class="toc-text">一步到达 OEP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#方法一"><span class="toc-text">方法一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方法二"><span class="toc-text">方法二</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IAT（Import-Address-Tables）"><span class="toc-text">IAT（Import Address Tables）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是-IAT"><span class="toc-text">什么是 IAT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IAT-定位"><span class="toc-text">IAT 定位</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IAT-填充函数入口地址原理"><span class="toc-text">IAT 填充函数入口地址原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IAT-修复"><span class="toc-text">IAT 修复</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#加壳程序定位-IAT"><span class="toc-text">加壳程序定位 IAT</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#reference"><span class="toc-text">reference</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#目标程序"><span class="toc-text">目标程序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#脱壳简介"><span class="toc-text">脱壳简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#通常脱壳的基本步骤"><span class="toc-text">通常脱壳的基本步骤</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#OEP-寻踪总结"><span class="toc-text">OEP 寻踪总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#单步跟踪法"><span class="toc-text">单步跟踪法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ESP-定律法"><span class="toc-text">ESP 定律法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#操作步骤"><span class="toc-text">操作步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内存镜像法"><span class="toc-text">内存镜像法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#操作步骤-1"><span class="toc-text">操作步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一步到达-OEP"><span class="toc-text">一步到达 OEP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#方法一"><span class="toc-text">方法一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方法二"><span class="toc-text">方法二</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IAT（Import-Address-Tables）"><span class="toc-text">IAT（Import Address Tables）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是-IAT"><span class="toc-text">什么是 IAT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IAT-定位"><span class="toc-text">IAT 定位</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IAT-填充函数入口地址原理"><span class="toc-text">IAT 填充函数入口地址原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IAT-修复"><span class="toc-text">IAT 修复</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#加壳程序定位-IAT"><span class="toc-text">加壳程序定位 IAT</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#reference"><span class="toc-text">reference</span></a></li></ol>
     </div>
 </div>
 
@@ -394,6 +403,12 @@
       
       
       <li>
+        <a href="/2021/03/10/x64dbg-shou-tuo-upx/">x64dbg-手脱UPX</a>
+      </li>
+      
+      
+      
+      <li>
         <a href="/2021/03/09/x64dbg-tuo-ke-ji-chu/">x64dbg-脱壳基础</a>
       </li>
       
@@ -404,10 +419,6 @@
       </li>
       
       
-      
-      <li>
-        <a href="/2021/02/24/cong-ling-kai-shi-ida-ji-chu-zhi-shi/">从零开始IDA-基础知识</a>
-      </li>
       
       
       
@@ -580,7 +591,7 @@
 		<h3 class="read-next-card-header-title">标签云</h3>
 	</header>
 	<div class="read-next-card-content-ext">
-		<a href="/tags/8086CPU/" style="font-size: 14px;">8086CPU</a> <a href="/tags/ELK/" style="font-size: 14px;">ELK</a> <a href="/tags/IDA/" style="font-size: 16.5px;">IDA</a> <a href="/tags/OllyDdbg/" style="font-size: 14px;">OllyDdbg</a> <a href="/tags/x64dbg/" style="font-size: 19px;">x64dbg</a> <a href="/tags/%E6%B1%87%E7%BC%96/" style="font-size: 24px;">汇编</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" style="font-size: 19px;">漏洞复现</a> <a href="/tags/%E9%80%86%E5%90%91/" style="font-size: 21.5px;">逆向</a> <a href="/tags/%E9%9D%B6%E6%9C%BA/" style="font-size: 19px;">靶机</a>
+		<a href="/tags/8086CPU/" style="font-size: 14px;">8086CPU</a> <a href="/tags/ELK/" style="font-size: 14px;">ELK</a> <a href="/tags/IDA/" style="font-size: 16px;">IDA</a> <a href="/tags/OllyDdbg/" style="font-size: 14px;">OllyDdbg</a> <a href="/tags/x64dbg/" style="font-size: 20px;">x64dbg</a> <a href="/tags/%E6%B1%87%E7%BC%96/" style="font-size: 24px;">汇编</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" style="font-size: 18px;">漏洞复现</a> <a href="/tags/%E9%80%86%E5%90%91/" style="font-size: 22px;">逆向</a> <a href="/tags/%E9%9D%B6%E6%9C%BA/" style="font-size: 18px;">靶机</a>
 	</div>
 </article>
 
