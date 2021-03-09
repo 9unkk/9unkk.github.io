@@ -1,0 +1,689 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="preconnect" href="//www.googletagmanager.com">
+	<link rel="preconnect" href="//zz.bdstatic.com">
+	<link rel="preconnect" href="//sp0.baidu.com">
+	<link rel="preconnect" href="//www.google-analytics.com">
+	<link rel="preconnect" href="//cdn1.lncld.net">
+	<link rel="preconnect" href="//unpkg.com">
+	<link rel="preconnect" href="//app-router.leancloud.cn">
+	<link rel="preconnect" href="//9qpuwspm.api.lncld.net">
+	<link rel="preconnect" href="//gravatar.loli.net">
+
+	<title>x64dbg-脱壳基础 | 9unk</title>
+
+	<meta name="HandheldFriendly" content="True">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+	<meta name="generator" content="hexo">
+	<meta name="author" content="9nuk">
+	<meta name="description" content>
+
+	
+	<meta name="keywords" content>
+	
+
+	
+	<link rel="shortcut icon" href="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png">
+	<link rel="apple-touch-icon" href="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png">
+	
+
+	
+	<meta name="theme-color" content="#3c484e">
+	<meta name="msapplication-TileColor" content="#3c484e">
+	
+
+	
+
+	
+
+	<meta property="og:site_name" content="9unk">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="x64dbg-脱壳基础 | 9unk">
+	<meta property="og:description" content>
+	<meta property="og:url" content="http://yoursite.com/2021/03/09/x64dbg-tuo-ke-ji-chu/">
+
+	
+	<meta property="article:published_time" content="2021-03-09T15:03:00+08:00"> 
+	<meta property="article:author" content="9nuk">
+	<meta property="article:published_first" content="9unk, /2021/03/09/x64dbg-tuo-ke-ji-chu/">
+	
+
+	
+	
+	
+<link rel="stylesheet" href="/css/allinonecss.min.css">
+
+
+	
+	
+	
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+<body class="post-template">
+	<div class="site-wrapper">
+		
+
+
+
+
+<header class="site-header post-site-header outer">
+    <div class="inner">
+        
+<nav class="site-nav"> 
+    <div class="site-nav-left">
+        <ul class="nav">
+            <li>
+                
+                
+                <a class="site-nav-logo" href="/" title="9unk">
+                    <img src="https://pic2.zhimg.com/80/v2-41b7556078db198db3955539789490a8_720w.jpg" alt="9unk">
+                </a>
+                
+                
+            </li>
+            
+            
+            <li>
+                <a href="/about" title="关于">关于</a>
+            </li>
+            
+            <li>
+                <a href="/archives" title="文章">文章</a>
+            </li>
+            
+            
+        </ul> 
+    </div>
+    
+    <div class="search-button-area">
+        <a href="#search" class="search-button">Search ...</a>
+    </div>
+     
+    <div class="site-nav-right">
+        
+        <a href="#search" class="search-button">Search ...</a>
+         
+        
+<div class="social-links">
+    
+    
+    <a class="social-link" title="github" href="https://github.com/hhkk2334" target="_blank" rel="noopener">
+        <svg viewBox="0 0 1049 1024" xmlns="http://www.w3.org/2000/svg"><path d="M524.979332 0C234.676191 0 0 234.676191 0 524.979332c0 232.068678 150.366597 428.501342 358.967656 498.035028 26.075132 5.215026 35.636014-11.299224 35.636014-25.205961 0-12.168395-0.869171-53.888607-0.869171-97.347161-146.020741 31.290159-176.441729-62.580318-176.441729-62.580318-23.467619-60.841976-58.234462-76.487055-58.234463-76.487055-47.804409-32.15933 3.476684-32.15933 3.476685-32.15933 53.019436 3.476684 80.83291 53.888607 80.83291 53.888607 46.935238 79.963739 122.553122 57.365291 152.97411 43.458554 4.345855-33.897672 18.252593-57.365291 33.028501-70.402857-116.468925-12.168395-239.022047-57.365291-239.022047-259.012982 0-57.365291 20.860106-104.300529 53.888607-140.805715-5.215026-13.037566-23.467619-66.926173 5.215027-139.067372 0 0 44.327725-13.906737 144.282399 53.888607 41.720212-11.299224 86.917108-17.383422 131.244833-17.383422s89.524621 6.084198 131.244833 17.383422C756.178839 203.386032 800.506564 217.29277 800.506564 217.29277c28.682646 72.1412 10.430053 126.029806 5.215026 139.067372 33.897672 36.505185 53.888607 83.440424 53.888607 140.805715 0 201.64769-122.553122 245.975415-239.891218 259.012982 19.121764 16.514251 35.636014 47.804409 35.636015 97.347161 0 70.402857-0.869171 126.898978-0.869172 144.282399 0 13.906737 9.560882 30.420988 35.636015 25.205961 208.601059-69.533686 358.967656-265.96635 358.967655-498.035028C1049.958663 234.676191 814.413301 0 524.979332 0z"/></svg>
+    </a>
+    
+    
+    
+    
+    
+    
+</div>
+    </div>
+</nav>
+    </div>
+</header>
+
+
+<div id="site-main" class="site-main outer" role="main">
+    <div class="inner">
+        <header class="post-full-header">
+            <div class="post-full-meta">
+                <time class="post-full-meta-date" datetime="2021-03-09T07:26:28.000Z">
+                    2021-03-9
+                </time>
+                
+                <span class="date-divider">/</span>
+                
+                
+            </div>
+            <h1 class="post-full-title">x64dbg-脱壳基础</h1>
+        </header>
+        <div class="post-full no-image">
+            
+            <div class="post-full-content">
+                <article id="photoswipe" class="markdown-body">
+                    <h1 id="脱壳简介"><a href="#脱壳简介" class="headerlink" title="脱壳简介"></a>脱壳简介</h1><p>一个未加过壳的程序修改起来很方便，但是如果一个加过壳的或者自修改的程序，要想修改就比较困难，我们在调试器默认分析的入口点处修改程序时不起作用的，只有当壳把原程序区段解密完成后修改才能起作用。加过壳的程序，原程序代码段通常是被加密过的,我们想修改它就不那么容易了。</p>
+<p>加壳程序给目标程序加壳的原理通常是加密/压缩原程序各个区段,并且给目标程序添加一个或者多个区段作为原程序的引导代码(壳代码),然后将原程序入口点修改为外壳程序的入口点。如果我们将加过壳的程序用 x64dbg 加载的话, x64dbg 会停在壳的解密例程的入口点处,由此开始执行。</p>
+<p>壳的解密过程(外壳程序)首先会定位加密/压缩过的原程序的各个区段,将其解密/解压,然后跳转至 OEP(程序未加壳时的入口点)处开始执行。</p>
+<p>我们对比加壳前后的文件进行对比，可以发现加壳程序给原程序添加了额外的代码保护原程序，但是体积反而变小了。</p>
+<p><img alt="3.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/19/mYhixQaXKl7M9eB.jpg" data-index="0" data-src="https://i.loli.net/2021/02/19/mYhixQaXKl7M9eB.jpg"></p>
+<p>我们先将不加壳的 crackme 加载到 x64dbg 中，我们可以看到其入口点是 401000，也就是说，运行它，将从 401000 地址处开始执行。</p>
+<p><img alt="1.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/19/jHt5GeQvmdKTUNA.jpg" data-index="1" data-src="https://i.loli.net/2021/02/19/jHt5GeQvmdKTUNA.jpg"></p>
+<p>我们再运行加过壳的 crackme ，首先会从解密入口（409C80）开始执行，如下图所示。</p>
+<p><img alt="2.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/19/VuT5SEvLqIesMcB.jpg" data-index="2" data-src="https://i.loli.net/2021/02/19/VuT5SEvLqIesMcB.jpg"></p>
+<p>我们继续尝试在加壳程序中定位到 401000 位置，会发现找不到原程序的代码任何踪迹。这里加壳程序将原程序的代码段加密/压缩保存到其他地方，并且将原程序代码段清空。</p>
+<p><img alt="4.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/19/1jOL49UQptIEcku.jpg" data-index="3" data-src="https://i.loli.net/2021/02/19/1jOL49UQptIEcku.jpg"></p>
+<blockquote>
+<p>通常情况下，大部分加壳程序会待在加壳程序中创建自己的区段，从自己的区段开始执行解压/解密程序，解压/解密程序会将对原程序各个区段进行解压/解密。</p>
+</blockquote>
+<p>我们在入口点一直向下拉，可以看到加壳程序的解密过程，知道看到 <code>jmp crackme up.401000</code> 说明此时程序已经解压/解密结束，加壳程序准备跳转到 OEP 处。</p>
+<p><img alt="6.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/19/6EsBnrwpvPC5hYk.jpg" data-index="4" data-src="https://i.loli.net/2021/02/19/6EsBnrwpvPC5hYk.jpg"></p>
+<p>我们在跳转 OEP 处设置断点，并运行加壳程序。</p>
+<p><img alt="7.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/19/9crdJvbWPawD7U3.jpg" data-index="5" data-src="https://i.loli.net/2021/02/19/9crdJvbWPawD7U3.jpg"></p>
+<p><img alt="8.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/19/ViBUCEsJ4m1h8fk.jpg" data-index="6" data-src="https://i.loli.net/2021/02/19/ViBUCEsJ4m1h8fk.jpg"></p>
+<p>我们继续跳转到 401000 处，可以看到此时程序已经解压修复完毕</p>
+<p><img alt="9.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/19/BlnzOxpSrs2AhHI.jpg" data-index="7" data-src="https://i.loli.net/2021/02/19/BlnzOxpSrs2AhHI.jpg"></p>
+<p>以上就是加壳程序执行流程，大概步骤如下：</p>
+<ol>
+<li><p>执行解压/解密程序</p>
+</li>
+<li><p>解压/解密原程序的各个区段的数据</p>
+</li>
+<li><p>跳往 OEP 处</p>
+</li>
+<li><p>执行原程序代码</p>
+</li>
+</ol>
+<h2 id="通常脱壳的基本步骤"><a href="#通常脱壳的基本步骤" class="headerlink" title="通常脱壳的基本步骤"></a>通常脱壳的基本步骤</h2><ol>
+<li><p>寻找 OEP</p>
+</li>
+<li><p>转储</p>
+</li>
+<li><p>修复 IAT（修复导入表）</p>
+</li>
+<li><p>检查目标程序是否存在 AntiDump 等组织程序被转储的保护措施，并尝试修复这些问题。</p>
+</li>
+</ol>
+<h1 id="OEP-寻踪总结"><a href="#OEP-寻踪总结" class="headerlink" title="OEP 寻踪总结"></a>OEP 寻踪总结</h1><h2 id="单步跟踪法"><a href="#单步跟踪法" class="headerlink" title="单步跟踪法"></a>单步跟踪法</h2><p>主要使用 “F8” 和 “F4” 这两个快捷键，一步一步分析每一条汇编背后所代表的意思，将壳代码读懂，从而找到原始 OEP 然后脱壳。</p>
+<h2 id="ESP-定律法"><a href="#ESP-定律法" class="headerlink" title="ESP 定律法"></a>ESP 定律法</h2><p>一般加壳程序在运行时，会先执行壳代码，然后在内存中恢复还原原程序，再跳转到原始OEP，执行原程序的代码。这些壳代码首先会使用 PUSHAD 指令保存寄存器环境，在解密各个区段完毕，跳往 OEP 之前会使用 POPAD 指令恢复寄存器环境。</p>
+<h3 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h3><ol>
+<li>执行 pushad 指令，此时寄存器的值存储到栈顶，也就是 esp 的位置</li>
+</ol>
+<p><img alt="1.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/23/AbpUGey41x3HXCv.jpg" data-index="8" data-src="https://i.loli.net/2021/02/23/AbpUGey41x3HXCv.jpg"></p>
+<ol start="2">
+<li>右击 esp 寄存器，选择在内存中跳转。此时才内存窗口可以看到当前存储的寄存器值</li>
+</ol>
+<p><img alt="2.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/23/bpNZDzlGe1ujmRX.jpg" data-index="9" data-src="https://i.loli.net/2021/02/23/bpNZDzlGe1ujmRX.jpg"></p>
+<ol start="3">
+<li>对内存窗口中的第一个数据设置硬件访问断点，当程序执行 POP 指令进行断点时就会自动断下</li>
+</ol>
+<p><img alt="3.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/23/56OPTn2fzUrlSNJ.jpg" data-index="10" data-src="https://i.loli.net/2021/02/23/56OPTn2fzUrlSNJ.jpg"></p>
+<ol start="4">
+<li>“F9” 运行程序后，程序断在如下位置。下面有个 jmp 指令，跳转到 OEP 处。</li>
+</ol>
+<p><img alt="4.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/23/csRVClJboXnFKq8.jpg" data-index="11" data-src="https://i.loli.net/2021/02/23/csRVClJboXnFKq8.jpg"></p>
+<h2 id="内存镜像法"><a href="#内存镜像法" class="headerlink" title="内存镜像法"></a>内存镜像法</h2><p>在加壳程序执行时，会先将源程序的 “CODE” 和  “DATA” 区段解压\解密并载入内存，然后再载入 “rsrc” 资源到内存中，最后跳到 OEP 执行解密后的程序。内存镜像法就是在 rsrs 先设置一个内存执行断点，当程序停下来的时候说明程序已经解压\解密完成。此时再到 “DATA” 区段设置内存执行断点，程序下一次会停在 OEP 入口点。</p>
+<h3 id="操作步骤-1"><a href="#操作步骤-1" class="headerlink" title="操作步骤"></a>操作步骤</h3><ol>
+<li>载入 UPX 程序，使用快捷键 “Alt+M” 进入到内存视图</li>
+</ol>
+<p><img alt="5.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/24/lqHOg9UBCpyIWJa.jpg" data-index="12" data-src="https://i.loli.net/2021/02/24/lqHOg9UBCpyIWJa.jpg"></p>
+<ol start="2">
+<li>对 “.rsrc” 区段设置内存访问断点</li>
+</ol>
+<p><img alt="6.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/24/9nBTY4UHzbjQILy.jpg" data-index="13" data-src="https://i.loli.net/2021/02/24/9nBTY4UHzbjQILy.jpg"></p>
+<p><img alt="7.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/24/DlXjscSR6ymbaGo.jpg" data-index="14" data-src="https://i.loli.net/2021/02/24/DlXjscSR6ymbaGo.jpg"></p>
+<ol start="3">
+<li><p>“F9” 运行upx程序到 “rsrc” 区段，此时前面两个区段已经解密好了。<br><img alt="8.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/24/FlAjpWSU3hCzv4c.jpg" data-index="15" data-src="https://i.loli.net/2021/02/24/FlAjpWSU3hCzv4c.jpg"></p>
+</li>
+<li><p>再次到内存视图，使用 “F2” 对 “CODE” 区段设置内存执行断点。</p>
+</li>
+</ol>
+<p><img alt="9.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/24/to2Pzw3n5MA1OY9.jpg" data-index="16" data-src="https://i.loli.net/2021/02/24/to2Pzw3n5MA1OY9.jpg"></p>
+<ol start="5">
+<li>继续 “F9” 执行代码，此时可以看到程序停在了 OEP 入口点</li>
+</ol>
+<p><img alt="10.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/24/Ow2sbLePruxDNVK.jpg" data-index="17" data-src="https://i.loli.net/2021/02/24/Ow2sbLePruxDNVK.jpg"></p>
+<h2 id="一步到达-OEP"><a href="#一步到达-OEP" class="headerlink" title="一步到达 OEP"></a>一步到达 OEP</h2><h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><p>使用快捷键 “Ctrl+B” 搜索十六进制字符串 “E9 ?? ?? ?? ?? 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00”，即可找到跳转 OEP 的位置。</p>
+<p><img alt="11.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/24/bJa7dQsPNlor4if.jpg" data-index="18" data-src="https://i.loli.net/2021/02/24/bJa7dQsPNlor4if.jpg"></p>
+<p><img alt="12.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/24/25prnsIEcMzSjHO.jpg" data-index="19" data-src="https://i.loli.net/2021/02/24/25prnsIEcMzSjHO.jpg"></p>
+<p><img alt="13.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/24/cZ13pEIzQ7neo5b.jpg" data-index="20" data-src="https://i.loli.net/2021/02/24/cZ13pEIzQ7neo5b.jpg"></p>
+<h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><p>使用快捷键 “Ctrl+F” 搜索 popad。找的 popad 需要满足，在程序返回时，壳程序希望恢复现场环境的地方。也就是靠近 jmp 和 return 的地方。</p>
+<p><img alt="14.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/24/bQz3rwhMgkKjHtp.jpg" data-index="21" data-src="https://i.loli.net/2021/02/24/bQz3rwhMgkKjHtp.jpg"></p>
+<p><img alt="15.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/24/md1rLnlIQJUDs6R.jpg" data-index="22" data-src="https://i.loli.net/2021/02/24/md1rLnlIQJUDs6R.jpg"></p>
+<p><img alt="16.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/02/24/7ozELvwKPTeI9DO.jpg" data-index="23" data-src="https://i.loli.net/2021/02/24/7ozELvwKPTeI9DO.jpg"></p>
+<h1 id="IAT（Import-Address-Tables）"><a href="#IAT（Import-Address-Tables）" class="headerlink" title="IAT（Import Address Tables）"></a>IAT（Import Address Tables）</h1><h2 id="什么是-IAT"><a href="#什么是-IAT" class="headerlink" title="什么是 IAT"></a>什么是 IAT</h2><p>我们知道每个 API 函数在对应的进程空间中都有其相应的入口地址。如下图展示了 win10 下 crackme.exe 程序的 MessageBoxA API 函数的入口地址。</p>
+<p><img alt="10.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/07/nQyDFizN8OuLKPM.jpg" data-index="24" data-src="https://i.loli.net/2021/03/07/nQyDFizN8OuLKPM.jpg"></p>
+<p>可以看到我机器上的 MessageBoxA 这个 API 函数的地址是 75EE1930 ，对于部分人的机器来说 MessageBoxA 的入口地址是一样的，而另一部分人的机器上的 MessageBoxA 入口地址是不一样的，这取决于大家机器的操作系统版本（DLL版本也会更新），以及打补丁的情况。</p>
+<blockquote>
+<p>DLL 版本的更新，其中包含的 API 函数入口地址也会改变</p>
+</blockquote>
+<p>就拿这个 crackme 中的 MessageBoxA API 的入口地址来说，这个程序在我的操作系统上可以正常运行，但是将程序运行在其他不同版本的操作系统上运行，程序可能就会出错。为了解决这个兼容问题，操作系统就必须提供一些措施确保该 crackme 可以在其他版本的 windows 操作系统，以及不同 DLL 版本下也能正常运行。这时 IAT（Import Address Tables：输入函数地址表）就应运而生了。</p>
+<p>我下面再展示一个 winxp 下 crackme.exe 程序的 MessageBoxA API 函数的入口地址。</p>
+<p><img alt="11.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/07/kObTgnIs6twRvUQ.jpg" data-index="25" data-src="https://i.loli.net/2021/03/07/kObTgnIs6twRvUQ.jpg"></p>
+<p>可以看到在 winxp 系统下，MessageBoxA API 函数的入口地址是 77D507EA 。</p>
+<h2 id="IAT-定位"><a href="#IAT-定位" class="headerlink" title="IAT 定位"></a>IAT 定位</h2><p>接下来探讨如何在脱壳过程中定位 IAT。这里用得是未加壳的 crackme.exe</p>
+<p>首先通过右键汇编窗口选择 –> 搜索 –> 当前模块 –> 跨模块调用，看看主模块中调用了哪些模块以及 API 函数。</p>
+<p><img alt="12.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/07/GVdA7yOcRqPCSBj.jpg" data-index="26" data-src="https://i.loli.net/2021/03/07/GVdA7yOcRqPCSBj.jpg"></p>
+<p><img alt="13.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/07/fzwROH25KPUkI4G.jpg" data-index="27" data-src="https://i.loli.net/2021/03/07/fzwROH25KPUkI4G.jpg"></p>
+<p>可以看到下面这 3 个地方调用了 MessageBoxA 函数</p>
+<p><img alt="14.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/07/UxrcoSzNHyeIO6a.jpg" data-index="28" data-src="https://i.loli.net/2021/03/07/UxrcoSzNHyeIO6a.jpg"></p>
+<p>左键双击第一个 MessageBoxA ，x64dgb 自动跳到相应的汇编指令处。这里 <code>jmp.&MessageBoxA</code> 用的是尖括号，表示这是一个直接调用。</p>
+<p><img alt="15.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/07/SBcjIFdAa2587rZ.jpg" data-index="29" data-src="https://i.loli.net/2021/03/07/SBcjIFdAa2587rZ.jpg"></p>
+<p>我们直接使用空格键，查看调用的地址是 0040143A </p>
+<p><img alt="16.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/07/9b5ydR6SGuorJv3.jpg" data-index="30" data-src="https://i.loli.net/2021/03/07/9b5ydR6SGuorJv3.jpg"></p>
+<p>我们定位到 0040143A 处看到这是一个间接跳转</p>
+<p><img alt="17.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/07/wfQbqorvKZ9E6N1.jpg" data-index="31" data-src="https://i.loli.net/2021/03/07/wfQbqorvKZ9E6N1.jpg"></p>
+<p><img alt="18.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/07/RAF1CgdJexOWnrm.jpg" data-index="32" data-src="https://i.loli.net/2021/03/07/RAF1CgdJexOWnrm.jpg"></p>
+<p>我们继续按空格查看间接跳转的地址，如下图所示我们可以看到这边的地址是 004031AC</p>
+<p><img alt="19.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/07/emoi7ZNaHxgX2Pd.jpg" data-index="33" data-src="https://i.loli.net/2021/03/07/emoi7ZNaHxgX2Pd.jpg"></p>
+<p>我们看到 <code>jmp dword ptr ds:[0x004031AC]</code>（004031AC 这个内存单元中保存的数值才是 MessageBoxA 真正的入口地址）。我们可以看到很多类似的间接 jmp 。</p>
+<p>这就是为了解决各操作系统之间的兼容问题而设计的，当程序需要调用某个 API 时，都是通过间接跳转来调用的，读取某个地址中保存的 API 函数地址，然后调用它。</p>
+<p>我们现在在数据窗口中定位到 004031AC 地址处，看看内存单元中存放的是什么。</p>
+<p><img alt="20.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/07/M2DZnl5a1UgqcTE.jpg" data-index="34" data-src="https://i.loli.net/2021/03/07/M2DZnl5a1UgqcTE.jpg"></p>
+<p>这里我们可以看到 004031AC 中保存的是 75EE1930，这一片区域包含了该程序调用的所有 API 函数的入口地址，这一块区域我们称之为 IAT（导入函数地址表），这里就是解决系统间接调用 API 兼容问题关键所在。程序在不同版本的操作系统上都是调用间接跳转到 IAT 表中，在 IAT 中读入真正的 API 函数入口地址，最后调用它。这样就确保了不同版本系统调用都是正确的 API 函数。</p>
+<h3 id="IAT-填充函数入口地址原理"><a href="#IAT-填充函数入口地址原理" class="headerlink" title="IAT 填充函数入口地址原理"></a>IAT 填充函数入口地址原理</h3><p>从上面的演示中已经理解了一个程序是如何定位到调用函数的入口地址：程序运行 –> 调用间接跳转 –> 间接跳转定位到 IAT 导入表（真正的函数入口地址）</p>
+<p>但是函数入口地址又是如何填充到 IAT 中的呢？间接跳转的地址（如：004031AC ）在不同版本的系统中是不一样的吗？</p>
+<p>我们选中 4031AC 中保存的内容，右键 –> 复制 –> 文件偏移。将文件偏移地址复制出来（这里是 FAC）。</p>
+<p><img alt="21.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/08/5LHC3tz9X8jofcJ.jpg" data-index="35" data-src="https://i.loli.net/2021/03/08/5LHC3tz9X8jofcJ.jpg"></p>
+<p>然后再使用十六进制编辑器查看该偏移地址（FAC）的内容</p>
+<p><img alt="22.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/08/G2oVFxqMS5m8ZCd.jpg" data-index="36" data-src="https://i.loli.net/2021/03/08/G2oVFxqMS5m8ZCd.jpg"></p>
+<p>我们可以看到可执行文件对应的偏移内容是 <code>60 33 00 00</code> ，当程序运行起来的时候，0FAC 这个文件偏移对应的虚拟地址会被填充为 <code>30 19 EE 75</code>，也就是说该 crackme 进程空间中的 004031AC 地址处会被填入正确的 API 函数地址。</p>
+<p>我们看到 0FAC 文件偏移处的值是 3360，该数值其实是 RVA（相对虚拟地址），其指向对应的 API 名称。这里 3360 加上映像基地址即 403360，我们定位到 403360 处看看是什么。</p>
+<p><img alt="23.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/08/zJ4LGNw8xe6clIU.jpg" data-index="37" data-src="https://i.loli.net/2021/03/08/zJ4LGNw8xe6clIU.jpg"></p>
+<p>这里我们可以看到指向的是 MessageBoxA 这个字符串，也就是说明操作系统可以根据这个指针，定位到相应的 API 函数名称，然后通过调用 GetProcAddress 获取相应的 API 函数的地址，然后将该地址填充到 IAT 中，覆盖原来的 3360 。这样就能保证在程序执行前，IAT 中被填充了正确的 API 函数地址。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>IAT 填充过程：程序中某段 FOA（文件偏移地址） 存放着一段指针数据，指向存放 API 字符串的虚拟地址（RVA）–> 然后通过调用 GetProcAddress 获取相应的 API 函数的地址 –> 将获取的 API 地址填充到 IAT 中（将原来的 API 字符串虚拟地址替换成真正的 API 地址）。</p>
+<p>IAT 调用过程：程序运行 –> 调用间接跳转 –> 间接跳转定位到 IAT 导入表（真正的函数入口地址）</p>
+<h2 id="IAT-修复"><a href="#IAT-修复" class="headerlink" title="IAT 修复"></a>IAT 修复</h2><p>IAT填充的这个过程很复杂，但是整个过程都是由系统自动完成的，在程序开始执行前，IAT 就已经被填入了正确的 API 函数地址。</p>
+<p>也就是说，为了确保操作系统将正确的 API 填充到 IAT 中，应该满足一下几点条件：</p>
+<ol>
+<li><p>可执行文件各 IAT 项所在的文件偏移处必须是指针，指向一个字符串</p>
+</li>
+<li><p>该字符串为 API 名称</p>
+</li>
+</ol>
+<p>如果满足这两项，就可以确保程序启动时，操作系统会将正确的 API 函数地址填充到 IAT 中。</p>
+<h3 id="加壳程序定位-IAT"><a href="#加壳程序定位-IAT" class="headerlink" title="加壳程序定位 IAT"></a>加壳程序定位 IAT</h3><p>我们下打开 Crackme UPX 这个程序</p>
+<p><img alt="24.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/08/42EUSR1ldvHrZG8.jpg" data-index="38" data-src="https://i.loli.net/2021/03/08/42EUSR1ldvHrZG8.jpg"></p>
+<p>我们定位到 4031AC 处（原程序 MessageBoxA 入口地址）</p>
+<p><img alt="25.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/08/VDZK9weSavFiEmn.jpg" data-index="39" data-src="https://i.loli.net/2021/03/08/VDZK9weSavFiEmn.jpg"></p>
+<p>值是空的，那么 403360 指向的字符串呢？</p>
+<p><img alt="26.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/08/8DoCeZ6XExkmnAc.jpg" data-index="40" data-src="https://i.loli.net/2021/03/08/8DoCeZ6XExkmnAc.jpg"></p>
+<p>值也是空的，那么程序运行起来就会出错。</p>
+<p>我们现在定位，并设置断点运行程序到 OEP 处</p>
+<p><img alt="27.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/08/elV916r5gUTzk7W.jpg" data-index="41" data-src="https://i.loli.net/2021/03/08/elV916r5gUTzk7W.jpg"></p>
+<p>接着来看看 IAT</p>
+<p><img alt="28.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/08/8eltwZDAdRKyTjM.jpg" data-index="42" data-src="https://i.loli.net/2021/03/08/8eltwZDAdRKyTjM.jpg"></p>
+<p>程序的解密子程序已经把正确的 API 函数地址填充到原程序的 IAT 中，如果现在将程序 dump 出来的话，运行会出错，因为 dump 出来的程序启动所需的数据时不完整的。</p>
+<p>我们定位到 403360 处，会发现 API 字符串是空的</p>
+<p><img alt="29.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/08/zDMCwiZqEg3b54p.jpg" data-index="43" data-src="https://i.loli.net/2021/03/08/zDMCwiZqEg3b54p.jpg"></p>
+<p>我们现在把程序 dump 出来看看程序能否正常运行</p>
+<ol>
+<li>进入 OEP 入口（401000）</li>
+</ol>
+<p><img alt="30.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/08/swizQ3Fd4EcVIxL.jpg" data-index="44" data-src="https://i.loli.net/2021/03/08/swizQ3Fd4EcVIxL.jpg"></p>
+<ol start="2">
+<li>打开 Scylla 插件（快捷键：Ctrl+I）</li>
+</ol>
+<p><img alt="31.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/08/kjiCbGQlaKVvdoD.jpg" data-index="45" data-src="https://i.loli.net/2021/03/08/kjiCbGQlaKVvdoD.jpg"></p>
+<p><img alt="32.jpg" class="post-img b-lazy" data-img="https://i.loli.net/2021/03/08/yrdzClQKMpu8Ue2.jpg" data-index="46" data-src="https://i.loli.net/2021/03/08/yrdzClQKMpu8Ue2.jpg"></p>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a href="https://blog.csdn.net/lilongsy/article/details/108550589" target="_blank" rel="noopener">一步到达OEP脱壳</a></p>
+<p><a href="https://www.52pojie.cn/forum.php?mod=viewthread&tid=295027" target="_blank" rel="noopener">史上脱UPX最快 最方便 最简单的方法一步就到OEP</a></p>
+<p><a href="https://www.52pojie.cn/thread-396947-1-1.html" target="_blank" rel="noopener">小Z带你学习什么是两次内存镜像法和什么是内存断点</a></p>
+<p><a href>参考自：从零开始 OlllyDBG-三十三章 [Ricardo Narvaja]</a></p>
+
+                </article>
+                <ul class="tags-postTags">
+                    
+                    <li>
+                        <a href="/tags/%E9%80%86%E5%90%91/" rel="tag"># 逆向</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/x64dbg/" rel="tag"># x64dbg</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    
+    <nav id="gobottom" class="pagination">
+        
+        <span class="prev-next-post">·</span>
+        
+        <a class="next-post" title="从零开始IDA-crackme分析" href="/2021/02/24/cong-ling-kai-shi-ida-crackme-fen-xi/">
+            从零开始IDA-crackme分析 →
+        </a>
+        
+    </nav>
+
+    
+    <div class="inner">
+        <div id="comment"></div>
+    </div>
+    
+</div>
+
+<div class="toc-bar">
+    <div class="toc-btn-bar">
+        <a href="#site-main" class="toc-btn">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M793.024 710.272a32 32 0 1 0 45.952-44.544l-310.304-320a32 32 0 0 0-46.4 0.48l-297.696 320a32 32 0 0 0 46.848 43.584l274.752-295.328 286.848 295.808z"/></svg>
+        </a>
+        <div class="toc-btn toc-switch">
+            <svg class="toc-open" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M779.776 480h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M779.776 672h-387.2a32 32 0 0 0 0 64h387.2a32 32 0 0 0 0-64M256 288a32 32 0 1 0 0 64 32 32 0 0 0 0-64M392.576 352h387.2a32 32 0 0 0 0-64h-387.2a32 32 0 0 0 0 64M256 480a32 32 0 1 0 0 64 32 32 0 0 0 0-64M256 672a32 32 0 1 0 0 64 32 32 0 0 0 0-64"/></svg>
+            <svg class="toc-close hide" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M512 960c-247.039484 0-448-200.960516-448-448S264.960516 64 512 64 960 264.960516 960 512 759.039484 960 512 960zM512 128.287273c-211.584464 0-383.712727 172.128262-383.712727 383.712727 0 211.551781 172.128262 383.712727 383.712727 383.712727 211.551781 0 383.712727-172.159226 383.712727-383.712727C895.712727 300.415536 723.551781 128.287273 512 128.287273z"/><path d="M557.05545 513.376159l138.367639-136.864185c12.576374-12.416396 12.672705-32.671738 0.25631-45.248112s-32.704421-12.672705-45.248112-0.25631l-138.560301 137.024163-136.447897-136.864185c-12.512727-12.512727-32.735385-12.576374-45.248112-0.063647-12.512727 12.480043-12.54369 32.735385-0.063647 45.248112l136.255235 136.671523-137.376804 135.904314c-12.576374 12.447359-12.672705 32.671738-0.25631 45.248112 6.271845 6.335493 14.496116 9.504099 22.751351 9.504099 8.12794 0 16.25588-3.103239 22.496761-9.247789l137.567746-136.064292 138.687596 139.136568c6.240882 6.271845 14.432469 9.407768 22.65674 9.407768 8.191587 0 16.352211-3.135923 22.591372-9.34412 12.512727-12.480043 12.54369-32.704421 0.063647-45.248112L557.05545 513.376159z"/></svg>
+        </div>
+        <a href="#gobottom" class="toc-btn">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M231.424 346.208a32 32 0 0 0-46.848 43.584l297.696 320a32 32 0 0 0 46.4 0.48l310.304-320a32 32 0 1 0-45.952-44.544l-286.848 295.808-274.752-295.36z"/></svg>
+        </a>
+    </div>
+    <div class="toc-main">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#脱壳简介"><span class="toc-text">脱壳简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#通常脱壳的基本步骤"><span class="toc-text">通常脱壳的基本步骤</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#OEP-寻踪总结"><span class="toc-text">OEP 寻踪总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#单步跟踪法"><span class="toc-text">单步跟踪法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ESP-定律法"><span class="toc-text">ESP 定律法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#操作步骤"><span class="toc-text">操作步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内存镜像法"><span class="toc-text">内存镜像法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#操作步骤-1"><span class="toc-text">操作步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一步到达-OEP"><span class="toc-text">一步到达 OEP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#方法一"><span class="toc-text">方法一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方法二"><span class="toc-text">方法二</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IAT（Import-Address-Tables）"><span class="toc-text">IAT（Import Address Tables）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是-IAT"><span class="toc-text">什么是 IAT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IAT-定位"><span class="toc-text">IAT 定位</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IAT-填充函数入口地址原理"><span class="toc-text">IAT 填充函数入口地址原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IAT-修复"><span class="toc-text">IAT 修复</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#加壳程序定位-IAT"><span class="toc-text">加壳程序定位 IAT</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#reference"><span class="toc-text">reference</span></a></li></ol>
+    </div>
+</div>
+
+
+
+
+
+
+	</div>
+	
+
+
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+  <header class="read-next-card-header">
+    <small class="read-next-card-header-sitetitle">— 9unk —</small>
+    <h3 class="read-next-card-header-title">最新文章</h3>
+  </header>
+  <div class="read-next-divider">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M13 14.5s2 3 5 3 5.5-2.463 5.5-5.5S21 6.5 18 6.5c-5 0-7 11-12 11C2.962 17.5.5 15.037.5 12S3 6.5 6 6.5s4.5 3.5 4.5 3.5"/>
+    </svg>
+  </div>
+  <div class="read-next-card-content">
+    <ul>
+      
+      
+      
+      <li>
+        <a href="/2021/03/09/x64dbg-tuo-ke-ji-chu/">x64dbg-脱壳基础</a>
+      </li>
+      
+      
+      
+      <li>
+        <a href="/2021/02/24/cong-ling-kai-shi-ida-crackme-fen-xi/">从零开始IDA-crackme分析</a>
+      </li>
+      
+      
+      
+      <li>
+        <a href="/2021/02/24/cong-ling-kai-shi-ida-ji-chu-zhi-shi/">从零开始IDA-基础知识</a>
+      </li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    </ul>
+  </div>
+  <footer class="read-next-card-footer">
+    <a href="/archives">  MORE  → </a>
+  </footer>
+</article>
+
+            
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+    <header class="read-next-card-header tagcloud-card">
+        <h3 class="read-next-card-header-title">分类</h3>
+    </header>
+    <div class="read-next-card-content">
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Citrix/">Citrix</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web-Security/">Web Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/github/">github</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/system-security/">system security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%97%E9%80%8F%E5%B7%A5%E5%85%B7/">渗透工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E6%99%AE/">科普</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A0%81/">编码</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%B6%85%E8%9E%8D%E5%90%88/">超融合</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%9A%E4%BF%A1/">通信</a></li></ul>
+    </div>
+</article>
+
+
+            
+            
+            
+
+<article class="read-next-card" style="background-image: url(https://w.wallhaven.cc/full/vg/wallhaven-vg8mjp.png)">
+	<header class="read-next-card-header tagcloud-card">
+		<h3 class="read-next-card-header-title">标签云</h3>
+	</header>
+	<div class="read-next-card-content-ext">
+		<a href="/tags/8086CPU/" style="font-size: 14px;">8086CPU</a> <a href="/tags/ELK/" style="font-size: 14px;">ELK</a> <a href="/tags/IDA/" style="font-size: 16.5px;">IDA</a> <a href="/tags/OllyDdbg/" style="font-size: 14px;">OllyDdbg</a> <a href="/tags/x64dbg/" style="font-size: 19px;">x64dbg</a> <a href="/tags/%E6%B1%87%E7%BC%96/" style="font-size: 24px;">汇编</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" style="font-size: 19px;">漏洞复现</a> <a href="/tags/%E9%80%86%E5%90%91/" style="font-size: 21.5px;">逆向</a> <a href="/tags/%E9%9D%B6%E6%9C%BA/" style="font-size: 19px;">靶机</a>
+	</div>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+	
+
+
+
+
+<div id="search" class="search-overlay">
+    <div class="search-form">
+        
+        <div class="search-overlay-logo">
+        	<img src="https://i.loli.net/2020/05/12/OXSj4zB3qxtaiJ8.png" alt="9unk">
+        </div>
+        
+        <input id="local-search-input" class="search-input" type="text" name="search" placeholder="搜索 ...">
+        <a class="search-overlay-close" href="#"></a>
+    </div>
+    <div id="local-search-result"></div>
+</div>
+
+<footer class="site-footer outer">
+	<div class="site-footer-content inner">
+		<div class="copyright">
+			<a href="/" title="9unk">9unk © 2021</a>
+			
+				
+    		
+		</div>
+		<nav class="site-footer-nav">
+			
+			<a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+			<a href="https://github.com/xzhih/hexo-theme-casper" title="Casper" target="_blank" rel="noopener">Casper</a>
+		</nav>
+	</div>
+</footer>
+	
+
+
+<script>
+    if(window.navigator && navigator.serviceWorker) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for(let registration of registrations) {
+                registration.unregister()
+            }
+        })
+    }
+</script>
+
+
+<script id="scriptLoad" src="/js/allinone.min.js" async></script>
+
+
+<script>
+    document.getElementById('scriptLoad').addEventListener('load', function () {
+        
+        
+            var bLazy = new Blazy();
+        
+
+        
+        
+
+        
+        
+        
+            searchFunc("/");
+        
+        
+    })
+</script>
+
+
+
+
+
+
+<script id="valineScript" src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+<script>
+    document.getElementById('valineScript').addEventListener("load", function() {
+        new Valine({
+            el: '#comment' ,
+            verify: false,
+            notify: false,
+            appId: 'lhq4C91rscRdbbVHPYesVhOz-gzGzoHsz',
+            appKey: 'EHeksCG71RId7DpUxMiocJQ4',
+            placeholder: '你是魔鬼吧，都不留言！',
+            pageSize: 10,
+            avatar: 'mm',
+            visitor: 
+        })
+    });
+</script>
+
+
+
+
+
+
+
+</body></html>
