@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            从零开始IDA-基础知识 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">从零开始IDA-基础知识</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2021-02-24 15:26:28</span>
+        <span class="mobile">2021-02-24 15:26</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E9%80%86%E5%90%91/">逆向</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/IDA/">IDA</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="IDA-简介"><a href="#IDA-简介" class="headerlink" title="IDA 简介"></a>IDA 简介</h1><p>IDA Pro 是 Hex-Rays 公司出品的一款交互式反汇编工具，它功能强大、操作复杂，要完全掌握它需要具备很多知识。就其本质而言，IDA 是一种递归下降反汇编器，但效率相比普通的反汇编器要高得多，原因如下</p>
+<ul>
+<li><p>IDA应用大量启发式代码来识别递归下降过程中遗漏的代码。IDA在区分数据与代码的同时还会设法确定数据的类型。IDA的目标之一是呈现尽可能接近源代码的代码。</p>
+</li>
+<li><p>IDA不仅使用数据类型信息，而且通过派生的变量和函数名称来尽其所能地注释生成的反汇编代码。</p>
+</li>
+</ul>
+<p>IDA 同时支持 32 位和 64 位的程序分析。IDA 支持的文件类型非常丰富，除了常见的 PE 格式，还支持 DOS、UNIX、Java、.NET 等平台的文件格式。</p>
+<h1 id="IDA-目录结构"><a href="#IDA-目录结构" class="headerlink" title="IDA 目录结构"></a>IDA 目录结构</h1><ul>
+<li><p>cfg：cfg 目录包含各种配置文件，包括基本IDA配置文件 <code>ida.cfg</code>、GUI 配置文件 <code>idagui.cfg</code> 以及文本模式用户界面配置文件 <code>idatui.cfg</code></p>
+</li>
+<li><p>idc：idc 目录包含 IDA 的内置脚本语言 IDC 所需的核心文件</p>
+</li>
+<li><p>ids：ids 目录中包含一些符号文件（IDA语法中的IDS文件），这些文件用于描述可被加载到 IDA 的二进制文件引用的共享库的内容。这些 IDS 文件包含摘要信息，其中列出了由某一个指定库导出的所有项目。这些项目包含描述某个函数所需的参数类型和数量的信息、函数的返回类型以及该函数的调用约定有关的信息。</p>
+</li>
+<li><p>loaders：loaders 目录包含文件加载过程中用于识别和解析 PE 或 ELF 等已知文件格式的 IDA 扩展</p>
+</li>
+<li><p>plugins：plugins 目录包含专门为 IDA 提供附加功能（多数情况下由用户定义）的 IDA 模块</p>
+</li>
+<li><p>proces：proces 目录包含已安装的 IDA 版本所支持的处理器模块。处理器模块为 IDA 提供机器语言——汇编语言的转换功能，并负责生成在 IDA 用户界面中显示的汇编语言</p>
+</li>
+<li><p>sig：sig 目录包含 IDA 在各种模式匹配操作中利用的现有代码的签名。通过模式匹配，IDA 能够将代码序列确定为已知的库代码，从而节省大量的时间。</p>
+</li>
+<li><p>til：til 目录包含一些类型库信息，IDA 通过这些信息记录特定于各种编译器库的数据结构的布局</p>
+</li>
+</ul>
+<h1 id="IDA-入门"><a href="#IDA-入门" class="headerlink" title="IDA 入门"></a>IDA 入门</h1><h2 id="打开文件"><a href="#打开文件" class="headerlink" title="打开文件"></a>打开文件</h2><p>启动 IDA  可以看到  IDA 的欢迎界面，在欢迎界面中有三个选项 “New”、”Go”，”Previous”</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/wrpf2hiOATRK1IQ.jpg"
+                      alt="1.jpg"
+                ></p>
+<ul>
+<li><p>New（新建）：选择要分析的文件并打开 IDA 文件分析选项框</p>
+</li>
+<li><p>Go（运行）：终止 IDA 加载过程，打开一个空白的工作区。</p>
+</li>
+<li><p>Previous（上一个）：使用 Previous 按钮可以打开其下 “最近使用过的文件” 列表中的第一个文件</p>
+</li>
+</ul>
+<p>选择 “New” 选择 crackme.exe 程序</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/2DaPyiO7pWjLFhK.jpg"
+                      alt="2.jpg"
+                ></p>
+<p>打开新文件时，看到如下图所示的加载框。IDA 会生成一个可能的文件类型列表，并在对话框顶部显示这个列表</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/zmpwWqJRacQyu2j.jpg"
+                      alt="3.jpg"
+                ></p>
+<p>这里用的是破解版的无需更新，把所有的勾都取消掉</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/t6yGUpMLWVSsI4O.jpg"
+                      alt="4.jpg"
+                ></p>
+<p>打开文件后出现如界面</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/FYAjHolvuP9xZQc.jpg"
+                      alt="5.jpg"
+                ></p>
+<p>打开文件后，在分析文件的同目录下会生成多个文件，这些文件是 IDA 创建的为 Crackme.exe 数据库组件文件。里面存储了 Crackme.exe 程序的所有分析数据，当第二次逆向 Crackme.exe 时只需要再打开 Crackme.exe 的数据库就可以接着上一次继续分析程序。数据库组件文件如下图所示：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/Gdgc4SsLt1yZzbT.jpg"
+                      alt="6.jpg"
+                ></p>
+<h2 id="关闭文件"><a href="#关闭文件" class="headerlink" title="关闭文件"></a>关闭文件</h2><p>当关闭分析文件（数据库） 、关闭 IDA 、切换分析文件（数据库）时，IDA 都将显示一个 Save database（保存数据库）对话框，如下图所示：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/5wxfzCuornAaF3y.jpg"
+                      alt="7.jpg"
+                ></p>
+<ul>
+<li><p>Don’t pack database（不打包数据库）：在关闭文件后不创建 IDB 文件（打包数据库文件），不建议使用这个选项</p>
+</li>
+<li><p>Pack database（Store）[打包数据库（存储）]：选择  Store 选项会将数据库组件存到一个 IDB 文件中。之前的 IDB 文件会被覆盖。创建 IDB 文件后，数据库组件文件会被删除。</p>
+</li>
+<li><p>Pack database（Deflate）[打包数据库（压缩）]：等同于 Store 选项，差别在于会把数据库组件文件压缩到 IDB 文件中</p>
+</li>
+<li><p>Collect  garbage（收集垃圾）：IDA 会在关闭数据库之前，从数据库中删除任何没有用的内存页面。</p>
+</li>
+<li><p>Don’t save the database（不保存数据库）：用于放弃对数据库所做的更改，IDA 会删除数据库组件文件，保留现有的未经修改的 IDB 文件。</p>
+</li>
+</ul>
+<p>选择 Store 选项，打包数据库文件，可以看到此时的组件文件被打包成 idb 文件</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/HlYERMmaW3U1sTL.jpg"
+                      alt="8.jpg"
+                ></p>
+<h2 id="判断文件位数"><a href="#判断文件位数" class="headerlink" title="判断文件位数"></a>判断文件位数</h2><p>32 位的程序，只能用 IDA（32）打开，所以在分析程序前需要先判断程序时多少位的。这里使用 <code>010 Editor</code> 十六进制编辑器，来判断程序程序的位数。</p>
+<p>打开文件后在 <code>PE</code> 这个单词后面有 <code>PE..L</code>，这就表示这个文件时 32 位的。如下图所示：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/7EBizRGDJm3Ybnp.jpg"
+                      alt="9.jpg"
+                ></p>
+<p>如果 <code>PE</code> 单词后面是 <code>PE..†</code>，这就表示这个文件是 64 位的。如下图所示：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/Qh6Z3FBwkV8fvDW.jpg"
+                      alt="10.jpg"
+                ></p>
+<h2 id="IDA-窗口介绍"><a href="#IDA-窗口介绍" class="headerlink" title="IDA 窗口介绍"></a>IDA 窗口介绍</h2><p>大概介绍各个窗口的功能和作用。</p>
+<h3 id="导航条"><a href="#导航条" class="headerlink" title="导航条"></a>导航条</h3><ul>
+<li>蓝色：表示常规指令函数</li>
+<li>黑色：节与节之间的间隙</li>
+<li>银白色：数据内容</li>
+<li>粉色：表示外部导入符号</li>
+<li>暗黄色：表示 ida未识别的内容</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/nvQrkW8SyITFmY3.jpg"
+                      alt="18.jpg"
+                ></p>
+<h3 id="函数窗口"><a href="#函数窗口" class="headerlink" title="函数窗口"></a>函数窗口</h3><p>用于列举 IDA 在数据库中识别的每一个函数。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/rDwvP5xZ2BihtuO.jpg"
+                      alt="17.jpg"
+                ></p>
+<blockquote>
+<p>双击 Function 窗口中的每一个条目，反汇编窗口将跳转到选定函数所在的位置（反汇编窗口会自动打开）</p>
+</blockquote>
+<h3 id="IDA-主界面"><a href="#IDA-主界面" class="headerlink" title="IDA 主界面"></a>IDA 主界面</h3><ul>
+<li>IDA VIew：三种汇编视图。文本视图、图形视图、路径视图</li>
+<li>Hex View：十六进制窗口</li>
+<li>Imports：导入函数窗口</li>
+<li>Struceures：结构体窗口</li>
+<li>Exports：导出函数窗口</li>
+<li>Enums：枚举窗口</li>
+<li>Strings：字符串窗口</li>
+</ul>
+<h3 id="图形视图"><a href="#图形视图" class="headerlink" title="图形视图"></a>图形视图</h3><p>我们重新打开 IDA 并选择 Previous 加载上一个 idb 文件，后面选择 “Loading exiting” 继续加载文件</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/MKp64l8RwyL52WJ.jpg"
+                      alt="11.jpg"
+                ></p>
+<p>当打开程序后，我们在主界面会看到 IDA 图形视图。图形视图类似于程序流程图，将一个程序分解成许多基本块，生动显示该函数由一个块到另一个块的控制流程，让分析人员快速了解一个程序的执行流程。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/apA3Lc7EYGRwbS2.jpg"
+                      alt="12.jpg"
+                ></p>
+<blockquote>
+<p>IDA 使用不同的颜色箭头区分函数块之间各种类型的流，根据测试条件会生成两种流：Yes 是绿色箭头（执行分支），No 是红色箭头（不执行分支）。只有一个后继块的基本块会利用一个正常的边（蓝色）指向下一个即将执行的块。</p>
+</blockquote>
+<p>操作：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Ctrl+滚轮：放大缩小流程图</span><br><span class="line">左击背景并拖动：调整流程图位置</span><br><span class="line">左击基本块并拖动：调整基本块的位置</span><br></pre></td></tr></table></figure>
+
+<h3 id="路径视图"><a href="#路径视图" class="headerlink" title="路径视图"></a>路径视图</h3><p>右击 “基本块” —&gt; “Proximity browser” 进入路径视图<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/trkWDbv2RZJM1gN.jpg"
+                      alt="15.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/H4SQegbyE6avZMf.jpg"
+                      alt="16.jpg"
+                ></p>
+<h3 id="文本视图"><a href="#文本视图" class="headerlink" title="文本视图"></a>文本视图</h3><p>在图形界面中按 “空格” 进入文本视图。面向文本的反汇编窗口是查看和操作 IDA 生成的反汇编代码的传统界面。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/WzTAcUi5jGw8mxr.jpg"
+                      alt="13.jpg"
+                ></p>
+<ul>
+<li><p>虚拟地址格式：[区域名称]:[虚拟地址]</p>
+</li>
+<li><p>左侧箭头窗口：实线表示非条件跳转；虚线表示条件跳转。如果某一个跳转在执行之前是加粗的实线或虚线，表示这一块是循环指令</p>
+</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/E24Qd9cvpPZGYK6.jpg"
+                      alt="14.jpg"
+                ></p>
+<h3 id="十六进制窗口"><a href="#十六进制窗口" class="headerlink" title="十六进制窗口"></a>十六进制窗口</h3><p>十六进制窗口是编辑窗口，修改汇编指令都是在十六进制窗口操作。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/o7nRmEQ5jhpBFaV.jpg"
+                      alt="19.jpg"
+                ></p>
+<p>例如，将下图的 <code>jz</code> 指令，改成 <code>0000</code> 指令：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/ZapMqE17etc5rso.jpg"
+                      alt="20.jpg"
+                ></p>
+<ol>
+<li>先在汇编窗口，左击选择要修改的指令或数据</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/ZapMqE17etc5rso.jpg"
+                      alt="20.jpg"
+                ></p>
+<ol start="2">
+<li>再进入十六进制窗口（IDA会自动把一条汇编指令的二进制数据组合在一起高亮显示）</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/29/Tbw3cV6Xth91alH.jpg"
+                      alt="21.jpg"
+                ></p>
+<ol start="3">
+<li>通过 “F2” 编辑指令，然后输入数据”0000”，最后再同意修改。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/30/Yktn4rzKNuJUxdL.jpg"
+                      alt="23.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/30/upoT28OUrJnxHk4.jpg"
+                      alt="24.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/30/2q43DZEBxipUCnM.jpg"
+                      alt="25.jpg"
+                ></p>
+<h3 id="导入函数窗口"><a href="#导入函数窗口" class="headerlink" title="导入函数窗口"></a>导入函数窗口</h3><p>在代码分析或编程中经常会遇到输入函数（Import Functions，或称导入函数）。导入函数就是被程序调用但其执行代码不在程序中的函数，这些函数代码位于相关的 DLL 文件中，在调用者程序中只保留相关的函数信息，例如函数名、DLL 文件名等。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/31/xPuhS74gK2CYyTU.jpg"
+                      alt="26.jpg"
+                ></p>
+<h3 id="结构体窗口"><a href="#结构体窗口" class="headerlink" title="结构体窗口"></a>结构体窗口</h3><p>结构体窗口用于显示 IDA 决定在一个二进制文件中使用的任何复杂的数据结构（如C结构体和联合）的布局。在分析阶段，IDA会查询它的函数类型签名扩展库，设法将函数的参数类型与程序使用的内存匹配起来。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/31/MLTcfPtyFdngUhu.jpg"
+                      alt="27.jpg"
+                ></p>
+<p>结构体窗口的两个主要用途包括：</p>
+<ol>
+<li>为标准数据结构的布局提供现成的参考</li>
+<li>为你提供一种方法，在你发现程序使用的自定义数据结构时，帮助你创建自己的、可用作内存布局模板的数据结构</li>
+</ol>
+<h3 id="导出函数窗口"><a href="#导出函数窗口" class="headerlink" title="导出函数窗口"></a>导出函数窗口</h3><p>在 DLL 中有一张导出表，其中有一系列函数，这些函数叫做导出函数。这些函数可供外部程序调用，即这些函数都是该 DLL 的进入点(entry point，类似普通程序中的 main 函数)。不在导出表中的函数，为该 DLL 私有的函数，外部程序不能调用它们。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/31/wnsWJVHbeXihUuG.jpg"
+                      alt="28.jpg"
+                ></p>
+<p>导出窗口列出文件的入口点。这包括程序的执行入口点（在程序的文件头部分指定），以及任何由文件导出给其他文件使用的函数和变量，对于 exe 来说，至少有一个导出函数，程序的执行入口点。IDA将这个入口点取名为 start</p>
+<h3 id="枚举窗口"><a href="#枚举窗口" class="headerlink" title="枚举窗口"></a>枚举窗口</h3><p>枚举窗口有点类似于结构体窗口。如果IDA检测到标准枚举数据类型（C enum），它将在枚举窗口中列出该数据类型。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/31/JLdWIlup54M8VzU.jpg"
+                      alt="29.jpg"
+                ></p>
+<h3 id="字符串窗口"><a href="#字符串窗口" class="headerlink" title="字符串窗口"></a>字符串窗口</h3><p>Strings窗口中显示的是从二进制文件中提取出的一组字符串，以及每个字符串所在的地址，双击Strings窗口中的任何字符串，反汇编窗口将跳转到该字符串所在的地址</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/01/31/xgu1yvEBaO53pdH.jpg"
+                      alt="30.jpg"
+                ></p>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a class="link"   target="_blank" rel="noopener" href="https://www.52pojie.cn/thread-1345176-1-1.html" >[Disassemblers] IDA Pro 7.5 绿色版<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://www.andseclab.com/2018/04/26/ida%E5%9F%BA%E6%9C%AC%E4%BB%8B%E7%BB%8D/" >AD攻防工作室<i class="fas fa-external-link-alt"></i></a></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：从零开始IDA-基础知识</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2021-02-24 15:26:28</li>
+        <li>
+            本文链接：https://9unkk.github.io/2021/02/24/从零开始IDA-基础知识/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E9%80%86%E5%90%91/">#逆向</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/IDA/">#IDA</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/02/24/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BIDA-crackme%E5%88%86%E6%9E%90/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">从零开始IDA-crackme分析</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/01/02/x64dbg-%E5%8F%8D%E8%B0%83%E8%AF%95%E4%BA%8C/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">x64dbg-反调试二</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IDA-%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">IDA 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IDA-%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">IDA 目录结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IDA-%E5%85%A5%E9%97%A8"><span class="nav-number">3.</span> <span class="nav-text">IDA 入门</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6"><span class="nav-number">3.1.</span> <span class="nav-text">打开文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%97%AD%E6%96%87%E4%BB%B6"><span class="nav-number">3.2.</span> <span class="nav-text">关闭文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E6%96%87%E4%BB%B6%E4%BD%8D%E6%95%B0"><span class="nav-number">3.3.</span> <span class="nav-text">判断文件位数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IDA-%E7%AA%97%E5%8F%A3%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.4.</span> <span class="nav-text">IDA 窗口介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E8%88%AA%E6%9D%A1"><span class="nav-number">3.4.1.</span> <span class="nav-text">导航条</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%AA%97%E5%8F%A3"><span class="nav-number">3.4.2.</span> <span class="nav-text">函数窗口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IDA-%E4%B8%BB%E7%95%8C%E9%9D%A2"><span class="nav-number">3.4.3.</span> <span class="nav-text">IDA 主界面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2%E8%A7%86%E5%9B%BE"><span class="nav-number">3.4.4.</span> <span class="nav-text">图形视图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%AF%E5%BE%84%E8%A7%86%E5%9B%BE"><span class="nav-number">3.4.5.</span> <span class="nav-text">路径视图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E8%A7%86%E5%9B%BE"><span class="nav-number">3.4.6.</span> <span class="nav-text">文本视图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%AA%97%E5%8F%A3"><span class="nav-number">3.4.7.</span> <span class="nav-text">十六进制窗口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5%E5%87%BD%E6%95%B0%E7%AA%97%E5%8F%A3"><span class="nav-number">3.4.8.</span> <span class="nav-text">导入函数窗口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%E7%AA%97%E5%8F%A3"><span class="nav-number">3.4.9.</span> <span class="nav-text">结构体窗口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA%E5%87%BD%E6%95%B0%E7%AA%97%E5%8F%A3"><span class="nav-number">3.4.10.</span> <span class="nav-text">导出函数窗口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%9A%E4%B8%BE%E7%AA%97%E5%8F%A3"><span class="nav-number">3.4.11.</span> <span class="nav-text">枚举窗口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%AA%97%E5%8F%A3"><span class="nav-number">3.4.12.</span> <span class="nav-text">字符串窗口</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">4.</span> <span class="nav-text">reference</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            30天制作操作系统 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">30天制作操作系统</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2020-09-06 09:44:11</span>
+        <span class="mobile">2020-09-06 09:44</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="第-0-天：准备阶段"><a href="#第-0-天：准备阶段" class="headerlink" title="第 0 天：准备阶段"></a>第 0 天：准备阶段</h1><h2 id="下载工具和原版镜像"><a href="#下载工具和原版镜像" class="headerlink" title="下载工具和原版镜像"></a>下载工具和原版镜像</h2><p><a class="link"   target="_blank" rel="noopener" href="https://github.com/sky5454/30daysMakeOS-Origin-ISOfiles.git" >原版光盘(含iso文件)<i class="fas fa-external-link-alt"></i></a></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/09/06/riLD5TFQt9Jowys.png"
+                      alt="1.png"
+                ></p>
+<h2 id="二进制编辑器"><a href="#二进制编辑器" class="headerlink" title="二进制编辑器"></a>二进制编辑器</h2><p>BZ 是一个修改二进制文件的工具。工具可到网上下载，或者使用工具包中 BZ。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/09/06/qnyYotO8UvLDdTu.png"
+                      alt="4.png"
+                ></p>
+<p>取消只读选框，可对文件进行修改。</p>
+<h2 id="工具目录-tolset"><a href="#工具目录-tolset" class="headerlink" title="工具目录 tolset"></a>工具目录 tolset</h2><ol>
+<li>nask 编译器</li>
+</ol>
+<p>把 nas 文件(作者的汇编源码)转为二进制的，用来把 nas 文件编译成二进制 img 文件。可能用翻译更贴切，不过说成编译也没有什么毛病。 </p>
+<p>路径：&#x2F;tolset&#x2F;z_tools&#x2F;nask.exe</p>
+<ol start="2">
+<li>imgtol.com</li>
+</ol>
+<p>将 img 文件刻录到软盘的工具。</p>
+<p>用法：imgtol.com w a: helloos.img</p>
+<p>路径：&#x2F;tolset&#x2F;z_tools&#x2F;imgtol.com</p>
+<ol start="3">
+<li>make.exe</li>
+</ol>
+<p>读取并执行 Makefile 的 GNU 系列工具，能读取指定目录下的 Makefile 脚本。其参数与 Makefile 有关。</p>
+<p>路径：&#x2F;tolset&#x2F;z_tools&#x2F;make.exe</p>
+<h2 id="制作运行-img-操作"><a href="#制作运行-img-操作" class="headerlink" title="制作运行 img 操作"></a>制作运行 img 操作</h2><ol>
+<li>将 nas 源码文件编译成 img 文件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nask.exe helloos.nas helloos.img</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>将 img 写入软盘 A</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">imgtol.com w a: helloos.img</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/09/06/sX5QicPBWvE3J6C.png"
+                      alt="2.png"
+                ></p>
+<p>需要重启系统，从软盘进入 img 系统</p>
+<ol start="3">
+<li>使用 qemu 启动 img 系统</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make.exe -C ../z_tools/qemu</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/09/06/LTlceyJSXIutb5U.png"
+                      alt="3.png"
+                ></p>
+<h1 id="第-1-天：汇编入门"><a href="#第-1-天：汇编入门" class="headerlink" title="第 1 天：汇编入门"></a>第 1 天：汇编入门</h1><h2 id="NASM-简介"><a href="#NASM-简介" class="headerlink" title="NASM 简介"></a>NASM 简介</h2><p>NASM 全称 The Netwide Assembler，是一款基于 80x86 和 x86-64 平台的汇编语言编译程序，其设计初衷是为了实现编译器程序跨平台和模块化的特性。NASM支持大量的文件格式，包括 Linux，*BSD，a.out，ELF，COFF，Mach−O，Microsoft 16−bit OBJ，Win32 以及Win64，同时也支持简单的二进制文件生成。NASM 是众多汇编器中，免费且比较好用的汇编编译器。</p>
+<h2 id="知识学习"><a href="#知识学习" class="headerlink" title="知识学习"></a>知识学习</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/09/06/MGwTO7HFVD8tKny.png"
+                      alt="5.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/09/06/mdDaTUeVRQJcKql.png"
+                      alt="6.png"
+                ></p>
+<ol>
+<li>DB（Define Byte）：定义一串字节数据（8位）</li>
+</ol>
+<p>例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">; 定义 6 个字节数据： eb，4e，90</span><br><span class="line">DB 0xeb,0x4e,0x90</span><br><span class="line"></span><br><span class="line">; 定义 8 个字节数据：HELLOIPL</span><br><span class="line">DB <span class="string">&quot;HELLOIPL&quot;</span></span><br><span class="line"></span><br><span class="line">; 定义 10 个字节</span><br><span class="line">DB 10</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>编译器默认会将数据认为是 10 进制，所以需要使用 0x 来表示这个数据是 16 进制的。</p>
+</blockquote>
+<ol start="2">
+<li>DW（伪指令）：定义一串字型数据（16 位）</li>
+</ol>
+<p>例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">; 定义 10 个字，即 20 个字节</span><br><span class="line">DW 10</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>DD（伪指令）：定义一串双字型数据（32 位）</li>
+</ol>
+<p>例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">; 定义 10 个双字，即 40 个字节</span><br><span class="line">DD 10</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>RESB（Reserve Byte）: “RESB”, “RESW”, “RESD”, “RESQ” and “REST” 被设计用在模块的 BSS 段中：它们声明未初始化的内存空间。每一个带有单个操作数，用来表明字节数，字数，或双字数或其它的需要保留单位。这些指令在初始化空间中默认填充0。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">; 初始化 18 个字节的空间，并填充0。</span><br><span class="line">RESB 18</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>$：用法表示当前的指令在哪个位置。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">; 我当前的指令在 $ 位置，或者说现在已经使用了 $ 个字节。这个指令意思是：填充 <span class="string">&quot;0x1fe-$&quot;</span> 个值位 <span class="string">&quot;0x00&quot;</span> 的字节。</span><br><span class="line">RESB 0x1fe-$</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>上面的这些指令都是伪指令。伪指令是只有编译器能执行的指令，编译器会将伪指令编译成数据。</p>
+</blockquote>
+<h2 id="专业术语"><a href="#专业术语" class="headerlink" title="专业术语"></a>专业术语</h2><ol>
+<li>启动区（boot sector）</li>
+</ol>
+<p>软盘的第一个扇区称为启动区，因为计算机读写软盘的时候是以 512 字节为一个单位进行读写的，所以软盘中的 512 字节称为一个扇区。</p>
+<p>计算机在读写软盘的时候，会先读取第一个扇区，如果第一个扇区的最后两个字节不是 0x55 AA，计算机就会认为这张盘上没有所需的启动程序，就会报一个不能启动的错误。因此第一个扇区也被称为启动区。</p>
+<ol start="2">
+<li>IPL（initial program loader）</li>
+</ol>
+<p>IPL 启动程序加载器。启动区的 512 字节，肯定是放不下一个正常的操作系统，所以就有了 IPL 这个程序（放到启动区中）来加载操作系统。因此有时启动区也称为 IPL。</p>
+<h1 id="第-2-天：汇编语言学习-与-makefile-入门"><a href="#第-2-天：汇编语言学习-与-makefile-入门" class="headerlink" title="第 2 天：汇编语言学习 与 makefile 入门"></a>第 2 天：汇编语言学习 与 makefile 入门</h1><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/09/12/bOVAuiJXZpR9STN.png"
+                      alt="7.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/09/12/SNBbarV8x5ORuTE.png"
+                      alt="8.png"
+                ></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><ol>
+<li>8 位寄存器</li>
+</ol>
+<ul>
+<li>AL：累加寄存器低位</li>
+<li>CL：计数寄存器低位</li>
+<li>DL：数据寄存器低位</li>
+<li>BL：基地址寄存器低位</li>
+<li>AH：累加寄存器高位</li>
+<li>CH：计数寄存器高位</li>
+<li>DH：数据寄存器高位</li>
+<li>BH：基地址寄存器高位</li>
+</ul>
+<ol start="2">
+<li>16 位寄存器</li>
+</ol>
+<ul>
+<li>AX：累加寄存器</li>
+<li>CX：计数寄存器</li>
+<li>DX：数据寄存器</li>
+<li>BX：基地址寄存器</li>
+<li>SP：栈指针寄存器</li>
+<li>BP：基地址指针寄存器</li>
+<li>SI：源变地址寄存器</li>
+<li>DI：目的变地址寄存器</li>
+</ul>
+<p>AX、CX、DX、BX 可拆分成 8 位寄存器：AH、AL、BH、BL、CH、CL、DH、DL 。这里的 X 表示扩展（extend）的意思，因为之前是 8 位寄存器，现在扩展到了 16 位寄存器。。</p>
+<ol start="3">
+<li>32 位寄存器</li>
+</ol>
+<ul>
+<li>EAX：累加寄存器</li>
+<li>ECX：计数寄存器</li>
+<li>EDX：数据寄存器</li>
+<li>EBX：基地址寄存器</li>
+<li>ESP：栈指针寄存器</li>
+<li>EBP：基地址指针寄存器</li>
+<li>ESI：源变地址寄存器</li>
+<li>EDI：目的变地址寄存器</li>
+</ul>
+<ol start="4">
+<li>段寄存器</li>
+</ol>
+<ul>
+<li>ES：附加段寄存器</li>
+<li>CS：代码段寄存器</li>
+<li>SS：栈段寄存器</li>
+<li>DS：数据段寄存器</li>
+<li>FS：没有名称</li>
+<li>GS：没有名称</li>
+</ul>
+<ol start="5">
+<li>内存地址<br>一个程序被加载到内存后，CPU 必须要从内存中读取处理一条一条的指令，程序才得以运行。内存中的指令存放在内存地址中，只有当你告诉 CPU 我要执行哪个内存地址的指令时，CPU 才会正确执行这条指令。内存地址用 <code>[常量]</code> 来表示。</li>
+</ol>
+<h2 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h2><ol>
+<li>ORG（origin） 指令：修改段内偏移地址。<br>工作原理：org 指令本身不能决定程序将要加载的内存的什么位置，它只是告诉编译器，程序在编译好后需要加载到 xxx 地址，所以在编译时帮我调整好数据访问时的地址。</li>
+</ol>
+<p>地址调整方法：指定地址+旧的偏移地址</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">; 在源码中这条指令的偏移地址是 0，也就是旧的偏移地址是 0。</span><br><span class="line">; 当程序加载的时候，偏移地址=0x7c00+0</span><br><span class="line">; 0x7c00~0x7dff ：是启动区内容的装载地址</span><br><span class="line"></span><br><span class="line">ORG 0x7c00</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>JMP 指令：无条件跳转指令<br>工作原理：jmp 跳转指令根据跳转的距离分为：段内短转移、段内近转移、段间转移。段内转移都是通过当前 IP（偏移地址）的转移位移来进行跳转的。比如，当前 IP&#x3D;5 ，要跳转的 IP&#x3D;8，指令跳转的时候就是 jmp 5+3&#x3D;jmp 8。这里的 3 表示 IP 向后移动 3 个偏移地址。</li>
+</ol>
+<p>段内跳转方法：当前IP + 位移</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">; <span class="string">&quot;entry:&quot;</span> 的术语叫标号，表示将一段程序做一个标识。</span><br><span class="line">; 当我需要用这段程序的时候，可以使用 <span class="string">&quot;指令 标号&quot;</span>来执行这段程序。</span><br><span class="line"></span><br><span class="line">jmp entry</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>MOV 指令：传送指令<br>工作原理：将一个寄存器或者内存单元中的值，传送到另一个寄存器或内存单元中。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">; 将值 0，传送到 ax 寄存器中。原来 ax 寄存器中的值会被覆盖</span><br><span class="line">mov ax,0</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>ADD 指令：加法指令<br>工作原理：将两个数值相加</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">; si=si+1</span><br><span class="line">add si,1</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>CMP 指令：比较指令</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">; 将 al 中的值和 0 进行比较</span><br><span class="line">cmp al,0</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>JE 指令：有条件跳转指令，根据比较结果进行指令跳转。如果比较结果相等，则跳转到制定地址；如果跳转指令不相等，则不跳转，继续执行下一条指令。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">; 如果 al=0，就跳转到 fin 标号处</span><br><span class="line">cmp al,0</span><br><span class="line">je fin</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li><p>INT 指令：软件中断指令。int 指令调用的是操作系统提供的子程序或者其他特殊的程序</p>
+</li>
+<li><p>HLT 指令：使程序停止运行，CPU 处于待机状态，当外部发生变化，比如按键盘、鼠标等，CPU 就会醒过来，继续执行程序。</p>
+</li>
+</ol>
+<h2 id="Makefile-入门"><a href="#Makefile-入门" class="headerlink" title="Makefile 入门"></a>Makefile 入门</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/09/13/huf8kL2Q3RaB6bG.png"
+                      alt="9.png"
+                ></p>
+<p><strong>Makefile语法：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">规则名称 : 执行这个规则所需要的文件（以空格符隔开）</span><br><span class="line">    该规则的执行指令</span><br></pre></td></tr></table></figure>
+
+<p><strong>make 语法：</strong></p>
+<p><code>make -r 规则名</code></p>
+<p><strong>优点：</strong></p>
+<p>使用灵活方便：当规则执行，找不到需要的文件时。程序会自动需找并执行所需文件的规则。Makefile 可集成多个规则，并按要求执行。</p>
+<h1 id="第-3-天：进入-32-位模式并导入-C-语言"><a href="#第-3-天：进入-32-位模式并导入-C-语言" class="headerlink" title="第 3 天：进入 32 位模式并导入 C 语言"></a>第 3 天：进入 32 位模式并导入 C 语言</h1><h2 id="制作真正的-IPL"><a href="#制作真正的-IPL" class="headerlink" title="制作真正的 IPL"></a>制作真正的 IPL</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/09/13/AxDeoa95WsndFQN.png"
+                      alt="10.png"
+                ></p>
+<h3 id="INT-0x13-中断指向的是磁盘服务程序。"><a href="#INT-0x13-中断指向的是磁盘服务程序。" class="headerlink" title="INT 0x13 中断指向的是磁盘服务程序。"></a>INT 0x13 中断指向的是磁盘服务程序。</h3><p>用途：将指定扇区的代码加载到内存指定位置</p>
+<p>参数表：</p>
+<table>
+<thead>
+<tr>
+<th align="center">值</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">00H</td>
+<td align="center">磁盘系统复位</td>
+</tr>
+<tr>
+<td align="center">01H</td>
+<td align="center">读取磁盘系统状态</td>
+</tr>
+<tr>
+<td align="center">02H</td>
+<td align="center">读扇区</td>
+</tr>
+<tr>
+<td align="center">03H</td>
+<td align="center">写扇区</td>
+</tr>
+<tr>
+<td align="center">04H</td>
+<td align="center">检验扇区</td>
+</tr>
+<tr>
+<td align="center">05H</td>
+<td align="center">格式化磁道</td>
+</tr>
+<tr>
+<td align="center">06H</td>
+<td align="center">格式化坏磁道</td>
+</tr>
+<tr>
+<td align="center">07H</td>
+<td align="center">格式化驱动器</td>
+</tr>
+<tr>
+<td align="center">08H</td>
+<td align="center">读取驱动器参数</td>
+</tr>
+<tr>
+<td align="center">09H</td>
+<td align="center">初始化硬盘参数</td>
+</tr>
+<tr>
+<td align="center">0AH</td>
+<td align="center">读长扇区</td>
+</tr>
+<tr>
+<td align="center">0BH</td>
+<td align="center">写长扇区</td>
+</tr>
+<tr>
+<td align="center">0CH</td>
+<td align="center">查寻</td>
+</tr>
+<tr>
+<td align="center">0DH</td>
+<td align="center">硬盘系统复位</td>
+</tr>
+<tr>
+<td align="center">0EH</td>
+<td align="center">读扇区缓冲区</td>
+</tr>
+<tr>
+<td align="center">0FH</td>
+<td align="center">写扇区缓冲区</td>
+</tr>
+<tr>
+<td align="center">10H</td>
+<td align="center">读取驱动器状态</td>
+</tr>
+<tr>
+<td align="center">11H</td>
+<td align="center">校准驱动器</td>
+</tr>
+<tr>
+<td align="center">12H</td>
+<td align="center">控制器 RAM 诊断</td>
+</tr>
+<tr>
+<td align="center">13H</td>
+<td align="center">控制器驱动诊断</td>
+</tr>
+<tr>
+<td align="center">14H</td>
+<td align="center">控制器内部诊断</td>
+</tr>
+<tr>
+<td align="center">15H</td>
+<td align="center">读取磁盘类型</td>
+</tr>
+<tr>
+<td align="center">16H</td>
+<td align="center">读取磁盘变化状态</td>
+</tr>
+<tr>
+<td align="center">17H</td>
+<td align="center">设置磁盘类型</td>
+</tr>
+<tr>
+<td align="center">18H</td>
+<td align="center">设置格式化媒体类型</td>
+</tr>
+<tr>
+<td align="center">19H</td>
+<td align="center">磁头保护</td>
+</tr>
+<tr>
+<td align="center">1AH</td>
+<td align="center">格式化 ESDI 驱动器</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>功能02H</p>
+<p>入口参数：AH&#x3D;02H</p>
+<ul>
+<li>AL&#x3D;扇区数</li>
+<li>CH&#x3D;柱面</li>
+<li>CL&#x3D;扇区</li>
+<li>DH&#x3D;磁头</li>
+<li>DL&#x3D;驱动器，00H~7FH:软盘；80H~0FFH:硬盘</li>
+<li>ES:BX&#x3D;缓冲区地址</li>
+</ul>
+</li>
+</ul>
+<p>出口参数：CF&#x3D;0 操作成功，AH&#x3D;00H，AL&#x3D;传输扇区数，否则，AH&#x3D;状态码。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/09/15/F4rObqo2JdWTt8I.png"
+                      alt="12.png"
+                ></p>
+<p>上面的图片具体描述了一个软盘的结构图：柱面（环状），一个软盘有 0~79（共 80）个柱面；每个柱面会被分成 1~18（共 18）个扇区；一个软盘有 0~1（共 2）个磁头用来读取数据。</p>
+<h3 id="JC-指令"><a href="#JC-指令" class="headerlink" title="JC 指令"></a>JC 指令</h3><p>JC（jump if carry），意思是如果 CF（carry flag）是 1 的话就跳转。CF 是标志寄存器，通常用来做条件跳转或数据比较。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/09/14/8cHIWqkJOZemQPp.png"
+                      alt="11.png"
+                ></p>
+<p>从上面部分程序中可以看到：程序先读取扇区，如果成功了 CF&#x3D;0。如果失败了 CF&#x3D;1，程序会跳到 error 部分继续执行，最后程序跳到 msg 部分继续执行，最后输出 load error 的信息。</p>
+<p>简单来说就是：读扇区失败了，屏幕就会输出 load error 的信息。</p>
+<h3 id="新增内容解释"><a href="#新增内容解释" class="headerlink" title="新增内容解释"></a>新增内容解释</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">MOV		AX,0x0820   ; 将系统文件放到内存 0x0820~0x083ff</span><br><span class="line">MOV		ES,AX       </span><br><span class="line">MOV		CH,0        ; 定位到柱面 0</span><br><span class="line">MOV		DH,0        ; 定位到磁头 0</span><br><span class="line">MOV		CL,2        ; 定位到扇区 2（扇区1存放要IPL）</span><br><span class="line">		</span><br><span class="line">MOV		AH,0x02     ; 执行读盘操作</span><br><span class="line">MOV		AL,1        ; 读取一个扇区</span><br><span class="line">MOV		BX,0</span><br><span class="line">MOV		DL,0x00     ; 设置驱动器名称为 A</span><br><span class="line">INT		0x13        ; 调用磁盘 BISO 程序</span><br><span class="line">JC		error        ; 如果程序执行错误，就跳到 error 标号处</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="试错"><a href="#试错" class="headerlink" title="试错"></a>试错</h2><p>软盘很不可靠，有时会发生不能读取数据的状况，所以要多读取几次，这里尝试读取 5 次，如果还是报错，就会跳转到 error 部分提示错误信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">		MOV		AX,0x0820</span><br><span class="line">		MOV		ES,AX</span><br><span class="line">		MOV		CH,0		; 定位到柱面0</span><br><span class="line">		MOV		DH,0		; 定位到磁头0</span><br><span class="line">		MOV		CL,2		; 定位到扇区2</span><br><span class="line">readloop:		</span><br><span class="line">		MOV		SI,0		; 记录失败次数的寄存器</span><br><span class="line">		</span><br><span class="line">retry:</span><br><span class="line">		MOV		AH,0x02	 ; AH=0x02：读入磁盘</span><br><span class="line">		MOV		AL,1		; 读取一个扇区</span><br><span class="line">		MOV		BX,0		</span><br><span class="line">		MOV		DL,0x00	 ; 设置驱动器名为 A</span><br><span class="line">		INT		0x13		; 调用中断，读取磁盘</span><br><span class="line">		JNC		fin		 ; 没有出错的话跳转到 fin		</span><br><span class="line">		ADD		SI,1		; 出错的话，失败次数加 1</span><br><span class="line">		CMP		SI,5		; 比较 SI 与 5 的值</span><br><span class="line">		JAE		error	   ; SI &gt;= 5 时，跳转到 error</span><br><span class="line">		MOV		AH,0x00	 ; 磁盘系统复位</span><br><span class="line">		MOV		DL,0x00	 ; 复位的驱动器为 A</span><br><span class="line">		INT		0x13		; 执行中断开始复位</span><br><span class="line">		JMP		retry	   ; 复位后再跳转，重新读盘</span><br></pre></td></tr></table></figure>
+
+<p>JNC 是 “Jump if not carry” 的缩写。也就是说进位标志是 0 的话就跳转。因为当读取磁盘报错时中断会将 cf 置为 1。</p>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_30675247/article/details/99217620" >《30天自制操作系统》笔记1 — 准备阶段<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/GerryLee93/article/details/106477483/" >org指令详解<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/farmwang/article/details/49963967" >int 0x13 中断理解<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/cherisegege/article/details/79835737" >BIOS系统服务 —— 直接磁盘服务（int 0x13）<i class="fas fa-external-link-alt"></i></a></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：30天制作操作系统</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2020-09-06 09:44:11</li>
+        <li>
+            本文链接：https://9unkk.github.io/2020/09/06/30天制作操作系统/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2020/10/10/80386-%E6%B1%87%E7%BC%96-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">80386 汇编-基础知识</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2020/04/30/Elastic-Stack%E7%AC%94%E8%AE%B0/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">Elastic Stack笔记</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC-0-%E5%A4%A9%EF%BC%9A%E5%87%86%E5%A4%87%E9%98%B6%E6%AE%B5"><span class="nav-number">1.</span> <span class="nav-text">第 0 天：准备阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E5%B7%A5%E5%85%B7%E5%92%8C%E5%8E%9F%E7%89%88%E9%95%9C%E5%83%8F"><span class="nav-number">1.1.</span> <span class="nav-text">下载工具和原版镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E8%BE%91%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">二进制编辑器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7%E7%9B%AE%E5%BD%95-tolset"><span class="nav-number">1.3.</span> <span class="nav-text">工具目录 tolset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%B6%E4%BD%9C%E8%BF%90%E8%A1%8C-img-%E6%93%8D%E4%BD%9C"><span class="nav-number">1.4.</span> <span class="nav-text">制作运行 img 操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC-1-%E5%A4%A9%EF%BC%9A%E6%B1%87%E7%BC%96%E5%85%A5%E9%97%A8"><span class="nav-number">2.</span> <span class="nav-text">第 1 天：汇编入门</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#NASM-%E7%AE%80%E4%BB%8B"><span class="nav-number">2.1.</span> <span class="nav-text">NASM 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E5%AD%A6%E4%B9%A0"><span class="nav-number">2.2.</span> <span class="nav-text">知识学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%93%E4%B8%9A%E6%9C%AF%E8%AF%AD"><span class="nav-number">2.3.</span> <span class="nav-text">专业术语</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC-2-%E5%A4%A9%EF%BC%9A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E4%B8%8E-makefile-%E5%85%A5%E9%97%A8"><span class="nav-number">3.</span> <span class="nav-text">第 2 天：汇编语言学习 与 makefile 入门</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">3.1.</span> <span class="nav-text">知识点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4"><span class="nav-number">3.2.</span> <span class="nav-text">指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Makefile-%E5%85%A5%E9%97%A8"><span class="nav-number">3.3.</span> <span class="nav-text">Makefile 入门</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC-3-%E5%A4%A9%EF%BC%9A%E8%BF%9B%E5%85%A5-32-%E4%BD%8D%E6%A8%A1%E5%BC%8F%E5%B9%B6%E5%AF%BC%E5%85%A5-C-%E8%AF%AD%E8%A8%80"><span class="nav-number">4.</span> <span class="nav-text">第 3 天：进入 32 位模式并导入 C 语言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%B6%E4%BD%9C%E7%9C%9F%E6%AD%A3%E7%9A%84-IPL"><span class="nav-number">4.1.</span> <span class="nav-text">制作真正的 IPL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#INT-0x13-%E4%B8%AD%E6%96%AD%E6%8C%87%E5%90%91%E7%9A%84%E6%98%AF%E7%A3%81%E7%9B%98%E6%9C%8D%E5%8A%A1%E7%A8%8B%E5%BA%8F%E3%80%82"><span class="nav-number">4.1.1.</span> <span class="nav-text">INT 0x13 中断指向的是磁盘服务程序。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JC-%E6%8C%87%E4%BB%A4"><span class="nav-number">4.1.2.</span> <span class="nav-text">JC 指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E5%A2%9E%E5%86%85%E5%AE%B9%E8%A7%A3%E9%87%8A"><span class="nav-number">4.1.3.</span> <span class="nav-text">新增内容解释</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%95%E9%94%99"><span class="nav-number">4.2.</span> <span class="nav-text">试错</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">5.</span> <span class="nav-text">reference</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

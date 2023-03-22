@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="此文从通信技术的角度科普 5G 知识，解释了 5G 的超高速度、超宽带、传输距离短等特点。">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            5G科普 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">5G科普</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2019-10-20 00:00:00</span>
+        <span class="mobile">2019-10-20 00:00</span>
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/%E9%80%9A%E4%BF%A1/">通信</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <p>原作者：小枣君</p>
+<p>原出处：鲜枣课堂</p>
+<p>原链接：<a class="link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/40671102" >有史以来最强的5G入门科普！<i class="fas fa-external-link-alt"></i></a></p>
+<h2 id="什么是-5G？"><a href="#什么是-5G？" class="headerlink" title="什么是 5G？"></a>什么是 5G？</h2><p>5G 就是第五代通信技术，主要特点是波长为毫米级，超宽带，超高速度，超低延时。1G 实现了模拟语音通信，大哥大没有屏幕只能打电话；2G 实现了语音通信数字化，功能机有了小屏幕可以发短信了；3G 实现了语音以外图片等的多媒体通信，屏幕变大可以看图片了；4G 实现了局域高速上网，大屏智能机可以看短视频了，但在城市信号好，老家信号差。1G~4G 都是着眼于人与人之间更方便快捷的通信，而 5G 将实现随时、随地、万物互联，让人类敢于期待与地球上的万物通过直播的方式无时差同步参与其中。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/v2-bf5493f2bb4f63cb829d2071f0bdbd61_r.jpg"
+                     
+                ></p>
+<h2 id="一个简单神奇的公式"><a href="#一个简单神奇的公式" class="headerlink" title="一个简单神奇的公式"></a>一个简单神奇的公式</h2><p>所有的通信技术都是围绕一个神奇的公式进行展开的，这个公式蕴含了博大精深的通信技术奥秘。对于这个公式，可以这么说：无论是 1G、2G、3G，还是 4G、5G，万变不离其宗，全部都是在它身上做文章，没有跳出它的“五指山”。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.zhimg.com/v2-223d023ef03d94c6f6557225394d5b7c_r.jpg"
+                     
+                ></p>
+<h2 id="有线？无线？"><a href="#有线？无线？" class="headerlink" title="有线？无线？"></a>有线？无线？</h2><p>通信技术，归根到底，就分为两种——有线通信和无线通信。</p>
+<p>有线通信：信息数据在实物上传播（看得见、摸得着）</p>
+<p>无线通信：信息数据在空中传播（看不见、摸不着）</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic4.zhimg.com/v2-55371943c90fd7f095a024d4c30d5213_r.jpg"
+                     
+                ></p>
+<p>以光纤为例，在实验室中，单条光纤最大速度已达到了 26Tbps。。。是传统网线的两万六千倍。。。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/v2-e17e2e9cd5acd0569c78de88647325f5_r.jpg"
+                     
+                ></p>
+<p>而空中传播这部分(无线通信)，才是移动通信的瓶颈所在。</p>
+<p>目前主流的移动通信标准，是 4G LTE（3G 的的升级版，并没有真正达到 4G），理论速率只有 150Mbps（不包括载波聚合）。这个和有线是完全没办法相比的。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/10/19/xEh3HfImg927LjZ.jpg"
+                      alt=" "
+                ></p>
+<p>所以，5G 如果要实现端到端的高速率，重点是突破无线这部分的瓶颈。</p>
+<h2 id="好大一个波"><a href="#好大一个波" class="headerlink" title="好大一个波"></a>好大一个波</h2><p>大家都知道，无线通信就是利用电磁波进行通信。电波和光波，都属于电磁波。电磁波的功能特性，是由它的频率决定的。不同频率的电磁波，有不同的属性特点，从而有不同的用途。</p>
+<p>例如，高频的 γ 射线，具有很大的杀伤力，可以用来治疗肿瘤。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic4.zhimg.com/80/v2-5d994145ac12cbbca555b6c785e38f03_hd.jpg"
+                     
+                ></p>
+<p>我们目前主要使用无线电波进行通信。当然，光波通信也在崛起，例如 LiFi。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/80/v2-49b17811ba99fdec01d486e9bf883a21_hd.jpg"
+                     
+                ></p>
+<p>不偏题，回到无线电波先。</p>
+<p>无线电波属于电磁波的一种，它的频率资源是有限的。为了避免干扰和冲突，我们在电波这条公路上进一步划分车道，分配给不同的对象和用途。</p>
+<p>请大家注意下面图中的红色字体。一直以来，我们主要是用中频~超高频进行手机通信的。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/80/v2-d2cdd772163befe3752f96bb87d5861d_hd.jpg"
+                     
+                ></p>
+<p>目前全球主流的 4G LTE 技术标准，属于特高频和超高频。</p>
+<p>我们国家主要使用超高频：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/10/19/LI6HN4DbMnmOfdJ.jpg"
+                      alt=" "
+                ></p>
+<p>大家能看出来，随着 1G、2G、3G、4G 的发展，使用的电波频率是越来越高的。这是为什么呢？</p>
+<p>这主要是因为，频率越高，能使用的频率资源越丰富。频率资源越丰富，能实现的传输速率就越高。简单来说，频率资源就像车厢，越高的频率，车厢越多，相同时间内能装载的信息就越多。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/10/19/eF2N4ab3VRW9Pil.jpg"
+                      alt=" "
+                ></p>
+<p>那么，5G使用的频率具体是多少呢？如下图所示：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/80/v2-fc333497812a58500b7b7370ea9d11e5_hd.jpg"
+                     
+                ></p>
+<p>5G的频率范围，分为两种：一种是 6GHz 以下，这个和目前我们的 2&#x2F;3&#x2F;4G 差别不算太大。还有一种，就很高了，在 24GHz 以上。</p>
+<p>目前，国际上主要使用 28GHz 进行试验（这个频段也有可能成为5G最先商用的频段）。</p>
+<p>如果按 28GHz 来算，根据前文我们提到的公式：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/10/19/sYged1NUzHjcV9M.jpg"
+                      alt=" "
+                ></p>
+<p>好啦，这个就是5G的第一个技术特点—频率越高，传输速率越高（带宽越大）</p>
+<h2 id="毫米波"><a href="#毫米波" class="headerlink" title="毫米波"></a>毫米波</h2><p>请允许我再发一遍刚才那个频率对照表：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/80/v2-d2cdd772163befe3752f96bb87d5861d_hd.jpg"
+                     
+                ></p>
+<p>请注意看最下面一行，是不是就是“毫米波”？</p>
+<p>从上面可以了解到无线电波的频率越高，网络的传输速率越快。</p>
+<p>那么问题来了：既然频率越高，传输速率越高（手机网速越快），为什么以前我们不用高频率呢？</p>
+<p>其实原因很简单——不是不想用，是用不起。</p>
+<p>首先无线电波在空中的传播方式可分为以下几种</p>
+<ul>
+<li><strong>直射</strong></li>
+</ul>
+<p>类比：在台球这项运动中，很多规律很像电磁波的规律。假若直接撞击球中心打出去的时候假使没有任何阻挡，球将沿直线运行</p>
+<p>由发射天线沿直线到达接收点的无线电波，被称为直射波。自由空间电波传播是电波在真空中的传播，是一种理想传播条件。 电波在自由空间传播时，可以认为是直射波传播，其能量既不会被障碍物吸收，也不会产生反射或散射。</p>
+<ul>
+<li><strong>反射</strong></li>
+</ul>
+<p>类比：如果打出的球碰到的台边，它就按 照反射角等入射角的规律运行。</p>
+<p>应用：在高速铁路无线覆盖选站的时候，要关注无线电波的入射角问题。备选站址不能太远，否则入射角太大，进入车厢内的折射能力就减少。一般都选取离铁路100米左右的站址（还需考虑其他因素，以后说）。<br>无线信号是通过地面或其他障碍物反射到达接收点的，称为反射波。反射发生于地球表面、建筑物和墙壁表面。反射波是在两种密度不同的传播媒介的分界面中才会 发生，分界面媒质密度差越大，波的反射量越大，折射量越小。波的入射角越小，反射量越小，折射量越大。直射波和反射波合称为空间波。</p>
+<ul>
+<li><strong>绕射</strong></li>
+</ul>
+<p>类比：假若母球和另一个球相切，根据力度和方向，它可以绕过视距内球，很像绕射</p>
+<ul>
+<li><strong>散射</strong></li>
+</ul>
+<p>类比：假设在一个范围内的很多球的彼此间距不超过一个 球，当母球打到这些球中间，会激起很多球向不同方向运动，很像散射</p>
+<p>当无线电波穿行的介质中存在小于波长的物体，且单位体积内阻挡体的个数非常巨大时，发生散射； 散射波产生于粗糙表面，小物体或其他不规则物体。在实际的通信系统中，树叶、街道标志和灯柱等会引发散射。</p>
+<ul>
+<li><strong>穿透</strong></li>
+</ul>
+<p>类比：水从沙子中穿过，沙子吸收水分，最后流出来的水变得很少</p>
+<p>对于非理想介质，无线电波贯穿介质，即穿透时，介质会吸收电磁波的能量，产生贯穿衰落。穿透损耗大小不仅与电磁波频率有关，而且与穿透物体的材料、尺寸有关。</p>
+<ul>
+<li><strong>非视距传输</strong></li>
+</ul>
+<p>趣事：<br>在工科大学读书的时候，女生很少，大家对女性的生活感到非常神秘。幸运的是，和我们男生宿舍楼成直角的就是一个女生宿舍楼，而且水房就在靠近男生楼 这一端。夏天的时候，只能听到水声，却看不到。一个同学说：“哎，可惜是非视距传输。”过了不多久，就发现该同学很创意般的在不远的墙上装了一个反射镜， 此君用望远镜每天看半小时。最终被女生发现。</p>
+<p>无线信号从发射点到接收端有障碍物阻挡，不能沿直线进行传播，叫做非视距传输。非视距传输的无线传播损耗比视距传输要增加很多。</p>
+<p>一般室内的无线电波信号是穿透分量与绕射分量的叠加，而绕射分量占绝大部分，但是频率越高，波长越短，越趋近于直线传播，绕射能力越差，穿透能力越强。简单来说就是频率越高，室内的无线电波的传播方式就会以穿透方式为主（当然室外也一样），然而无线电波穿透时，介质会吸收无线电波的能量，产生贯穿衰落。</p>
+<p>这个就是 5G 的第二个特点—频率越高，损减越大，传输距离越短。</p>
+<p>因此移动通信如果用了高频段，那么它最大的问题，就是传输距离大幅缩短，覆盖能力大幅减弱。覆盖同一个区域，需要的 5G 基站数量，将大大超过 4G。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic4.zhimg.com/80/v2-15c78adbd97fc67c4435d5003e14e9b3_hd.jpg"
+                     
+                ></p>
+<p>基站数量意味着什么？钱啊！投资啊！成本啊！</p>
+<p>频率越低，网络建设就越省钱，竞争起来就越有利。这就是为什么，这些年，电信、移动、联通为了低频段而争得头破血流。</p>
+<p>有的频段甚至被称为——黄金频段。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/10/19/uJIgHAyhUxmXvej.jpg"
+                      alt=" "
+                ></p>
+<p>这也是为什么，5G 时代，运营商拼命怼设备商，希望基站降价。（如果真的上5G，按以往的模式，设备商就发大财了。）</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.zhimg.com/80/v2-03a0c5122dc1009f5aa8d2835e93be20_hd.jpg"
+                     
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/80/v2-e20935fe445c52c8c5ab31611779b5d5_hd.jpg"
+                     
+                ></p>
+<p>所以，基于以上原因，在高频率的前提下，为了减轻网络建设方面的成本压力，5G必须寻找新的出路。</p>
+<p>首先，就是微基站。</p>
+<p><strong>微基站</strong></p>
+<p>基站有两种，微基站和宏基站。看名字就知道，微基站很小，宏基站很大！</p>
+<p>宏基站：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/80/v2-2e70b6f1f404776b5f365bd9a0754b25_hd.jpg"
+                     
+                ></p>
+<p>室外常见，建一个覆盖一大片</p>
+<p>微基站：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/10/19/cygdVtMknQINpaj.jpg"
+                      alt=" "
+                ></p>
+<p>还有更小的，巴掌那么大.</p>
+<p>其实，微基站现在就有不少，尤其是城区和室内，经常能看到。以后，到了 5G 时代，微基站会更多，到处都会装上，几乎随处可见。</p>
+<p>那么多基站在身边，会不会对人体造成影响？不会。</p>
+<p>其实，和传统认知恰好相反，事实上，基站数量越多，辐射反而越小！</p>
+<p>你想一下，冬天，一群人的房子里，一个大功率取暖器好，还是几个小功率取暖器好？</p>
+<p>大功率方案▼</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.zhimg.com/80/v2-2168e6be4417de062cbad0e8439a0664_hd.jpg"
+                     
+                ></p>
+<p>小功率方案▼</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic4.zhimg.com/80/v2-f4facc262f7a2ef4ca9fa87d34faea5b_hd.jpg"
+                     
+                ></p>
+<p>基站小，功率低，对大家都好。如果只采用一个大基站，离得近，辐射大，离得远，没信号，反而不好。</p>
+<h2 id="天线去哪了？"><a href="#天线去哪了？" class="headerlink" title="天线去哪了？"></a>天线去哪了？</h2><p>以前大哥大都有很长的天线，早期的手机也有突出来的小天线，为什么现在我们的手机都没有天线了？</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/10/19/rEmXwin4xG82OKb.jpg"
+                      alt=" "
+                ></p>
+<p>其实，我们并不是不需要天线，而是我们的天线变小了。</p>
+<p>根据天线特性，天线长度应与波长成正比，大约在1&#x2F;10~1&#x2F;4之间。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic4.zhimg.com/80/v2-7d72f88c59f53b97fda0603c7c7d7dcb_hd.jpg"
+                     
+                ></p>
+<p>随着时间变化，我们手机的通信频率越来越高，波长越来越短，天线也就跟着变短啦！</p>
+<p>毫米波通信，天线也变成毫米级。。。</p>
+<p>这就意味着，天线完全可以塞进手机的里面，甚至可以塞很多根。。。</p>
+<p>这就是5G的第三大杀手锏——</p>
+<p><strong>Ｍassive MIMO（大规模多天线技术）</strong></p>
+<p>MIMO 就是“多进多出”（Multiple-Input Multiple-Output），多根天线发送，多根天线接收。</p>
+<p>在 LTE 时代，我们就已经有 MIMO 了，但是天线数量并不算多，只能说是初级版的 MIMO。</p>
+<p>到了 5G 时代，继续把 MIMO 技术发扬光大，现在变成了加强版的 Massive　MIMO（Massive：大规模的，大量的）。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/10/19/M3TvHk4XtD1ALCx.jpg"
+                      alt=" "
+                ></p>
+<p>手机里面都能塞好多根天线，基站就更不用说了。</p>
+<p>以前的基站，天线就那么几根：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/10/19/bo6qO8SwExpRDgm.jpg"
+                      alt=" "
+                ></p>
+<p>5G 时代，天线数量不是按根来算了，是按“阵”。。。“天线阵列”。。。一眼看去，要得密集恐惧症的节奏。。。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.zhimg.com/80/v2-01202899559c2689c496a82d0e0d5c3c_hd.jpg"
+                     
+                ></p>
+<p>不过，天线之间的距离也不能太近。因为天线特性要求，多天线阵列要求天线之间的距离保持在半个波长以上。如果距离近了，就会互相干扰，影响信号的收发。</p>
+<h2 id="你是直的？还是弯的？"><a href="#你是直的？还是弯的？" class="headerlink" title="你是直的？还是弯的？"></a>你是直的？还是弯的？</h2><p>大家都见过灯泡发光吧？　</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/10/19/kuFVej4dErgTByA.jpg"
+                      alt=" "
+                ></p>
+<p>其实，基站发射信号的时候，就有点像灯泡发光。信号是向四周发射的，对于光，当然是照亮整个房间，如果只是想照亮某个区域或物体，那么，大部分的光都浪费了。。。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.zhimg.com/80/v2-5727e7a94006eb1eefde214077f3f6fc_hd.jpg"
+                     
+                ></p>
+<p>基站也是一样，大量的能量和资源都浪费了。 我们能不能找到一只无形的手，把散开的光束缚起来呢？ 这样既节约了能量，也保证了要照亮的区域有足够的光。答案是：可以。这就是——波 束 赋 形</p>
+<p><strong>波束赋形</strong></p>
+<p>在基站上布设天线阵列，通过对射频信号相位的控制，使得相互作用后的电磁波的波瓣变得非常狭窄，并指向它所提供服务的手机，而且能跟据手机的移动而转变方向。</p>
+<p>这种空间复用技术，由全向的信号覆盖变为了精准指向性服务，波束之间不会干扰，在相同的空间中提供更多的通信链路，极大地提高基站的服务容量。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.zhimg.com/80/v2-2fe8e5bbe9390beba3b2ee2029302020_hd.jpg"
+                     
+                ></p>
+<p>直的都能掰成弯的。。。还有什么是通信砖家干不出来的？</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.zhimg.com/80/v2-87913a367ba4dce199cd3c37d48494fc_hd.jpg"
+                     
+                ></p>
+<h2 id="别收我钱，行不行？"><a href="#别收我钱，行不行？" class="headerlink" title="别收我钱，行不行？"></a>别收我钱，行不行？</h2><p>在目前的移动通信网络中，即使是两个人面对面拨打对方的手机（或手机对传照片），信号都是通过基站进行中转的，包括控制信令和数据包。。。　</p>
+<p>而在 5G 时代，这种情况就不一定了。</p>
+<p>5G 的第五大特点——D2D，也就是 Device to Device（设备到设备）。</p>
+<p><strong>D2D</strong></p>
+<p>5G时代，同一基站下的两个用户，如果互相进行通信，他们的数据将不再通过基站转发，而是直接手机到手机。。。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic4.zhimg.com/80/v2-cc66a3ac67a04619d7e4e8fa2615186f_hd.jpg"
+                     
+                ></p>
+<p>这样，就节约了大量的空中资源，也减轻了基站的压力。</p>
+<p>不过，如果你觉得这样就不用付钱，那你就图样图森破了。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/80/v2-319a69c48f7af4a81721cb84350660ad_hd.jpg"
+                     
+                ></p>
+<p>控制消息还是要从基站走的，你用着频谱资源，运营商爸爸怎么可能放过你。。。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>5G 的特点：超高速度（超带宽）、超低延迟、传输距离短、辐射减小（其实现在基站的辐射都没有电脑高）、基站能够服务更多的无线设备、D2D(用户之间相互通信，不需要基站转发数据)。</p>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a class="link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/55998832" >「知乎知识库」— 5G<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/41182443" >第一次有人把5G讲的这么简单明了<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/40671102" >有史以来最强的5G入门科普！<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/mishifangxiangdefeng/article/details/79276891" >LTE和通信到底是什么关系<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/renlonggg/article/details/84989334" >什么是LTE<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/gwplovekimi/article/details/80497522" >可见光通信——LiFi<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://zhidao.baidu.com/question/319454280.html" >无线电波，为什么频率越高，传输距离越短<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="http://www.txrjy.com/thread-743637-1-1.html" >无线电波，为什么频率越高，传输距离越短?<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/dallin0408/article/details/79036111" >基站辐射对人体影响<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://rf.eefocus.com/article/id-tongsujieshi?p=1" >无线通信中的术语通俗解释，小白也能懂！（上）<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://rf.eefocus.com/article/id-wuxiantongxin2?p=1" >无线通信中的术语通俗解释，小白也能懂！（下）<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%97%A0%E7%BA%BF%E7%94%B5%E6%B3%A2" >无线电波<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://www.zhihu.com/question/307958274/answer/712266324" >5G 的网络延迟时间 1 毫秒是怎么做到的？<i class="fas fa-external-link-alt"></i></a></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：5G科普</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2019-10-20 00:00:00</li>
+        <li>
+            本文链接：https://9unkk.github.io/2019/10/20/5G科普/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2019/10/25/%E9%9A%8F%E5%A0%82%E5%AE%9E%E9%AA%8C-webshell/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">随堂实验(webshell)</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2019/10/16/netscaler-%E5%8D%87%E7%BA%A7/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">netscaler 升级</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-5G%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">什么是 5G？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%A5%9E%E5%A5%87%E7%9A%84%E5%85%AC%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">一个简单神奇的公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E7%BA%BF%EF%BC%9F%E6%97%A0%E7%BA%BF%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">有线？无线？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%BD%E5%A4%A7%E4%B8%80%E4%B8%AA%E6%B3%A2"><span class="nav-number">4.</span> <span class="nav-text">好大一个波</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AF%AB%E7%B1%B3%E6%B3%A2"><span class="nav-number">5.</span> <span class="nav-text">毫米波</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A9%E7%BA%BF%E5%8E%BB%E5%93%AA%E4%BA%86%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">天线去哪了？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%A0%E6%98%AF%E7%9B%B4%E7%9A%84%EF%BC%9F%E8%BF%98%E6%98%AF%E5%BC%AF%E7%9A%84%EF%BC%9F"><span class="nav-number">7.</span> <span class="nav-text">你是直的？还是弯的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%AB%E6%94%B6%E6%88%91%E9%92%B1%EF%BC%8C%E8%A1%8C%E4%B8%8D%E8%A1%8C%EF%BC%9F"><span class="nav-number">8.</span> <span class="nav-text">别收我钱，行不行？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-number">10.</span> <span class="nav-text">reference</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

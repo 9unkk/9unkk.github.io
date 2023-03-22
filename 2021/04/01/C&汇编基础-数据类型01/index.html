@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            C&amp;汇编基础-数据类型01 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">C&amp;汇编基础-数据类型01</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2021-04-01 14:18:28</span>
+        <span class="mobile">2021-04-01 14:18</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E9%80%86%E5%90%91/">逆向</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="什么是裸函数"><a href="#什么是裸函数" class="headerlink" title="什么是裸函数"></a>什么是裸函数</h1><h2 id="裸函数的定义"><a href="#裸函数的定义" class="headerlink" title="裸函数的定义"></a>裸函数的定义</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">返回值类型 __declspec(naked) 自定义函数名()</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="裸函数的本质"><a href="#裸函数的本质" class="headerlink" title="裸函数的本质"></a>裸函数的本质</h2><ol>
+<li>空裸函数源码</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdafx.h&quot;</span></span></span><br><span class="line"><span class="type">void</span> __declspec(naked) Function()</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;	</span><br><span class="line">	Function();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>空裸函数反汇编</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB88   call        @ILT+<span class="number">60</span>(Function) (<span class="number">00401041</span>)</span><br><span class="line"><span class="number">00401041</span>   jmp         <span class="title function_">Function</span> <span class="params">(<span class="number">0040</span>eba0)</span></span><br><span class="line">0040EBA0   <span class="type">int</span>         3</span><br><span class="line">0040EBA1   <span class="type">int</span>         3</span><br><span class="line">0040EBA2   <span class="type">int</span>         3</span><br><span class="line">0040EBA3   <span class="type">int</span>         3</span><br><span class="line">0040EBA4   <span class="type">int</span>         3</span><br><span class="line">0040EBA5   <span class="type">int</span>         3</span><br><span class="line">0040EBA6   <span class="type">int</span>         3</span><br><span class="line">0040EBA7   <span class="type">int</span>         3</span><br></pre></td></tr></table></figure>
+<p>可以看到此时裸函数的内容是空的没有任何内容，而普通空函数的反汇编是由一大堆的汇编代码的。</p>
+<ol start="2">
+<li>函汇编代码的裸函数</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdafx.h&quot;</span></span></span><br><span class="line"><span class="type">void</span> __declspec(naked) Function()</span><br><span class="line">&#123;</span><br><span class="line">	__asm</span><br><span class="line">	&#123;</span><br><span class="line">		ret</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;	</span><br><span class="line">	Function();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>添加指令的裸函数反汇编</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB88   call        @ILT+<span class="number">60</span>(Function) (<span class="number">00401041</span>)</span><br><span class="line"></span><br><span class="line"><span class="number">00401041</span>   jmp         <span class="title function_">Function</span> <span class="params">(<span class="number">0040</span>eba0)</span></span><br><span class="line"></span><br><span class="line">0040EBA0   ret</span><br></pre></td></tr></table></figure>
+
+<p>从上面的实验可以看到，裸函数是不生成任何汇编指令。它只能由用户在指定这个函数该怎么操作。</p>
+<h2 id="函数的返回值框架"><a href="#函数的返回值框架" class="headerlink" title="函数的返回值框架"></a>函数的返回值框架</h2><h3 id="无参数无返回值的函数框架"><a href="#无参数无返回值的函数框架" class="headerlink" title="无参数无返回值的函数框架"></a>无参数无返回值的函数框架</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __declspec(naked) Function()</span><br><span class="line">&#123;</span><br><span class="line">	__asm</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//保存ebp</span></span><br><span class="line">		push ebp</span><br><span class="line">		<span class="comment">//提升堆栈</span></span><br><span class="line">		mov ebp,esp</span><br><span class="line">		sub esp,<span class="number">0x40</span></span><br><span class="line">		<span class="comment">//保存现场</span></span><br><span class="line">		push ebx</span><br><span class="line">		push esi</span><br><span class="line">		push edi</span><br><span class="line">		<span class="comment">//填充缓冲区</span></span><br><span class="line">		lea edi,dword ptr ss:[ebp<span class="number">-0x40</span>]</span><br><span class="line">		mov ecx,<span class="number">0x10</span></span><br><span class="line">		mov eax,<span class="number">0xCCCCCCCC</span></span><br><span class="line">		rep stos dword ptr es:[edi]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		<span class="comment">//恢复现场</span></span><br><span class="line">		pop edi</span><br><span class="line">		pop esi</span><br><span class="line">		pop ebx</span><br><span class="line">		<span class="comment">//降低堆栈</span></span><br><span class="line">		mov esp,ebp</span><br><span class="line">		pop ebp</span><br><span class="line">		<span class="comment">//函数返回</span></span><br><span class="line">		ret</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="有参数有返回值的框架"><a href="#有参数有返回值的框架" class="headerlink" title="有参数有返回值的框架"></a>有参数有返回值的框架</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __declspec(naked) Function(<span class="type">int</span> x,<span class="type">int</span> y)</span><br><span class="line">&#123;</span><br><span class="line">	__asm</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//保存ebp</span></span><br><span class="line">		push ebp</span><br><span class="line">		<span class="comment">//提升堆栈</span></span><br><span class="line">		mov ebp,esp</span><br><span class="line">		sub esp,<span class="number">0x40</span></span><br><span class="line">		<span class="comment">//保存现场</span></span><br><span class="line">		push ebx</span><br><span class="line">		push esi</span><br><span class="line">		push edi</span><br><span class="line">		<span class="comment">//填充缓冲区</span></span><br><span class="line">		lea edi,dword ptr ss:[ebp<span class="number">-0x40</span>]</span><br><span class="line">		mov eax,<span class="number">0xCCCCCCCC</span></span><br><span class="line">		mov ecx,<span class="number">0x10</span></span><br><span class="line">		rep stos dword ptr es:[edi]</span><br><span class="line"></span><br><span class="line">		<span class="comment">//参数返回</span></span><br><span class="line">		mov eax,dword ptr ss:[ebp+<span class="number">8</span>]</span><br><span class="line">		add eax,dword ptr ss:[ebp+<span class="number">0xC</span>]</span><br><span class="line"></span><br><span class="line">		<span class="comment">//恢复现场</span></span><br><span class="line">		pop edi</span><br><span class="line">		pop esi</span><br><span class="line">		pop ebx</span><br><span class="line">		<span class="comment">//降低堆栈</span></span><br><span class="line">		mov esp,ebp</span><br><span class="line">		pop ebp</span><br><span class="line">		<span class="comment">//函数返回</span></span><br><span class="line">		ret</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="调用约定"><a href="#调用约定" class="headerlink" title="调用约定"></a>调用约定</h1><p>常见的几种调用约定</p>
+<table>
+<thead>
+<tr>
+<th align="center">调用约定</th>
+<th align="center">参数压栈顺序</th>
+<th align="center">平衡堆栈</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">__cdecl</td>
+<td align="center">从右至做入栈</td>
+<td align="center">调用者清理栈</td>
+</tr>
+<tr>
+<td align="center">__stdcall</td>
+<td align="center">从右至做入栈</td>
+<td align="center">自身清理栈</td>
+</tr>
+<tr>
+<td align="center">__fastcall</td>
+<td align="center">ECX&#x2F;EDX传送前两个，剩下从右至左入栈</td>
+<td align="center">自身清理栈</td>
+</tr>
+</tbody></table>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdafx.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> __cdecl <span class="title function_">plus1</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> x+y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> __stdcall <span class="title function_">plus2</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> x+y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> __fastcall <span class="title function_">plus3</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> x+y;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="type">int</span> __fastcall <span class="title function_">plus4</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y,<span class="type">int</span> z,<span class="type">int</span> a)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> x+y+z+a;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//程序的入口</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	plus1(<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="cdecl-的反汇编特征（plus1）"><a href="#cdecl-的反汇编特征（plus1）" class="headerlink" title="__cdecl 的反汇编特征（plus1）"></a>__cdecl 的反汇编特征（plus1）</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040B</span>658   push        <span class="number">2</span></span><br><span class="line"><span class="number">0040B</span>65A   push        <span class="number">1</span></span><br><span class="line"><span class="number">0040B</span>65C   call        @ILT+<span class="number">35</span>(plus1) (<span class="number">00401028</span>)</span><br><span class="line"><span class="number">0040B</span>661   add         esp,<span class="number">8</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>这里用的是 push 来存放参数的</p>
+</li>
+<li><p>堆栈平衡是用调用者（main函数）来实现堆栈平衡的，属于外平栈</p>
+</li>
+</ol>
+<h2 id="stdcall-的反汇编特征（plus2）"><a href="#stdcall-的反汇编特征（plus2）" class="headerlink" title="__stdcall 的反汇编特征（plus2）"></a>__stdcall 的反汇编特征（plus2）</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040B</span>658   push        <span class="number">2</span></span><br><span class="line"><span class="number">0040B</span>65A   push        <span class="number">1</span></span><br><span class="line"><span class="number">0040B</span>65C   call        @ILT+<span class="number">45</span>(plus2) (<span class="number">00401032</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">00401032</span>   jmp         <span class="title function_">plus2</span> <span class="params">(<span class="number">0040b</span>610)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">0040B610   push        ebp</span><br><span class="line">0040B611   mov         ebp,esp</span><br><span class="line">0040B613   sub         esp,40h</span><br><span class="line">0040B616   push        ebx</span><br><span class="line">0040B617   push        esi</span><br><span class="line">0040B618   push        edi</span><br><span class="line">0040B619   lea         edi,[ebp-40h]</span><br><span class="line">0040B61C   mov         ecx,10h</span><br><span class="line">0040B621   mov         eax,0CCCCCCCCh</span><br><span class="line">0040B626   rep stos    dword ptr [edi]</span><br><span class="line"></span><br><span class="line">0040B628   mov         eax,dword ptr [ebp+8]</span><br><span class="line">0040B62B   add         eax,dword ptr [ebp+0Ch]</span><br><span class="line"></span><br><span class="line">0040B62E   pop         edi</span><br><span class="line">0040B62F   pop         esi</span><br><span class="line">0040B630   pop         ebx</span><br><span class="line">0040B631   mov         esp,ebp</span><br><span class="line">0040B633   pop         ebp</span><br><span class="line">0040B634   ret         8</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>使用 push 存放参数</p>
+</li>
+<li><p>由函数自身（plus2函数）使用 ret 8 指令进行堆栈平衡，属于内平栈</p>
+</li>
+</ol>
+<h2 id="fastcall-的反汇编特征"><a href="#fastcall-的反汇编特征" class="headerlink" title="__fastcall 的反汇编特征"></a>__fastcall 的反汇编特征</h2><h3 id="plus3"><a href="#plus3" class="headerlink" title="plus3"></a>plus3</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040B</span>658   mov         edx,<span class="number">2</span></span><br><span class="line"><span class="number">0040B</span>65D   mov         ecx,<span class="number">1</span></span><br><span class="line"><span class="number">0040B</span>662   call        @ILT+<span class="number">40</span>(plus2) (<span class="number">0040102</span>d)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">0040102</span>D   jmp         <span class="title function_">plus3</span> <span class="params">(<span class="number">0040b</span>530)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">0040B530   push        ebp</span><br><span class="line">0040B531   mov         ebp,esp</span><br><span class="line">0040B533   sub         esp,48h</span><br><span class="line">0040B536   push        ebx</span><br><span class="line">0040B537   push        esi</span><br><span class="line">0040B538   push        edi</span><br><span class="line">0040B539   push        ecx</span><br><span class="line">0040B53A   lea         edi,[ebp-48h]</span><br><span class="line">0040B53D   mov         ecx,12h</span><br><span class="line">0040B542   mov         eax,0CCCCCCCCh</span><br><span class="line">0040B547   rep stos    dword ptr [edi]</span><br><span class="line">0040B549   pop         ecx</span><br><span class="line">0040B54A   mov         dword ptr [ebp-8],edx</span><br><span class="line">0040B54D   mov         dword ptr [ebp-4],ecx</span><br><span class="line"></span><br><span class="line">0040B550   mov         eax,dword ptr [ebp-4]</span><br><span class="line">0040B553   add         eax,dword ptr [ebp-8]</span><br><span class="line"></span><br><span class="line">0040B556   pop         edi</span><br><span class="line">0040B557   pop         esi</span><br><span class="line">0040B558   pop         ebx</span><br><span class="line">0040B559   mov         esp,ebp</span><br><span class="line">0040B55B   pop         ebp</span><br><span class="line">0040B55C   ret</span><br></pre></td></tr></table></figure>
+
+<h3 id="plus4"><a href="#plus4" class="headerlink" title="plus4"></a>plus4</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040B</span>658   push        <span class="number">4</span></span><br><span class="line"><span class="number">0040B</span>65A   push        <span class="number">3</span></span><br><span class="line"><span class="number">0040B</span>65C   mov         edx,<span class="number">2</span></span><br><span class="line"><span class="number">0040B</span>661   mov         ecx,<span class="number">1</span></span><br><span class="line"><span class="number">0040B</span>666   call        @ILT+<span class="number">50</span>(plus4) (<span class="number">00401037</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">00401037</span>   jmp         <span class="title function_">plus4</span> <span class="params">(<span class="number">0040b</span>560)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">0040B560   push        ebp</span><br><span class="line">0040B561   mov         ebp,esp</span><br><span class="line">0040B563   sub         esp,48h</span><br><span class="line">0040B566   push        ebx</span><br><span class="line">0040B567   push        esi</span><br><span class="line">0040B568   push        edi</span><br><span class="line">0040B569   push        ecx</span><br><span class="line">0040B56A   lea         edi,[ebp-48h]</span><br><span class="line">0040B56D   mov         ecx,12h</span><br><span class="line">0040B572   mov         eax,0CCCCCCCCh</span><br><span class="line">0040B577   rep stos    dword ptr [edi]</span><br><span class="line">0040B579   pop         ecx</span><br><span class="line">0040B57A   mov         dword ptr [ebp-8],edx</span><br><span class="line">0040B57D   mov         dword ptr [ebp-4],ecx</span><br><span class="line"></span><br><span class="line">0040B580   mov         eax,dword ptr [ebp-4]</span><br><span class="line">0040B583   add         eax,dword ptr [ebp-8]</span><br><span class="line">0040B586   add         eax,dword ptr [ebp+8]</span><br><span class="line">0040B589   add         eax,dword ptr [ebp+0Ch]</span><br><span class="line"></span><br><span class="line">0040B58C   pop         edi</span><br><span class="line">0040B58D   pop         esi</span><br><span class="line">0040B58E   pop         ebx</span><br><span class="line">0040B58F   mov         esp,ebp</span><br><span class="line">0040B591   pop         ebp</span><br><span class="line">0040B592   ret         8</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>前 2 个参数存储到 ecx 和 edx 寄存器中，后面的参数用 push 存储参数</p>
+</li>
+<li><p>有函数自身（plus4）进行堆栈平衡，属于内平栈</p>
+</li>
+</ol>
+<blockquote>
+<p>总结：fastcall 相对于其他两个调用约定，运行起来会比较快。当要频繁使用一个函数时，就可以使用这个调用约定</p>
+</blockquote>
+<h1 id="数据类型与数据存储"><a href="#数据类型与数据存储" class="headerlink" title="数据类型与数据存储"></a>数据类型与数据存储</h1><h2 id="数据类型的三要素"><a href="#数据类型的三要素" class="headerlink" title="数据类型的三要素"></a>数据类型的三要素</h2><ol>
+<li><p>存储数据的宽度</p>
+</li>
+<li><p>存储数据的格式</p>
+</li>
+<li><p>作用范围（作用域）</p>
+</li>
+</ol>
+<h2 id="数据类型的分类"><a href="#数据类型的分类" class="headerlink" title="数据类型的分类"></a>数据类型的分类</h2><ol>
+<li>基本类型</li>
+</ol>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">整数类型</span><br><span class="line"></span><br><span class="line">浮点类型</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>构造类型</li>
+</ol>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">数组类型</span><br><span class="line"></span><br><span class="line">结构类型</span><br><span class="line"></span><br><span class="line">共用体（联合）类型</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>指针类型</p>
+</li>
+<li><p>空类型（void）</p>
+</li>
+</ol>
+<h2 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h2><ol>
+<li>基本类型的数据宽度</li>
+</ol>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">char    8bit    1字节</span><br><span class="line"></span><br><span class="line">short   16bit   2字节</span><br><span class="line"></span><br><span class="line">int     32bit   4字节</span><br><span class="line"></span><br><span class="line">long    32bit   4字节</span><br></pre></td></tr></table></figure>
+<h2 id="char、short、int类型的赋值-和-反汇编"><a href="#char、short、int类型的赋值-和-反汇编" class="headerlink" title="char、short、int类型的赋值 和 反汇编"></a>char、short、int类型的赋值 和 反汇编</h2><ol>
+<li>示例一</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"> <span class="type">void</span> <span class="title function_">plus</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span> i = <span class="number">0xFF</span>;</span><br><span class="line">	<span class="type">short</span> x = <span class="number">0xFF</span>;</span><br><span class="line">	<span class="type">int</span> y = <span class="number">0xFF</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//反汇编</span></span><br><span class="line"></span><br><span class="line"><span class="number">0040B</span>5D8   mov         byte ptr [ebp<span class="number">-4</span>],<span class="number">0F</span>Fh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">0040B</span>5DC   mov         word ptr [ebp<span class="number">-8</span>],offset plus+<span class="number">20</span>h (<span class="number">0040b</span>5e0)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">0040B</span>5E2   mov         dword ptr [ebp<span class="number">-0</span>Ch],<span class="number">0F</span>Fh</span><br></pre></td></tr></table></figure>
+
+<p>总结： char、short、int 类型的宽度为 byte、short、int</p>
+<ol start="2">
+<li>示例二</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">plus</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span> i = <span class="number">0x12345678</span>;    <span class="comment">//i=0x78</span></span><br><span class="line">	<span class="type">short</span> x = <span class="number">0x12345678</span>;   <span class="comment">//x=0x5678</span></span><br><span class="line">	<span class="type">int</span> y = <span class="number">0x12345678</span>;     <span class="comment">//y=0x12345678</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//反汇编</span></span><br><span class="line"></span><br><span class="line">          <span class="type">char</span> i = <span class="number">0x12345678</span>;</span><br><span class="line"><span class="number">0040B</span>5D8   mov         byte ptr [ebp<span class="number">-4</span>],<span class="number">78</span>h</span><br><span class="line"></span><br><span class="line">          <span class="type">short</span> x = <span class="number">0x12345678</span>;</span><br><span class="line"><span class="number">0040B</span>5DC   mov         word ptr [ebp<span class="number">-8</span>],offset plus+<span class="number">20</span>h (<span class="number">0040b</span>5e0)</span><br><span class="line"></span><br><span class="line">          <span class="type">int</span> y = <span class="number">0x12345678</span>;</span><br><span class="line"><span class="number">0040B</span>5E2   mov         dword ptr [ebp<span class="number">-0</span>Ch],<span class="number">12345678</span>h</span><br></pre></td></tr></table></figure>
+
+<p>总结：char、short、int 类型分别能存储 1byte、2byte、4byte 的数据（从后向前存储），超过宽度的数据会被丢弃。</p>
+<h3 id="有符号和无符号"><a href="#有符号和无符号" class="headerlink" title="有符号和无符号"></a>有符号和无符号</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"> <span class="type">void</span> <span class="title function_">plus</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	 <span class="comment">//默认是有符号的</span></span><br><span class="line">	<span class="type">char</span> i = <span class="number">0xFF</span>;      <span class="comment">//i=0xFF</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> k = <span class="number">0xFF</span>;     <span class="comment">//k=0xFF</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d %d\n&quot;</span>,i,k);      <span class="comment">//i=-1；k=255</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//反汇编</span></span><br><span class="line"></span><br><span class="line"><span class="number">10</span>:       <span class="type">char</span> i = <span class="number">0xFF</span>;</span><br><span class="line"><span class="number">0040B</span>5D8   mov         byte ptr [ebp<span class="number">-4</span>],<span class="number">0F</span>Fh</span><br><span class="line"></span><br><span class="line"><span class="number">11</span>:       <span class="type">unsigned</span> <span class="type">char</span> k = <span class="number">0xFF</span>;</span><br><span class="line"><span class="number">0040B</span>5DC   mov         byte ptr [ebp<span class="number">-8</span>],<span class="number">0F</span>Fh</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="type">void</span> <span class="title function_">plus</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	 <span class="type">float</span> i = <span class="number">12.5f</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//反汇编</span></span><br><span class="line"></span><br><span class="line">           <span class="type">float</span> i = <span class="number">12.5f</span>;</span><br><span class="line"><span class="number">00401038</span>   mov         dword ptr [ebp<span class="number">-4</span>],<span class="number">41480000</span>h</span><br></pre></td></tr></table></figure>
+
+<p>CPU 在运算的时候，将小数 12.5 变成了 41480000h</p>
+<h2 id="存储浮点类型原理"><a href="#存储浮点类型原理" class="headerlink" title="存储浮点类型原理"></a>存储浮点类型原理</h2><p>任何一个整数在计算机中存储都是可以转换成二进制进行存储的，但是小数确不能。小数不能转换成二进制进行存储，所以小数的存储方式和整数的存储方式是完全不一样的。</p>
+<p>float 和 double 在存储方式上都是遵从 IEEE 规范的</p>
+<h3 id="float-存储方式"><a href="#float-存储方式" class="headerlink" title="float 存储方式"></a>float 存储方式</h3><p>一共存储 4 字节，32 个二进制数</p>
+<table>
+<thead>
+<tr>
+<th align="center">31</th>
+<th align="center">30~22</th>
+<th align="center">22~0</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1bit</td>
+<td align="center">8bit</td>
+<td align="center">23bit</td>
+</tr>
+<tr>
+<td align="center">符号位</td>
+<td align="center">指数部分</td>
+<td align="center">尾数部分</td>
+</tr>
+</tbody></table>
+<h3 id="double-的存储方式"><a href="#double-的存储方式" class="headerlink" title="double 的存储方式"></a>double 的存储方式</h3><p>一共存储 8 字节，64 个二进制数</p>
+<table>
+<thead>
+<tr>
+<th align="center">63</th>
+<th align="center">62~51</th>
+<th align="center">52~0</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1bit</td>
+<td align="center">11bit</td>
+<td align="center">52bit</td>
+</tr>
+<tr>
+<td align="center">符号位</td>
+<td align="center">指数部分</td>
+<td align="center">尾数部分</td>
+</tr>
+</tbody></table>
+<h3 id="float-和-double-的存储步骤"><a href="#float-和-double-的存储步骤" class="headerlink" title="float 和 double 的存储步骤"></a>float 和 double 的存储步骤</h3><ol>
+<li><p>先将这个实数的绝对值化为二进制格式                                        </p>
+</li>
+<li><p>将这个二进制格式实数的小数点左移或右移n位，直到小数点移动到第一个有效数字的右边。                                        </p>
+</li>
+<li><p>从小数点右边第一位开始数出二十三位数字放入第22到第0位。                                         </p>
+</li>
+<li><p>如果实数是正的，则在第31位放入“0”，否则放入“1”。                                        </p>
+</li>
+<li><p>如果n 是左移得到的，说明指数是正的，第30位放入“1”。如果n是右移得到的或n&#x3D;0，则第30位放入“0”。                                        </p>
+</li>
+<li><p>如果n是<strong>左移</strong>得到的，则将<strong>n减去1</strong>后化为二进制，并在左边加“0”补足七位，放入第29到第23位。<br>；如果n是<strong>右移</strong>得到的或n&#x3D;0，则将<strong>n减去1</strong>化为二进制后在左边加“0”补足七位，<strong>再各位求反（补的 0 取反）</strong>，再放入第29到第23位。</p>
+</li>
+</ol>
+<h3 id="将-8-25-转换成二进制"><a href="#将-8-25-转换成二进制" class="headerlink" title="将 8.25 转换成二进制"></a>将 8.25 转换成二进制</h3><ol>
+<li>整数部分转换成二进制</li>
+</ol>
+<p>计算方法：整数不停地取余2，直到整数值为 0。获取余数，高位在下，低位在上</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">8/2=4   0</span><br><span class="line">4/2=2   0</span><br><span class="line">2/2=1   0</span><br><span class="line">1/2=0   1</span><br><span class="line"></span><br><span class="line">结果：1000</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>小数部分转换成二进制</li>
+</ol>
+<p>计算方法：小数部分不停地乘以2，直到小数为 0。获取整数，高位在上，低位在下</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">0.25*2=0.5  0</span><br><span class="line">0.5*2=1.0   1</span><br><span class="line"></span><br><span class="line">结果：10</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>8.25 转换成二进制的结果为：1000.01</li>
+</ol>
+<h4 id="将二进制格式小数点左移或右移-n-位，知道小数点在第一个有效位的右边"><a href="#将二进制格式小数点左移或右移-n-位，知道小数点在第一个有效位的右边" class="headerlink" title="将二进制格式小数点左移或右移 n 位，知道小数点在第一个有效位的右边"></a>将二进制格式小数点左移或右移 n 位，知道小数点在第一个有效位的右边</h4><p>简单来说就是要把小数点移到第一个 1 的右边</p>
+<p>1000.01</p>
+<p>第一个有效位是第一个 1，也就是说小数点移过去之后变成 1.00001，1000.01 &#x3D; 1.00001 * 2 的 3 次方</p>
+<p>结果是：1.00001</p>
+<h4 id="存放尾数部分"><a href="#存放尾数部分" class="headerlink" title="存放尾数部分"></a>存放尾数部分</h4><p>计算方法：将小数点右边第一位到第二十三位放到尾数部分</p>
+<p>尾为数部分：00001000000000000000000</p>
+<h4 id="存放符号部分"><a href="#存放符号部分" class="headerlink" title="存放符号部分"></a>存放符号部分</h4><p>计算方法：如果实数是正的，则在第31位放入“0”，否则放入“1”。</p>
+<p>这里符号部分是正数，所以符号部分值为0</p>
+<p>符号部分：0</p>
+<h4 id="存放指数部分（符号位）"><a href="#存放指数部分（符号位）" class="headerlink" title="存放指数部分（符号位）"></a>存放指数部分（符号位）</h4><p>计算方法：如果n 是左移得到的，说明指数是正的，第30位放入“1”。如果n是右移得到的或n&#x3D;0，则第30位放入“0”。</p>
+<p>这里是左移，所以第 30 位存 1</p>
+<p>指数部分（符号位）：1</p>
+<h4 id="存放指数部分（值）"><a href="#存放指数部分（值）" class="headerlink" title="存放指数部分（值）"></a>存放指数部分（值）</h4><p>计算方法：</p>
+<p>如果n是左移得到的，则将n减去1后化为二进制，并在左边加“0”补足七位，放入第29到第23位。</p>
+<p>如果n是右移得到的或n&#x3D;0，则将n减去1化为二进制后在左边加“0”补足七位，再各位求反，再放入第29到第23位。</p>
+<ol>
+<li>(n-1) 转换成二进制<br>左移 3 位，就是我们指数 3</li>
+</ol>
+<p>3-1&#x3D;2&#x3D;0010</p>
+<ol start="2">
+<li>在左边加 0，不足7位</li>
+</ol>
+<p>指数部分（值）：0000010</p>
+<h4 id="8-25-存储的结果"><a href="#8-25-存储的结果" class="headerlink" title="8.25 存储的结果"></a>8.25 存储的结果</h4><ol>
+<li>将之前算出来的值整合一下得到如下二进制</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th align="center">符号部分</th>
+<th align="center">指数部分</th>
+<th align="center">尾数部分</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0</td>
+<td align="center">10000010</td>
+<td align="center">00001000000000000000000</td>
+</tr>
+</tbody></table>
+<ol start="2">
+<li>将得出来的值以字节分开，并算出最终结果</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">二进制</td>
+<td align="center">0100</td>
+<td align="center">0001</td>
+<td align="center">0000</td>
+<td align="center">0100</td>
+<td align="center">0000</td>
+<td align="center">0000</td>
+<td align="center">0000</td>
+<td align="center">0000</td>
+</tr>
+<tr>
+<td align="center">十六进制</td>
+<td align="center">4</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">4</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+</tbody></table>
+<h4 id="代码演示"><a href="#代码演示" class="headerlink" title="代码演示"></a>代码演示</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">plus</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	 <span class="type">float</span> i = <span class="number">8.25f</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//反汇编</span></span><br><span class="line">           <span class="type">float</span> i = <span class="number">8.25f</span>;</span><br><span class="line"><span class="number">00401038</span>   mov         dword ptr [ebp<span class="number">-4</span>],<span class="number">41040000</span>h</span><br></pre></td></tr></table></figure>
+
+<p>最后我们通过反汇编算出了小数 8.25 存储的值。</p>
+<h4 id="计算float-8-25-存储的值"><a href="#计算float-8-25-存储的值" class="headerlink" title="计算float 8.25 存储的值"></a>计算float 8.25 存储的值</h4><table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">二进制</td>
+<td align="center">1100</td>
+<td align="center">0001</td>
+<td align="center">0000</td>
+<td align="center">0100</td>
+<td align="center">0000</td>
+<td align="center">0000</td>
+<td align="center">0000</td>
+<td align="center">0000</td>
+</tr>
+<tr>
+<td align="center">十六进制</td>
+<td align="center">C</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">4</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+</tbody></table>
+<h3 id="0-25-存储转换成2进制"><a href="#0-25-存储转换成2进制" class="headerlink" title="0.25 存储转换成2进制"></a>0.25 存储转换成2进制</h3><ol>
+<li>整数部分转换（取余2）</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>/<span class="number">2</span>=<span class="number">0</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>小数部分转换（乘2，取整）</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0.25</span>*<span class="number">2</span>=<span class="number">0.5</span> <span class="number">0</span></span><br><span class="line"><span class="number">0.5</span>*<span class="number">2</span>=<span class="number">1.0</span>  <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>0.25 转换成二进制为：0.01</li>
+</ol>
+<h4 id="进行右移"><a href="#进行右移" class="headerlink" title="进行右移"></a>进行右移</h4><p>0.01&#x3D;1.0*2 的 -2 次方</p>
+<h4 id="存放尾数"><a href="#存放尾数" class="headerlink" title="存放尾数"></a>存放尾数</h4><p>尾数部分：00000000000000000000000</p>
+<h4 id="存放符号位"><a href="#存放符号位" class="headerlink" title="存放符号位"></a>存放符号位</h4><p>如果实数是正的，则在第31位放入“0”，否则放入“1”。    </p>
+<p>右移（正数）：0</p>
+<h4 id="指数"><a href="#指数" class="headerlink" title="指数"></a>指数</h4><p>如果 n 是左移得到的，说明指数是正的，第30位放入“1”。如果n是右移得到的或n&#x3D;0，则第30位放入“0”。</p>
+<ol>
+<li>符号位（右移）：0</li>
+</ol>
+<p>如果n是右移得到的或n&#x3D;0，则将n减去1化为二进制后在左边加“0”补足七位，再各位求反（补的 0 取反），再放入第29到第23位。</p>
+<ol start="2">
+<li>指数位</li>
+</ol>
+<p>-2-1&#x3D;-3 转换成二进制：D&#x3D;1101</p>
+<p>左边补0（补足7位）：0001101</p>
+<p>取反：1111101</p>
+<p>指数整合：01111101</p>
+<h4 id="整合结果"><a href="#整合结果" class="headerlink" title="整合结果"></a>整合结果</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0011 1110 1000 0000 0000 0000 0000 0000</span><br><span class="line">3    E    8    0    0    0    0    0</span><br></pre></td></tr></table></figure>
+
+<h1 id="程序入口"><a href="#程序入口" class="headerlink" title="程序入口"></a>程序入口</h1><h2 id="程序的真正入口"><a href="#程序的真正入口" class="headerlink" title="程序的真正入口"></a>程序的真正入口</h2><p>main 或 WinMain 是 “语法规定的用户入口”，而不是 “应用程序的入口”。应用程序的入口通常是启动函数</p>
+<ol>
+<li><p>mainCRTStartup 和 wmainCRTStartup 是<strong>控制台</strong>环境下多字节编码和Unicode 编码的启动函数.</p>
+</li>
+<li><p>WinMainCRTStartup 和 WinMainCRTStartup 是<strong>windows 环境</strong>下多字节编码和Unicode 编码的启动函数.</p>
+</li>
+</ol>
+<h2 id="main-函数的识别"><a href="#main-函数的识别" class="headerlink" title="main 函数的识别"></a>main 函数的识别</h2><p>main 函数调用前，需要按顺序调用如下函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GetVersion() </span><br><span class="line">_heap_init() </span><br><span class="line">GetCommandLineA() </span><br><span class="line">_crtGetEnvironmentStringsA() </span><br><span class="line">_GetModuleHandleA()</span><br><span class="line">_setargv()</span><br><span class="line">_setenvp()</span><br><span class="line">_cinit()</span><br></pre></td></tr></table></figure>
+
+<p>这些函数调用结束后，就会调用 main 函数。这些函数都是内存初始化的函数。</p>
+<h2 id="main-函数的调用特征"><a href="#main-函数的调用特征" class="headerlink" title="main 函数的调用特征"></a>main 函数的调用特征</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mainret <span class="title function_">main</span><span class="params">(__argc, __argv, _environ)</span></span><br></pre></td></tr></table></figure>
+
+<p>main 函数在调用时会将 3 个参数压入栈中。</p>
+<p>简单来说就是在看到初始化函数后，再找到调用 3 个参数的函数，这个函数极有可能是 main 函数。这只是针对 VC6 编译器的特点，其他版本的编译器会有些区别。</p>
+<h1 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h1><ol>
+<li>用__declspec(naked)裸函数实现下面的功能</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">plus</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y,<span class="type">int</span> z)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> a = <span class="number">2</span>;</span><br><span class="line">	<span class="type">int</span> b = <span class="number">3</span>;</span><br><span class="line">	<span class="type">int</span> c = <span class="number">4</span>;</span><br><span class="line">	<span class="keyword">return</span> x+y+z+a+b+c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdafx.h&quot;</span></span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">分析：</span></span><br><span class="line"><span class="comment">1、压入参数 x，y、z</span></span><br><span class="line"><span class="comment">2、进入函数（push eip）</span></span><br><span class="line"><span class="comment">3、保存栈底</span></span><br><span class="line"><span class="comment">4、提升堆栈</span></span><br><span class="line"><span class="comment">5、保护现场</span></span><br><span class="line"><span class="comment">6、填充缓冲区</span></span><br><span class="line"><span class="comment">7、存储局部变量</span></span><br><span class="line"><span class="comment">8、程序功能（固定的：eax 存储返回值）</span></span><br><span class="line"><span class="comment">9、恢复现场</span></span><br><span class="line"><span class="comment">10、降低堆栈</span></span><br><span class="line"><span class="comment">11、函数返回</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> __declspec(naked) Plus(<span class="type">int</span> x,<span class="type">int</span> y,<span class="type">int</span> z)</span><br><span class="line">&#123;</span><br><span class="line">	__asm</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//保存栈底</span></span><br><span class="line">		push ebp</span><br><span class="line">		<span class="comment">//提升堆栈</span></span><br><span class="line">		mov ebp,esp</span><br><span class="line">		sub esp,<span class="number">0x40</span></span><br><span class="line">		<span class="comment">//保护现场</span></span><br><span class="line">		push ebx</span><br><span class="line">		push esi</span><br><span class="line">		push edi</span><br><span class="line">		<span class="comment">//填充缓冲区</span></span><br><span class="line">		lea edi,dword ptr ss:[ebp<span class="number">-0x40</span>]</span><br><span class="line">		mov ecx,<span class="number">0x10</span></span><br><span class="line">		mov eax,<span class="number">0xCCCCCCCC</span></span><br><span class="line">		rep stos dword ptr es:[edi]</span><br><span class="line">		<span class="comment">//存储局部变量</span></span><br><span class="line">		mov dword ptr ss:[ebp<span class="number">-0x4</span>],<span class="number">0x2</span></span><br><span class="line">		mov dword ptr ss:[ebp<span class="number">-0x8</span>],<span class="number">0x3</span></span><br><span class="line">		mov dword ptr ss:[ebp<span class="number">-0xC</span>],<span class="number">0x4</span></span><br><span class="line">		<span class="comment">//程序功能</span></span><br><span class="line">		mov eax,dword ptr ss:[ebp+<span class="number">0x8</span>]</span><br><span class="line">		add eax,dword ptr ss:[ebp+<span class="number">0xC</span>]</span><br><span class="line">		add eax,dword ptr ss:[ebp+<span class="number">0x10</span>]</span><br><span class="line">		add eax,dword ptr ss:[ebp<span class="number">-0x4</span>]</span><br><span class="line">		add eax,dword ptr ss:[ebp<span class="number">-0x8</span>]</span><br><span class="line">		add eax,dword ptr ss:[ebp<span class="number">-0xC</span>]</span><br><span class="line">		<span class="comment">//恢复现场</span></span><br><span class="line">		pop edi</span><br><span class="line">		pop esi</span><br><span class="line">		pop ebx</span><br><span class="line">		<span class="comment">//降低堆栈</span></span><br><span class="line">		mov esp,ebp</span><br><span class="line">		pop ebp</span><br><span class="line">		ret</span><br><span class="line">		<span class="comment">//</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//程序的入口</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	Plus(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>将 CallingConvention.exe 逆向成C语言</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdafx.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> __stdcall <span class="title function_">plus1</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y,<span class="type">int</span> z)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> x+y+z;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> __cdecl <span class="title function_">plus2</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> x+y;</span><br><span class="line">       </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> __cdecl <span class="title function_">plus3</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span> </span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> x+y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> __fastcall <span class="title function_">plus4</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y,<span class="type">int</span> z,<span class="type">int</span> a,<span class="type">int</span> b)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> i,j;</span><br><span class="line">    j=plus1(x,y,z);</span><br><span class="line">    i=plus2(x,y);</span><br><span class="line">    <span class="keyword">return</span> plus3(i,j);    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">//	int s;</span></span><br><span class="line"><span class="comment">//  s = plus4(1,3,4,6,7);</span></span><br><span class="line"><span class="comment">//	printf(&quot;%X&quot;,s);</span></span><br><span class="line">    plus4(<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">7</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：C&amp;汇编基础-数据类型01</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2021-04-01 14:18:28</li>
+        <li>
+            本文链接：https://9unkk.github.io/2021/04/01/C&amp;汇编基础-数据类型01/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E9%80%86%E5%90%91/">#逆向</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/04/01/C&amp;%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80-%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">C&amp;汇编基础-循环语句</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/04/01/C&amp;%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B02/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">C&amp;汇编基础-数据类型02</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%A3%B8%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">什么是裸函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%B8%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">裸函数的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%B8%E5%87%BD%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8"><span class="nav-number">1.2.</span> <span class="nav-text">裸函数的本质</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E8%BF%94%E5%9B%9E%E5%80%BC%E6%A1%86%E6%9E%B6"><span class="nav-number">1.3.</span> <span class="nav-text">函数的返回值框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E5%8F%82%E6%95%B0%E6%97%A0%E8%BF%94%E5%9B%9E%E5%80%BC%E7%9A%84%E5%87%BD%E6%95%B0%E6%A1%86%E6%9E%B6"><span class="nav-number">1.3.1.</span> <span class="nav-text">无参数无返回值的函数框架</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E5%8F%82%E6%95%B0%E6%9C%89%E8%BF%94%E5%9B%9E%E5%80%BC%E7%9A%84%E6%A1%86%E6%9E%B6"><span class="nav-number">1.4.</span> <span class="nav-text">有参数有返回值的框架</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E7%BA%A6%E5%AE%9A"><span class="nav-number">2.</span> <span class="nav-text">调用约定</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81"><span class="nav-number">2.1.</span> <span class="nav-text">源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cdecl-%E7%9A%84%E5%8F%8D%E6%B1%87%E7%BC%96%E7%89%B9%E5%BE%81%EF%BC%88plus1%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">__cdecl 的反汇编特征（plus1）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stdcall-%E7%9A%84%E5%8F%8D%E6%B1%87%E7%BC%96%E7%89%B9%E5%BE%81%EF%BC%88plus2%EF%BC%89"><span class="nav-number">2.3.</span> <span class="nav-text">__stdcall 的反汇编特征（plus2）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fastcall-%E7%9A%84%E5%8F%8D%E6%B1%87%E7%BC%96%E7%89%B9%E5%BE%81"><span class="nav-number">2.4.</span> <span class="nav-text">__fastcall 的反汇编特征</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#plus3"><span class="nav-number">2.4.1.</span> <span class="nav-text">plus3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#plus4"><span class="nav-number">2.4.2.</span> <span class="nav-text">plus4</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8"><span class="nav-number">3.</span> <span class="nav-text">数据类型与数据存储</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E4%B8%89%E8%A6%81%E7%B4%A0"><span class="nav-number">3.1.</span> <span class="nav-text">数据类型的三要素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">3.2.</span> <span class="nav-text">数据类型的分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.3.</span> <span class="nav-text">基本类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#char%E3%80%81short%E3%80%81int%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%B5%8B%E5%80%BC-%E5%92%8C-%E5%8F%8D%E6%B1%87%E7%BC%96"><span class="nav-number">3.4.</span> <span class="nav-text">char、short、int类型的赋值 和 反汇编</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E7%AC%A6%E5%8F%B7%E5%92%8C%E6%97%A0%E7%AC%A6%E5%8F%B7"><span class="nav-number">3.4.1.</span> <span class="nav-text">有符号和无符号</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E6%95%B0"><span class="nav-number">3.5.</span> <span class="nav-text">浮点数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E6%B5%AE%E7%82%B9%E7%B1%BB%E5%9E%8B%E5%8E%9F%E7%90%86"><span class="nav-number">3.6.</span> <span class="nav-text">存储浮点类型原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#float-%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">3.6.1.</span> <span class="nav-text">float 存储方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#double-%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">3.6.2.</span> <span class="nav-text">double 的存储方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#float-%E5%92%8C-double-%E7%9A%84%E5%AD%98%E5%82%A8%E6%AD%A5%E9%AA%A4"><span class="nav-number">3.6.3.</span> <span class="nav-text">float 和 double 的存储步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%86-8-25-%E8%BD%AC%E6%8D%A2%E6%88%90%E4%BA%8C%E8%BF%9B%E5%88%B6"><span class="nav-number">3.6.4.</span> <span class="nav-text">将 8.25 转换成二进制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%86%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%A0%BC%E5%BC%8F%E5%B0%8F%E6%95%B0%E7%82%B9%E5%B7%A6%E7%A7%BB%E6%88%96%E5%8F%B3%E7%A7%BB-n-%E4%BD%8D%EF%BC%8C%E7%9F%A5%E9%81%93%E5%B0%8F%E6%95%B0%E7%82%B9%E5%9C%A8%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%9C%89%E6%95%88%E4%BD%8D%E7%9A%84%E5%8F%B3%E8%BE%B9"><span class="nav-number">3.6.4.1.</span> <span class="nav-text">将二进制格式小数点左移或右移 n 位，知道小数点在第一个有效位的右边</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%98%E6%94%BE%E5%B0%BE%E6%95%B0%E9%83%A8%E5%88%86"><span class="nav-number">3.6.4.2.</span> <span class="nav-text">存放尾数部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%98%E6%94%BE%E7%AC%A6%E5%8F%B7%E9%83%A8%E5%88%86"><span class="nav-number">3.6.4.3.</span> <span class="nav-text">存放符号部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%98%E6%94%BE%E6%8C%87%E6%95%B0%E9%83%A8%E5%88%86%EF%BC%88%E7%AC%A6%E5%8F%B7%E4%BD%8D%EF%BC%89"><span class="nav-number">3.6.4.4.</span> <span class="nav-text">存放指数部分（符号位）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%98%E6%94%BE%E6%8C%87%E6%95%B0%E9%83%A8%E5%88%86%EF%BC%88%E5%80%BC%EF%BC%89"><span class="nav-number">3.6.4.5.</span> <span class="nav-text">存放指数部分（值）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-25-%E5%AD%98%E5%82%A8%E7%9A%84%E7%BB%93%E6%9E%9C"><span class="nav-number">3.6.4.6.</span> <span class="nav-text">8.25 存储的结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%BC%94%E7%A4%BA"><span class="nav-number">3.6.4.7.</span> <span class="nav-text">代码演示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97float-8-25-%E5%AD%98%E5%82%A8%E7%9A%84%E5%80%BC"><span class="nav-number">3.6.4.8.</span> <span class="nav-text">计算float 8.25 存储的值</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0-25-%E5%AD%98%E5%82%A8%E8%BD%AC%E6%8D%A2%E6%88%902%E8%BF%9B%E5%88%B6"><span class="nav-number">3.6.5.</span> <span class="nav-text">0.25 存储转换成2进制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E8%A1%8C%E5%8F%B3%E7%A7%BB"><span class="nav-number">3.6.5.1.</span> <span class="nav-text">进行右移</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%98%E6%94%BE%E5%B0%BE%E6%95%B0"><span class="nav-number">3.6.5.2.</span> <span class="nav-text">存放尾数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%98%E6%94%BE%E7%AC%A6%E5%8F%B7%E4%BD%8D"><span class="nav-number">3.6.5.3.</span> <span class="nav-text">存放符号位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E6%95%B0"><span class="nav-number">3.6.5.4.</span> <span class="nav-text">指数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B4%E5%90%88%E7%BB%93%E6%9E%9C"><span class="nav-number">3.6.5.5.</span> <span class="nav-text">整合结果</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%85%A5%E5%8F%A3"><span class="nav-number">4.</span> <span class="nav-text">程序入口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E7%9A%84%E7%9C%9F%E6%AD%A3%E5%85%A5%E5%8F%A3"><span class="nav-number">4.1.</span> <span class="nav-text">程序的真正入口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#main-%E5%87%BD%E6%95%B0%E7%9A%84%E8%AF%86%E5%88%AB"><span class="nav-number">4.2.</span> <span class="nav-text">main 函数的识别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#main-%E5%87%BD%E6%95%B0%E7%9A%84%E8%B0%83%E7%94%A8%E7%89%B9%E5%BE%81"><span class="nav-number">4.3.</span> <span class="nav-text">main 函数的调用特征</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%83%E4%B9%A0"><span class="nav-number">5.</span> <span class="nav-text">练习</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

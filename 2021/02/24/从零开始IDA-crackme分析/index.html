@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            从零开始IDA-crackme分析 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">从零开始IDA-crackme分析</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2021-02-24 18:26:28</span>
+        <span class="mobile">2021-02-24 18:26</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E9%80%86%E5%90%91/">逆向</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/IDA/">IDA</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="目标程序"><a href="#目标程序" class="headerlink" title="目标程序"></a>目标程序</h1><p>程序下载：<a class="link"   target="_blank" rel="noopener" href="https://9unkk.github.io//Download/Basic/CRACKME.7z" >CRACKME<i class="fas fa-external-link-alt"></i></a></p>
+<p>解压密码：9unk</p>
+<p>任务目标：通过 IDA 学习分析程序并进行打补丁</p>
+<h1 id="分析步骤"><a href="#分析步骤" class="headerlink" title="分析步骤"></a>分析步骤</h1><ol>
+<li>自动加载分析程序</li>
+</ol>
+<p>打开 Programe Segmentation 窗口显示程序的段列表</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/dlzFhIaKsgveJqU.jpg"
+                      alt="4.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/cHUTqGBK3CoNWhi.jpg"
+                      alt="5.jpg"
+                ></p>
+<p>一个程序的应该是从 0x400000 的 Header 区块开始，但是这里并没有显示加载 Header 区块，这是因为 IDA 在加载程序的过程中，它只加载除了 header 区块以外的可执行部分。</p>
+<p>Programe Segmentation 窗口（需要关注的列）</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">NAME：各区块的名称</span><br><span class="line">Start：各区块起始地址</span><br><span class="line">End：各区块的结束地址</span><br><span class="line">R（Read）：可读</span><br><span class="line">W（Write）：可写</span><br><span class="line">X（Execution）：可执行</span><br><span class="line">D（Debugger）：调试模式（此时程序不在调试模式，所以值为空）</span><br><span class="line">L（Loader）：加载模式</span><br><span class="line">其它的列为各个区段寄存器默认值</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>手动加载程序</li>
+</ol>
+<p>手动定位基地址</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/CnwSpBxbUZ6j2Dq.jpg"
+                      alt="1.jpg"
+                ></p>
+<p>确认代码区域的基地址是否在 0x401000，选择 “yes”。后面全都默认选择 yes</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/ybXp8zGWHUvQlsc.jpg"
+                      alt="2.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/cxrj3KGePmyBX9g.jpg"
+                      alt="3.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/ALSOEUYjiJ48DXy.jpg"
+                      alt="6.jpg"
+                ></p>
+<p>再次进入Programe Segmentation 窗口可以看到所有的区块（这些操作都不是必要的，但还是需要了解一下）</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/ZtnJuX2ei3G8Uyh.jpg"
+                      alt="7.jpg"
+                ></p>
+<ol start="3">
+<li>创建快照<br>由于 IDA 不提供撤销功能，如果不小心按错了某个键，导致 IDA 数据库发生了改变，就得重新来过，所以要记得操作的时候创建快照。快捷键：Ctrl+Shift+W(可根据情况设置快照描述信息)</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/QABdaTFUcHGvnJb.jpg"
+                      alt="8.jpg"
+                ></p>
+<ol start="4">
+<li>管理快照<br>当我们需要恢复、重命名、删除快照时可使用管理快照的功能。快捷键：Ctrl+Shft+T</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/k3bcIpTaByhSVHU.jpg"
+                      alt="9.jpg"
+                ></p>
+<ol start="5">
+<li>程序分析<br>查看程序的关键信息</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/hTOqv9zQGjd1UFf.jpg"
+                      alt="10.jpg"
+                ></p>
+<p>打开 String 窗口，搜索字符串</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/3t9UNYxDkIqlpQd.jpg"
+                      alt="11.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/Q9sFJbHc5o8Zqr2.jpg"
+                      alt="12.jpg"
+                ></p>
+<p>双击，在 0x402169 定位到关键信息的位置</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/2iZpVMs1vfLQUK9.jpg"
+                      alt="13.jpg"
+                ></p>
+<p>在该地址上按 D，将字符串转化成十六进制数据。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/KTa1nkSOdE78NGQ.jpg"
+                      alt="14.jpg"
+                ></p>
+<p>在该地址按 A，将十六进制数据恢复成字符串</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/38ePNsUrQcMEmSW.jpg"
+                      alt="15.jpg"
+                ></p>
+<p>左击该地址或者标号并按下 X，查看程序在哪边调用了这个错误字符串。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/vUDEGSe2r6kV1RT.jpg"
+                      alt="16.jpg"
+                ></p>
+<blockquote>
+<p>从上面看这个字符串被两个函数调用。一个是 sub_401362 和 sub_40137E。第一列的描述信息是 “UP” 说明这两个函数的位置在该地址之前。</p>
+</blockquote>
+<p>我们双击第一个函数，查看这个函数的代码</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/MKnT8GXq9dC2rWZ.jpg"
+                      alt="17.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/A3aZ8kLXVGwntdJ.jpg"
+                      alt="18.jpg"
+                ></p>
+<blockquote>
+<p>可以看到这是一个调用 MessageBox API弹出错误消息框的函数</p>
+</blockquote>
+<p>我们用快捷键 “N”，将这个函数重命名为 “CALL_ERROR”</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/CSDtHeIojnv9TMw.jpg"
+                      alt="19.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/bowKSBlrJ2CD8xM.jpg"
+                      alt="20.jpg"
+                ></p>
+<p>我们继续按 X，看看这个错误函数在哪里被调用了</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/zCu3KI1GTpFX5ag.jpg"
+                      alt="21.jpg"
+                ></p>
+<p>按 “空格” 进入图形模式，查看此时程序的运行逻辑</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/DW7Hc8FZmNrbAjf.jpg"
+                      alt="22.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/Bl8jwUmb17S9MDO.jpg"
+                      alt="23.jpg"
+                ></p>
+<blockquote>
+<p>可以看到，运行错误就会执行 CALL_ERROR 函数，正确就会执行 loc_40124C 这个函数</p>
+</blockquote>
+<p>我们先修改 CALL_ERROR 函数的背景颜色，这样使分析更加快速方便</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/WMwpbk18FJPmTlO.jpg"
+                      alt="24.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/8y1c2jvQdMDkNoa.jpg"
+                      alt="25.jpg"
+                ></p>
+<p>我们继续分析 loc_40124C 中的 sub_40134D 函数</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/iCV75qxkOX9hJUT.jpg"
+                      alt="26.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/HIbao9MkLGrOdUJ.jpg"
+                      alt="27.jpg"
+                ></p>
+<p>从上图中可以看到这是一个正确的消息弹窗，我们继续修改函数名称为 CALL_GOOD</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/YEORLeQ2H153ugi.jpg"
+                      alt="28.jpg"
+                ></p>
+<p>双击 WndProc 函数，回到原来的视图，并把正确的函数做好背景标记</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/UgqHcp69nlF83AN.jpg"
+                      alt="29.jpg"
+                ></p>
+<p>我们继续看一下上一个函数的 JZ 跳转指令</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/KblejSDWJ4f8M6p.jpg"
+                      alt="30.jpg"
+                ></p>
+<p>我们左击到 JZ 跳转指令处，使用快捷键 Ctrl+Alt+K（打补丁功能） 把 JZ 指令，修改成 JNZ 指令。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/RASh4Ot67JFGZog.jpg"
+                      alt="31.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/XTSpAgElcZN3s7B.jpg"
+                      alt="32.jpg"
+                ></p>
+<p>最后对打补丁后的程序进行保存</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/pfChqRk52wUAXKs.jpg"
+                      alt="33.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/3gp7QSkPvJdnuUX.jpg"
+                      alt="34.jpg"
+                ></p>
+<p>我们输入任意用户名和密码，可以看到程序已经打补丁成功</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/gZGmSplO8fzqvdR.jpg"
+                      alt="35.jpg"
+                ></p>
+<p>后面我们还需要修补另一个报错信息</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/w6x3dsIZfpHGvKY.jpg"
+                      alt="36.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/pB6eNJ7SrkVlyIO.jpg"
+                      alt="37.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/1d8sMCBicH9naWP.jpg"
+                      alt="38.jpg"
+                ></p>
+<p>我们经过一些分析，可以看到这是判断输入的用户名是否有数字，如果有数字就会跳转报错。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/Meq7cOPd69nohCA.jpg"
+                      alt="39.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/aGtkJZVI8SizPjM.jpg"
+                      alt="42.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/H1rdLniolW4XsUD.jpg"
+                      alt="40.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/9xiD53lsCwubFH1.jpg"
+                      alt="41.jpg"
+                ></p>
+<p>我们这里将 JB 指令，改成空指令 NOP，来忽略这个跳转。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/dDLS57AvjahNgP4.jpg"
+                      alt="43.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/Jk2q7mZVLgCbE3I.jpg"
+                      alt="44.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/ONSRhDagjkvJdlc.jpg"
+                      alt="45.jpg"
+                ></p>
+<p>最后再对程序打补丁，验证。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/sYt6T7M8V4ZnAqG.jpg"
+                      alt="46.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/02/09/QXOdlM2utSH4fiV.jpg"
+                      alt="47.jpg"
+                ></p>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><strong>翻译自：8-REVERSING WITH IDA PRO FROM SCRATCH [Ricardo Narvaja]</strong></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：从零开始IDA-crackme分析</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2021-02-24 18:26:28</li>
+        <li>
+            本文链接：https://9unkk.github.io/2021/02/24/从零开始IDA-crackme分析/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E9%80%86%E5%90%91/">#逆向</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/IDA/">#IDA</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/03/09/x64dbg-%E8%84%B1%E5%A3%B3%E5%9F%BA%E7%A1%80/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">x64dbg-脱壳基础</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/02/24/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BIDA-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">从零开始IDA-基础知识</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.</span> <span class="nav-text">目标程序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.</span> <span class="nav-text">分析步骤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">3.</span> <span class="nav-text">reference</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

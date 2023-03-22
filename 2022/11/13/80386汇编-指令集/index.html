@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            80386汇编-指令集 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">80386汇编-指令集</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2022-11-13 23:53:00</span>
+        <span class="mobile">2022-11-13 23:53</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <p>这一章主要学习 80386 指令集，并回顾 8086 指令。</p>
+<h1 id="数据传送指令"><a href="#数据传送指令" class="headerlink" title="数据传送指令"></a>数据传送指令</h1><p>数据传送：寄存器、内存单元、I&#x2F;O端口之间传送数据和地址。<br>80386 分为 4 种：通用传送指令、累加器专用传送指令和标志传送指令。</p>
+<h2 id="通用传送指令组"><a href="#通用传送指令组" class="headerlink" title="通用传送指令组"></a>通用传送指令组</h2><h3 id="MOV-指令"><a href="#MOV-指令" class="headerlink" title="MOV 指令"></a>MOV 指令</h3><ol>
+<li><p>指令简介<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201611844-d5f0a4f9-fba9-447b-b08b-85b332e30d91.png"
+                      alt="1"
+                ></p>
+</li>
+<li><p>指令的语法及描述<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201615696-1f023486-56e6-42b7-aff6-c45f542208c1.png"
+                      alt="2"
+                ></p>
+</li>
+</ol>
+<h3 id="MOVZX-和-MOVSX-指令"><a href="#MOVZX-和-MOVSX-指令" class="headerlink" title="MOVZX 和 MOVSX 指令"></a>MOVZX 和 MOVSX 指令</h3><p>在 8086 汇编中，都是用 XOR 指令和符号扩展指令（CBW和CWD）把高位的符号位初始化。但是在 80386 中高 16 位是没有寄存器的，没办法直接传送无符号数（有符号数）并初始化寄存器。为了解决这个问题，80386 又设计 MOVZX 和 MOVSX 指令来传送数据。</p>
+<h4 id="MOVZX-指令"><a href="#MOVZX-指令" class="headerlink" title="MOVZX 指令"></a>MOVZX 指令</h4><ol>
+<li><p>简介及语法<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201616614-f66e42ce-d166-4fe3-9bf0-47507e7ec846.png"
+                      alt="3"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201617327-364b6af9-998c-4cb1-ad5c-b6eeb62bff3a.png"
+                      alt="5"
+                ></p>
+</li>
+<li><p>案例<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201616802-171953db-a43b-4415-8057-67ecba4157e0.png"
+                      alt="4"
+                ></p>
+</li>
+</ol>
+<h4 id="MOVSX-指令"><a href="#MOVSX-指令" class="headerlink" title="MOVSX 指令"></a>MOVSX 指令</h4><ol>
+<li><p>简介及语法<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201617665-d627255b-0d1d-4873-bc06-75789334edf5.png"
+                      alt="6"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201617797-38acd10c-37f1-4415-b908-094e7b8396e5.png"
+                      alt="7"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201618021-428c83fb-4cbd-4ca8-b0b9-fd253ff385ea.png"
+                      alt="8"
+                ></p>
+</li>
+<li><p>案例<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201618174-a57cd40f-a106-49f2-8710-764758e8394b.png"
+                      alt="9"
+                ></p>
+</li>
+</ol>
+<h3 id="CBW-x2F-CWD-x2F-CDQ"><a href="#CBW-x2F-CWD-x2F-CDQ" class="headerlink" title="CBW&#x2F;CWD&#x2F;CDQ"></a>CBW&#x2F;CWD&#x2F;CDQ</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201696653-41a867c4-d8b1-408c-b404-38072b0490e1.png"
+                      alt="18"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201697407-e267edf3-9be3-4411-976c-517223a094ab.png"
+                      alt="19"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201699337-761579fb-9eb0-4372-b533-3eee7392ed34.png"
+                      alt="20"
+                ></p>
+<ul>
+<li>CBW 是 al 为数据，ah扩展符号位。</li>
+<li>CWD 是 ax 为数据，dx扩展符号位。</li>
+<li>CDQ 是 eax 为数据，edx扩展符号位。</li>
+</ul>
+<h3 id="XCHG"><a href="#XCHG" class="headerlink" title="XCHG"></a>XCHG</h3><ol>
+<li><p>语法<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201622354-b32c3349-37d7-403a-ae4c-0e591af78fb8.png"
+                      alt="11"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201622604-c3d4e46a-2aeb-4800-b7eb-de8d4d62b7cb.png"
+                      alt="12"
+                ></p>
+</li>
+<li><p>案例<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201622849-0991b3b8-36d6-43d7-8ff7-fc2399967663.png"
+                      alt="13"
+                ></p>
+</li>
+</ol>
+<h2 id="堆栈操作指令"><a href="#堆栈操作指令" class="headerlink" title="堆栈操作指令"></a>堆栈操作指令</h2><h3 id="PUSH-和-POP"><a href="#PUSH-和-POP" class="headerlink" title="PUSH 和 POP"></a>PUSH 和 POP</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201681145-a2869fb8-45a7-4684-b21e-e6855a8f136c.png"
+                      alt="14"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201681452-f9305d6e-2973-44a7-aecd-31a363fa5b71.png"
+                      alt="15"
+                ></p>
+<blockquote>
+<p>.386 指令集中的 PUSH 和 POP 指令，支持 16 位和 32 位数据入栈出栈。</p>
+</blockquote>
+<h3 id="PUSHA-和-PUSHAD"><a href="#PUSHA-和-PUSHAD" class="headerlink" title="PUSHA 和 PUSHAD"></a>PUSHA 和 PUSHAD</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201688881-8ff005dd-5dc3-4350-ad6b-5bada468a3d5.png"
+                      alt="16"
+                ></p>
+<h3 id="POPA-和-POPAD"><a href="#POPA-和-POPAD" class="headerlink" title="POPA 和 POPAD"></a>POPA 和 POPAD</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201690900-86b0a0ea-deb2-4b9b-960a-e478a7576fc3.png"
+                      alt="17"
+                ></p>
+<blockquote>
+<p>.386 指令集中 PUSHA&#x2F;POPA 是对16位寄存器入栈&#x2F;出栈，PUSHAD&#x2F;POPAD 是对32位寄存器入栈&#x2F;出栈。</p>
+</blockquote>
+<h2 id="地址传送指令"><a href="#地址传送指令" class="headerlink" title="地址传送指令"></a>地址传送指令</h2><p>LEA 将内存有效地址，存储到寄存器中。<br>LDS、LES、LFS、LGS、LSS 将内存中的数据作为内存地址分别传送到相应的DS、ES、FS、GS、SS段寄存器，同时也会传输到目的操作数中。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201816697-8f1f06c1-a0a6-4726-9f38-70f84322ffd9.png"
+                      alt="32"
+                ></p>
+<h3 id="LEA"><a href="#LEA" class="headerlink" title="LEA"></a>LEA</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201701829-b73f4e0d-2792-4217-8b9a-e5416d166bf6.png"
+                      alt="21"
+                ></p>
+<h3 id="LDS"><a href="#LDS" class="headerlink" title="LDS"></a>LDS</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201703030-66d7bb84-0fc1-496b-a6b0-e70343f8f32a.png"
+                      alt="22"
+                ></p>
+<h3 id="LES"><a href="#LES" class="headerlink" title="LES"></a>LES</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201703487-2461ec62-fbdc-44b5-adf2-78c14bcc5b12.png"
+                      alt="23"
+                ></p>
+<h3 id="LFS"><a href="#LFS" class="headerlink" title="LFS"></a>LFS</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201703828-af9eb4c4-16a8-4f5a-b6d0-53da2160fd88.png"
+                      alt="24"
+                ></p>
+<h3 id="LGS"><a href="#LGS" class="headerlink" title="LGS"></a>LGS</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201706063-e8af6552-8315-4e2a-950b-ffd17be8df64.png"
+                      alt="25"
+                ></p>
+<h3 id="LSS"><a href="#LSS" class="headerlink" title="LSS"></a>LSS</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201706397-67f5e490-7784-49fb-b112-1d1f75065919.png"
+                      alt="26"
+                ></p>
+<h2 id="标志传送指令"><a href="#标志传送指令" class="headerlink" title="标志传送指令"></a>标志传送指令</h2><h3 id="LAHF-和-SAHF"><a href="#LAHF-和-SAHF" class="headerlink" title="LAHF 和 SAHF"></a>LAHF 和 SAHF</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201622009-9cbaec7f-05d1-4cb9-9d7f-4794d598c47a.png"
+                      alt="10"
+                ></p>
+<h3 id="PUSHF-x2F-PUSHFD"><a href="#PUSHF-x2F-PUSHFD" class="headerlink" title="PUSHF&#x2F;PUSHFD"></a>PUSHF&#x2F;PUSHFD</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201720110-bc6e6b9d-cd72-4fcd-9a87-9ed28495625b.png"
+                      alt="27"
+                ></p>
+<ul>
+<li>PUSHF 压入 eflags 低16位值</li>
+<li>PUSHFD 压入 eflags（32位） 的值</li>
+</ul>
+<h3 id="POPF-x2F-POPFD"><a href="#POPF-x2F-POPFD" class="headerlink" title="POPF&#x2F;POPFD"></a>POPF&#x2F;POPFD</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201720687-b538802d-d436-47db-ba74-c949aaf09f1b.png"
+                      alt="28"
+                ></p>
+<ul>
+<li>POPF 弹出 eflags 低16位值</li>
+<li>POPFD 弹出 eflags（32位） 的值</li>
+</ul>
+<h2 id="累加器专用传送指令"><a href="#累加器专用传送指令" class="headerlink" title="累加器专用传送指令"></a>累加器专用传送指令</h2><h3 id="IN"><a href="#IN" class="headerlink" title="IN"></a>IN</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201815685-47682101-f2eb-4c30-abd8-4bbb2997becc.png"
+                      alt="29"
+                ></p>
+<h3 id="OUT"><a href="#OUT" class="headerlink" title="OUT"></a>OUT</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201815877-a2a1ecda-0245-47fd-aabb-6b3b15d4dc27.png"
+                      alt="30"
+                ></p>
+<h3 id="XLAT"><a href="#XLAT" class="headerlink" title="XLAT"></a>XLAT</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201815986-c12460fa-4b7f-4a1b-9b11-5836580930a5.png"
+                      alt="31"
+                ></p>
+<h1 id="算数运算指令"><a href="#算数运算指令" class="headerlink" title="算数运算指令"></a>算数运算指令</h1><h2 id="加减指令"><a href="#加减指令" class="headerlink" title="加减指令"></a>加减指令</h2><h3 id="ADD"><a href="#ADD" class="headerlink" title="ADD"></a>ADD</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202167614-d6215d29-fbab-4b22-8872-cdff5a0c3734.png"
+                      alt="35"
+                ></p>
+<h3 id="ADC"><a href="#ADC" class="headerlink" title="ADC"></a>ADC</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202167841-917d6b3f-135e-45dc-9966-19953e336153.png"
+                      alt="36"
+                ></p>
+<h3 id="INC"><a href="#INC" class="headerlink" title="INC"></a>INC</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202168298-3bab9790-4197-4d9e-8e4f-447e00385934.png"
+                      alt="37"
+                ></p>
+<h3 id="SUB"><a href="#SUB" class="headerlink" title="SUB"></a>SUB</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202180800-ad0ae15c-fe1b-476c-ac20-642b5aa0427a.png"
+                      alt="38"
+                ></p>
+<h3 id="SBB"><a href="#SBB" class="headerlink" title="SBB"></a>SBB</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202180936-90fcbfa8-550c-4b27-b9ee-3b74bfb762ed.png"
+                      alt="39"
+                ></p>
+<h3 id="DEC"><a href="#DEC" class="headerlink" title="DEC"></a>DEC</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202181726-1793e79c-ad7b-401f-8b65-b1129b393926.png"
+                      alt="40"
+                ></p>
+<h3 id="CMP"><a href="#CMP" class="headerlink" title="CMP"></a>CMP</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202183608-e72d84e1-928a-4c5f-846d-66bf0c51b295.png"
+                      alt="41"
+                ></p>
+<h3 id="NEG"><a href="#NEG" class="headerlink" title="NEG"></a>NEG</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202183790-1c5d8e60-a9af-448c-9f63-b69925daff8f.png"
+                      alt="42"
+                ></p>
+<h2 id="乘除指令"><a href="#乘除指令" class="headerlink" title="乘除指令"></a>乘除指令</h2><h3 id="MUL"><a href="#MUL" class="headerlink" title="MUL"></a>MUL</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201828001-de7c18f7-66c9-4773-b162-7e6d39c99edf.png"
+                      alt="34"
+                ></p>
+<blockquote>
+<p>MUL 指令执行后需要注意 CF 位，如果 CF&#x3D;1，就要关注 DX 或 EDX 的值。</p>
+</blockquote>
+<h3 id="IMUL"><a href="#IMUL" class="headerlink" title="IMUL"></a>IMUL</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202184431-e1fe2110-da7a-4cbc-b0e0-b91bef1e4b93.png"
+                      alt="43"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202185132-4d89af96-be29-4870-b331-8ce80e7a9187.png"
+                      alt="44"
+                ></p>
+<h3 id="DIV"><a href="#DIV" class="headerlink" title="DIV"></a>DIV</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202186230-7251b9c7-5920-444c-bdd7-efa3af221999.png"
+                      alt="45"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202186369-00cd3557-eb9a-4eb8-aa30-2a590cf8ef7c.png"
+                      alt="46"
+                ></p>
+<h3 id="IDIV"><a href="#IDIV" class="headerlink" title="IDIV"></a>IDIV</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202186640-f8c21496-dd62-4e50-9fe8-f2f3b6d394a6.png"
+                      alt="47"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202189842-140be913-901c-4653-bb2f-7cca0dee05d1.png"
+                      alt="48"
+                ></p>
+<blockquote>
+<p>在进行有符号数除法指令运算之前需要根据情况执行 CBW、CWD 或 CDQ 指令。</p>
+</blockquote>
+<h2 id="十进制算数调整指令"><a href="#十进制算数调整指令" class="headerlink" title="十进制算数调整指令"></a>十进制算数调整指令</h2><p>DAA,DSA,AAA,AAS,AAM,AAD 的功能与 8086 相同。</p>
+<h3 id="AAA"><a href="#AAA" class="headerlink" title="AAA"></a>AAA</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202191872-401b677d-e29d-44c3-8afd-31441e0f9b0d.png"
+                      alt="49"
+                ></p>
+<h3 id="AAS"><a href="#AAS" class="headerlink" title="AAS"></a>AAS</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202192118-5233db01-536d-4729-bbaa-ee7606009d1b.png"
+                      alt="50"
+                ></p>
+<h3 id="AAM"><a href="#AAM" class="headerlink" title="AAM"></a>AAM</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202192276-54b9f641-2869-4c3a-8c0a-6ff8cc006f84.png"
+                      alt="51"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202192356-dfb723b5-0042-42e1-9e62-3a44d6c0d94d.png"
+                      alt="52"
+                ></p>
+<h3 id="AAD"><a href="#AAD" class="headerlink" title="AAD"></a>AAD</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202192602-1d514986-a2f9-458c-bccb-8a745c2f1c27.png"
+                      alt="53"
+                ></p>
+<h1 id="逻辑运算和位移指令"><a href="#逻辑运算和位移指令" class="headerlink" title="逻辑运算和位移指令"></a>逻辑运算和位移指令</h1><h2 id="逻辑运算指令组"><a href="#逻辑运算指令组" class="headerlink" title="逻辑运算指令组"></a>逻辑运算指令组</h2><h3 id="NOT"><a href="#NOT" class="headerlink" title="NOT"></a>NOT</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202194831-da9e8d38-0d06-4db4-a36a-596d14dfbb4f.png"
+                      alt="55"
+                ></p>
+<h3 id="AND"><a href="#AND" class="headerlink" title="AND"></a>AND</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202194262-fd8e7d1b-e583-457c-8839-170011e56f99.png"
+                      alt="54"
+                ></p>
+<h3 id="OR"><a href="#OR" class="headerlink" title="OR"></a>OR</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202194991-b695dea1-b289-439a-a464-2464e4853b62.png"
+                      alt="56"
+                ></p>
+<h3 id="XOR"><a href="#XOR" class="headerlink" title="XOR"></a>XOR</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202195172-8b83d387-3b66-4431-9c0d-4ea93e66307c.png"
+                      alt="57"
+                ></p>
+<h3 id="TEST"><a href="#TEST" class="headerlink" title="TEST"></a>TEST</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202195421-d9d8599f-debd-4fac-a683-d4dc5f02aacd.png"
+                      alt="58"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202195563-5f7025a5-ff06-4b3e-98f0-34dab2ebe8fb.png"
+                      alt="59"
+                ></p>
+<h2 id="位移指令组"><a href="#位移指令组" class="headerlink" title="位移指令组"></a>位移指令组</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202205644-b7c5253e-1122-44e0-b78e-0e9c63382423.png"
+                      alt="60"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202205776-3a302978-7f1c-4c0f-a5f7-2f9840ddac2a.png"
+                      alt="61"
+                ></p>
+<h3 id="逻辑位移（SHL-x2F-SHR）指令"><a href="#逻辑位移（SHL-x2F-SHR）指令" class="headerlink" title="逻辑位移（SHL&#x2F;SHR）指令"></a>逻辑位移（SHL&#x2F;SHR）指令</h3><ol>
+<li><p>SHL<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202207831-e6e047e8-32b0-4aea-9a2d-17a2aa79694b.png"
+                      alt="62"
+                ></p>
+</li>
+<li><p>SHR<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202208130-b5a3019a-fbfe-4570-a1f6-203ea53b60fd.png"
+                      alt="63"
+                ></p>
+</li>
+</ol>
+<h3 id="算数位移（SAL-x2F-SAR）指令"><a href="#算数位移（SAL-x2F-SAR）指令" class="headerlink" title="算数位移（SAL&#x2F;SAR）指令"></a>算数位移（SAL&#x2F;SAR）指令</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202209096-75112eea-f59b-4511-bcd7-9dc5a7483d0d.png"
+                      alt="64"
+                ></p>
+<h3 id="循环位移（ROL-x2F-ROR）指令"><a href="#循环位移（ROL-x2F-ROR）指令" class="headerlink" title="循环位移（ROL&#x2F;ROR）指令"></a>循环位移（ROL&#x2F;ROR）指令</h3><ol>
+<li><p>ROL<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202210410-31c789ee-8cb8-4633-a206-f9c280b46011.png"
+                      alt="65"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202210503-934b51b3-5e4e-450b-b0d0-39b289b28fda.png"
+                      alt="66"
+                ></p>
+</li>
+<li><p>ROR<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202210816-ecc9b211-5a51-4857-b6ad-5314d992c2f7.png"
+                      alt="67"
+                ></p>
+</li>
+</ol>
+<h3 id="RCL-和-RCR指令"><a href="#RCL-和-RCR指令" class="headerlink" title="RCL 和 RCR指令"></a>RCL 和 RCR指令</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202211683-34ced5dc-5fa3-4d25-8e43-092d37d3c3dd.png"
+                      alt="68"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202211886-571b3db5-fe6c-4bc1-9fd3-703487de5c57.png"
+                      alt="69"
+                ></p>
+<h3 id="SHLD-x2F-SHRD-指令"><a href="#SHLD-x2F-SHRD-指令" class="headerlink" title="SHLD&#x2F;SHRD 指令"></a>SHLD&#x2F;SHRD 指令</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202213969-387de41f-1629-43f2-89ec-076c7bd1a9a6.png"
+                      alt="70"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202214633-1ea2cff3-1446-4df0-817b-89fcaf1effc3.png"
+                      alt="71"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202214872-08b51132-b6b9-4f44-afae-4d46917844ee.png"
+                      alt="72"
+                ></p>
+<h1 id="控制转移指令"><a href="#控制转移指令" class="headerlink" title="控制转移指令"></a>控制转移指令</h1><h2 id="转移指令组"><a href="#转移指令组" class="headerlink" title="转移指令组"></a>转移指令组</h2><h3 id="无条件转移指令"><a href="#无条件转移指令" class="headerlink" title="无条件转移指令"></a>无条件转移指令</h3><p>JMP 指令分为段内直接、段内间接、段间直接，段间间接四种<br>扩展形式：扩展的无条件转移指令的转移目的转移目的地址偏移采用32位表示，段间转移目的地址采用 48 位全指针形式表示。<br>因为实模式段内偏移最大 64K，所以虽然 80386 允许把 32 位段内偏移传送到 EIP，实际不需要。<br>JMP EAX     ；实模式下有效，但是EAX不能超过64K<br>在保护模式下，段内无条件转移指令的准一方法未变，但段间无条件转移指令的执行细节比较复杂，保护模式章节会讲解。</p>
+<h3 id="条件转移指令"><a href="#条件转移指令" class="headerlink" title="条件转移指令"></a>条件转移指令</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202219369-034a2593-45d3-4b66-ad0b-928d19a52d72.png"
+                      alt="73"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202220018-0e4ecc53-644e-4750-9aa0-176d243cd5c1.png"
+                      alt="74"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202220166-5470d2b2-ec57-404d-b944-868501326329.png"
+                      alt="75"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202220296-02d31375-cc73-4b10-a31d-05fde6afd80e.png"
+                      alt="76"
+                ></p>
+<h2 id="循环指令组"><a href="#循环指令组" class="headerlink" title="循环指令组"></a>循环指令组</h2><h3 id="LOOP指令"><a href="#LOOP指令" class="headerlink" title="LOOP指令"></a>LOOP指令</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202232616-b4cb07a2-f514-4892-837b-bc35219490d1.png"
+                      alt="77"
+                ></p>
+<h3 id="LOOPZ和LOOPE指令"><a href="#LOOPZ和LOOPE指令" class="headerlink" title="LOOPZ和LOOPE指令"></a>LOOPZ和LOOPE指令</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202234139-9cad4e29-8a9c-4b72-b4de-2c4accf152ce.png"
+                      alt="78"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202234254-d5d0464b-23ee-41ff-8b55-1cdf7b47da54.png"
+                      alt="79"
+                ></p>
+<h3 id="LOOPNZ和LOOPNE指令"><a href="#LOOPNZ和LOOPNE指令" class="headerlink" title="LOOPNZ和LOOPNE指令"></a>LOOPNZ和LOOPNE指令</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202234532-71b64a77-ed33-4737-a47c-6d080e9b9e4c.png"
+                      alt="80"
+                ></p>
+<h2 id="过程调用和返回指令组"><a href="#过程调用和返回指令组" class="headerlink" title="过程调用和返回指令组"></a>过程调用和返回指令组</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202236109-080ce86e-e903-40ec-91b0-823c67e33cb8.png"
+                      alt="81"
+                ></p>
+<h2 id="中断调用和中断返回指令组"><a href="#中断调用和中断返回指令组" class="headerlink" title="中断调用和中断返回指令组"></a>中断调用和中断返回指令组</h2><p>实模式下，中断调用 INT 功能和 8086 相同。<br>保护模式下，中断嗲用指令 INT 把标志寄存器 EFLAGS，CS 和 EIP 压入堆栈，即压入堆栈 3 个双字，在压入 CS 时有扩展到 32 位，高 16 位为0，具体细节复杂，保护模式章节介绍。</p>
+<p>中断返回指令 IRET 有扩展和非扩展两种形式<br>实模式下，总是使用非扩展形式，与 8086 相同<br>保护模式下，使用扩展形式，与中断指令 INT 对应，具体细节较复杂，保护模式章节介绍。</p>
+<blockquote>
+<p>IRETD 指令先弹出一个 32 位的 EIP 值，然后再弹出一个32位的标志寄存器值。</p>
+</blockquote>
+<h1 id="串操作指令"><a href="#串操作指令" class="headerlink" title="串操作指令"></a>串操作指令</h1><h2 id="基本串操作指令"><a href="#基本串操作指令" class="headerlink" title="基本串操作指令"></a>基本串操作指令</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202240410-22d1f67f-c21c-44e3-a19e-b2a450dc704c.png"
+                      alt="82"
+                ></p>
+<h2 id="重复前缀"><a href="#重复前缀" class="headerlink" title="重复前缀"></a>重复前缀</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202487221-8117a51e-c915-419e-a9da-6838c3b84e2f.png"
+                      alt="83"
+                ></p>
+<h2 id="方向标志位"><a href="#方向标志位" class="headerlink" title="方向标志位"></a>方向标志位</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202487439-790a4834-12b6-4478-800f-45373d1d3583.png"
+                      alt="84"
+                ></p>
+<h2 id="串输入指令"><a href="#串输入指令" class="headerlink" title="串输入指令"></a>串输入指令</h2><p>INSB    ;输入字节（Byte）<br>INSW    ;输入字（Word）<br>INSD    ;输入双字（Dword）</p>
+<p>以上三条串输入指令的格式可同一写为如下格式：</p>
+<blockquote>
+<p>INS DSTS,DX</p>
+</blockquote>
+<p>汇编程序根据目的串 DSTS 类型决定使用字节输入指令、字输入指令或双字输入指令。串输入指令不影响标志位。</p>
+<h2 id="串输出指令"><a href="#串输出指令" class="headerlink" title="串输出指令"></a>串输出指令</h2><p>OUTSB   ;输出字节（Byte）<br>OUTSW   ;输出字（Word）<br>OUTSD   ;输出双字（DWORD）</p>
+<p>串输出指令把由 DS:SI 所指的源串中的一个字符，输出到由 DX 给出的端口，同时根据方向标志位 DF 和字符类型调整SI（或ESI）</p>
+<p>在汇编语言中，上面三条输出指令的格式可同一写为：</p>
+<blockquote>
+<p>OUTS DX,SRCS</p>
+</blockquote>
+<p>汇编程序根据源串 SRCS 类型决定使用字节输出指令、子输出指令或双字输出指令。串输出指令不影响标志位。</p>
+<h1 id="高级语言支持指令"><a href="#高级语言支持指令" class="headerlink" title="高级语言支持指令"></a>高级语言支持指令</h1><p>高级语言支持指令始于 80186，它们用于简化支持高级语言的某些特征。共有3条这样的指令，它们是：BOUND、ENTER 和 LEAVE。</p>
+<h2 id="建立和释放堆栈框架指令"><a href="#建立和释放堆栈框架指令" class="headerlink" title="建立和释放堆栈框架指令"></a>建立和释放堆栈框架指令</h2><p>在 C 和 PASCAL 等高级语言中，函数或过程不仅通过堆栈传递入口参数，而且它们的局部变量也被安排在堆栈中，为了方便获取入口参数和准确地存取局部变量，就要建立合适的堆栈框架。</p>
+<p>例如，如下C函数和对应的汇编语言过程，就可以看到堆栈框架的建立和使用情况。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sum(<span class="type">int</span> x,<span class="type">int</span> y)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> sum;</span><br><span class="line">    sum=x+y;</span><br><span class="line">    <span class="keyword">return</span>(sum);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的函数 sum 对应的汇编语言过程如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">_sum proc near</span><br><span class="line">    push ebp</span><br><span class="line">    mov ebp,esp</span><br><span class="line">    sub esp,4                   ;建立堆栈框架</span><br><span class="line">    ;</span><br><span class="line">    mov eax,word ptr [ebp+4]    ;取参数x</span><br><span class="line">    add eax,word ptr [bp+8]     ;加参数y</span><br><span class="line">    mov word ptr [ebp-4],eax    ;保存x+y之和到局部变量sum</span><br><span class="line">    ;</span><br><span class="line">    mov ax,word ptr [ebp-4]     ;取返回参数</span><br><span class="line">    ;</span><br><span class="line">    mov esp,ebp</span><br><span class="line">    pop ebp                     ;释放堆栈框架</span><br><span class="line">    ;</span><br><span class="line">    ret                         ;返回</span><br><span class="line">_sum endp</span><br></pre></td></tr></table></figure>
+
+<p>如果利用始于 80186 的建立和释放堆栈框架指令 ENTER 和 LEAVE，那么上面的汇编语言过程可优化如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">_sum proc near</span><br><span class="line">    enter 4,0</span><br><span class="line">    ;</span><br><span class="line">    mov eax,word ptr [ebp+4]    ;取参数x</span><br><span class="line">    add eax,word ptr [bp+8]     ;加参数y</span><br><span class="line">    mov word ptr [ebp-4],eax    ;保存x+y之和到局部变量sum</span><br><span class="line">    mov ax,word ptr [ebp-4]     ;取返回参数</span><br><span class="line">    ;</span><br><span class="line">    leave</span><br><span class="line">    ret</span><br><span class="line">_sum endp</span><br></pre></td></tr></table></figure>
+
+<h2 id="检查数组下标界限指令-BOUND"><a href="#检查数组下标界限指令-BOUND" class="headerlink" title="检查数组下标界限指令 BOUND"></a>检查数组下标界限指令 BOUND</h2><p>检查数组下标界限指令 BOUND 的一般格式如下：</p>
+<blockquote>
+<p>BOUND OPRD1,OPRD2</p>
+</blockquote>
+<p>在 80386 之前，用于给待检车数组下标的操作数 OPRD1 是 16 位寄存器，用于给出数组下标上下界限的操作数 OPRD2 是 32 位存储器操作数，其中低字节含起始下标，高字节含结尾下标。从 80386 开始，OPRD1 还可以是 32 位寄存器，此时 OPRD2 只能是 64 位存储器操作数，其中低双字含起始下标，高双字含结尾下标。</p>
+<p>该指令检车由  OPRD1 给出的有符号数是否由操作数 OPRD2 给出的数组界限之内。如果被检车的下标不在数组允许的范围内，那么产生类型号为5的异常（中断）。</p>
+<p>指令 BOUND 不影响标志位。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202513515-32ba9860-52df-47d8-aa06-3097134af71d.png"
+                      alt="85"
+                ></p>
+<h1 id="条件字节设置指令"><a href="#条件字节设置指令" class="headerlink" title="条件字节设置指令"></a>条件字节设置指令</h1><p>从 80386 开始新增了一组条件字节设置指令。这些指令根据一些标志位设置某个字节的内容为 1 或 0。</p>
+<p>条件字节设置指令格式如下：</p>
+<blockquote>
+<p>SETcc OPRD</p>
+</blockquote>
+<p>其中 cc 是指助记符的一部分，用于表示条件，这些条件与条件转移指令中的条件相同；操作数 OPRD 只能是 8 位寄存器或者存储单元，用于存放测试的结果。</p>
+<p>这些指令的功能是测试指令中规定的条件，若条件为 “真”，那么将目的操作数 OPRD 置1，否则置0<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202514998-a82d1f35-8043-49db-8908-477bc76b1740.png"
+                      alt="86"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202515166-bb941379-914e-44b5-9412-6f8bccc9fd91.png"
+                      alt="87"
+                ></p>
+<h1 id="位操作指令"><a href="#位操作指令" class="headerlink" title="位操作指令"></a>位操作指令</h1><p>从 80386 开始增加了位操作指令。这些操作指令可以直接对一个二进制位进行测试、设置和扫描等操作。利用这些指令可以更有效地进行位操作。<br>位操作指令可分为位扫描指令组和位测试及设置指令组。</p>
+<h2 id="位测试及设置指令组"><a href="#位测试及设置指令组" class="headerlink" title="位测试及设置指令组"></a>位测试及设置指令组</h2><p>位测试和设置指令组含有如下 4 条指令：BT（位测试）指令、BTC（位测试并取反）指令、BTR（位测试并复位）指令和BTS（位测试并置位）指令。</p>
+<p>这 4 条位测试和设置指令地格式如下：</p>
+<blockquote>
+<p>BT OPRD1,OPRD2<br>BTC OPRD1,OPRD2<br>BTR OPRD1,OPRD2<br>BTS OPRD1,OPRD2</p>
+</blockquote>
+<p>其中 OPRD1 可以是 16 位或 32 位通用寄存器和 16 位或 32 位存储单元，用于指定要测试地内容。OPRD2 必须是 8 位立即数或者与操作数 OPRD1 长度相等地通用寄存器，至于指定要测试的位。</p>
+<p>位测试指令BT：功能是把被测试位的值送入标志位 CF；<br>位测试并取反指令BTC：把被测试位的值送到标志位 CF，并把被测试位取反；<br>位测试并复位指令BTR：功能是把被测试位的值送到标志位 CF，并把被测试位复位（即清0）；<br>位测试并置位指令BTS：功能是把被测试位的值送入标志位 CF，并把被测试位置位（即置1）。</p>
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">MOV BX,4567H    ;0100010101100111</span><br><span class="line">MOV ECX,2</span><br><span class="line">BT BX,CX        ;CF=1,BX=4567H</span><br><span class="line">BTC BX,3        ;CF=0,BX=456FH</span><br><span class="line">BTR BX,CX       ;CF=1,BX=456BH</span><br><span class="line">BTS EBX,ECX     ;CF=0,BX=456FH</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">.386</span><br><span class="line">.model flat,stdcall</span><br><span class="line">option casemap:none</span><br><span class="line"></span><br><span class="line">INCLUDE masm32.inc</span><br><span class="line">INCLUDE kernel32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">IMAGEW  DW  1234H,5678H     ;0001 0010 0011 0100 0101 0110 0111 1000</span><br><span class="line">IMAGED  DD  12345678H</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    BT  IMAGEW,4       ;CF=1</span><br><span class="line">    MOV CX,22</span><br><span class="line">    BTC IMAGEW,CX      ;CF=1,[IMAGEW+2]=5638H</span><br><span class="line">    BTR IMAGED,6       ;CF=1,[IMAGED]=12345638H</span><br><span class="line">    MOVZX EAX,CX</span><br><span class="line">    BTS IMAGED,EAX     ;CF=0,[IMAGED]=12345678H</span><br><span class="line">    INVOKE ExitProcess,0</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p>要特别指出，在这些位测试指令中，如果用于指定测试位号的操作数 OPRD2 是立即数，那么其值不应该超过被测试操作数 OPRD1 的长度，否则将产生未定义的位偏移量。这个规则允许规定在一个寄存器内的任何位移量，而且将存储器位串中的立即数位移量限制在规定存储单元字或双字之内。</p>
+<p>但汇编程序可以支持对于内存位串的更大的立即数位偏移量，汇编程序可将该立即数位偏移量低 5 位（对于32位操作数）或低4位（对于16位操作数）作为及其指令中的操作数 OPRD2，将该立即数位移量的相应高位右移后加到内存位串开始单元的便宜上，作为机器指令中的操作数 OPRD1。</p>
+<p>例：如下程序把寄存器 AL 的位0、2、4、6依次测试一次，所得的 8 位数保存在寄存器 AL中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">.386</span><br><span class="line">.model flat,stdcall</span><br><span class="line">option casemap:none</span><br><span class="line"></span><br><span class="line">INCLUDE masm32.inc</span><br><span class="line">INCLUDE kernel32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">IMAGEW  DW  1234H,5678H     ;0001 0010 0011 0100 0101 0110 0111 1000</span><br><span class="line">IMAGED  DD  12345678H</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    MOV DL,0</span><br><span class="line">    MOV CX,4</span><br><span class="line">    MOV BX,0</span><br><span class="line">NEXT:</span><br><span class="line">    BT AX,BX</span><br><span class="line">    SETC AH</span><br><span class="line">    OR DL,AH</span><br><span class="line">    ROR DL,1</span><br><span class="line">    INC BX</span><br><span class="line">    INC BX</span><br><span class="line">    LOOP NEXT</span><br><span class="line">    MOV AL,DL</span><br><span class="line">    INVOKE ExitProcess,0</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="位扫描指令组"><a href="#位扫描指令组" class="headerlink" title="位扫描指令组"></a>位扫描指令组</h2><p>位扫描指令组含有如下2条指令：BSF（顺向位扫描）和BSR（逆向位扫描）<br>这两条指令格式如下：</p>
+<blockquote>
+<p>BSF OPRD1,OPRD2<br>BSR OPRD1,OPRD2</p>
+</blockquote>
+<p>其中，OPRD1 和 OPRD2 可以是 16 或 32 位通用寄存器（或者存储器），但 OPRD1 和 OPRD2 的长度必须相等。</p>
+<p>顺向位扫描指令 BSF 的功能是从右向左（0位~15位或31位）扫描字或者双字操作数 OPRD2 中第一个含 “1” 的位，并把扫描到的第一个含 “1” 的位的位号送到 OPRD1。</p>
+<p>逆向位扫描指令 BSR 的功能是从左向右（15位或31位~0位）扫描字或者双字操作数 OPRD2 中第一个含有 “1” 的位，并把扫描到的第一个含 “1” 的位号送到 OPRD1。</p>
+<p>如果字或双字操作数 OPRD2 等于 0，那么零标志位 ZF 被置 1，操作数 OPRD1 的值不确定；否则零标志 ZF 被置 0 。</p>
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MOV EBX,12345678H</span><br><span class="line">BSR EAX,EBX         ;EAX=1CH,ZF=0</span><br><span class="line">BSF DX,AX           ;DX=2,ZF=0</span><br><span class="line">BSF CX,DX           ;CX=1,ZF=0</span><br></pre></td></tr></table></figure>
+
+<h1 id="处理器控制指令"><a href="#处理器控制指令" class="headerlink" title="处理器控制指令"></a>处理器控制指令</h1><p>处理器控制指令用于设置标志、空操作与外部事件同步等。</p>
+<h2 id="设置标志指令组"><a href="#设置标志指令组" class="headerlink" title="设置标志指令组"></a>设置标志指令组</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201818386-b2745133-d543-49ad-b726-d09a15029514.png"
+                      alt="33"
+                ><br>设置中断允许标志 IF 的指令 CLI 和 STI，功能在实模式下保持与原先相同。在保护模式下它们是 I&#x2F;O 敏感指令。</p>
+<h2 id="空操作指令（NOP）"><a href="#空操作指令（NOP）" class="headerlink" title="空操作指令（NOP）"></a>空操作指令（NOP）</h2><p>空操作指令的功能是什么都不做。该指令就一个字节的操作码。利用该指令可“填补程序中的空白区”，使代码抱持连续。</p>
+<h2 id="外部同步指令和前缀"><a href="#外部同步指令和前缀" class="headerlink" title="外部同步指令和前缀"></a>外部同步指令和前缀</h2><h3 id="等待指令-WAIT"><a href="#等待指令-WAIT" class="headerlink" title="等待指令 WAIT"></a>等待指令 WAIT</h3><p>等待指令格式如下：</p>
+<blockquote>
+<p>WAIT</p>
+</blockquote>
+<p>该指令功能是等待直到BUSY引脚为高。BUSY由数值协处理器控制，所以该指令的 功能是等待数值协处理器，以便与它同步。该指令也能够检查数值协处理器是否故障。</p>
+<h3 id="封锁前缀-LOCK"><a href="#封锁前缀-LOCK" class="headerlink" title="封锁前缀 LOCK"></a>封锁前缀 LOCK</h3><p>封锁前缀 LOCK 可以锁定其后指令的目的操作数确定的存储单元，这是通过 LOCK 信号在指令执行期间一直保持有效而实现的。在多处理器环境中，使用这种方法可以保证指令执行时独占共享内存。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/202774017-5e19dd59-6a48-4c71-b7ac-06942c9d85ed.png"
+                      alt="88"
+                ></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a class="link"   target="_blank" rel="noopener" href="https://www.scs.stanford.edu/05au-cs240c/lab/i386/toc.htm" >Intel 80386 Reference Programmer’s Manual Table of Contents<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://web.itu.edu.tr/kesgin/mul06/intel/index.html" >Intel Instruction Set pages<i class="fas fa-external-link-alt"></i></a></p>
+<p>[80x86汇编程序语言设计-80386指令集]</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：80386汇编-指令集</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2022-11-13 23:53:00</li>
+        <li>
+            本文链接：https://9unkk.github.io/2022/11/13/80386汇编-指令集/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2022/12/02/80386%E6%B1%87%E7%BC%96-%E6%9D%A1%E4%BB%B6%E5%A4%84%E7%90%86/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">80386汇编-条件处理</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2022/11/13/80386%E6%B1%87%E7%BC%96-%E8%BF%87%E7%A8%8B/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">80386汇编-过程</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A4"><span class="nav-number">1.</span> <span class="nav-text">数据传送指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A4%E7%BB%84"><span class="nav-number">1.1.</span> <span class="nav-text">通用传送指令组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MOV-%E6%8C%87%E4%BB%A4"><span class="nav-number">1.1.1.</span> <span class="nav-text">MOV 指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MOVZX-%E5%92%8C-MOVSX-%E6%8C%87%E4%BB%A4"><span class="nav-number">1.1.2.</span> <span class="nav-text">MOVZX 和 MOVSX 指令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MOVZX-%E6%8C%87%E4%BB%A4"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">MOVZX 指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MOVSX-%E6%8C%87%E4%BB%A4"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">MOVSX 指令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CBW-x2F-CWD-x2F-CDQ"><span class="nav-number">1.1.3.</span> <span class="nav-text">CBW&#x2F;CWD&#x2F;CDQ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XCHG"><span class="nav-number">1.1.4.</span> <span class="nav-text">XCHG</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A0%86%E6%A0%88%E6%93%8D%E4%BD%9C%E6%8C%87%E4%BB%A4"><span class="nav-number">1.2.</span> <span class="nav-text">堆栈操作指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PUSH-%E5%92%8C-POP"><span class="nav-number">1.2.1.</span> <span class="nav-text">PUSH 和 POP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PUSHA-%E5%92%8C-PUSHAD"><span class="nav-number">1.2.2.</span> <span class="nav-text">PUSHA 和 PUSHAD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#POPA-%E5%92%8C-POPAD"><span class="nav-number">1.2.3.</span> <span class="nav-text">POPA 和 POPAD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%B0%E5%9D%80%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.</span> <span class="nav-text">地址传送指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#LEA"><span class="nav-number">1.3.1.</span> <span class="nav-text">LEA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LDS"><span class="nav-number">1.3.2.</span> <span class="nav-text">LDS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LES"><span class="nav-number">1.3.3.</span> <span class="nav-text">LES</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LFS"><span class="nav-number">1.3.4.</span> <span class="nav-text">LFS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LGS"><span class="nav-number">1.3.5.</span> <span class="nav-text">LGS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LSS"><span class="nav-number">1.3.6.</span> <span class="nav-text">LSS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E5%BF%97%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A4"><span class="nav-number">1.4.</span> <span class="nav-text">标志传送指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#LAHF-%E5%92%8C-SAHF"><span class="nav-number">1.4.1.</span> <span class="nav-text">LAHF 和 SAHF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PUSHF-x2F-PUSHFD"><span class="nav-number">1.4.2.</span> <span class="nav-text">PUSHF&#x2F;PUSHFD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#POPF-x2F-POPFD"><span class="nav-number">1.4.3.</span> <span class="nav-text">POPF&#x2F;POPFD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%AF%E5%8A%A0%E5%99%A8%E4%B8%93%E7%94%A8%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A4"><span class="nav-number">1.5.</span> <span class="nav-text">累加器专用传送指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IN"><span class="nav-number">1.5.1.</span> <span class="nav-text">IN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OUT"><span class="nav-number">1.5.2.</span> <span class="nav-text">OUT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XLAT"><span class="nav-number">1.5.3.</span> <span class="nav-text">XLAT</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%97%E6%95%B0%E8%BF%90%E7%AE%97%E6%8C%87%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">算数运算指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%87%8F%E6%8C%87%E4%BB%A4"><span class="nav-number">2.1.</span> <span class="nav-text">加减指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ADD"><span class="nav-number">2.1.1.</span> <span class="nav-text">ADD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ADC"><span class="nav-number">2.1.2.</span> <span class="nav-text">ADC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#INC"><span class="nav-number">2.1.3.</span> <span class="nav-text">INC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SUB"><span class="nav-number">2.1.4.</span> <span class="nav-text">SUB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SBB"><span class="nav-number">2.1.5.</span> <span class="nav-text">SBB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DEC"><span class="nav-number">2.1.6.</span> <span class="nav-text">DEC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CMP"><span class="nav-number">2.1.7.</span> <span class="nav-text">CMP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NEG"><span class="nav-number">2.1.8.</span> <span class="nav-text">NEG</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%98%E9%99%A4%E6%8C%87%E4%BB%A4"><span class="nav-number">2.2.</span> <span class="nav-text">乘除指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MUL"><span class="nav-number">2.2.1.</span> <span class="nav-text">MUL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IMUL"><span class="nav-number">2.2.2.</span> <span class="nav-text">IMUL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DIV"><span class="nav-number">2.2.3.</span> <span class="nav-text">DIV</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IDIV"><span class="nav-number">2.2.4.</span> <span class="nav-text">IDIV</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E8%BF%9B%E5%88%B6%E7%AE%97%E6%95%B0%E8%B0%83%E6%95%B4%E6%8C%87%E4%BB%A4"><span class="nav-number">2.3.</span> <span class="nav-text">十进制算数调整指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AAA"><span class="nav-number">2.3.1.</span> <span class="nav-text">AAA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AAS"><span class="nav-number">2.3.2.</span> <span class="nav-text">AAS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AAM"><span class="nav-number">2.3.3.</span> <span class="nav-text">AAM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AAD"><span class="nav-number">2.3.4.</span> <span class="nav-text">AAD</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E5%92%8C%E4%BD%8D%E7%A7%BB%E6%8C%87%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">逻辑运算和位移指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E6%8C%87%E4%BB%A4%E7%BB%84"><span class="nav-number">3.1.</span> <span class="nav-text">逻辑运算指令组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NOT"><span class="nav-number">3.1.1.</span> <span class="nav-text">NOT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AND"><span class="nav-number">3.1.2.</span> <span class="nav-text">AND</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OR"><span class="nav-number">3.1.3.</span> <span class="nav-text">OR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XOR"><span class="nav-number">3.1.4.</span> <span class="nav-text">XOR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TEST"><span class="nav-number">3.1.5.</span> <span class="nav-text">TEST</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E7%A7%BB%E6%8C%87%E4%BB%A4%E7%BB%84"><span class="nav-number">3.2.</span> <span class="nav-text">位移指令组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E4%BD%8D%E7%A7%BB%EF%BC%88SHL-x2F-SHR%EF%BC%89%E6%8C%87%E4%BB%A4"><span class="nav-number">3.2.1.</span> <span class="nav-text">逻辑位移（SHL&#x2F;SHR）指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%95%B0%E4%BD%8D%E7%A7%BB%EF%BC%88SAL-x2F-SAR%EF%BC%89%E6%8C%87%E4%BB%A4"><span class="nav-number">3.2.2.</span> <span class="nav-text">算数位移（SAL&#x2F;SAR）指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E4%BD%8D%E7%A7%BB%EF%BC%88ROL-x2F-ROR%EF%BC%89%E6%8C%87%E4%BB%A4"><span class="nav-number">3.2.3.</span> <span class="nav-text">循环位移（ROL&#x2F;ROR）指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RCL-%E5%92%8C-RCR%E6%8C%87%E4%BB%A4"><span class="nav-number">3.2.4.</span> <span class="nav-text">RCL 和 RCR指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SHLD-x2F-SHRD-%E6%8C%87%E4%BB%A4"><span class="nav-number">3.2.5.</span> <span class="nav-text">SHLD&#x2F;SHRD 指令</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">控制转移指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4%E7%BB%84"><span class="nav-number">4.1.</span> <span class="nav-text">转移指令组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E6%9D%A1%E4%BB%B6%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4"><span class="nav-number">4.1.1.</span> <span class="nav-text">无条件转移指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4"><span class="nav-number">4.1.2.</span> <span class="nav-text">条件转移指令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E6%8C%87%E4%BB%A4%E7%BB%84"><span class="nav-number">4.2.</span> <span class="nav-text">循环指令组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#LOOP%E6%8C%87%E4%BB%A4"><span class="nav-number">4.2.1.</span> <span class="nav-text">LOOP指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LOOPZ%E5%92%8CLOOPE%E6%8C%87%E4%BB%A4"><span class="nav-number">4.2.2.</span> <span class="nav-text">LOOPZ和LOOPE指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LOOPNZ%E5%92%8CLOOPNE%E6%8C%87%E4%BB%A4"><span class="nav-number">4.2.3.</span> <span class="nav-text">LOOPNZ和LOOPNE指令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B%E8%B0%83%E7%94%A8%E5%92%8C%E8%BF%94%E5%9B%9E%E6%8C%87%E4%BB%A4%E7%BB%84"><span class="nav-number">4.3.</span> <span class="nav-text">过程调用和返回指令组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E6%96%AD%E8%B0%83%E7%94%A8%E5%92%8C%E4%B8%AD%E6%96%AD%E8%BF%94%E5%9B%9E%E6%8C%87%E4%BB%A4%E7%BB%84"><span class="nav-number">4.4.</span> <span class="nav-text">中断调用和中断返回指令组</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%B2%E6%93%8D%E4%BD%9C%E6%8C%87%E4%BB%A4"><span class="nav-number">5.</span> <span class="nav-text">串操作指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E4%B8%B2%E6%93%8D%E4%BD%9C%E6%8C%87%E4%BB%A4"><span class="nav-number">5.1.</span> <span class="nav-text">基本串操作指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%A4%8D%E5%89%8D%E7%BC%80"><span class="nav-number">5.2.</span> <span class="nav-text">重复前缀</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E5%90%91%E6%A0%87%E5%BF%97%E4%BD%8D"><span class="nav-number">5.3.</span> <span class="nav-text">方向标志位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B2%E8%BE%93%E5%85%A5%E6%8C%87%E4%BB%A4"><span class="nav-number">5.4.</span> <span class="nav-text">串输入指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B2%E8%BE%93%E5%87%BA%E6%8C%87%E4%BB%A4"><span class="nav-number">5.5.</span> <span class="nav-text">串输出指令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%E6%8C%87%E4%BB%A4"><span class="nav-number">6.</span> <span class="nav-text">高级语言支持指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E5%92%8C%E9%87%8A%E6%94%BE%E5%A0%86%E6%A0%88%E6%A1%86%E6%9E%B6%E6%8C%87%E4%BB%A4"><span class="nav-number">6.1.</span> <span class="nav-text">建立和释放堆栈框架指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E6%95%B0%E7%BB%84%E4%B8%8B%E6%A0%87%E7%95%8C%E9%99%90%E6%8C%87%E4%BB%A4-BOUND"><span class="nav-number">6.2.</span> <span class="nav-text">检查数组下标界限指令 BOUND</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E5%AD%97%E8%8A%82%E8%AE%BE%E7%BD%AE%E6%8C%87%E4%BB%A4"><span class="nav-number">7.</span> <span class="nav-text">条件字节设置指令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%8D%E6%93%8D%E4%BD%9C%E6%8C%87%E4%BB%A4"><span class="nav-number">8.</span> <span class="nav-text">位操作指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E6%B5%8B%E8%AF%95%E5%8F%8A%E8%AE%BE%E7%BD%AE%E6%8C%87%E4%BB%A4%E7%BB%84"><span class="nav-number">8.1.</span> <span class="nav-text">位测试及设置指令组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E6%89%AB%E6%8F%8F%E6%8C%87%E4%BB%A4%E7%BB%84"><span class="nav-number">8.2.</span> <span class="nav-text">位扫描指令组</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E5%99%A8%E6%8E%A7%E5%88%B6%E6%8C%87%E4%BB%A4"><span class="nav-number">9.</span> <span class="nav-text">处理器控制指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E6%A0%87%E5%BF%97%E6%8C%87%E4%BB%A4%E7%BB%84"><span class="nav-number">9.1.</span> <span class="nav-text">设置标志指令组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A9%BA%E6%93%8D%E4%BD%9C%E6%8C%87%E4%BB%A4%EF%BC%88NOP%EF%BC%89"><span class="nav-number">9.2.</span> <span class="nav-text">空操作指令（NOP）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%96%E9%83%A8%E5%90%8C%E6%AD%A5%E6%8C%87%E4%BB%A4%E5%92%8C%E5%89%8D%E7%BC%80"><span class="nav-number">9.3.</span> <span class="nav-text">外部同步指令和前缀</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AD%89%E5%BE%85%E6%8C%87%E4%BB%A4-WAIT"><span class="nav-number">9.3.1.</span> <span class="nav-text">等待指令 WAIT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%81%E9%94%81%E5%89%8D%E7%BC%80-LOCK"><span class="nav-number">9.3.2.</span> <span class="nav-text">封锁前缀 LOCK</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">10.</span> <span class="nav-text">参考</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

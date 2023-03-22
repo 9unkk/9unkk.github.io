@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            8086 汇编-寄存器(内存) |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="page-template-container">
+        
+        
+        <div class="page-template-content markdown-body">
+            
+                <h1 id="内存中的字存储"><a href="#内存中的字存储" class="headerlink" title="内存中的字存储"></a>内存中的字存储</h1><p>1 字 &#x3D; 2 Byte，CPU 中，用 16 位寄存器来存储一个字，高 8 位存放高位字节，低 8 位存放低位字节。在内存中存储时，由于一个内存单元可以存储一字节，则一个字要用两个连续的内存单元来存放，这个字的低位字节存放在低地址单元中，高位字节存放在高地址单元中。比如我们从 0 地址开始存放 20000，这种情况如下图所示：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/06/26/ntoqh6eXPNRzT9J.png"
+                     
+                ></p>
+<p>用 0 、1 两个内存单元存储数据 20000（4E20H）。0、1 两个内存单元存储一个字，这两个单元可以看作一个起始地址为 0 的字单元（存放一个字的内存单元，由0、1两个字节单元组成）。对于这个字单元来说，0 号单元是低地址单元，1 号单元是高地址单元，则字型数据 4E20H 的低位字节存放在 0 号单元中，高位字节存放在 1 号单元中。同理，将2、3号单元看作一个字单元，它的起始地址为 2.在这个字单元中存放数据 18（0012H），则在 2 号单元中存放低位字节 12H，在3 号单元存放高位字节 00H。</p>
+<p>字单元的概念：字单元，即存放一个字型数据（16位）的内存单元，由两个地址连续的内存单元组成。高地址内存单元中存放字型数据的高位字节，低地址内存单元中存放字型数据的低位字节。</p>
+<h1 id="DS-和-address"><a href="#DS-和-address" class="headerlink" title="DS 和 [address]"></a>DS 和 [address]</h1><p>CPU 要读写一个内存单元的时候，必须先给出这个内存单元的地址，在 8086PC 中，内存地址由段地址和偏移地址组成。8086CPU 中有一个 DS 寄存器，通常用来存放要访问数据的段地址。比如我们要读取 10000H 单元的内容，可以用如下的程序段进行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mov bx, 1000H</span><br><span class="line">mov ds,bx</span><br><span class="line">mov al,[0]</span><br></pre></td></tr></table></figure>
+
+<p>上面的 3 条指令将 10000H（1000:0）中的数据读到 al 中。</p>
+<p>mov al,[0] 的含义：<br>首先 8086CPU 会自动取 ds 中的数据为内存单元的段地址。然后用 [0] 来指定内存单元的偏移地址为 0 。因此该指令的含义是：将 10000 段地址的数据移动到寄存器 al 中。</p>
+<blockquote>
+<p>8086CPU 不支持将数据直接传送到段寄存器中，这是 8086CPU 硬件设计的问题。</p>
+</blockquote>
+<h1 id="字的传送"><a href="#字的传送" class="headerlink" title="字的传送"></a>字的传送</h1><p>因为 8086CPU 是 16 位结构的，有 16根数据线，所以一次性可传送 16 位数据，也就是一次性可传送一个字。只要在 mov 指令中给出 16 位寄存器就可以进行 16 位数据的传送。如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mov bx,1000H</span><br><span class="line">mov ds,bx       <span class="comment"># bx 中数据传送入 ds</span></span><br><span class="line">mov ax,[0]      <span class="comment"># 1000:0 处的字型数据送入 ax</span></span><br><span class="line">mov [0],cx      <span class="comment"># cx 中的 16 位数据传送到 1000:0 处</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="mov、add、sub-指令"><a href="#mov、add、sub-指令" class="headerlink" title="mov、add、sub 指令"></a>mov、add、sub 指令</h1><p>mov、add、sub 指令可以有可以下几种形式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mov 寄存器，数据          <span class="comment"># 比如：mov ax,8</span></span><br><span class="line">mov 寄存器，寄存器        <span class="comment"># 比如：mov ax,bx</span></span><br><span class="line">mov 寄存器，内存单元      <span class="comment"># 比如：mov ax,[0]</span></span><br><span class="line">mov 内存单元，寄存器      <span class="comment"># 比如：mov [0],[ax]</span></span><br><span class="line">mov 段寄存器，寄存器      <span class="comment"># 比如：mov ds,ax</span></span><br><span class="line">mov 寄存器，段寄存器      <span class="comment"># 比如：mov ax,ds</span></span><br><span class="line">mov 内存单元，段寄存器    <span class="comment"># 比如：mov [0],cs</span></span><br><span class="line">mov 段寄存器，内存单元    <span class="comment"># 比如：mov ds,[0]</span></span><br></pre></td></tr></table></figure>
+<h1 id="数据段"><a href="#数据段" class="headerlink" title="数据段"></a>数据段</h1><p>对于 8086PC 机，在编程的时，可以根据需要，将一组内存单元定义为一个段。我们可以将一组长度为N（N≤64KB）、地址连续、起始地址为 16 倍数的内存单元当作专门存储数据的内存空间，从而定义一个数据段。比如用 123B0H～123B9H 这段地址空间来存放数据，我们就可以认为，123B0H~123B9H 这段内存是一个数据段，它的段地址为 123BH，长度为 10 字节。</p>
+<p>具体操作可以用 ds 存放数据段的段地址，再根据需要，用相关指令访问数据段中的具体单元。</p>
+<p>比如，将 123B0H~123B9H 的内存单元定义为数据段。现在要累加这个数据段中的前 3 个单元的数据，代码如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mov ax,123BH</span><br><span class="line">mov ds,ax         <span class="comment"># 将 123BH 送入 ds 中，作为数据段的段地址</span></span><br><span class="line">mov al,0          <span class="comment"># 用 al 设为 0</span></span><br><span class="line">add al,[0]        <span class="comment"># 将数据段第一单元（偏移地址为 0）中的数值加到 al 中</span></span><br><span class="line">add al,[1]        <span class="comment"># 将数据段第二单元（偏移地址为 1）中的数值加到 al 中</span></span><br><span class="line">add al,[2]        <span class="comment"># 将数据段第三单元（偏移地址为 2）中的数值加到 al 中</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h1><p>栈可以想象成一个空间，这个空间的特殊性在于，最先进入这个空间的数据，最先出去。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/07/07/5InhNMw1EozFijt.png"
+                      alt="48.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/07/07/zFxt67WZ9QIyTjv.png"
+                      alt="49.png"
+                ></p>
+<p>如上图所示，栈有两个基本操作方式：入栈和出栈。入栈就是将一个新的元素放到栈顶，出栈就是从栈顶取出一个元素。栈顶的元素总是后入栈，先出栈。栈的这种操作规则称为：LIFO（Last In First Out，后进先出）</p>
+<h2 id="CPU-提供的栈机制"><a href="#CPU-提供的栈机制" class="headerlink" title="CPU 提供的栈机制"></a>CPU 提供的栈机制</h2><p>现今的 CPU 中都有栈的设计。8086CPU 提供了相关的指令来以栈的方式访问内存空间。也就是说，在基于 8086CPU 变成的时候，可以将一段内存当作栈来使用。</p>
+<p>8086CPU 入栈和出栈指令：PUSH（入栈）、POP（出栈）。例如：push ax 表示将寄存器 ax 中的数据送入到栈中，pop ax 表示从栈顶取出数据送入 ax。8086CPU 的入栈和出栈操作都是以字为单位。</p>
+<p>下图举例说明，将10000H~1000FH这段内存当作栈来使用。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/07/08/8MkNO5HSZEvlDWf.png"
+                      alt="50.png"
+                ></p>
+<h2 id="寄存器-SS-和-SP"><a href="#寄存器-SS-和-SP" class="headerlink" title="寄存器 SS 和 SP"></a>寄存器 SS 和 SP</h2><p>在 8086CPU 中，段寄存器 SS 存放栈顶的段地址 和寄存器 SP 存放偏移地址。任意时刻，SS;SP  指向栈顶元素。push和pop指令执行时，CPU 从 SS 和 SP 中得到栈顶地址</p>
+<p>下图完整的描述了 push 指令的功能</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/07/08/8ya9bf7mcRIktdE.png"
+                      alt="51.png"
+                ></p>
+<blockquote>
+<p>可以看到 push 指令每执行一次 SP 都会减 2，指定到下一个栈地址</p>
+</blockquote>
+<p>如果将 10000H～1000FH 这段空间当作栈，初始状态是空的，此时，SS&#x3D;1000H，SP&#x3D;0010H。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/07/09/6kmyse2GtMndWuD.png"
+                      alt="52.png"
+                ></p>
+<blockquote>
+<p>当一个空的栈存入第一个数据时，SP&#x3D;原SP-2，也就是说空栈的 SP &#x3D;新 SP+2</p>
+</blockquote>
+<p>下图完整的描述了 pop 指令的功能</p>
+<p>pop ax 由以下两部完成：</p>
+<ol>
+<li>将 SS:SP 指向的内存单元处的数据送入 ax</li>
+<li>SP&#x3D;SP+2，SS:SP 指向当前栈顶下面的单元为新的栈顶</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/07/09/1WZofXFBRhtJQ9C.png"
+                      alt="53.png"
+                ></p>
+<p>如上图所示，出栈后，SS:SP 指向新的栈顶 1000EH，pop 操作前的栈顶元素，1000CH 处的 2266H 依然存在，但是，它已经不在栈中。</p>
+<h2 id="栈顶超界问题"><a href="#栈顶超界问题" class="headerlink" title="栈顶超界问题"></a>栈顶超界问题</h2><p>如上面的例子所示，SS:SP 指定了栈顶，但是并没有校验这个栈顶是否超出了栈空间，因此就出现了栈顶超界的问题。</p>
+<p>超界问题如下图所示：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/07/09/WZuteIEc8gNlBn5.png"
+                      alt="54.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/07/09/VvySP4GH9n2rftZ.png"
+                      alt="55.png"
+                ></p>
+<p>当 pop 和 push 指令执行超出栈空间，那么下次再执行指令，栈空间外面的数据会被覆盖。如果这个被覆盖的数据是程序（正在运行）数据，那么该程序将会出现一脸串的错误。</p>
+<blockquote>
+<p>8086CPU 就存在这样的问题，它不保证我们对栈的操作不会超界。</p>
+</blockquote>
+<h2 id="pop-和-push-指令格式"><a href="#pop-和-push-指令格式" class="headerlink" title="pop 和 push 指令格式"></a>pop 和 push 指令格式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">push 寄存器		<span class="comment"># 将一个寄存器中的数据入栈</span></span><br><span class="line">pop 寄存器		  <span class="comment"># 出栈，用一个寄存器接受出栈数据</span></span><br><span class="line">push 段寄存器	   <span class="comment"># 将一个段寄存器中的数据入栈</span></span><br><span class="line">pop 段寄存器	    <span class="comment"># 出栈，用一个段寄存器接受出栈的数据</span></span><br><span class="line">push 内存单元	   <span class="comment"># 将一个内存单元处的字入栈</span></span><br><span class="line">pop 内存单元	    <span class="comment"># 出栈，用一个内存单元接受出栈的数据</span></span><br></pre></td></tr></table></figure>
+            
+        </div>
+        <div class="page-template-comments">
+            
+        </div>
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

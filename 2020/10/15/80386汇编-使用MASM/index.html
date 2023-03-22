@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            80386汇编-使用MASM |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">80386汇编-使用MASM</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2020-10-15 23:24:32</span>
+        <span class="mobile">2020-10-15 23:24</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="win32-汇编程序的结构"><a href="#win32-汇编程序的结构" class="headerlink" title="win32 汇编程序的结构"></a>win32 汇编程序的结构</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">; ml /c /coff Test.asm</span><br><span class="line">; rc Test.rc</span><br><span class="line">; Link /subsystem:windows Test.obj Test.res</span><br><span class="line">        .386</span><br><span class="line">        .model flat,stdcall</span><br><span class="line">        option casemap:none</span><br><span class="line"></span><br><span class="line">; include 文件定义</span><br><span class="line"></span><br><span class="line">include     windows.inc</span><br><span class="line">include     user32.inc</span><br><span class="line">includelib  user32.lib</span><br><span class="line">include     kernel32.inc</span><br><span class="line">includelib  kernel32.lib</span><br><span class="line"></span><br><span class="line">; 数据段</span><br><span class="line"></span><br><span class="line">        .data</span><br><span class="line"></span><br><span class="line">szCaption   db  <span class="string">&#x27;MessageBox&#x27;</span>, 0</span><br><span class="line">szText      db  <span class="string">&#x27;Hello world ^_^&#x27;</span>, 0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">; 代码段</span><br><span class="line">        .code</span><br><span class="line">start:</span><br><span class="line">        invoke MessageBox,NULL,offset szText,offset szCaption,MB_OK</span><br><span class="line">        invoke ExitProcess,NULL</span><br><span class="line"></span><br><span class="line">        end start</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="模式定义"><a href="#模式定义" class="headerlink" title="模式定义"></a>模式定义</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.386</span><br><span class="line">.model flat,stdcall</span><br><span class="line">option casemap:none</span><br></pre></td></tr></table></figure>
+<p>这些指令定义了程序使用的指令集、工作模式和格式。</p>
+<h3 id="指定使用的指令集"><a href="#指定使用的指令集" class="headerlink" title="指定使用的指令集"></a>指定使用的指令集</h3><p>.386 语句是汇编语言的伪指令，类似的指令还有 .8086，.186，.386&#x2F;.386p，.486&#x2F;.486p 和 .586&#x2F;.586p 等，用于告诉编译器使用的指令集。后面带 p 的伪指令表示程序中可以使用特权指令。</p>
+<p>另外，intel公司的 80x86 系列处理器从 Pentium MMX 开始增加了 MMX 指令集，为了使用 MMX 指令，除了定义 .586 之外，还要加上一句 .MMX 伪指令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.586</span><br><span class="line">.mmx</span><br></pre></td></tr></table></figure>
+
+<h3 id="model-语句"><a href="#model-语句" class="headerlink" title=".model 语句"></a>.model 语句</h3><p>.model 用来定义程序工作的模式，它的使用方法是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.model 内存模式[,语言模式][,其他模式]</span><br></pre></td></tr></table></figure>
+<p>PS：中括号中的模式可写可不写</p>
+<p>内存模式的定义影响最后生成的可执行文件，可执行文件的规模从小到大，可以有很多种类型。详见下表：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/16/XckAO7EKDYPeBy2.png"
+                      alt="1-8.png"
+                ></p>
+<ul>
+<li><p>windows 程序运行在保护模式下，系统把每个 win32 应用程序都放到分开的虚拟地址空间中去运行，也就是说，每一个应用程序都拥有其相互独立的 4GB 地址空间。</p>
+</li>
+<li><p>在 win32 中只有一种内存模式 flat （平坦）模式，每个程序都可以使用自己独立的 4GB 地址空间，程序不再会有 64KB 段大小限制了。</p>
+</li>
+<li><p>纵观win32汇编的源程序，没有一处可以找到 ds 或 es等段寄存器的使用，因为所有的 4GB 空间用 32 位的寄存器全部都能访问，不必在头脑中随时记着当前是哪个数据段，这就是平坦内存模式带来的好处。</p>
+</li>
+<li><p>如果定义了 .model flat .MASM自动为各种段急促请你做了如下定义：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ASSUME cs:FLAT,ds:FLAT,ss:FLAT,es:FLAT,fs:ERROR,gs:ERROR</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在 win32 汇编中，.model 语句中还应该指定语言模式，即子程序和调用方式，例子中用的是把 stdcall，它指出了调用子程序或win32 API时参数传递的次序和堆栈平衡的方法。相对于 stdcall，不同的语言类型还有 C，Syscall，BASIC ,FORTRAN 和 PASCALL，虽然各种高级语言在调用子程序时都是使用堆栈来传递参数，但是它们的处理方式各不相同。要和其他语言配合，就必须指定相应的语言种类。</p>
+</li>
+</ul>
+<p>各函数进堆栈的顺序：</p>
+<pre><code>    1. C语言函数参数是按照倒序进栈，即函数调用时，最右边的参数最先压栈，由调用者恢复堆栈指针。
+
+    2. Pascall语言函数约定和C约定正好相反，它规定参数是从左向右传递，由被调用者恢复堆栈。
+
+    3. __stdcall 这是一种函数调用方式。 __stdcall方式函数的参数压栈顺序从右到左，是 Pascal 缺省调用方式，通常用于 win32 API中，自己在退出时清空栈。
+
+    4. __cdecl是C语言采用的默认调用方法，对于传送参数的内存栈却是由调用者来维护的。实现可变参数的调用只能用该方法。是MFC的缺省调用参数。
+
+    5. __fastcall方式的函数采用寄存器传递参数，VC将函数编译后会在函数名前面加上&quot;@&quot;前缀，在函数名后加上&quot;@&quot;和参数的字节数。
+</code></pre>
+<h3 id="option-语句"><a href="#option-语句" class="headerlink" title="option 语句"></a>option 语句</h3><p>option 语句定义的选项有很多，option casemap:none 这个语句定义了程序中的变量和子程序名是否对大小写敏感，由于 win32 API 中的 API 名称是区分大小写写的，所以必须指定这个选项，否则在调用 API 的时候会有问题。</p>
+<h2 id="段的定义"><a href="#段的定义" class="headerlink" title="段的定义"></a>段的定义</h2><h3 id="段的概念"><a href="#段的概念" class="headerlink" title="段的概念"></a>段的概念</h3><p>.stack，.data，.data?，.code，.const 是分段伪指令，win32 中实际上只有代码和数据之分，.data，.data?和.const 都是数据段，.code 是代码段，与 DOS 汇编不同，由于 win32 汇编不必考虑堆栈，系统会为程序分配一个向下扩展的、足够大的段作为堆栈段，所以 .stack 段定义常常被忽略。这些 “段” 实际上并不是 DOS 汇编中那种意义上的段，而是内存的 “分段”。</p>
+<h3 id="数据段"><a href="#数据段" class="headerlink" title="数据段"></a>数据段</h3><p>.data，.data? 和 .const 定义的是数据段，分别对应不同方式的数据定义，在最后生成的可执行文件中也分别放在不同的节区（Section）中。 程序中的数据定义一般可以归纳为 3 类。</p>
+<p>第一类是可读可写的已定义变量。这些数据在源程序中已经被定义了初始值，而且在程序的执行中有可能被更改，如一些标志等，这些数据必须定义在 .data 段中，.data 段是已初始化数据段，其中定义的数据是可读可写的，在程序装入完成的时候，这些值就已经在内存中了，.data 段一般存放在可执行文件的 _DATA 节区内。</p>
+<p>第二类是可读可写的未定义变量。这些变量一般是当作缓冲区或者在程序执行后才开始使用的，这些数据可以定义在 .data 段中，也可以定义在 .data? 段中，但一般把它放到 .data? 段中。虽然定义在这两段中都可以正常使用，但定义在 .data? 段中不会增大 .exe 文件的大小。举例说明，如果要用到 100KB 的缓冲区，可以使用下面的语句定义：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">szBuffer        db      100 * 1024 dup(?) </span><br></pre></td></tr></table></figure>
+<p>这个语句如果放在 .data 段中，编译器认为这些数据在程序装入时就必须有效，所以它在生成可执行文件的时候保留了所有的 100 KB 的内容，即使它们全为零。.data? 段则不同，其中的内容编译器会认为程序在开始执行后才会用到，所以生成一个可执行文件的时候只保留了大小信息，不会为它浪费磁盘空间。.data? 段在可执行文件中一般存放在 _BSS 节区中。</p>
+<p>第三类数据是一些常量。如果一些要显示的字符串信息，它们在程序装入的时候已经有效，但在整个执行过程中不需要修改，这些数据可以放在 .const 段中，.const 段是常量段，它是可读不可写的。为了方便起见，在小程序中常常把常量一起定义到 .data 段中，而不是另外定义一个 .const 段。在程序中如果不小心永乐对 .const 段中的数据做写操作的指令，会引起保护错误，如下图所示：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/17/2lHYg7AVo64wkLS.png"
+                      alt="1-9.png"
+                ></p>
+<h3 id="代码段"><a href="#代码段" class="headerlink" title="代码段"></a>代码段</h3><p>.code 是代码段，所有的是指令都必须卸载代码段中，在可执行文件中，代码段一般是放在 _YEXY 节区中的。win32 环境中的数据段是不可执行的，只有代码段有可执行的属性。对于工作在特权 3 的应用程序来说，.code 段是不可写的。代码段的属性是由可执行文件 PE 头部中的属性位决定的，通过编辑磁盘上的 .exe 文件，把代码段属性位改为可写，那么在程序中就允许修改自己的代码段。</p>
+<h3 id="堆栈段"><a href="#堆栈段" class="headerlink" title="堆栈段"></a>堆栈段</h3><p>在程序中不必定义堆栈段，系统会自动分配堆栈空间。堆栈段的内存属性是可读写并且是可执行的，这样靠动态修改代码段的反跟踪模块可以拷贝到中去边修改边执行。</p>
+<h2 id="程序入口"><a href="#程序入口" class="headerlink" title="程序入口"></a>程序入口</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">end 标号</span><br></pre></td></tr></table></figure>
+
+<h2 id="注释和换行"><a href="#注释和换行" class="headerlink" title="注释和换行"></a>注释和换行</h2><p>注释符号：“;”<br>换行符号：“\”</p>
+<h1 id="调用-API"><a href="#调用-API" class="headerlink" title="调用 API"></a>调用 API</h1><h2 id="API-是什么"><a href="#API-是什么" class="headerlink" title="API 是什么"></a>API 是什么</h2><p>Win32 程序是构筑在 win32 APi 基础上的。在 win32 API 中，包括了大量的函数、结构和消息等，它不仅为应用程序所代用，也是 windows 自身的一部分，windows 自身的运行也调用这些 API。API 就是将之前 DOS 的中断方式改为更简单的方法进行调用。与 DOS  的结构性相比，win32 的系统功能模块放在 windwos 的动态链接库（DLL）中，DLL是一种 windows 的可执行文件，采用的是和 .exe 文件额 PE 格式，在 PE 格式文件头的到处表中，已字符串的形式指出了这个 DLL 能提供的函数列表。应用程序使用字符串类型的函数名指定要调用的函数。</p>
+<p>实际上 win32  的基础就是由 DLL 组成的。win32 API 的核心由 3 个 DLL 提供，分别是：</p>
+<ul>
+<li>KERNEL32.DLL——系统服务功能。包括内存管理、任务管理和动态连接等。</li>
+<li>GDI32.DLL——图形设备接口。利用 VGA 与 DRV 之类的显示设备驱动程序完成显示文本和矩形等功能。</li>
+<li>USER32.DLL——用户接口服务。建立窗口和传送消息等。</li>
+</ul>
+<p>当然，win32 API 还包括其他很多函数，这些也是由 DLL 提供的，不同的DLL提供了不同的系统功能。</p>
+<h2 id="调用-API-1"><a href="#调用-API-1" class="headerlink" title="调用 API"></a>调用 API</h2><p>与在 DOS 中用中断方式调用系统功能一样，用 API 方式调用存放在 DLL 中的函数必须同样约定一个规范，用来定义函数的调用方法、参数传递法和参数的定义。<br>win32 API 是用堆栈来传递参数的，调用者把参数一个个压入堆栈，DLL 中的函数程序再从堆栈中取出参数处理，并再返回之前将堆栈中已经无用的参数丢弃。先看下面 C 写的消息框函数的声明：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int MessageBox(</span><br><span class="line">        HWND hWnd,</span><br><span class="line">        LPCTSTR lpText,</span><br><span class="line">        LPCTSTR lpCaption,</span><br><span class="line">        UINT uType</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>最后还有一句说明：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Library: Use User32.lib</span><br></pre></td></tr></table></figure>
+
+<p>上述函数声明说明了 MessageBox 有 4 个参数，他们分别是 HWND 类型的窗口句柄（hWnd），LPCTSTR 类型的要显示的字符串地址（lpText）和标题字符串地址(lpCaption)，还有 NUIT 类型的消息框类型(uType)。所有这些 HWND、LPCTSTR 和 UINT 实际上就是汇编中的 dword。上面的声明用汇编的格式来表达就是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MessageBox Proto hWnd:dword,lpText:dword,lpCaption:dword,uType:dword</span><br></pre></td></tr></table></figure>
+
+<p>最后一句 <code>Library: Use User32.lib</code> 则说明这个函数包含在 User32.dll 中。<br>win32 API 调用时要把参数放入堆栈，顺序是最后一个参数先进栈，在汇编中调用 MesageBox 函数的方法是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">push    uType</span><br><span class="line">push    lpCaption</span><br><span class="line">push    lpText</span><br><span class="line">push    hWhd</span><br><span class="line">call    MessageBox</span><br></pre></td></tr></table></figure>
+
+<p>在源程序编译链接成可执行程序后，call MessageBox 语句中的 MessageBox 会被换成一个地址，指向可执行文件的导入表，导入表指向 MessageBox 函数的实际地址会在程序装入内存的时候，根据 User32.dll 在内存中的位置由 windows 系统动态填入。</p>
+<h2 id="使用-invoke-语句"><a href="#使用-invoke-语句" class="headerlink" title="使用 invoke 语句"></a>使用 invoke 语句</h2><p>API 调用的时候还存在其他问题，win32 的 API 调用时动辄就是十几个参数，把这些参数压入栈中，参数的个数和顺序很容易搞错，导致程序在执行的时候报错。为了解决这个问题，MASM 提供了伪指令 invoke。使用格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">invoke  函数名[,参数1][,参数2]……</span><br></pre></td></tr></table></figure>
+
+<p>对于 MessageBox 的调用在 MASA 中可以写成：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">invoke MessageBox,NULL,offset szText,offset szCaption,MB_OK</span><br></pre></td></tr></table></figure>
+
+<p>invoke 是伪指令，在编译的时候编译器把上面的指令展开成我们需要的 4 个 push 指令和 1 个 call 指令。同时进行参数数量的检查工作，如果带的参数数量和声明时的数量不符，编译器就会报错：<code>error A2137: too few arguments to INVOKE</code>。对于不带参数的 API 调用，invoke 伪指令的参数检查功能可有可无。</p>
+<h2 id="API-函数的返回值"><a href="#API-函数的返回值" class="headerlink" title="API 函数的返回值"></a>API 函数的返回值</h2><p>有的 API 函数有返回值，返回值的类型对于汇编程序来说只有 dword 一种类型，它永远放在 eax 中。如果返回的内容不是一个 eax 所能容纳的，win32 API 采用的方法一般是 eax 中返回一个指向返回数据的指针，或者在调用参数中提供一个缓冲区地址，干脆直接换回到缓冲区中去。</p>
+<h2 id="函数的声明"><a href="#函数的声明" class="headerlink" title="函数的声明"></a>函数的声明</h2><p>在调用 API 函数的时候，函数原型也必须预先声明，否则，编译器会不认这个函数。invoke 伪指令也无法检查参数个数。声明函数格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">函数名 proto [距离] [语言] [参数1]:数据类型，[参数2]:数据类型,……</span><br></pre></td></tr></table></figure>
+
+<p>proto 是函数声明的伪指令，距离可以是 NEAR,FAR,NEAR16,NEAR32,FAR16,FAR32，Win32 中只有一个段，无所谓距离，所以在定义时是忽略的。语言类型就是 .model 中的那些类型，如果忽略，则使用 .model 定义的默认值。</p>
+<p>由于 win32 API 仅使用 dword 类型的参数，所以绝大多数的数据类型都是 dword，对于编译器来说，它也是只关心数量，参数的名称在这里没有用处，只是为了增减源码的可读性，所以参数是可以省略的。所以下面的消息框函数的定义实际上是一样的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MessageBox Proto hWnd:dword,lpText:dword,lpCaption:dword,uType:dword</span><br><span class="line">MessageBox Proto dword,dword,dword,dword</span><br></pre></td></tr></table></figure>
+
+<p>在 win32 环境中，和字符相关的 API 共有两类，分别对应两个字符集：一个是处理 ANSI 字符集的，另一个是处理 unicode 字符集的。处理 ANSI 的函数名字的尾部带一个 “A” 字符，处理 unicode 的则带一个 “W” 字符。<br>MessageBox 和显示字符串有关，所以有两个版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MessageBoxA Proto hWnd:dword,lpText:dword,lpCaption:dword,uType:dword</span><br><span class="line">MessageBoxW Proto hWnd:dword,lpText:dword,lpCaption:dword,uType:dword</span><br></pre></td></tr></table></figure>
+
+<h2 id="include-语句"><a href="#include-语句" class="headerlink" title="include 语句"></a>include 语句</h2><p>对于所有要用到的 API 阿寒湖，在程序的开始部分都必须预先声明，这样太麻烦了。所以把所有的声明预先放在一个文件中，用到的时候在用 include 语句包含进来。现在这个 hello world 程序用到了两个 API 函数，MessageBox 和 ExitProcess，它们分别在 User32.dll 和 Kernal32.dll 中，在 MASM32 SDK 软件包中已经包括了所有 DLL 的 API 函数声明列表，每个 DLL 对应的 &lt; DLL 名.inc &gt; 文件，在源程序中只要使用 include 语句包含进来就行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">include     user32.inc</span><br><span class="line">include     kernel32.inc</span><br></pre></td></tr></table></figure>
+
+<p>当调用到其他的 API 函数时，只需要增加对应的 include 语句。include 语句还用来在源程序中包含其他文件。<br>include 语句的语法是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">include 文件名</span><br><span class="line">include &lt;文件名&gt;</span><br></pre></td></tr></table></figure>
+<p>当遇到要包含的文件名和 MASM 的关键字同名时可能会引起编译器混淆的情况，这时可以用 “&lt;&gt;” 将文件括起来。</p>
+<h2 id="includelib-语句"><a href="#includelib-语句" class="headerlink" title="includelib 语句"></a>includelib 语句</h2><p>在 win32 汇编中使用 API 函数，程序必须要知道调用的 API 函数在哪个 DLL 中，否则，操作系统必须搜索系统中存在的所有 DLL，冰球无法处理不同 DLL 中的同名函数，这显然不现实。所以 win32 就用导入库来定位 DLL 库的位置信息。</p>
+<p>DOS 下的函数库的概念实际上就是静态库，静态库是一组已经编写好的代码模块，在程序中可以自由引用，在源程序编译成目标文件，最后要链接成可执行文件的时候，由 link 程序从库中找出相应的函数代码，一起链接到最后的可执行文件中。库的出现为程序员开发节省了很多时间，缺点是每个可执行文件中包含了要用到的相同函数的代码，占用了大量的磁盘空间，在执行程序的时候，这些代码同样重复占用了内存空间。</p>
+<p>win32 环境中，程序链接的时候任然要使用函数库来定位函数信息，只不过由于函数代码放在 DLL 中，库文件中只保留函数的定位信息和参数数目等简单信息，这种库文件叫导入库，一个 DLL 对应一个倒入库，如 User32.dll 文件用于编程的导入库是 User32.lib，MASM32 SDK软件包含了所有 DLL 导入库。导入库的语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">includelib  user32.lib</span><br><span class="line">includelib  kernel32.lib</span><br></pre></td></tr></table></figure>
+
+<p>和 include 语句处理不同，includelib 不会把 .lib 文件插入到程序中，它只是告诉链接器在链接的时候到指定的库文件中去找 API 函数的位置信息而已。</p>
+<h2 id="API-参数的等值定义"><a href="#API-参数的等值定义" class="headerlink" title="API 参数的等值定义"></a>API 参数的等值定义</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">invoke MessageBox,NULL,offset szText,offset szCaption,MB_OK</span><br></pre></td></tr></table></figure>
+<p>在上面的消息框语句中 uType 参数使用了 MB_OK，这个表示消息框上显示按钮 “确定”。uType 参数是定义对话框的类型。这个蚕食可以是以下标志合集：</p>
+<ul>
+<li>定义消息框显示按钮标志：<br>MB_ABORTRETRYIGNORE：消息框有三个按钮 “终止”，“重试” 和 “忽略”</li>
+</ul>
+<p>MB_HELP：“帮助” 按钮，按下后发送 WM_HELP 消息</p>
+<p>MB_OK：“确定” 按钮</p>
+<p>MB_OKCANCEL：“确定” 和 “取消”</p>
+<p>MB_RETRYCANCEL：“重试” 和 “忽略”</p>
+<p>MB_YESNO：“是” 和 “否”</p>
+<p>MB_YESNOCANCEL：“是”，“否” 和 “取消”</p>
+<ul>
+<li>定义消息框显示的图标<br>MB_ICONWARNING：显示惊叹图标<br>MB_ICONINFORMATION：消息图标<br>MB_ICONASTERISK：危险图标<br>MB_ICONQUESTION：问号图标<br>MB_ICONSTOP：停止图标<br>……</li>
+</ul>
+<p>这些只是 uType 参数说明中的一小半，可以使用 or 定义多个参数值，指令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">invoke MessageBox,NULL,offset szText,offset szCaption,MB_ICONWARNING or MB_YESNO</span><br></pre></td></tr></table></figure>
+
+<p>win32 汇编程序时，MASM32 SDK 软件包中的 windows.inc 包含了所有这些参数的定义，所以程序的开头要包含这个定义文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">include     windows.inc</span><br></pre></td></tr></table></figure>
+
+<h1 id="标号、变量和数据结构"><a href="#标号、变量和数据结构" class="headerlink" title="标号、变量和数据结构"></a>标号、变量和数据结构</h1><p>在 MASM 中标号和变量的命名规范是相同的：</p>
+<ol>
+<li>可以使用字母、数字、下划线及符号 @、$ 和 ?</li>
+<li>第一个符号不能是数字</li>
+<li>长度不能超过 240 个字符</li>
+<li>不能使用指令等关键字</li>
+<li>在作用域内必须是唯一的</li>
+</ol>
+<h2 id="标号"><a href="#标号" class="headerlink" title="标号"></a>标号</h2><p>标号定义格式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">标号名：        目的指令        ;方法1</span><br><span class="line">或</span><br><span class="line">标号名: :       目的指令        ;方法2</span><br></pre></td></tr></table></figure>
+<p>标号在单个子程序中不能同名，否则编译器不知道要用哪个地址，但是不同的子程序中可以有相同的标号名称，这也就意味着不能在一个程序中使用跳转指令到另一个子程序中。</p>
+<p>需要从一个子程序跳转到另一个子程序时，可以用方法2（两个冒号）来定义，这时的标号是作用在整个程序，其他任何子程序都能看见。</p>
+<p>MASM 还可以使用 @@ 作为标号。当用 @@ 做标号时，可以用 @F 和 @B 来引用它，@F 表示本条指令后的第一个 @@ 标号，@B 表示本条指令前的第一个 @@ 标号，程序中可以使用多个 @@ 标号，但是 @B 和 @F 只能寻找匹配最近的一个。</p>
+<h2 id="全局变量"><a href="#全局变量" class="headerlink" title="全局变量"></a>全局变量</h2><p>win32 汇编的全局变量定义在 .data 和 .data? 段内，可以同时定义边阿玲的类型和长度，格式是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">变量名  类型    初始值1，初始值2，……</span><br><span class="line">变量名  类型    重复数量 dup (初始值1，初始值2，……)</span><br></pre></td></tr></table></figure>
+
+<p>MASM 中可以定义的变量：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/18/xUE8hwg9nD1eKBT.jpg"
+                      alt="1-10.jpg"
+                ></p>
+<p>全局白能量定义示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.data</span><br><span class="line">wHour           dw      ?</span><br><span class="line">wMinute         dw      10</span><br><span class="line">_hWnd           <span class="built_in">dd</span>      ?</span><br><span class="line">word_Buffer     dw      100 dup (1,2)</span><br><span class="line">szBuffer        byte    1024 dup (?)</span><br><span class="line">szText          db      <span class="string">&#x27;Hello,world!&#x27;</span>      </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>定义一个未初始化的 word 类型变量，名称为 wHour</li>
+<li>定义一个名为 wMinute 的 word 类型变量，值为 10</li>
+<li>定义一个双字型的变量_hWnd</li>
+<li>定义一组字，以 0001,0002,0001,0002……的顺序在内存中重复 100 遍，一共是 200 个字</li>
+<li>定义一个 1024 字节的缓冲区。</li>
+<li>定义一个字符串，总共占用 12 字节。两头的单引号是定界的符号，并不属于真正的内容</li>
+</ul>
+<p>在 byte 类型变量的定义中，可以用引号定义字符串和数值定义的方法混用，假设要定义两个字符串 “Hello,World!” 和 “Hello again”，每个字符串后面跟回车和换行符，最后以一个 0 字符结尾，可以定义如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">szText  db      <span class="string">&#x27;Hello,world!&#x27;</span>,0dh,0ah,<span class="string">&#x27;Hello again&#x27;</span>,0dh,0ah,0</span><br></pre></td></tr></table></figure>
+
+<p>全局变量在定义中既可以指定初始值，也可以用问号预留空间，在 .data? 段中只能用问号预留空间，因为 .data? 不能指定初始值，这个未初始化的值为 0。</p>
+<h2 id="局部变量"><a href="#局部变量" class="headerlink" title="局部变量"></a>局部变量</h2><p>局部变量定义格式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">local</span>   变量名1 [[重复数量]] [:类型],变量名2 [[重复数量]] [:类型],……</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>local 伪指令必须紧接在子程序定义的伪指令 proc 后、其他指令开始前，这时因为局部变量的数目必须在子程序开始的时候确定下来。</li>
+<li>语法中不能使用 dd、dw等类型的缩写，如果要定义数据结构可以使用数据结构的名称当做类型。win32 汇编中默认的类型是 dword，如果定义 dword 类型的局部变量，则类型可以省略。</li>
+<li>当定义数组的时候可以使用 [] 括起来，不能使用定义全局变量 dup 伪指令。</li>
+<li>局部变量不能和已定义的全局变量同名</li>
+<li>局部变量的作用域是当前的子程序，所以在不同的子程序中可以有同名的局部变量</li>
+</ul>
+<p>定义局部变量的例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">local</span>   locl [1024]:byte</span><br><span class="line"><span class="built_in">local</span>   loc2</span><br><span class="line"><span class="built_in">local</span>   loc3:WNDCLASS</span><br></pre></td></tr></table></figure>
+<ul>
+<li>定义一个 1024 字节长的局部变量 loc1</li>
+<li>定义一个名为 loc2 的局部变量，类型是默认值dword</li>
+<li>定义一个 WNDCLASS 数据结构，名为 loc3</li>
+</ul>
+<p>局部变量使用例子：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/18/yHDABeUL7NSM1J4.jpg"
+                      alt="1-11.jpg"
+                ></p>
+<p>这是一个名为 TestProc 的子程序，用local 语句定义了3 个变量，@loc1 是 dword 类型，@loc2 是 word 类型，@loc3 是 byte 类型，在子程序中分别存取 3 个局部变量的指令，然后返回，编译成可执行文件后，再把它反汇编就得到了一下指令：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/18/SCPWU3gikohXDjx.jpg"
+                      alt="1-12.jpg"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/18/Imj4U85kzKeEDAL.jpg"
+                      alt="1-13.jpg"
+                ></p>
+<p>认真查看，反编译后真正执行的汇编指令有如下几条：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mov eax, dword ptr [ebp-04]</span><br><span class="line">mov ax,word ptr [ebp-06]</span><br><span class="line">mov al,byte ptr [ebp-07]</span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
+<p>其余都多出来的指令：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/18/6ntioewM2A14EsR.jpg"
+                      alt="1-14.jpg"
+                ></p>
+<p>执行 call 指令后，CPU 会把返回的地址压入栈（push esp），再转移到子程序（jmp 标号），esp 再程序执行过程中可能随时都能被用到，所以不能用esp 做指针来存取局部变量。ebp 寄存器也是以堆栈段为默认数据段，所以可以用 ebp 作为指针。</p>
+<ul>
+<li>所以先用 <code>push ebp</code> 指令把原来的 ebp 保存起来，然后再阿静esp 的值放到 ebp 中，供存取局部变量的指针用。</li>
+<li>存数据到堆栈之前，要在堆栈中预留空间，由于堆栈是向下增长的，所以要在 esp 中加一个负值，FFFFFFF8 就是 -8 。理论来讲 dword + word + byte 一共是  7 个字节，但是因为 80386 处理器是以 dword 为界对齐时存取内存速度最快，所以 MASM 宁可浪费一个字节。执行了这 3 句指令后。局部变量在堆栈中的位置排列：</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/18/RjmNl5qpdQzCaeU.jpg"
+                      alt="1-15.jpg"
+                ></p>
+<p>在 80386 指令集中一条指令可以依据实现 mov esp,ebp 和 pop ebp 的功能，就是 leave 指令，所以编译器在 ret 指令之前只是用了依据 leave 指令。</p>
+<blockquote>
+<p>PS：call 指令占 4 个字节。 </p>
+</blockquote>
+<p>ebp 寄存器是关键，它起到保存原始 esp 的作用，并随时用做存取局部边阿玲的指针基地址，所以任何时刻，不要尝试把 ebp 用于别的用途，否则会带来意想不到的后果。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">指针寄存器：</span><br><span class="line">32位CPU有2个32位通用寄存器EBP和ESP，其低16位对应先前 CPU中的BP和SP。</span><br><span class="line">主要用于存放堆栈内存储单元的偏移量，用它们可实现多种存储器操作数的寻址方式，为以不同的地址形式访问存储单元提供方便。</span><br><span class="line">指针寄存器不可分割成8位寄存器。作为通用寄存器，也可存储算术逻辑运算的操作数和运算结果。</span><br><span class="line"></span><br><span class="line">它们主要用于访问堆栈内的存储单元，并且规定：</span><br><span class="line">BP 为基指针(Base Pointer)寄存器，用它可直接存取堆栈中的数据；</span><br><span class="line">SP为堆栈指针(Stack Pointer)寄存器，用它只可访问栈顶。</span><br></pre></td></tr></table></figure>
+
+<p>局部变量和全局变量的初始值不同，局部变量的初始值是随机的，其他子程序执行后会在堆栈中残留，所以对局部变量的值一定要初始化。</p>
+<h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><p>数据结构实际上是由多个字段组成的数据 “样板” ，相当于一种自定义的数据类型，数据结构中间的每一个字段可以是字节、字、双字、字符串或所有可能的数据类型。比如在 API 函数 RegistarC;ass 中要使用一个叫做 WNDCLASS 的数据结构，在汇编中的定义如下：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/18/C7R34FbAgKyPXYQ.jpg"
+                      alt="1-16.jpg"
+                ></p>
+<p>使用数据结构在数据段中定义数据的方法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">                .data?</span><br><span class="line">stWndClass      WNDCLASS        &lt;&gt;</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">                .data</span><br><span class="line">stWndClass      WNDCLASS        &lt;1,1,1,1,1,1,1,1,1,1&gt;</span><br></pre></td></tr></table></figure>
+<p>这个例子定义了一个以 WNDCLASS 为结构的变量 stWndClass，第一段的定义方法是未初始化的定义方法，第二段实在定义的同时指定结构中各字段的初始值，各字段的初始值用逗号隔开，在这个例子中 10 个字段的初始值指定为 1。</p>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><ol>
+<li>举例使用 stWndClass 中的 lpfnWndProc 字段，最直接的方法是：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov     eax,stWndClass.lpfnWndProc</span><br></pre></td></tr></table></figure>
+<p>它表示把 lpfnWndProc 字段的值放入 eax 中去。假设 stWndClass 在内存中的地址是 403000h，这句话的指令会被编译成 mov eax,[4030004h]，因为 lpfnWndProc 是 stWndClass 中的第二个字段，第一个字段是 dword，已经占用了 4 字节的空间。</p>
+<ol start="2">
+<li>实际常常有使用指针存取数据结构的情况，如果使用 esi 寄存器做指针寻址，可以使用下列的语句完成同样的功能：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov     esi,offset stWndClass</span><br><span class="line">mov     eax,[esi + WNDCLASS.stWndProc]</span><br></pre></td></tr></table></figure>
+
+<p>注意：第二句是 [esi + WNDCLASS.stWndProc] 而不是 [ eax,stWndClass.lpfnWndProc ]，因为第一个会被编译成 <code>mov eax,[esi+4]</code>，而后者会被编译成 <code>mov eax,[esi+403004h]</code>，后者的结果显然是错误的。</p>
+<ol start="3">
+<li>MASM 还可以用 assume 伪指令把寄存器预先定义为结构指针，再进行操作：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mov     esi,offset stWndClass</span><br><span class="line">assume  esi:ptr WNDCLASS</span><br><span class="line">mov     eax,[esi].stWndProc</span><br><span class="line"></span><br><span class="line">assume  esi:nothing</span><br></pre></td></tr></table></figure>
+
+<p>这样使用寄存器也可以使用逗号引用字段名，程序的可读性比较好。这样的写法在最后编译成可执行程序的时候产生同样的代码。注意：在不使用 esi 寄存器做指针的时候要用 <code>assume  esi:nothing</code> 取消定义。</p>
+<ol start="4">
+<li>结构的定义也可以是嵌套的，如果要定义一个新的 NEW_WNDCLASS 结构，里面包含了一个老的 WNDCLASS 结构和一个新的 dwOption 字段，那么可以如下定义：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">NEW_WNDCLASS    struct</span><br><span class="line"></span><br><span class="line">dwOptiond       word            ?</span><br><span class="line">oldWndClass     WNDCALSS        &lt;&gt;</span><br><span class="line"></span><br><span class="line">NEW_WNDCLASS    ends</span><br></pre></td></tr></table></figure>
+
+<p>假设现在 esi 是指向一个 NEW_WNDCLASS 的指针，那么引用里面嵌套的 oldWndClass 中的 stWndProc 时，就可以使用下面的语句：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvo     eax,[esi].oldWndClass.stWndProc</span><br></pre></td></tr></table></figure>
+
+<h2 id="变量的使用"><a href="#变量的使用" class="headerlink" title="变量的使用"></a>变量的使用</h2><h3 id="以不同的类型访问变量"><a href="#以不同的类型访问变量" class="headerlink" title="以不同的类型访问变量"></a>以不同的类型访问变量</h3><p>MASM 中，如果要使用指定类型意外的长度访问变量，必须显示地指出要访问的长度，这样编译器忽略语法上的长度校验，仅使用变量的地址。使用方法是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">类型 ptr 变量名</span><br></pre></td></tr></table></figure>
+<p>类型可以是 byte，word，dword，fword，qword，real8 和 real10 如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov     ax,word ptr szBuffer</span><br><span class="line">mov     ax,dword ptr szBuffer</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，指定类型的参数访问并不会去检测字符的长度是否溢出，例如下面的例子：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/19/NXSPpOnTct5IkCW.png"
+                      alt="1-17.png"
+                ></p>
+<p>各变量在内存中的存储布局</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/19/DGyCqhiadzpx3HJ.png"
+                      alt="1-18.png"
+                ></p>
+<p>.data 段中变量是按顺序从低地址往高地址排列的，对于超过一个字节的数据，80386 处理器的数据排列方式是低数据在低地址。所以 <code>mov al,bTest1</code> 的 al&#x3D;21h，<code>mov ax,word ptr bTest1</code> 的 ax&#x3D;1234，<code>mov eax,dword ptr bTest1</code> 的 eax&#x3D;12341278。</p>
+<p>如果要使用类似于 C 语言的强制类型转换，想把 bTest1 的一个字节扩展到一个字或一个双字，高位保持 0 而不是越界存取到其他的变量，可以使用 80386 的扩展指令 movzx 来实现这个功能，该指令总是将扩展的数据位用 0 代替。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">movzx   ax,bTest1</span><br><span class="line">movzx   eax,bTest1</span><br><span class="line">movzx   eax,cl</span><br><span class="line">movzx   eax,ax</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>把单字节变量 bTest1 的值扩展到 16 位放入 ax 中</li>
+<li>把单字节变量 bTest1 的值扩展到 32 位放入 eax 中</li>
+<li>把 cl 中的 8 位扩展到 32 位放入 eax 中</li>
+<li>把 ax 中的 16 位扩展到 32 位放入 eax 中</li>
+</ul>
+<h2 id="变量的尺寸和数量"><a href="#变量的尺寸和数量" class="headerlink" title="变量的尺寸和数量"></a>变量的尺寸和数量</h2><p>在源程序中用到变量的尺寸和数量的时候，可以使用 sizeof 和 lengthof 伪指令来实现，格式是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sizeof          变量名、数据类型或数据结构名</span><br><span class="line">lengthof        变量名、数据类型或数据结构名</span><br></pre></td></tr></table></figure>
+
+<p>sizeof 伪指令可以取得变量、数据类型或逐句结构以字节为单位的长度，lengthof 可以取得变量中的数据项数。假如定义以下数据</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/19/L1FtH7PnckIiXjf.png"
+                      alt="1-19.png"
+                ></p>
+<p>执行后 eax&#x3D;40（stWndClass 结构的长度）；ebx&#x3D;40；ecx&#x3D;13（“Hello,world!” + 一个字节的 0 结束符）；edx&#x3D;4（双字）；esi&#x3D;16（4个双字）</p>
+<p>如果把所有的 sizeof 换成 lengthof，那么 eax&#x3D;1(只定义了一项 WNDCLASS)；ecx&#x3D;13；esi&#x3D;4；lengthof WNDCLASS 和 lengthof dword 是非法的，编译程序会报错。</p>
+<p>sizeof 和 lengthof 的数值是编译时产生的，编译时会直接替换成如下代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mov     eax,40</span><br><span class="line">mov     ebx,40</span><br><span class="line">mov     ecx,13</span><br><span class="line">mov     edx,4</span><br><span class="line">mov     esi,16</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/20/Nk5mcAVtSnWCMzH.png"
+                      alt="1-20.png"
+                ></p>
+<h2 id="获取变量地址"><a href="#获取变量地址" class="headerlink" title="获取变量地址"></a>获取变量地址</h2><p>对于全局变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov     寄存器,offset 变量名</span><br></pre></td></tr></table></figure>
+
+<p>对于局部变量，它是用 ebp 来做指针操作的，由于 ebp 的值是随着程序的执行环境不同可能是不同的，所以局部变量的地址值是不确定的，不能用 offset 伪操作来获取它的地址。80386 中使用 lea 指令取得指针地址，如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lea     eax,[ebp-4]</span><br></pre></td></tr></table></figure>
+<p>该指令可以在运行时按照 ebp 的值实际计算出地址放在 eax 中。</p>
+<p>如果要在 invoke 伪指令的参数中用到局部变量地址，此时可以用伪指令 addr，其格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">addr    局部变量名和全局变量名</span><br></pre></td></tr></table></figure>
+
+<p>当 addr 后跟全局变量名的时候，编译器会自动按照 offset 的方法来使用；当addr 互根局部变量名时候，编译器会自动用 lea 指令先把地址取到 eax 中。addr 是伪指令，不能用在 invoke 的参数中 和 mov 指令中。</p>
+<h1 id="使用子程序"><a href="#使用子程序" class="headerlink" title="使用子程序"></a>使用子程序</h1><p>当程序中相同的功能的一段代码用得比较频繁时，可以将它分离出来写成一个子程序，在主程序中用 call 指令调用它。win32 汇编中的子程序也是采用堆栈来传递参数，这样就可以用 invoke 伪指令来进行调用和语法检查工作。</p>
+<h2 id="子程序的定义"><a href="#子程序的定义" class="headerlink" title="子程序的定义"></a>子程序的定义</h2><p>子程序的定义方式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">子程序名  proc [距离] [语言类型] [可视区] [USES 寄存器列表] [,参数:类型]...[VARARG]</span><br><span class="line">         <span class="built_in">local</span> 局部变量列表</span><br><span class="line">         指令</span><br><span class="line"></span><br><span class="line">子程序名  endp</span><br></pre></td></tr></table></figure>
+
+<p>proc 和 endp 伪指令定义了子程序开始和结束的位置，proc 后面跟的参数是子程序的属性和输入参数。子程序的属性有：</p>
+<ul>
+<li><p>距离——可以是 NEAR，FAR，NEAR16，NEAR32，FAR16，FAR32 通常忽略</p>
+</li>
+<li><p>语言类型——表示参数的使用方法和堆栈平衡方式，可使用 StdCall,C,SysCall,BASIC,FORTRAN 和 PASCAL，如果忽略，则使用程序头部 .model 定义的值。</p>
+</li>
+<li><p>可视区域——可以是 PRIVATE,PUBLIC 和 EXPORT。PRIVATE 表示子程序只对本模块可见；PUBLIC 表示对所有模块可见；EXPORT 表示是到处的函数，当编写 DLL 的时候要将某个函数导出的时候可以这样使用。默认设置是 PUBLIC。</p>
+</li>
+<li><p>USES 寄存器列表——表示由编译器在自陈谷指令开始前自动安排 push 这些寄存器的指令，并且在 ret 前自动 pop 指令，用于保存执行环境。</p>
+</li>
+<li><p>参数和类型——参数指参数的名称（不能和全局变量名和子程序局部变量名重名）。类型只有 dword 可忽略。在参数后面跟 VARARG，表示在已确定的参数后还可以跟多个不确定的参数。，在 win32 汇编中唯一使用 VARARG 的 API 就是 wsprintf，类似于 C 中的 printf。</p>
+</li>
+</ul>
+<p>完成定义后可以使用 invoke 调用子程序。当 invoke 语句在子程序前面时，需要先用 proto 伪指令定义子程序的信息，“提前” 告诉 invoke 语句关于子程序的信息。invoke 语句在子程序之后，proto 语句就可以省略。</p>
+<h2 id="参数传递和堆栈平衡"><a href="#参数传递和堆栈平衡" class="headerlink" title="参数传递和堆栈平衡"></a>参数传递和堆栈平衡</h2><p>在调用子程序时，参数传递是通过堆栈进行的，也就说，调用者把要传递给子程序的参数压入堆栈，子程序在堆栈中取出相应的值再使用。如果要调用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SubRouting(Var1,Var2,Var3)</span><br></pre></td></tr></table></figure>
+<p>经过编译后的最终代码可能是</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">push    Var3</span><br><span class="line">push    Var2</span><br><span class="line">push    Var1</span><br><span class="line">call    SubRouting</span><br><span class="line">add     esp,12</span><br></pre></td></tr></table></figure>
+<p>也就说说，调用者首先把参数压入堆栈，然后调用子程序，在完成后，由于堆栈中先前压入的数不再有用，调用者或被调用者必须有一方把堆栈指针修正到调用前的状态，这就叫堆栈的平衡。参数入栈的顺序，还有修正堆栈的顺序都需要有个约定，不然会产生错误的结果。由于各种语言默认调用约定是不同的，所以在 proc 以及 proto 语句的语言属性中确定语言类型后，编译器才能将 invoke 伪指令翻译成正确的样子，不同语言的不同点如下表：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/20/JBOlygvYbaQKIVX.jpg"
+                      alt="1-21.jpg"
+                ></p>
+<p>因为 win32 约定类型是 StdCall ，所以在程序中调用子程序或系统 API 后，不必自己来平衡堆栈，免去了很多的麻烦。</p>
+<h1 id="高级语法"><a href="#高级语法" class="headerlink" title="高级语法"></a>高级语法</h1><p>以前高级语言和汇编的最大差别就是条件测试、分支和循环等高级语法。汇编只能在 cmp 指令后面绞尽脑汁考虑用哪个跳转语句，而且这些指令和寄存器纠缠在一起，使在汇编中书写结构清晰、可读性好的代码相当困难。</p>
+<p>现在 MASM 中引用了一系列的伪指令，涉及条件测试、分支和循环语句，利用它们，汇编语言有了与高级语言一样的结构，配合对局部变量和调用参数等高级语言中常见元素的支持，为使用 win32 汇编编写大规模的应用程序奠定了基础。</p>
+<h2 id="条件测试语句"><a href="#条件测试语句" class="headerlink" title="条件测试语句"></a>条件测试语句</h2><p>MASM 条件测试的基本表达式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">寄存器或变量    操作符 操作数</span><br></pre></td></tr></table></figure>
+
+<p>两个边大师可以用逻辑运算符连接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">（表达式1）逻辑运算符（表达式2）逻辑运算符（表达式3）……</span><br></pre></td></tr></table></figure>
+
+<p>允许的操作符和逻辑运算符如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/20/PuIzH8mQd4qvjl7.jpg"
+                      alt="1-22.jpg"
+                ></p>
+<p>举例如下，左边为表达式，右边是表达式为 “真” 的条件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x==3            ;x等于3</span><br><span class="line">eax!=3          ;eax不等于3</span><br><span class="line">(y&gt;=3)&amp;&amp;ebx     ;y大于等于3且ebx为非零值</span><br><span class="line">(z&amp;1)||!eax     ;z和1进行 “与” 操作后非零或eax取反后非零</span><br></pre></td></tr></table></figure>
+<p>MASM 的条件测试采用的是和 C 语言相同的语法。如 ！ 和 &amp; 是对变量的操作符（“取反”和“与”操作），|| 和 &amp;&amp; 是表达式结果之间的逻辑“与” 和 逻辑“或”，而&#x3D;&#x3D;、!&#x3D;、&gt;、&lt;等是比较符。同样，对于不含比较符的单个变量或寄存器，MASM 也是讲所有非零值认为是“真”，零值认为是“假”。</p>
+<p>MASM 的条件测试语句限制：</p>
+<ul>
+<li>表达式的左边只能是变量或寄存器，不能是常数</li>
+<li>表达式两边不能同时为变量，但可以同时是寄存器</li>
+<li>不允许直接操作两个内存中的数</li>
+</ul>
+<p>根据标志位进行条件跳转的表达式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CARRY?          表示 Carry 位是否置位</span><br><span class="line">OVERFLOW?       表示 Overflow 位是否置位</span><br><span class="line">PARITY?         表示 Parity 位是否置位</span><br><span class="line">SIGN?           表示 Sign 位是否置位</span><br><span class="line">ZERO?           表示 Zero 位是否置位</span><br></pre></td></tr></table></figure>
+
+<h2 id="分支语句"><a href="#分支语句" class="headerlink" title="分支语句"></a>分支语句</h2><p>MASM 中的分支语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.<span class="keyword">if</span> 条件表达式1</span><br><span class="line">    表达式1为 “真” 时执行的指令</span><br><span class="line">[.elseif 条件表达式2]</span><br><span class="line">    表达式2为 “真” 时执行的指令</span><br><span class="line">[.<span class="keyword">else</span>]</span><br><span class="line">    所有表达式为 “否” 时执行的指令</span><br><span class="line">.endif</span><br></pre></td></tr></table></figure>
+<p>注意：关键字 if&#x2F;elseif&#x2F;else&#x2F;endif 的前面有个小数点，如果不加小数点，就会变成宏汇编中的条件汇编伪操作。由 .if&#x2F;.elseif&#x2F;.else&#x2F;.endif 条件分支伪指令构成的分支结构只能有一个条件被满足，也就说，程序按照从上到下的各个条件表达式，顺序判断，当第一个条件表达式满足的时候，执行相应的代码，然后就忽略掉下面所有的其他条件表达式，即使后面有另一个满足条件时也是如此。</p>
+<p>如果需要构成分支对所有的表达式为“真”都要执行相应的代码，可以利用多个 .if&#x2F;.endif 来完成，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">.<span class="keyword">if</span>     表达式1</span><br><span class="line">        表达式1为 “真” 时执行的指令</span><br><span class="line">.endif</span><br><span class="line">.<span class="keyword">if</span>     表达式2</span><br><span class="line">        表达式2为 “真” 时执行的指令</span><br><span class="line">.endif</span><br></pre></td></tr></table></figure>
+
+<h2 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h2><p>循环的语法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.<span class="keyword">while</span>  条件测试表达式</span><br><span class="line">    指令</span><br><span class="line">    [.<span class="built_in">break</span> [.<span class="keyword">if</span> 退出条件]]</span><br><span class="line">    [.<span class="built_in">continue</span>]</span><br><span class="line">.endw</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.repeat</span><br><span class="line">    指令</span><br><span class="line">    [.<span class="built_in">break</span> [.<span class="keyword">if</span> 退出条件]]</span><br><span class="line">    [.<span class="built_in">continue</span>]</span><br><span class="line">.until  条件测试表达式（或 .untilcxz [条件测试表达式]）</span><br></pre></td></tr></table></figure>
+
+<p>.while&#x2F;.endw 循环首先判断条件测试表达式，如果结果是“真”，则实行循环体内的指令，结束后再回到 .while 处判断表达式，如果结果表达式是为“假”就会跳出循环。</p>
+<p>.repeat&#x2F;.until 循环首先执行一遍循环体内的指令，然后再判断条件测试表达式，如果结果为“真”的话，就退出循环，如果是“假”，则返回 .repeat 处继续循环</p>
+<h2 id="代码风格"><a href="#代码风格" class="headerlink" title="代码风格"></a>代码风格</h2><p>变量和子程序的命名：类型前缀+变量说明，乐行用小写字母表示，变量说明首字母大写。汇编中常见的类型前缀有：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/20/EDHsCuOQgctVeav.jpg"
+                      alt="1-23.jpg"
+                ></p>
+<ul>
+<li>全局变量使用标准的匈牙利表示法，在参数的前面加下划线，局部变量前加@符号</li>
+<li>内部子程序前加下划线，以便和系统API区别</li>
+</ul>
+<h2 id="大小写"><a href="#大小写" class="headerlink" title="大小写"></a>大小写</h2><p>所有的指令和寄存器都用小写，用equ伪操作符定义的常量使用大写，变量和标号使用大小写混合。</p>
+<h2 id="缩进"><a href="#缩进" class="headerlink" title="缩进"></a>缩进</h2><p>一般变量和标号定义不缩进，指令用两个 tab 缩进，遇到分支和循环伪指令再缩进一格。</p>
+<h2 id="注释和空行"><a href="#注释和空行" class="headerlink" title="注释和空行"></a>注释和空行</h2><ul>
+<li>不要写无意义的注释</li>
+<li>修改代码的同时也要修改注释</li>
+<li>注释以描写一组指令实现的功能为主，不要解释单个指令的用法。</li>
+<li>对于子程序，要在头部加注释说明参数和返回值，子程序可以实现的功能，以及调用时应该注意的事项。</li>
+</ul>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：80386汇编-使用MASM</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2020-10-15 23:24:32</li>
+        <li>
+            本文链接：https://9unkk.github.io/2020/10/15/80386汇编-使用MASM/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2020/10/26/80386%E6%B1%87%E7%BC%96-%E7%AC%AC%E4%B8%80%E4%B8%AA%E7%AA%97%E5%8F%A3%E7%A8%8B%E5%BA%8F/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">80386汇编-第一个窗口程序</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2020/10/10/80386-%E6%B1%87%E7%BC%96-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">80386 汇编-基础知识</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#win32-%E6%B1%87%E7%BC%96%E7%A8%8B%E5%BA%8F%E7%9A%84%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">win32 汇编程序的结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">模式定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E5%AE%9A%E4%BD%BF%E7%94%A8%E7%9A%84%E6%8C%87%E4%BB%A4%E9%9B%86"><span class="nav-number">1.1.1.</span> <span class="nav-text">指定使用的指令集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#model-%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.1.2.</span> <span class="nav-text">.model 语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#option-%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.1.3.</span> <span class="nav-text">option 语句</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AE%B5%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.2.</span> <span class="nav-text">段的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AE%B5%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.2.1.</span> <span class="nav-text">段的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%AE%B5"><span class="nav-number">1.2.2.</span> <span class="nav-text">数据段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%AE%B5"><span class="nav-number">1.2.3.</span> <span class="nav-text">代码段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86%E6%A0%88%E6%AE%B5"><span class="nav-number">1.2.4.</span> <span class="nav-text">堆栈段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%85%A5%E5%8F%A3"><span class="nav-number">1.3.</span> <span class="nav-text">程序入口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A%E5%92%8C%E6%8D%A2%E8%A1%8C"><span class="nav-number">1.4.</span> <span class="nav-text">注释和换行</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B0%83%E7%94%A8-API"><span class="nav-number">2.</span> <span class="nav-text">调用 API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#API-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">2.1.</span> <span class="nav-text">API 是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E7%94%A8-API-1"><span class="nav-number">2.2.</span> <span class="nav-text">调用 API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-invoke-%E8%AF%AD%E5%8F%A5"><span class="nav-number">2.3.</span> <span class="nav-text">使用 invoke 语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API-%E5%87%BD%E6%95%B0%E7%9A%84%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">2.4.</span> <span class="nav-text">API 函数的返回值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%A3%B0%E6%98%8E"><span class="nav-number">2.5.</span> <span class="nav-text">函数的声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#include-%E8%AF%AD%E5%8F%A5"><span class="nav-number">2.6.</span> <span class="nav-text">include 语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#includelib-%E8%AF%AD%E5%8F%A5"><span class="nav-number">2.7.</span> <span class="nav-text">includelib 语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API-%E5%8F%82%E6%95%B0%E7%9A%84%E7%AD%89%E5%80%BC%E5%AE%9A%E4%B9%89"><span class="nav-number">2.8.</span> <span class="nav-text">API 参数的等值定义</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%87%E5%8F%B7%E3%80%81%E5%8F%98%E9%87%8F%E5%92%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">标号、变量和数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E5%8F%B7"><span class="nav-number">3.1.</span> <span class="nav-text">标号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="nav-number">3.2.</span> <span class="nav-text">全局变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F"><span class="nav-number">3.3.</span> <span class="nav-text">局部变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">3.4.</span> <span class="nav-text">数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">3.4.1.</span> <span class="nav-text">使用方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">3.5.</span> <span class="nav-text">变量的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A5%E4%B8%8D%E5%90%8C%E7%9A%84%E7%B1%BB%E5%9E%8B%E8%AE%BF%E9%97%AE%E5%8F%98%E9%87%8F"><span class="nav-number">3.5.1.</span> <span class="nav-text">以不同的类型访问变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E5%B0%BA%E5%AF%B8%E5%92%8C%E6%95%B0%E9%87%8F"><span class="nav-number">3.6.</span> <span class="nav-text">变量的尺寸和数量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%8F%98%E9%87%8F%E5%9C%B0%E5%9D%80"><span class="nav-number">3.7.</span> <span class="nav-text">获取变量地址</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%AD%90%E7%A8%8B%E5%BA%8F"><span class="nav-number">4.</span> <span class="nav-text">使用子程序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">4.1.</span> <span class="nav-text">子程序的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E5%92%8C%E5%A0%86%E6%A0%88%E5%B9%B3%E8%A1%A1"><span class="nav-number">4.2.</span> <span class="nav-text">参数传递和堆栈平衡</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E8%AF%AD%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">高级语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E6%B5%8B%E8%AF%95%E8%AF%AD%E5%8F%A5"><span class="nav-number">5.1.</span> <span class="nav-text">条件测试语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E8%AF%AD%E5%8F%A5"><span class="nav-number">5.2.</span> <span class="nav-text">分支语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5"><span class="nav-number">5.3.</span> <span class="nav-text">循环语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC"><span class="nav-number">5.4.</span> <span class="nav-text">代码风格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A7%E5%B0%8F%E5%86%99"><span class="nav-number">5.5.</span> <span class="nav-text">大小写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%A9%E8%BF%9B"><span class="nav-number">5.6.</span> <span class="nav-text">缩进</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A%E5%92%8C%E7%A9%BA%E8%A1%8C"><span class="nav-number">5.7.</span> <span class="nav-text">注释和空行</span></a></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

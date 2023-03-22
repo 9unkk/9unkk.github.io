@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            8086汇编-内中断 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="page-template-container">
+        
+        
+        <div class="page-template-content markdown-body">
+            
+                <h1 id="中断信息"><a href="#中断信息" class="headerlink" title="中断信息"></a>中断信息</h1><p>任何一个通用CPU，都具备一种能力，可以执行完当前正在执行的指令后，检测到从 CPU 外部发送过来的或内部产生的一种特殊信息，并且可以立即对所接收到的信息进行处理。这种特殊信息称其为：中断信息。中断的意思是指，CPU 不再接着（刚执行完的指令）向下执行，而是转去处理这个特殊信息。中断信息可以来自 CPU 内部和外部，分别称为内中断和外中断。</p>
+<h1 id="内中断的产生"><a href="#内中断的产生" class="headerlink" title="内中断的产生"></a>内中断的产生</h1><p>对于 8086CPU，当 CPU 内部有下面的情况时，将产生相应的中断信息。</p>
+<ul>
+<li>除法错误</li>
+<li>单步执行</li>
+<li>执行 into 指令</li>
+<li>执行 int 指令</li>
+</ul>
+<p>这 4 种信息是不同的信息，需要进行不同的处理。在处理中断信息时 CPU 首先要知道，所接收的中断信息来源，所以中断信息中必须包含识别来源的编码。8086CPU 用称为中断类型码的数据来标识中断信息的来源。中断类型码为一个字节型数据，可以表示 256 种中断信息的来源。在 8086CPU 中的中断类型码如下：</p>
+<ul>
+<li>除法错误：执行 0 号中断</li>
+<li>单步执行：执行 1 号中断</li>
+<li>into 指令：执行 4 号中断</li>
+<li>int 指令：该指令格式为 int n，指令中的 n 为字节型立即数，是提供给 CPU 的中断类型码。</li>
+</ul>
+<h1 id="中断向量表"><a href="#中断向量表" class="headerlink" title="中断向量表"></a>中断向量表</h1><ol>
+<li><p>中断处理程序<br>CPU 收到中断信息后，需要对中断信息进行处理。而如何对中断信息进行处理，可以由我们编程决定。我们编写的，用来处理中断信息的程序被称为中断处理程序。一般来说需要对不同的中断信息编写不同的处理程序。</p>
+</li>
+<li><p>中断向量表<br>在中断程序中，CPU 用 8 位的中断类型码通过中断向量表找到相应的中断处理程序入口地址。中断向量表可以认为是一个索引，就是中断处理程序的入口地址列表。中断向量表在内存中保存，其中存放着 256 个中断源所对应的中断处理程序的入口。</p>
+</li>
+</ol>
+<p>在 8086CPU 中，从 内存 0000:0000 到 0000:03FF 的 1024 个单元中存放着中断向量表。在中断向量表中，一个表项存放着一个中断向量，也就是一个程序的入口地址，对于 8086CPU，这个入口地址包括段地址和偏移地址，所以一个表项占两个字，高地址存放段地址，低地址存放偏移地址。</p>
+<h1 id="中断过程"><a href="#中断过程" class="headerlink" title="中断过程"></a>中断过程</h1><p>用中断类型码，在中断向量表找到中断处理程序的入口。找到这个入口地址的最终目的是用它设置 CS 和 IP，使 CPU 执行中断处理程序。用中断类型码找到中断向量，并用它设置 CS 和 IP，这个工作是由 CPU 的硬件自动完成的。CPU 硬件完成这个个工作的过程称为中断过程。</p>
+<p>CPU 在执行完中断程序后，应该返回原来的执行点继续执行下面的指令。所以在中断过程中，在设置 CS:IP 之前，还要将原来的 CS 和 IP 的值保存起来。</p>
+<p>8086CPU 在接受到中断信息后，所引发的中断过程：</p>
+<ol>
+<li>（从中断信息中）取得中断类型码</li>
+<li>标志寄存器的值如栈（因为在中断过程中要改变标志寄存器的值，所以要先将其保存在栈中）</li>
+<li>设置标志寄存器的第 8 位 TF 和第 9 位 IF 的值为 0</li>
+<li>CS 的内容入栈</li>
+<li>IP 的内容入栈</li>
+<li>从内存地址为中断类型码 *4 和中断类型码 *4+2 的两个字单元中读取中断处理程序的入口地址 IP 和 CS。</li>
+</ol>
+<p>简洁的中断过程描述;</p>
+<ol>
+<li>取得中断类型码 N</li>
+<li>pushf</li>
+<li>TF&#x3D;0，IF&#x3D;0</li>
+<li>push CS</li>
+<li>push IP</li>
+<li>(IP)&#x3D;( N * 4 )，(CS)&#x3D;( N * 4 + 2 )</li>
+</ol>
+<p>在最后一部完成后，CPU 开始执行由程序员编写的中断处理程序。</p>
+<p>中断处理程序编写方法：</p>
+<ol>
+<li>保存用到的寄存器</li>
+<li>处理中断</li>
+<li>恢复用到的寄存器</li>
+<li>用 iret 指令返回</li>
+</ol>
+<p>iret 指令的功能用汇编语法描述为：<br>pop IP<br>pop CS<br>popf</p>
+<p>iret 通常和硬件自动完成的中断配额使用。</p>
+<h1 id="除法错误中断处理"><a href="#除法错误中断处理" class="headerlink" title="除法错误中断处理"></a>除法错误中断处理</h1><p>系统对 0 号中断的处理：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/07/nEvDz7eBxAltZGK.png"
+                      alt="155.png"
+                ></p>
+<p>当 CPU 执行 div bh 时，发生了除法溢出错误，产生 0 号中断信息，从而引发中断过程，CPU 执行 0 号中断处理程序。从上图中可以看到系统中的 0 号中断处理程序，它的功能是在屏幕中间显示 “Divide overflow”。</p>
+<h1 id="编程处理-0-号中断"><a href="#编程处理-0-号中断" class="headerlink" title="编程处理 0 号中断"></a>编程处理 0 号中断</h1><p>改变 0 号处理程序的功能，即重新编写一个 0 号中断处理程序，它的功能是在屏幕中间显示 “overflow!” 后，然后返回到操作系统。</p>
+<p>编程：当发生除法溢出时，在屏幕中间显示 “overflow!”，返回 DOS。</p>
+<p>程序分析：当发生除法溢出的时候，产生 0 号中断信息，从而引发中断过程。</p>
+<ol>
+<li><p>当发生除法溢出的时候，产生 0 号中断信息，从而引发中断过程。<br>此时 CPU 进行以下工作：</p>
+<ul>
+<li>取得中断类型码 0</li>
+<li>标志寄存器入栈，TF、IF设置为0</li>
+<li>CS、IP 入栈</li>
+<li>(IP)&#x3D;( 0*4 )，(CS)&#x3D;( 0*4+2 )</li>
+</ul>
+</li>
+<li><p>当中断 0 发生时，CPU 将转去执行中断处理程序。<br>按照如下步骤编写中断处理程序，当中断 0 发生时，即可显示 “overflow!”:</p>
+<ul>
+<li>相关处理</li>
+<li>向显示缓冲区送字符串”overfolw!”</li>
+<li>返回 DOS</li>
+</ul>
+<p> 这段程序称为：do0</p>
+</li>
+<li><p>do0 应存放在内存中。因为除法溢出随时可能发生，CPU 随时可能将 CS:IP 指向 do0 入口。一般情况下，从 0000:0200 至 0000:02FF 的 256 个字节的空间所对应的中断向量表项都是空的，操作系统和其他程序都不占用。所以可以将 do0 传送至 0000:0200 处。</p>
+</li>
+<li><p>若要使得除法溢出发生的时候，CPU 转去执行 do0，则必须将 do0 的入口地址，即 0000:0200 中断向量表对应的表项中。因为除法溢出对应的中断类型码为 0 ，它的中断处理程序的入口地址应该从 0*4 单元地址开始存放，段地址放在 0*4+2 字单元中，偏移地址存放在 0*4 字单元中。也就是说要将 do0 的段地址存放在 0000:0002 字单元中，将偏移地址 200H 存放在 0000:0000 字单元中。</p>
+</li>
+<li><p>总结上面的分析：</p>
+</li>
+</ol>
+<ul>
+<li>编写可以显示“overflow!” 的中断程序:do0</li>
+<li>将 do0 送入内存 0000:0200 处</li>
+<li>将 do0 的入口地址 0000:0200 存储在中断向量表 0 号表项中。</li>
+</ul>
+<p>程序框架如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line"></span><br><span class="line">start: do0 安装程序</span><br><span class="line">       设置中断向量表</span><br><span class="line">       mov ax,3c00h</span><br><span class="line">       int 21h</span><br><span class="line">  do0: 显示字符串<span class="string">&quot;overflow!&quot;</span></span><br><span class="line">       mov ax,4c00h</span><br><span class="line">       int 21h</span><br><span class="line">code ends</span><br><span class="line"></span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p>可以看到上面的程序分为两部分：</p>
+<ul>
+<li>安装 do0，设置中断向量的程序</li>
+<li>do0</li>
+</ul>
+<h2 id="安装-do0"><a href="#安装-do0" class="headerlink" title="安装 do0"></a>安装 do0</h2><p>之前说过当出现中断时，中断程序才会执行。也就是说当执行写好的中断程序时，程序的内容不应该执行，而是将内容存到0000:0200 处。所以这里可以使用 rep movsb 将程序中的内容复制到 0000:0200 处。程序如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">    start: 设置 ds:si 指向源地址</span><br><span class="line">           设置 es:di 指向目的地址</span><br><span class="line">           设置 cx 为传输长度</span><br><span class="line">           设置传输方向为正</span><br><span class="line">           rep mobsb</span><br><span class="line"></span><br><span class="line">           设置中断向量表</span><br><span class="line"></span><br><span class="line">           mov ax,4c00h</span><br><span class="line">           int 21h</span><br><span class="line"></span><br><span class="line">      do0: 显示字符串<span class="string">&quot;overflow!&quot;</span></span><br><span class="line">           mov ax,4c00h</span><br><span class="line">           int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p>用 rep movsb 指令的时候要确认的信息</p>
+<ol>
+<li>源地址：段地址 code(CS)，偏移地址 offset do0</li>
+<li>目的地址：0000:0200</li>
+<li>传送长度：do0 部分长度代码</li>
+<li>传送方向：正向</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">    start: mov ax,cs</span><br><span class="line">           mov ds,ax                   ; 将 cs 和 ds 关联</span><br><span class="line">           mov si,offset do0           ; 设置 ds:si 指向源地址</span><br><span class="line"></span><br><span class="line">           mov ax,0</span><br><span class="line">           mov es,ax</span><br><span class="line">           mov di,200h                 ; 设置 es:di 指向目的地址</span><br><span class="line"></span><br><span class="line">           mov cx,do0 部分码代码的长度     ; 设置 cx 为传输长度</span><br><span class="line"></span><br><span class="line">           cld                         ; 设置传输方向为正</span><br><span class="line">           rep movsb</span><br><span class="line"></span><br><span class="line">           设置中断向量表</span><br><span class="line"></span><br><span class="line">           mov ax,4c00h</span><br><span class="line">           int 21h</span><br><span class="line"></span><br><span class="line">      do0: 显示字符串<span class="string">&quot;overflow!&quot;</span></span><br><span class="line">           mov ax,4c00h</span><br><span class="line">           int 21h</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p>计算 do0 的长度</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">    start: mov ax,cs</span><br><span class="line">           mov ds,ax                          ; 将 cs 和 ds 关联</span><br><span class="line">           mov si,offset do0                  ; 设置 ds:si 指向源地址</span><br><span class="line"></span><br><span class="line">           mov ax,0</span><br><span class="line">           mov es,ax</span><br><span class="line">           mov di,200h                        ; 设置 es:di 指向目的地址</span><br><span class="line"></span><br><span class="line">           mov cx,offset do0end-offset do0    ; 设置 cx 为传输长度</span><br><span class="line"></span><br><span class="line">           cld                                ; 设置传输方向为正</span><br><span class="line">           rep movsb</span><br><span class="line"></span><br><span class="line">           设置中断向量表</span><br><span class="line"></span><br><span class="line">           mov ax,4c00h</span><br><span class="line">           int 21h</span><br><span class="line"></span><br><span class="line">      do0: 显示字符串<span class="string">&quot;overflow!&quot;</span></span><br><span class="line">           mov ax,4c00h</span><br><span class="line">           int 21h</span><br><span class="line"></span><br><span class="line">   do0end: nop      <span class="comment"># nop 空操作指令</span></span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h2 id="do0"><a href="#do0" class="headerlink" title="do0"></a>do0</h2><p>do0 程序主要任务是显示字符串，程序如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">data segment</span><br><span class="line">    db <span class="string">&quot;overflow!&quot;</span></span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">    start: mov ax,cs</span><br><span class="line">           mov ds,ax                         ; 将 cs 和 ds 关联</span><br><span class="line">           mov si,offset do0                 ; 设置 ds:si 指向源地址</span><br><span class="line"></span><br><span class="line">           mov ax,0</span><br><span class="line">           mov es,ax</span><br><span class="line">           mov di,200h                       ; 设置 es:di 指向目的地址</span><br><span class="line"></span><br><span class="line">           mov cx,offset do0end-offset do0   ; 设置 cx 为传输长度</span><br><span class="line"></span><br><span class="line">           cld                               ; 设置传输方向为正</span><br><span class="line">           rep movsb</span><br><span class="line"></span><br><span class="line">           设置中断向量表</span><br><span class="line"></span><br><span class="line">           mov ax,4c00h</span><br><span class="line">           int 21h</span><br><span class="line"></span><br><span class="line">      do0: mov ax,data</span><br><span class="line">           mov ds,ax                         ; data 和 ds 关联（设置源段地址）</span><br><span class="line">           mov si,0                          ; 设置源偏移地址</span><br><span class="line"></span><br><span class="line">           mov ax,0b800h</span><br><span class="line">           mov es,ax                         ; 将段地址设置为显存的段地址中</span><br><span class="line">           mov di,12*160+36*2                ; 设置 es:di 指向显存空间的中间位置</span><br><span class="line"></span><br><span class="line">           mov cx,9                          ; 设置 cx 为字符串长度</span><br><span class="line">        s: mov al,[si]                       ; 将 ds:si 的值传给 al</span><br><span class="line">           mov es:[di],al                    ; 将 al 的值传给 es:di</span><br><span class="line">           inc si</span><br><span class="line">           add di,2                          ; 每个字符在显存中占两个字节</span><br><span class="line">           loop s</span><br><span class="line"></span><br><span class="line">           mov ax,4c00h</span><br><span class="line">           int 21h</span><br><span class="line"></span><br><span class="line">   do0end: nop                               ; nop 空操作指令</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p>上面的程序执行完成之后返回，它所占用的内存空间会被系统释放。而在程序释放之后这个内存空间存放的“overflow!” 会被别的信息覆盖。而 do0 程序被放到了 0:200 处，随时都有可能发生除法溢出而被 CPU 执行，很难保证 do0 程序从原来的内存空间中取得想要的字符串”overflow!”。所以 do0 程序应该放在一段不会被覆盖的空间中。</p>
+<p>正确程序如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">    start: mov ax,cs</span><br><span class="line">           mov ds,ax                          ; 将 cs 和 ds 关联</span><br><span class="line">           mov si,offset do0                  ; 设置 ds:si 指向源地址</span><br><span class="line"></span><br><span class="line">           mov ax,0</span><br><span class="line">           mov es,ax</span><br><span class="line">           mov di,200h                        ; 设置 es:di 指向目的地址</span><br><span class="line"></span><br><span class="line">           mov cx,offset do0end-offset do0    ; 设置 cx 为传输长度</span><br><span class="line"></span><br><span class="line">           cld                                ; 设置传输方向为正</span><br><span class="line">           rep movsb</span><br><span class="line"></span><br><span class="line">           设置中断向量表</span><br><span class="line"></span><br><span class="line">           mov ax,4c00h</span><br><span class="line">           int 21h</span><br><span class="line"></span><br><span class="line">      do0: jmp short do0start</span><br><span class="line">           db <span class="string">&quot;overflow!&quot;</span></span><br><span class="line">           </span><br><span class="line"> do0start: mov ax,cs</span><br><span class="line">           mov ds,ax</span><br><span class="line">           mov si,202h</span><br><span class="line"></span><br><span class="line">           mov ax,0b800h</span><br><span class="line">           mov es,ax                         ; 设置目的段地址</span><br><span class="line">           mov di,12*160+36*2                ; 设置 es:di 指向显存空间的中间位置</span><br><span class="line"></span><br><span class="line">           mov cx,9                          ; 设置 cx 为字符串长度</span><br><span class="line">        s: mov al,[si]                       ; 将 ds:si 的值传给 al</span><br><span class="line">           mov es:[di],al                    ; 将 al 的值传给 es:di</span><br><span class="line">           inc si</span><br><span class="line">           add di,2                          ; 每个字符在显存中占两个字节</span><br><span class="line">           loop s</span><br><span class="line"></span><br><span class="line">           mov ax,4c00h</span><br><span class="line">           int 21h</span><br><span class="line"></span><br><span class="line">   do0end: nop                               ; nop 空操作指令</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置中断向量"><a href="#设置中断向量" class="headerlink" title="设置中断向量"></a>设置中断向量</h2><p>0 号表项的地址为 0:0，其中 0:0 字单元存放偏移地址，0:2 字单元存放段地址。程序如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mov ax,0</span><br><span class="line">mov es,ax</span><br><span class="line">mov word ptr es:[0*4],200h</span><br><span class="line">mov word ptr es:[0*4+2],0</span><br></pre></td></tr></table></figure>
+
+<h2 id="最终程序"><a href="#最终程序" class="headerlink" title="最终程序"></a>最终程序</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">    start: mov ax,cs</span><br><span class="line">           mov ds,ax                         ; 将 cs 和 ds 关联</span><br><span class="line">           mov si,offset do0                 ; 设置 ds:si 指向源地址</span><br><span class="line"></span><br><span class="line">           mov ax,0</span><br><span class="line">           mov es,ax</span><br><span class="line">           mov di,200h                       ; 设置 es:di 指向目的地址</span><br><span class="line"></span><br><span class="line">           mov cx,offset do0end-offset do0   ; 设置 cx 为传输长度</span><br><span class="line"></span><br><span class="line">           cld                               ; 设置传输方向为正</span><br><span class="line">           rep movsb</span><br><span class="line"></span><br><span class="line">           mov ax,0</span><br><span class="line">		   mov es,ax</span><br><span class="line">		   mov word ptr es:[0*4],200h	    ; 设置0号中断向量表的偏移地址为 200h</span><br><span class="line">		   mov word ptr es:[0*4+2],0	     ; 设置0号中断向量表的段地址为 0</span><br><span class="line"></span><br><span class="line">           mov ax,4c00h</span><br><span class="line">           int 21h</span><br><span class="line"></span><br><span class="line">      do0: jmp short do0start</span><br><span class="line">           db <span class="string">&quot;overflow!&quot;</span>				     ; 这是伪指令，CPU不能执行。所以使用跳转指令，直接跳到 do0start。而这部分代码正好被编译器执行，并写到内存中。</span><br><span class="line">           </span><br><span class="line"> do0start: mov ax,cs</span><br><span class="line">           mov ds,ax</span><br><span class="line">           mov si,202h</span><br><span class="line"></span><br><span class="line">           mov ax,0b800h</span><br><span class="line">           mov es,ax                         ; 设置目的段地址</span><br><span class="line">           mov di,12*160+36*2                ; 设置 es:di 指向显存空间的中间位置</span><br><span class="line"></span><br><span class="line">           mov cx,9                          ; 设置 cx 为字符串长度</span><br><span class="line">        s: mov al,[si]                       ; 将 ds:si 的值传给 al</span><br><span class="line">           mov es:[di],al                    ; 将 al 的值传给 es:di</span><br><span class="line">           inc si</span><br><span class="line">           add di,2			              ; 一个字符（正常的 1 byte）在显存中占两个字节,第一个低字节是字符的ASCII码.第二个高字节是字符的属性.</span><br><span class="line">           loop s</span><br><span class="line"></span><br><span class="line">           mov ax,4c00h</span><br><span class="line">           int 21h</span><br><span class="line"></span><br><span class="line">   do0end: nop      ; nop 空操作指令</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h1 id="单步中断"><a href="#单步中断" class="headerlink" title="单步中断"></a>单步中断</h1><p>CPU 执行一条指令之后，如果检测到标志寄存器的 TF 位为 1，则产生单步中断，引发中断过程。单步中断的中断类型码为 1，则它所引发的中断过程如下：</p>
+<ol>
+<li>取得中断类型码1</li>
+<li>标志寄存器入栈，TF、IF 设置为 0</li>
+<li>CS、IP 入栈</li>
+<li>(IP)&#x3D;(1*4)，(CS)&#x3D;(1*4+2)</li>
+</ol>
+<p>如上所述，如果 TF&#x3D;1，则执行一条指令后，CPU 就要转去执行 1 号中断处理程序。这个就是 Debug 的 t 命令运行机制。当使用 T 命令执行指令时，Debug 将 TF 设置为 1，使得 CPU 工作于单步中断方式下，则在 CPU 执行完这条指令后就引发单步中断，执行单步中断的中断处理程序，所有寄存器的内容被显示在屏幕上，并且等待输入命令。</p>
+<p>但是如果在执行单步中断程序之前 TF&#x3D;1 则 CPU 在执行完中断程序的第一条指令后将引发单步中断，此时 TF 仍然为 1，执行完中断程序的第一条指令后又引发单步中断，由此程序会进入死循环状态。为了解决这个问题，所以再执行单步中断之前 TF 要先设为 0。</p>
+<h1 id="响应中断的特殊情况"><a href="#响应中断的特殊情况" class="headerlink" title="响应中断的特殊情况"></a>响应中断的特殊情况</h1><p>一般情况下，CPU 执行完当前指令后，如果检测到中断信息，就响应中断，引发中断过程。但是有些情况，即便发生中断，也不会被响应，不产生中断过程。</p>
+<p>就比如说：SS:SP </p>
+<p>首先 SS:SP 必须要一起使用，指向栈顶。如果设置完 SS 后发生了中断，引发了中断过程，要在栈中压入标志寄存器、CS 和 IP 的值。而导致 SS 改变 SP 未改变。此时 SS:SP 指向的不是正确的栈顶，将会引起错误。所以 CPU 在执行完设置 SS 指令后，不响应中断，不引发中断过程。</p>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/shatty/article/details/929166" >直接写显存显示字符串<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/yitian20000/article/details/5767328?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.edu_weight&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.edu_weight" >直接写显存 0b800h 显示 字符串<i class="fas fa-external-link-alt"></i></a></p>
+
+            
+        </div>
+        <div class="page-template-comments">
+            
+        </div>
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

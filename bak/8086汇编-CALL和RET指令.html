@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            8086汇编-CALL和RET指令 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="page-template-container">
+        
+        
+        <div class="page-template-content markdown-body">
+            
+                <h1 id="ret-和-retf"><a href="#ret-和-retf" class="headerlink" title="ret 和 retf"></a>ret 和 retf</h1><p>ret 指令用栈中的数据，修改 IP 的内容，从而实现近转移；<br>retf 指令用栈中的数据，修改 CS 和 IP 的内容，从而实现远转移。</p>
+<p>CPU 执行 ret 指令时，进行下面两部操作：</p>
+<ol>
+<li><p>(IP)&#x3D;((ss)*16+(sp))</p>
+</li>
+<li><p>(sp)&#x3D;(sp)+2</p>
+</li>
+</ol>
+<p>CPU 执行 retf 指令时，进行下面 4 步操作：</p>
+<ol>
+<li><p>(IP)&#x3D;((ss)*16+(sp))</p>
+</li>
+<li><p>(sp)&#x3D;(sp)+2</p>
+</li>
+<li><p>(CS)&#x3D;((ss)*16+(sp))</p>
+</li>
+<li><p>(sp)&#x3D;(sp)+2</p>
+</li>
+</ol>
+<p>CPU 执行 ret 指令时，相当于进行：<br>pop IP</p>
+<p>CPU 执行 retf 指令时，相当于进行：<br>pop IP<br>pop CS</p>
+<h1 id="call-指令"><a href="#call-指令" class="headerlink" title="call 指令"></a>call 指令</h1><p>CPU 执行 call 指令时，进行两步操作：</p>
+<ol>
+<li><p>将当前的 IP 或 CS 和 压入栈中；</p>
+</li>
+<li><p>转移</p>
+</li>
+</ol>
+<p>call 指令不能实现短转移，除此之外，call 指令实现转移的方法和 jmp 指令的原理相同。</p>
+<h2 id="根据位移进行转移的-call-指令"><a href="#根据位移进行转移的-call-指令" class="headerlink" title="根据位移进行转移的 call 指令"></a>根据位移进行转移的 call 指令</h2><p>call 标号（将当前 IP 的值压入栈中，然后转移到标号处执行指令）</p>
+<p>CPU 执行 “call 标号” 时，相当于进行：<br>push IP<br>jmp near ptr 标号</p>
+<h2 id="根据目的地址转移的-call-指令"><a href="#根据目的地址转移的-call-指令" class="headerlink" title="根据目的地址转移的 call 指令"></a>根据目的地址转移的 call 指令</h2><p>“call far ptr 标号” 实现的是段间转移。</p>
+<p>CPU 执行 “call far ptr 标号” 时，相当于进行：<br>push cs<br>push IP<br>call far ptr 标号</p>
+<h2 id="转移地址在寄存器中的-call-指令"><a href="#转移地址在寄存器中的-call-指令" class="headerlink" title="转移地址在寄存器中的 call 指令"></a>转移地址在寄存器中的 call 指令</h2><p>指令格式：call 16 位 reg</p>
+<p>CPU 执行 “call 16 位 reg” 时，相当于进行：<br>push IP<br>jmp 16 位 reg</p>
+<h2 id="转移地址在内存中的-call-指令"><a href="#转移地址在内存中的-call-指令" class="headerlink" title="转移地址在内存中的 call 指令"></a>转移地址在内存中的 call 指令</h2><p>转移地址在内存中的 call 指令有两种格式。</p>
+<ol>
+<li>call word ptr 内存单元地址</li>
+</ol>
+<p>CPU 执行 “call word ptr 内存单元地址”时，相当于进行：<br>push IP<br>jmp  word ptr 内存单元地址</p>
+<ol start="2">
+<li>call dword ptr 内存单元地址<br>CPU 执行 “call dword ptr 内存单元地址”时，相当于进行：<br>push CS<br>push IP<br>jmp dword ptr 内存单元地址</li>
+</ol>
+<h2 id="call-和-ret-的配合使用"><a href="#call-和-ret-的配合使用" class="headerlink" title="call 和 ret 的配合使用"></a>call 和 ret 的配合使用</h2><p>下面的程序返回前，bx 中的值是多少？</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">  start: mov ax,1</span><br><span class="line">         mov cx,3</span><br><span class="line">         call s</span><br><span class="line">         mov bx,ax</span><br><span class="line">         mov ax,4c00h</span><br><span class="line">         int 21h</span><br><span class="line">      s: add ax,ax</span><br><span class="line">         loop s</span><br><span class="line">         ret</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/09/02/EO2thXljafyn7Ng.png"
+                      alt="142.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/09/02/eI1OabLZofyNXlS.png"
+                      alt="143.png"
+                ></p>
+<ol>
+<li><p>当执行 <code>call s</code> 执行时，会将 IP 压入栈中，然后再跳转，需要注意的是压入栈的 IP 是 call 下一条指令的 IP。也就是说此时压入栈的 IP，指向的是指令 <code>mov ax,bx</code>。</p>
+</li>
+<li><p>ret 指令执行时，会将栈中的 IP 拿出，并跳转到相应的位置。也就是说 ret 执行后，跳转到指令 <code>mov bx,ax</code>。</p>
+</li>
+</ol>
+<blockquote>
+<p>这个也就是子程序（函数调用）的运行机制。先跳转执行子函数，子函数执行完成后再跳转执行父函数并结束运行。同时也因此实现了多个相互联系、功能独立的子程序来解决一个复杂的问题（模块化程序的设计）。</p>
+</blockquote>
+<h2 id="mul-指令"><a href="#mul-指令" class="headerlink" title="mul 指令"></a>mul 指令</h2><p>mul 是乘法指令，使用 mul 做乘法的时候，注意以下两点：</p>
+<ol>
+<li><p>两个相乘的数：两个相乘的数，要么都是 8 位，要么都是 16 位。如果是 8 位，一个默认放在 AL 中，另一个放在 8 位 reg 或内存字节单元中；如果是 16 位，一个默认在 AX 中，另一个放在 16 位 reg 或内存单元中。</p>
+</li>
+<li><p>结果：如果是 8 位乘法，结果默认放在 AX 中；如果是 16 位乘法，结果高位默认在 DX 中存放，低位在 AX 中存放。</p>
+</li>
+</ol>
+<p>格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mul reg</span><br><span class="line">mul 内存单元</span><br></pre></td></tr></table></figure>
+<p>内存单元可以用不同的寻址方式，比如： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mul byte ptr ds:[0]</span><br><span class="line">mul word ptr ds:[bx+si+8]</span><br></pre></td></tr></table></figure>
+
+<h1 id="模块化程序设计"><a href="#模块化程序设计" class="headerlink" title="模块化程序设计"></a>模块化程序设计</h1><p>call 与 ret 指令共同支持了汇编语言编程中的模块化设计。在实际编程中，程序的模块化是必不可少的。因为实现的问题比较复杂，对现实问题进行分析时，把它转化成相互联系不同层次的子问题，是必须解决的方法。而 call 与 ret 指令对这种分析方法提供了程序实现上的支持。利用 call 和 ret 指令，我们可以用简捷的方法实现多个相互联系、功能独立的子程序来解决一个复杂的问题。</p>
+<h2 id="参数和结果传递的问题"><a href="#参数和结果传递的问题" class="headerlink" title="参数和结果传递的问题"></a>参数和结果传递的问题</h2><p>子程序需要根据提供的参数处理一定事务，处理后，将结果（返回值）提供给调用者。</p>
+<p>比如，设计一个子程序，可以根据提供的 N，来计算 N 的 3 次方。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#说明：计算 N 的 3 次方</span></span><br><span class="line"><span class="comment">#参数：(BX)=N</span></span><br><span class="line"><span class="comment">#结果：（DX:AX）=N^3</span></span><br><span class="line"></span><br><span class="line">cube:mov ax,bx</span><br><span class="line">     mul bx</span><br><span class="line">     mul bx</span><br><span class="line">     ret</span><br></pre></td></tr></table></figure>
+
+<p>编程，计算 data 段中第一组数据的 3 次方，结果保存在后面一组的 dword 单元中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">datta segment</span><br><span class="line">	dw 1,2,3,4,5,6,7,8</span><br><span class="line">	<span class="built_in">dd</span> 0,0,0,0,0,0,0,0</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">	start:mov ax,data</span><br><span class="line">		  mov ds,ax</span><br><span class="line">		  mov si,0		<span class="comment">#ds:si 指向第一组 word 单元</span></span><br><span class="line">		  mov di,16		<span class="comment">#ds:di 指向第二组 dword 单元</span></span><br><span class="line">		  </span><br><span class="line">		  mov cx,8</span><br><span class="line">		s:mov bx,[si]</span><br><span class="line">		  call cube</span><br><span class="line">		  mov [di],ax</span><br><span class="line">		  mov [di].2,dx</span><br><span class="line">		  add si,2		<span class="comment">#ds:si 指向下一个 word 单元</span></span><br><span class="line">		  add si,4		<span class="comment">#ds:di 指向下一个 dword 单元</span></span><br><span class="line">		  loop s</span><br><span class="line">		  </span><br><span class="line">		  mov ax,4c00h</span><br><span class="line">		  int 21h</span><br><span class="line">		  </span><br><span class="line">	cube: mov ax,bx</span><br><span class="line">		  mul bx</span><br><span class="line">		  mul bx</span><br><span class="line">		  ret</span><br><span class="line">		 </span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+            
+        </div>
+        <div class="page-template-comments">
+            
+        </div>
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

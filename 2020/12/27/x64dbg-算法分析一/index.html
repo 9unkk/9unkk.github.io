@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            x64dbg-算法分析一 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">x64dbg-算法分析一</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2020-12-27 15:26:28</span>
+        <span class="mobile">2020-12-27 15:26</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E9%80%86%E5%90%91/">逆向</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="目标程序"><a href="#目标程序" class="headerlink" title="目标程序"></a>目标程序</h1><p>程序下载：<a class="link"   target="_blank" rel="noopener" href="https://9unkk.github.io//Download/Basic/CRACKME.7z" >CRACKME<i class="fas fa-external-link-alt"></i></a></p>
+<p>解压密码：9unk</p>
+<p>任务目标：分析程序算法部分，并写出注册机程序。</p>
+<h1 id="观察程序"><a href="#观察程序" class="headerlink" title="观察程序"></a>观察程序</h1><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/27/zrqR5u4P3cs8Sod.jpg"
+                      alt="45.jpg"
+                ></p>
+<h1 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h1><p>首先加载程序到入口点</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/suqZTOm932AYIrp.jpg"
+                      alt="1.jpg"
+                ></p>
+<p>“Ctrl+N” 查看程序的 API，并对 GetDlgItemTextA 设置断点</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/qI3BA4O5kzuW26D.jpg"
+                      alt="2.jpg"
+                ></p>
+<p>我们继续运行程序，此时程序停在断点处</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/Nd7oZ1OSDzQFJtM.jpg"
+                      alt="3.jpg"
+                ></p>
+<p>我们再回头回顾一下，GetDlgItemTextA 函数的参数值和返回值。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/aJ2MQvhPYkZDF1b.jpg"
+                      alt="5.jpg"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/SzKvyuo6TwmpRdl.jpg"
+                      alt="6.jpg"
+                ></p>
+<p>“Ctrl+F9” 运行程序到返回，看到此时程序获取了 name “9unk”。我们可以注意到 eax 的返回值是 4</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/xbO7TZyrLsXPGuz.jpg"
+                      alt="4.jpg"
+                ></p>
+<p>“F8” 单步步过，查看程序对 name 是如何处理的。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/YuEXLslwgZiQnIV.jpg"
+                      alt="7.jpg"
+                ></p>
+<br>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cmp eax,<span class="number">1</span>   <span class="comment">// eax - 1</span></span><br><span class="line">mov dword ptr ss:[ebp+<span class="number">0x10</span>], <span class="number">0x3EB</span>  <span class="comment">// 将 3EB 传送到 [ebp+10]</span></span><br><span class="line">jb <span class="number">0x004012A1</span>   <span class="comment">// 如果 eax &lt; 1 就跳转</span></span><br></pre></td></tr></table></figure>
+
+<p>很明显上面这段就是在判断你有没有输入 Name，如果没有就跳转报错。</p>
+<p>我们继续按 “F9” 运行到下一个断点，然后再按 “Ctrl+F9” 运行到返回。此时可以看到这里获取了 password，eax 返回值为 6</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/8DhbJjP6TokzdZN.jpg"
+                      alt="8.jpg"
+                ></p>
+<p>从程序的角度出发，程序会获取用户输入的错误的序列号与正确的序列号进行比较，所以我们可以对错误的序列号设置内存访问断点，看看程序哪些地方使用了。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/VKU8Z5yfrbtnJDR.jpg"
+                      alt="9.jpg"
+                ></p>
+<p>继续 “F9” 运行程序，此时程序停在了如下位置</p>
+<p>我们开始分析程序</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov al, byte ptr ds:[esi]   <span class="comment">// 把 esi 的第一个字节传给 al</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/iMqPLfJ7k48ZbEW.jpg"
+                      alt="11.jpg"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">test al, al     <span class="comment">// 逻辑 and 运算，判断 al 是否等于零。也就是判断输入值是否为空</span></span><br><span class="line">je <span class="number">0x0040139C</span>   <span class="comment">// 值为空就跳出循环</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到如值为空，程序就会跳转到如下 call 指令处</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/DzB1JKcI63AvCmq.jpg"
+                      alt="12.jpg"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cmp al, <span class="number">0x41</span>    <span class="comment">// al的值 和 0x41（字母 A）进行比较</span></span><br><span class="line">jb <span class="number">0x004013AC</span>   <span class="comment">// al的值 低于 0x41 就跳转</span></span><br><span class="line">cmp al, <span class="number">0x5A</span>    <span class="comment">// al的值 和 0x5A（字母 Z）进行比较</span></span><br><span class="line">jae <span class="number">0x00401394</span>  <span class="comment">// al的值 高于等于 0x5A 就跳转</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到值小于字母 A 就会跳转到如下位置。可以看到这是一个 MessageBox 错误弹窗</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/kWzEVrtwMehUGF2.jpg"
+                      alt="13.jpg"
+                ></p>
+<p>如果值大于等于字母 Z 就会跳到如下位置。可以看到这是一个正常的循环。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/BTa8i54mEndQXWR.jpg"
+                      alt="14.jpg"
+                ></p>
+<p>从上面的这两个跳转可以判断，我们输入的 name 必须是小写的字母。</p>
+<p>这里可以看到我输入的 9（0x39）肯定小于 0x41，所以会跳转报错，如下图示所示</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/8TxIeHVz3bt1frc.jpg"
+                      alt="15.jpg"
+                ></p>
+<p>我们重新输入，再进行测试。按照之前的步骤，单步步过到 call 指令处</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/D8kXL4a3cHPdzWR.jpg"
+                      alt="16.jpg"
+                ></p>
+<p>按 “F7” 步入 call 指令，可以看到这个 call 指令只进行了两个操作。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/7sUcinCp9w1oaqH.jpg"
+                      alt="17.jpg"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmp al,<span class="number">20</span>   <span class="comment">// al - 20</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到 al 寄存器的值变成了 0x4A（字母 J）</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/GRloup6wJk3bHT8.jpg"
+                      alt="18.jpg"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov byte ptr ds:[esi], al   <span class="comment">// 把原来 al 的值替换成 0x4A</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到这里把小写字母 j，转换成大写字母 J</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/p5XWvlONZgxRI4u.jpg"
+                      alt="20.jpg"
+                ></p>
+<p>我们继续执行，可以看到这里第一个 name 字符已经结束循环了</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/CcDHx54bhfMmTq3.jpg"
+                      alt="21.jpg"
+                ></p>
+<p>我们继续运行直到所有字符循环结束，跳到如下位置</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/GxsVWmSzQKHJAM5.jpg"
+                      alt="22.jpg"
+                ></p>
+<p>继续 “F7” 步入，查看 call 指令</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/ZdfvNBiwjhWQp1I.jpg"
+                      alt="23.jpg"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xor edi, edi    <span class="comment">// edi 置零</span></span><br><span class="line">xor ebx, ebx    <span class="comment">// ebx 置零</span></span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/1GUzLD6YjfhPXMZ.jpg"
+                      alt="24.jpg"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov bl, byte ptr ds:[esi]   <span class="comment">// 将 esi 存入 bl 中</span></span><br><span class="line">test bl, bl                 <span class="comment">// 测试 bl 是否等于零</span></span><br><span class="line">je <span class="number">0x004013D1</span>               <span class="comment">// 如果等于零就跳出循环</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到此时的 bl 肯定不会等于零，所以就不会跳转</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/wBxMIf9QKeC648L.jpg"
+                      alt="25.jpg"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">add edi, ebx    <span class="comment">// edi = ebx + edi，此时 edi = 0x4A</span></span><br><span class="line">inc esi         <span class="comment">// esi + 1</span></span><br><span class="line">jmp <span class="number">0x004013C6</span>  <span class="comment">// 继续循环</span></span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/45ZJnuPkS19pCiN.jpg"
+                      alt="26.jpg"
+                ></p>
+<p>继续单步执行，可以看到 esi 存储着 “JUNK” 的累积值 0x138</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/dFemCSE7oA3bDxR.jpg"
+                      alt="27.jpg"
+                ></p>
+<p>把上面的 call 指令运行结束后，我们继续运行程序</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/tG5qNzshK7ZMnOV.jpg"
+                      alt="29.jpg"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">xor edi, <span class="number">0x5678</span>     <span class="comment">// edi 异或 0x5678</span></span><br><span class="line">mov eax, edi        <span class="comment">// eax = edi</span></span><br><span class="line">jmp <span class="number">0x004013C1</span>      <span class="comment">// 无条件跳转</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/DdzIysPSgTLAQvJ.jpg"
+                      alt="30.jpg"
+                ></p>
+<p>我们继续运行程序到入如下位置</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/t1RzBKPOfAw6423.jpg"
+                      alt="31.jpg"
+                ></p>
+<p>继续步入到 call 指令</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/xJn8rsQu2k7CSPf.jpg"
+                      alt="32.jpg"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 置零操作</span></span><br><span class="line">xor eax, eax</span><br><span class="line">xor edi, edi</span><br><span class="line">xor ebx, ebx</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/HnaOIeuog8KkwMS.jpg"
+                      alt="33.jpg"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mov esi, dword ptr ss:[esp+<span class="number">0x4</span>]     <span class="comment">// 将错误的序列号传到 esi</span></span><br><span class="line">mov al, <span class="number">0xA</span>                         <span class="comment">// 将 0xA 传入 al 寄存器</span></span><br><span class="line">mov bl, byte ptr ds:[esi]           <span class="comment">// 将 esi 的第一个字符传到 bl 寄存器</span></span><br><span class="line">test bl, bl                         <span class="comment">// 测试 bl 是否等于零</span></span><br><span class="line">je <span class="number">0x004013F5</span>                       <span class="comment">// bl 等于零就跳出循环</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/vHPBT58SgeINtDC.jpg"
+                      alt="34.jpg"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sub bl, <span class="number">0x30</span>    <span class="comment">// bl - 30</span></span><br><span class="line">imul edi, eax   <span class="comment">// edi = edi * eax（值存储在edi，之前的注释写错了）；此时 edi 刚初始化等于零；edi = 0 * 0xA = 0</span></span><br><span class="line">add edi, ebx    <span class="comment">// edi = edi + ebx；edi = 0 + 1 = 1</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/EfHdeutBQpVCkLT.jpg"
+                      alt="35.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/QNJf7lE1khtHqST.jpg"
+                      alt="36.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/auAvtKMTkpJ37gP.jpg"
+                      alt="37.jpg"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 结束第一个循环</span></span><br><span class="line">inc esi</span><br><span class="line">jmp <span class="number">0x004013E2</span></span><br></pre></td></tr></table></figure>
+
+<p>我们继续第二次循环查看结果</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原 edi=1，eax 为固定值 A</span></span><br><span class="line">imul edi, eax   <span class="comment">// edi = 0x1 * 0xA = 0xA</span></span><br><span class="line">add edi, ebx    <span class="comment">// edi = 2 + 0xA = 0xc</span></span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/qHEjDY1k7grZmsA.jpg"
+                      alt="38.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/o2rTCtE6FNUVW7y.jpg"
+                      alt="39.jpg"
+                ></p>
+<p>循环结束后查看 edi 的值</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/MUcGFBYZK4z12kO.jpg"
+                      alt="40.jpg"
+                ></p>
+<blockquote>
+<p>概括来说上面的计算就是：把十六进制 “123456” 序列号转换成十进制 “123456”</p>
+</blockquote>
+<p>下一条指令是 EDI 异或 1234，然后再传给 ebx</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/Y6oA3dNburRxnKf.jpg"
+                      alt="41.jpg"
+                ></p>
+<p>可以看到下面有个比较和跳转指令，这里是把 name xor 5678 和 serial xor 1234 的值进行比较。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/lotv1zE5LuareMH.jpg"
+                      alt="42.jpg"
+                ></p>
+<p>所以我们现在以 junk 这个 name 先计算出它的 serial</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">5740</span> = serial xor <span class="number">1234</span>  <span class="comment">// 这是十六进制运算</span></span><br><span class="line">serial = <span class="number">5740</span> xor <span class="number">1234</span></span><br><span class="line">serial 再转换成十进制</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/8SjJpnwedo356BL.jpg"
+                      alt="43.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/26/eXPOCmDR1cLH2Bq.jpg"
+                      alt="44.jpg"
+                ></p>
+<h1 id="注册机编写"><a href="#注册机编写" class="headerlink" title="注册机编写"></a>注册机编写</h1><ol>
+<li>name - 0x20；然后再一次把每个字符串的值相加；最后再 xor 0x5678</li>
+<li>serial &#x3D; name xor 0x1234</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">   程序名：CrackMe.c，此程序是 CrackMe v1.0 的注册机</span></span><br><span class="line"><span class="comment">   作者：9unk   日期：20201226</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> size 21         <span class="comment">// 定义一个 size 常量</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="type">char</span> str[size];</span><br><span class="line">        <span class="type">int</span> i,n=<span class="number">0</span>,sum=<span class="number">0</span>,name=<span class="number">0</span>,serial=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">memset</span>(str,<span class="number">0</span>,<span class="keyword">sizeof</span>(str));      <span class="comment">// 定义初始化数据</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;输入用户名：&quot;</span>);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,&amp;str);                       <span class="comment">// 获取用户输入</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="built_in">strlen</span>(str);i++)</span><br><span class="line">        &#123;</span><br><span class="line">                n=str[i];       <span class="comment">// 将数组转换成十进制</span></span><br><span class="line">                n=n<span class="number">-0x20</span>;       <span class="comment">// 将数值值减 0x20（十六进制）</span></span><br><span class="line">                sum=sum+n;      <span class="comment">// 将值存到 sum（十进制） 中</span></span><br><span class="line">        &#125;</span><br><span class="line">        name=sum ^ <span class="number">0x5678</span>;              <span class="comment">// name xor 0x5678</span></span><br><span class="line">        serial= name ^ <span class="number">0x1234</span>;  <span class="comment">// serial xor 0x1234</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;你的 serial 是：%d\n&quot;</span>,serial);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<p>编程比较烂，就先这样，能用就行。</p>
+</blockquote>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a class="link"   target="_blank" rel="noopener" href="http://ricardonarvaja.info/" >《使用 Ollydbg 从零开始 Cracking》<i class="fas fa-external-link-alt"></i></a></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：x64dbg-算法分析一</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2020-12-27 15:26:28</li>
+        <li>
+            本文链接：https://9unkk.github.io/2020/12/27/x64dbg-算法分析一/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E9%80%86%E5%90%91/">#逆向</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2020/12/29/x64dbg-%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E4%BA%8C/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">x64dbg-算法分析二.md</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2020/12/21/x64dbg-%E7%A1%AC%E4%BB%B6%E7%BC%96%E7%A0%81%E5%BA%8F%E5%88%97%E5%8F%B7%E5%AF%BB%E8%B8%AA%E4%BA%94/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">x64dbg-硬件编码序列号寻踪五</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.</span> <span class="nav-text">目标程序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%82%E5%AF%9F%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.</span> <span class="nav-text">观察程序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90"><span class="nav-number">3.</span> <span class="nav-text">算法分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E6%9C%BA%E7%BC%96%E5%86%99"><span class="nav-number">4.</span> <span class="nav-text">注册机编写</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">5.</span> <span class="nav-text">reference</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            C&amp;汇编基础-if语句 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">C&amp;汇编基础-if语句</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2021-04-01 14:18:28</span>
+        <span class="mobile">2021-04-01 14:18</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E9%80%86%E5%90%91/">逆向</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="if语句逆向分析"><a href="#if语句逆向分析" class="headerlink" title="if语句逆向分析"></a>if语句逆向分析</h1><ol>
+<li>源码</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Function</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> a=<span class="number">1</span>;</span><br><span class="line">	<span class="type">int</span> b=<span class="number">2</span>;</span><br><span class="line">	<span class="type">int</span> max=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(a&lt;b)</span><br><span class="line">	&#123;</span><br><span class="line">		max=b;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>反汇编</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00401020</span>   push        ebp</span><br><span class="line"><span class="number">00401021</span>   mov         ebp,esp</span><br><span class="line"><span class="number">00401023</span>   sub         esp,<span class="number">4</span>Ch</span><br><span class="line"><span class="number">00401026</span>   push        ebx</span><br><span class="line"><span class="number">00401027</span>   push        esi</span><br><span class="line"><span class="number">00401028</span>   push        edi</span><br><span class="line"><span class="number">00401029</span>   lea         edi,[ebp<span class="number">-4</span>Ch]</span><br><span class="line"><span class="number">0040102</span>C   mov         ecx,<span class="number">13</span>h</span><br><span class="line"><span class="number">00401031</span>   mov         eax,<span class="number">0</span>CCCCCCCCh</span><br><span class="line"><span class="number">00401036</span>   rep stos    dword ptr [edi]</span><br><span class="line"></span><br><span class="line"><span class="number">00401038</span>   mov         dword ptr [ebp<span class="number">-4</span>],<span class="number">1</span></span><br><span class="line"><span class="number">0040103F</span>   mov         dword ptr [ebp<span class="number">-8</span>],<span class="number">2</span></span><br><span class="line"><span class="number">00401046</span>   mov         dword ptr [ebp<span class="number">-0</span>Ch],<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="number">0040104</span>D   mov         eax,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">00401050</span>   cmp         eax,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">00401053</span>   jge         Function+<span class="number">3B</span>h (<span class="number">0040105b</span>)</span><br><span class="line"><span class="number">00401055</span>   mov         ecx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">00401058</span>   mov         dword ptr [ebp<span class="number">-0</span>Ch],ecx</span><br><span class="line"></span><br><span class="line"><span class="number">0040105B</span>   pop         edi</span><br><span class="line"><span class="number">0040105</span>C   pop         esi</span><br><span class="line"><span class="number">0040105</span>D   pop         ebx</span><br><span class="line"><span class="number">0040105</span>E   mov         esp,ebp</span><br><span class="line"><span class="number">00401060</span>   pop         ebp</span><br></pre></td></tr></table></figure>
+
+<p>if 语句的表现形式：先用 cmp 指令比较影响标志位，然后再使用 JCC 指令跳转到程序结束的位置。这里的跳转指令 jge(jmp greater or equal) 表示 “大于等于就跳转”，与源码中的判断是相反的。</p>
+<h2 id="连续的-if-语句"><a href="#连续的-if-语句" class="headerlink" title="连续的 if 语句"></a>连续的 if 语句</h2><ol>
+<li>源码</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Function</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> a=<span class="number">1</span>;</span><br><span class="line">	<span class="type">int</span> b=<span class="number">2</span>;</span><br><span class="line">	<span class="type">int</span> max=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(a&lt;b)</span><br><span class="line">	&#123;</span><br><span class="line">		max=b;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(a&gt;b)</span><br><span class="line">	&#123;</span><br><span class="line">		max=a;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>反汇编</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00401020</span>   push        ebp</span><br><span class="line"><span class="number">00401021</span>   mov         ebp,esp</span><br><span class="line"><span class="number">00401023</span>   sub         esp,<span class="number">4</span>Ch</span><br><span class="line"><span class="number">00401026</span>   push        ebx</span><br><span class="line"><span class="number">00401027</span>   push        esi</span><br><span class="line"><span class="number">00401028</span>   push        edi</span><br><span class="line"><span class="number">00401029</span>   lea         edi,[ebp<span class="number">-4</span>Ch]</span><br><span class="line"><span class="number">0040102</span>C   mov         ecx,<span class="number">13</span>h</span><br><span class="line"><span class="number">00401031</span>   mov         eax,<span class="number">0</span>CCCCCCCCh</span><br><span class="line"><span class="number">00401036</span>   rep stos    dword ptr [edi]</span><br><span class="line"></span><br><span class="line"><span class="number">00401038</span>   mov         dword ptr [ebp<span class="number">-4</span>],<span class="number">1</span></span><br><span class="line"><span class="number">0040103F</span>   mov         dword ptr [ebp<span class="number">-8</span>],<span class="number">2</span></span><br><span class="line"><span class="number">00401046</span>   mov         dword ptr [ebp<span class="number">-0</span>Ch],<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="number">0040104</span>D   mov         eax,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">00401050</span>   cmp         eax,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">00401053</span>   jge         Function+<span class="number">3B</span>h (<span class="number">0040105b</span>)</span><br><span class="line"><span class="number">00401055</span>   mov         ecx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">00401058</span>   mov         dword ptr [ebp<span class="number">-0</span>Ch],ecx</span><br><span class="line"></span><br><span class="line"><span class="number">0040105B</span>   mov         edx,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">0040105</span>E   cmp         edx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">00401061</span>   jle         Function+<span class="number">49</span>h (<span class="number">00401069</span>)</span><br><span class="line"><span class="number">00401063</span>   mov         eax,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">00401066</span>   mov         dword ptr [ebp<span class="number">-0</span>Ch],eax</span><br><span class="line"></span><br><span class="line"><span class="number">00401069</span>   pop         edi</span><br><span class="line"><span class="number">0040106</span>A   pop         esi</span><br><span class="line"><span class="number">0040106B</span>   pop         ebx</span><br><span class="line"><span class="number">0040106</span>C   mov         esp,ebp</span><br><span class="line"><span class="number">0040106</span>E   pop         ebp</span><br><span class="line"><span class="number">0040106F</span>   ret</span><br></pre></td></tr></table></figure>
+
+<p>连续的 if 语句表现形式：如果不跳转就会执行完第一个判断，再执行第二个判断，如果跳转直接执行第二个判断。接着最后一个判断跳到程序结束位置。同样 JCC 判断指令和源码中的判断是相反的。</p>
+<h2 id="if…else…语句逆向分析"><a href="#if…else…语句逆向分析" class="headerlink" title="if…else…语句逆向分析"></a>if…else…语句逆向分析</h2><ol>
+<li>源码</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Function</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> a=<span class="number">1</span>;</span><br><span class="line">	<span class="type">int</span> b=<span class="number">2</span>;</span><br><span class="line">	<span class="type">int</span> max=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(a&lt;b)</span><br><span class="line">	&#123;</span><br><span class="line">		max=b;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		max=a;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>反汇编</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00401020</span>   push        ebp</span><br><span class="line"><span class="number">00401021</span>   mov         ebp,esp</span><br><span class="line"><span class="number">00401023</span>   sub         esp,<span class="number">4</span>Ch</span><br><span class="line"><span class="number">00401026</span>   push        ebx</span><br><span class="line"><span class="number">00401027</span>   push        esi</span><br><span class="line"><span class="number">00401028</span>   push        edi</span><br><span class="line"><span class="number">00401029</span>   lea         edi,[ebp<span class="number">-4</span>Ch]</span><br><span class="line"><span class="number">0040102</span>C   mov         ecx,<span class="number">13</span>h</span><br><span class="line"><span class="number">00401031</span>   mov         eax,<span class="number">0</span>CCCCCCCCh</span><br><span class="line"><span class="number">00401036</span>   rep stos    dword ptr [edi]</span><br><span class="line"></span><br><span class="line"><span class="number">00401038</span>   mov         dword ptr [ebp<span class="number">-4</span>],<span class="number">1</span></span><br><span class="line"><span class="number">0040103F</span>   mov         dword ptr [ebp<span class="number">-8</span>],<span class="number">2</span></span><br><span class="line"><span class="number">00401046</span>   mov         dword ptr [ebp<span class="number">-0</span>Ch],<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="number">0040104</span>D   mov         eax,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">00401050</span>   cmp         eax,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">00401053</span>   jge         Function+<span class="number">3</span>Dh (<span class="number">0040105</span>d)</span><br><span class="line"><span class="number">00401055</span>   mov         ecx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">00401058</span>   mov         dword ptr [ebp<span class="number">-0</span>Ch],ecx</span><br><span class="line"></span><br><span class="line"><span class="number">0040105B</span>   jmp         Function+<span class="number">43</span>h (<span class="number">00401063</span>)</span><br><span class="line"><span class="number">0040105</span>D   mov         edx,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">00401060</span>   mov         dword ptr [ebp<span class="number">-0</span>Ch],edx</span><br><span class="line"></span><br><span class="line"><span class="number">00401063</span>   pop         edi</span><br><span class="line"><span class="number">00401064</span>   pop         esi</span><br><span class="line"><span class="number">00401065</span>   pop         ebx</span><br><span class="line"><span class="number">00401066</span>   mov         esp,ebp</span><br><span class="line"><span class="number">00401068</span>   pop         ebp</span><br><span class="line"><span class="number">00401069</span>   ret</span><br></pre></td></tr></table></figure>
+
+<p>if…else 语句的表现形式：如果不跳转就会执行到 jmp 处，jmp 直接跳转到程序结束位置；如果跳转，则会直接跳过 jmp 直接执行后面的代码。第一个 JCC 跳转的地址前面是一个 jmp，可以判断是 if…else 语句</p>
+<h2 id="if…else-if…else逆向分析"><a href="#if…else-if…else逆向分析" class="headerlink" title="if…else if…else逆向分析"></a>if…else if…else逆向分析</h2><ol>
+<li>源码</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Function</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> a=<span class="number">1</span>;</span><br><span class="line">	<span class="type">int</span> b=<span class="number">2</span>;</span><br><span class="line">	<span class="type">int</span> max=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(a&lt;b)</span><br><span class="line">	&#123;</span><br><span class="line">		max=b;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(a&gt;b)</span><br><span class="line">	&#123;</span><br><span class="line">		max=a;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		b=a;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>反汇编</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00401020</span>   push        ebp</span><br><span class="line"><span class="number">00401021</span>   mov         ebp,esp</span><br><span class="line"><span class="number">00401023</span>   sub         esp,<span class="number">4</span>Ch</span><br><span class="line"><span class="number">00401026</span>   push        ebx</span><br><span class="line"><span class="number">00401027</span>   push        esi</span><br><span class="line"><span class="number">00401028</span>   push        edi</span><br><span class="line"><span class="number">00401029</span>   lea         edi,[ebp<span class="number">-4</span>Ch]</span><br><span class="line"><span class="number">0040102</span>C   mov         ecx,<span class="number">13</span>h</span><br><span class="line"><span class="number">00401031</span>   mov         eax,<span class="number">0</span>CCCCCCCCh</span><br><span class="line"><span class="number">00401036</span>   rep stos    dword ptr [edi]</span><br><span class="line"></span><br><span class="line"><span class="number">00401038</span>   mov         dword ptr [ebp<span class="number">-4</span>],<span class="number">1</span></span><br><span class="line"><span class="number">0040103F</span>   mov         dword ptr [ebp<span class="number">-8</span>],<span class="number">2</span></span><br><span class="line"><span class="number">00401046</span>   mov         dword ptr [ebp<span class="number">-0</span>Ch],<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="number">0040104</span>D   mov         eax,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">00401050</span>   cmp         eax,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">00401053</span>   jge         Function+<span class="number">3</span>Dh (<span class="number">0040105</span>d)</span><br><span class="line"><span class="number">00401055</span>   mov         ecx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">00401058</span>   mov         dword ptr [ebp<span class="number">-0</span>Ch],ecx</span><br><span class="line"></span><br><span class="line"><span class="number">0040105B</span>   jmp         Function+<span class="number">53</span>h (<span class="number">00401073</span>)</span><br><span class="line"><span class="number">0040105</span>D   mov         edx,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">00401060</span>   cmp         edx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">00401063</span>   jle         Function+<span class="number">4</span>Dh (<span class="number">0040106</span>d)</span><br><span class="line"><span class="number">00401065</span>   mov         eax,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">00401068</span>   mov         dword ptr [ebp<span class="number">-0</span>Ch],eax</span><br><span class="line"></span><br><span class="line"><span class="number">0040106B</span>   jmp         Function+<span class="number">53</span>h (<span class="number">00401073</span>)</span><br><span class="line"><span class="number">0040106</span>D   mov         ecx,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">00401070</span>   mov         dword ptr [ebp<span class="number">-8</span>],ecx</span><br><span class="line"></span><br><span class="line"><span class="number">00401073</span>   pop         edi</span><br><span class="line"><span class="number">00401074</span>   pop         esi</span><br><span class="line"><span class="number">00401075</span>   pop         ebx</span><br><span class="line"><span class="number">00401076</span>   mov         esp,ebp</span><br><span class="line"><span class="number">00401078</span>   pop         ebp</span><br><span class="line"><span class="number">00401079</span>   ret</span><br></pre></td></tr></table></figure>
+
+<p>if…else if…else表现形式：当每个条件跳转指令要跳转的地址前面都有 jmp 指令，而且 jmp 指令跳转的地址都是一样的（程序结束地址），说明这是一个 else if 语句。如果某个分支没有条件判断，则为 else 部分。</p>
+<h2 id="if…else-嵌套语句"><a href="#if…else-嵌套语句" class="headerlink" title="if…else 嵌套语句"></a>if…else 嵌套语句</h2><ol>
+<li>源码</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Function</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> a=<span class="number">1</span>;</span><br><span class="line">	<span class="type">int</span> b=<span class="number">2</span>;</span><br><span class="line">	<span class="type">int</span> c=<span class="number">3</span>;</span><br><span class="line">	<span class="type">int</span> max=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(a&lt;b)</span><br><span class="line">	&#123;</span><br><span class="line">		max=b;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>(b&lt;c)</span><br><span class="line">		&#123;</span><br><span class="line">			max=c;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			max=b;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		max=a;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>(b&gt;c)</span><br><span class="line">		&#123;</span><br><span class="line">			max=b;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			max=c;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>反汇编</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00401020</span>   push        ebp</span><br><span class="line"><span class="number">00401021</span>   mov         ebp,esp</span><br><span class="line"><span class="number">00401023</span>   sub         esp,<span class="number">50</span>h</span><br><span class="line"><span class="number">00401026</span>   push        ebx</span><br><span class="line"><span class="number">00401027</span>   push        esi</span><br><span class="line"><span class="number">00401028</span>   push        edi</span><br><span class="line"><span class="number">00401029</span>   lea         edi,[ebp<span class="number">-50</span>h]</span><br><span class="line"><span class="number">0040102</span>C   mov         ecx,<span class="number">14</span>h</span><br><span class="line"><span class="number">00401031</span>   mov         eax,<span class="number">0</span>CCCCCCCCh</span><br><span class="line"><span class="number">00401036</span>   rep stos    dword ptr [edi]</span><br><span class="line"></span><br><span class="line"><span class="number">00401038</span>   mov         dword ptr [ebp<span class="number">-4</span>],<span class="number">1</span></span><br><span class="line"><span class="number">0040103F</span>   mov         dword ptr [ebp<span class="number">-8</span>],<span class="number">2</span></span><br><span class="line"><span class="number">00401046</span>   mov         dword ptr [ebp<span class="number">-0</span>Ch],<span class="number">3</span></span><br><span class="line"><span class="number">0040104</span>D   mov         dword ptr [ebp<span class="number">-10</span>h],<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="number">00401054</span>   mov         eax,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">00401057</span>   cmp         eax,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">0040105</span>A   jge         Function+<span class="number">5</span>Ah (<span class="number">0040107</span>a)</span><br><span class="line"><span class="number">0040105</span>C   mov         ecx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">0040105F</span>   mov         dword ptr [ebp<span class="number">-10</span>h],ecx</span><br><span class="line"></span><br><span class="line"><span class="number">00401062</span>   mov         edx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">00401065</span>   cmp         edx,dword ptr [ebp<span class="number">-0</span>Ch]</span><br><span class="line"><span class="number">00401068</span>   jge         Function+<span class="number">52</span>h (<span class="number">00401072</span>)</span><br><span class="line"><span class="number">0040106</span>A   mov         eax,dword ptr [ebp<span class="number">-0</span>Ch]</span><br><span class="line"><span class="number">0040106</span>D   mov         dword ptr [ebp<span class="number">-10</span>h],eax</span><br><span class="line"></span><br><span class="line"><span class="number">00401070</span>   jmp         Function+<span class="number">58</span>h (<span class="number">00401078</span>)</span><br><span class="line"><span class="number">00401072</span>   mov         ecx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">00401075</span>   mov         dword ptr [ebp<span class="number">-10</span>h],ecx</span><br><span class="line"></span><br><span class="line"><span class="number">00401078</span>   jmp         Function+<span class="number">76</span>h (<span class="number">00401096</span>)</span><br><span class="line"><span class="number">0040107</span>A   mov         edx,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">0040107</span>D   mov         dword ptr [ebp<span class="number">-10</span>h],edx</span><br><span class="line"></span><br><span class="line"><span class="number">00401080</span>   mov         eax,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">00401083</span>   cmp         eax,dword ptr [ebp<span class="number">-0</span>Ch]</span><br><span class="line"><span class="number">00401086</span>   jle         Function+<span class="number">70</span>h (<span class="number">00401090</span>)</span><br><span class="line"><span class="number">00401088</span>   mov         ecx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">0040108B</span>   mov         dword ptr [ebp<span class="number">-10</span>h],ecx</span><br><span class="line"></span><br><span class="line"><span class="number">0040108</span>E   jmp         Function+<span class="number">76</span>h (<span class="number">00401096</span>)</span><br><span class="line"><span class="number">00401090</span>   mov         edx,dword ptr [ebp<span class="number">-0</span>Ch]</span><br><span class="line"><span class="number">00401093</span>   mov         dword ptr [ebp<span class="number">-10</span>h],edx</span><br><span class="line"></span><br><span class="line"><span class="number">00401096</span>   pop         edi</span><br><span class="line"><span class="number">00401097</span>   pop         esi</span><br><span class="line"><span class="number">00401098</span>   pop         ebx</span><br><span class="line"><span class="number">00401099</span>   mov         esp,ebp</span><br><span class="line"><span class="number">0040109B</span>   pop         ebp</span><br><span class="line"><span class="number">0040109</span>C   ret</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>if…else嵌套语句：其基本形式和 if…else 一样。if语句中内嵌的 else 会跳转到外面的 else 语句中。else语句中内嵌的 else 会跳到同一个地址（程序结束位置）</p>
+<br>
+
+<h1 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h1><h2 id="正向代码"><a href="#正向代码" class="headerlink" title="正向代码"></a>正向代码</h2><ol>
+<li>定义 4 个 int 类型的全局变量，分别是 g_x, g_y, g_z, g_r,使用 if..else.. 分支语句，将最大的值存储到 g_r 中</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdafx.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> g_x = <span class="number">5</span>;</span><br><span class="line"><span class="type">int</span> g_y = <span class="number">4</span>;</span><br><span class="line"><span class="type">int</span> g_z = <span class="number">7</span>;</span><br><span class="line"><span class="type">int</span> g_r = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">max</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(g_x&gt;g_y)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(g_x&gt;g_z)</span><br><span class="line">		&#123;</span><br><span class="line">			g_r=g_x;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			g_r=g_z;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(g_y&gt;g_z)</span><br><span class="line">		&#123;</span><br><span class="line">			g_r=g_y;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			g_r=g_z;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> g_r;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,max());</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;    </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>找出数组里面最大的值，并存储到全局变量中</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdafx.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> arr[<span class="number">4</span>]=&#123;<span class="number">2</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">9</span>&#125;;</span><br><span class="line"><span class="type">int</span> g_r;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">ArrMax</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> i,j,a,b;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;=<span class="number">4</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		j=i+<span class="number">1</span>;</span><br><span class="line">		a=arr[i];</span><br><span class="line">		b=arr[j];</span><br><span class="line">		<span class="keyword">if</span>(j&lt;=<span class="number">4</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(a&gt;b)</span><br><span class="line">			&#123;</span><br><span class="line">				g_r=a;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">				g_r=b;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> g_r;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,ArrMax());</span><br><span class="line">	</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>将数组所有的元素相加，将结果存储到g_r中</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdafx.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> arr[<span class="number">10</span>]=&#123;<span class="number">2</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">9</span>,<span class="number">22</span>,<span class="number">4</span>,<span class="number">8</span>,<span class="number">22</span>,<span class="number">3</span>,<span class="number">18</span>&#125;;</span><br><span class="line"><span class="type">int</span> g_r;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">ArrMax</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="type">int</span> sum=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;=<span class="number">10</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		sum=arr[i]+sum;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;	</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,ArrMax());</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>俩俩比较数组的值，将最大的一个存储到数组的最后一个位置</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdafx.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> arr[<span class="number">10</span>]=&#123;<span class="number">2</span>,<span class="number">7</span>,<span class="number">5</span>,<span class="number">9</span>,<span class="number">22</span>,<span class="number">4</span>,<span class="number">8</span>,<span class="number">22</span>,<span class="number">3</span>,<span class="number">18</span>&#125;;</span><br><span class="line"><span class="type">int</span> g_r;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">ArrMax</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> i,j,a,b,k;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;=<span class="number">9</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		j=i+<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">if</span>(j&lt;=<span class="number">9</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			a=arr[i];</span><br><span class="line">			b=arr[j];</span><br><span class="line">			<span class="keyword">if</span>(a&gt;b)</span><br><span class="line">			&#123;</span><br><span class="line">				arr[i]=b;</span><br><span class="line">				arr[j]=a;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(k=<span class="number">0</span>;k&lt;=<span class="number">9</span>;k++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,arr[k]);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;	</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,ArrMax());</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="代码还原练习"><a href="#代码还原练习" class="headerlink" title="代码还原练习"></a>代码还原练习</h2><h3 id="if-语句还原"><a href="#if-语句还原" class="headerlink" title="if 语句还原"></a>if 语句还原</h3><ol>
+<li>反汇编</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">调用处代码：</span><br><span class="line"></span><br><span class="line">push        <span class="number">5</span></span><br><span class="line">push        <span class="number">4</span></span><br><span class="line">call        <span class="number">0040100f</span></span><br><span class="line">add         esp,<span class="number">8</span></span><br><span class="line"></span><br><span class="line">函数内部：</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">00401030</span>   push        ebp</span><br><span class="line"><span class="number">00401031</span>   mov         ebp,esp</span><br><span class="line"><span class="number">00401033</span>   sub         esp,<span class="number">44</span>h</span><br><span class="line"><span class="number">00401036</span>   push        ebx</span><br><span class="line"><span class="number">00401037</span>   push        esi</span><br><span class="line"><span class="number">00401038</span>   push        edi</span><br><span class="line"><span class="number">00401039</span>   lea         edi,[ebp<span class="number">-44</span>h]</span><br><span class="line"><span class="number">0040103</span>C   mov         ecx,<span class="number">11</span>h</span><br><span class="line"><span class="number">00401041</span>   mov         eax,<span class="number">0</span>CCCCCCCCh</span><br><span class="line"><span class="number">00401046</span>   rep stos    dword ptr [edi]</span><br><span class="line"><span class="number">00401048</span>   mov         eax,[<span class="number">004225</span>c4]</span><br><span class="line"><span class="number">0040104</span>D   mov         dword ptr [ebp<span class="number">-4</span>],eax</span><br><span class="line"><span class="number">00401050</span>   mov         ecx,dword ptr [ebp+<span class="number">8</span>]</span><br><span class="line"><span class="number">00401053</span>   cmp         ecx,dword ptr [ebp+<span class="number">0</span>Ch]</span><br><span class="line"><span class="number">00401056</span>   jg          <span class="number">00401064</span></span><br><span class="line"><span class="number">00401058</span>   mov         edx,dword ptr [ebp+<span class="number">0</span>Ch]</span><br><span class="line"><span class="number">0040105B</span>   add         edx,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">0040105</span>E   mov         dword ptr [<span class="number">004225</span>c4],edx</span><br><span class="line"><span class="number">00401064</span>   pop         edi</span><br><span class="line"><span class="number">00401065</span>   pop         esi</span><br><span class="line"><span class="number">00401066</span>   pop         ebx</span><br><span class="line"><span class="number">00401067</span>   mov         esp,ebp</span><br><span class="line"><span class="number">00401069</span>   pop         ebp</span><br><span class="line"><span class="number">0040106</span>A   ret</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>还原步骤</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">截取真正的程序代码：</span><br><span class="line"></span><br><span class="line"><span class="number">00401048</span>   mov         eax,[<span class="number">004225</span>c4]</span><br><span class="line"><span class="number">0040104</span>D   mov         dword ptr [ebp<span class="number">-4</span>],eax</span><br><span class="line"><span class="number">00401050</span>   mov         ecx,dword ptr [ebp+<span class="number">8</span>]</span><br><span class="line"><span class="number">00401053</span>   cmp         ecx,dword ptr [ebp+<span class="number">0</span>Ch]</span><br><span class="line"><span class="number">00401056</span>   jg          <span class="number">00401064</span></span><br><span class="line"><span class="number">00401058</span>   mov         edx,dword ptr [ebp+<span class="number">0</span>Ch]</span><br><span class="line"><span class="number">0040105B</span>   add         edx,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">0040105</span>E   mov         dword ptr [<span class="number">004225</span>c4],edx</span><br><span class="line"></span><br><span class="line">分析参数：</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>、有两个 push 指令</span><br><span class="line"><span class="number">2</span>、外平栈：esp+<span class="number">8</span>（__cdecl）</span><br><span class="line"><span class="number">3</span>、说明这里用了 <span class="number">2</span> 个参数。分别命名为:x、y</span><br><span class="line"><span class="number">4</span>、参数在函数中的格式为：[ebp+xxx]</span><br><span class="line"></span><br><span class="line">分析局部变量：</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>、局部变量的格式为：[ebp-xxx]（不固定，这只是其中一种表现形式）</span><br><span class="line"><span class="number">2</span>、有局部变量 [ebp<span class="number">-4</span>]，重命名为 i</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">分析全局变量：</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>、全局变量是一个虚拟地址，通常传递值的过程使用：mov 寄存器,虚拟地址</span><br><span class="line"><span class="number">2</span>、在程序中使用了 [<span class="number">004225</span>c4] 这个全局变量，重命名为 z</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">功能分析：</span><br><span class="line"><span class="number">1</span>、全局变量的值赋给局部变量：i=z</span><br><span class="line"><span class="number">2</span>、将 参数<span class="number">1</span> 和 参数<span class="number">2</span> 进行比较，如果 参数<span class="number">1</span> 大于（jg） 参数<span class="number">2</span> 就会跳转到结尾处。也就是说 参数<span class="number">1</span> 小于等于 参数<span class="number">2</span>，就会执行程序功能。</span><br><span class="line"><span class="number">3</span>、程序功能：全局变量 = 参数<span class="number">2</span> + 局部变量</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">返回值分析：</span><br><span class="line">返回值都是固定存到 eax 中，最后没有使用到 eax 寄存器，因此返回值：无</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>代码还原</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdafx.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> z;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">plus1</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	i = z;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(x&lt;=y)</span><br><span class="line">	&#123;</span><br><span class="line">		z=i+y;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	plus1(<span class="number">4</span>,<span class="number">5</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="if…else语句还原"><a href="#if…else语句还原" class="headerlink" title="if…else语句还原"></a>if…else语句还原</h3><ol>
+<li>反汇编</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">004010B</span>0   push        ebp</span><br><span class="line"><span class="number">004010B</span>1   mov         ebp,esp</span><br><span class="line"><span class="number">004010B</span>3   sub         esp,<span class="number">48</span>h</span><br><span class="line"><span class="number">004010B</span>6   push        ebx</span><br><span class="line"><span class="number">004010B</span>7   push        esi</span><br><span class="line"><span class="number">004010B</span>8   push        edi</span><br><span class="line"><span class="number">004010B</span>9   lea         edi,[ebp<span class="number">-48</span>h]</span><br><span class="line"><span class="number">004010B</span>C   mov         ecx,<span class="number">12</span>h</span><br><span class="line"><span class="number">004010</span>C1   mov         eax,<span class="number">0</span>CCCCCCCCh</span><br><span class="line"><span class="number">004010</span>C6   rep stos    dword ptr [edi]</span><br><span class="line"><span class="number">004010</span>C8   mov         eax,[<span class="number">004225</span>c4]</span><br><span class="line"><span class="number">004010</span>CD   mov         dword ptr [ebp<span class="number">-4</span>],eax</span><br><span class="line"><span class="number">004010</span>D0   mov         dword ptr [ebp<span class="number">-8</span>],<span class="number">2</span></span><br><span class="line"><span class="number">004010</span>D7   mov         ecx,dword ptr [ebp+<span class="number">8</span>]</span><br><span class="line"><span class="number">004010</span>DA   cmp         ecx,dword ptr [ebp+<span class="number">0</span>Ch]</span><br><span class="line"><span class="number">004010</span>DD   jl          <span class="number">004010e8</span></span><br><span class="line"><span class="number">004010</span>DF   mov         edx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">004010E2</span>   add         edx,<span class="number">1</span></span><br><span class="line"><span class="number">004010E5</span>   mov         dword ptr [ebp<span class="number">-8</span>],edx</span><br><span class="line"><span class="number">004010E8</span>   mov         eax,dword ptr [ebp+<span class="number">8</span>]</span><br><span class="line"><span class="number">004010</span>EB   cmp         eax,dword ptr [ebp+<span class="number">0</span>Ch]</span><br><span class="line"><span class="number">004010</span>EE   jge         <span class="number">004010f</span>b</span><br><span class="line"><span class="number">004010F</span>0   mov         ecx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">004010F</span>3   mov         dword ptr [<span class="number">004225</span>c4],ecx</span><br><span class="line"><span class="number">004010F</span>9   jmp         <span class="number">00401107</span></span><br><span class="line"><span class="number">004010F</span>B   mov         edx,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">004010F</span>E   add         edx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">00401101</span>   mov         dword ptr [<span class="number">004225</span>c4],edx</span><br><span class="line"><span class="number">00401107</span>   pop         edi</span><br><span class="line"><span class="number">00401108</span>   pop         esi</span><br><span class="line"><span class="number">00401109</span>   pop         ebx</span><br><span class="line"><span class="number">0040110</span>A   mov         esp,ebp</span><br><span class="line"><span class="number">0040110</span>C   pop         ebp</span><br><span class="line"><span class="number">0040110</span>D   ret</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>还原步骤</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">程序代码：</span><br><span class="line"></span><br><span class="line"><span class="number">004010</span>C8   mov         eax,[<span class="number">004225</span>c4]</span><br><span class="line"><span class="number">004010</span>CD   mov         dword ptr [ebp<span class="number">-4</span>],eax</span><br><span class="line"><span class="number">004010</span>D0   mov         dword ptr [ebp<span class="number">-8</span>],<span class="number">2</span></span><br><span class="line"><span class="number">004010</span>D7   mov         ecx,dword ptr [ebp+<span class="number">8</span>]</span><br><span class="line"><span class="number">004010</span>DA   cmp         ecx,dword ptr [ebp+<span class="number">0</span>Ch]</span><br><span class="line"><span class="number">004010</span>DD   jl          <span class="number">004010e8</span></span><br><span class="line"><span class="number">004010</span>DF   mov         edx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">004010E2</span>   add         edx,<span class="number">1</span></span><br><span class="line"><span class="number">004010E5</span>   mov         dword ptr [ebp<span class="number">-8</span>],edx</span><br><span class="line"><span class="number">004010E8</span>   mov         eax,dword ptr [ebp+<span class="number">8</span>]</span><br><span class="line"><span class="number">004010</span>EB   cmp         eax,dword ptr [ebp+<span class="number">0</span>Ch]</span><br><span class="line"><span class="number">004010</span>EE   jge         <span class="number">004010f</span>b</span><br><span class="line"><span class="number">004010F</span>0   mov         ecx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">004010F</span>3   mov         dword ptr [<span class="number">004225</span>c4],ecx</span><br><span class="line"><span class="number">004010F</span>9   jmp         <span class="number">00401107</span></span><br><span class="line"><span class="number">004010F</span>B   mov         edx,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">004010F</span>E   add         edx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">00401101</span>   mov         dword ptr [<span class="number">004225</span>c4],edx</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">分析参数：</span><br><span class="line"></span><br><span class="line">[ebp+<span class="number">8</span>]：x</span><br><span class="line">[ebp+<span class="number">0</span>Ch]：y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">分析局部变量：</span><br><span class="line"></span><br><span class="line">[ebp<span class="number">-4</span>]：i</span><br><span class="line">[ebp<span class="number">-8</span>]：j</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">分析全局变量：</span><br><span class="line"></span><br><span class="line">[<span class="number">004225</span>c4]：z</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">功能分析：</span><br><span class="line"><span class="number">1</span>、全局变量赋给局部变量i：i=z</span><br><span class="line"><span class="number">2</span>、局部变量j赋值<span class="number">2</span>：j=<span class="number">2</span></span><br><span class="line"><span class="number">3</span>、x 和 y 进行比较，如果 x &gt;= y（<span class="keyword">if</span> 语句的判断与反汇编中的跳转是相反的）,j=j+<span class="number">1</span></span><br><span class="line"><span class="number">4</span>、如果 x &lt; y，z=i+j</span><br><span class="line"><span class="number">5</span>、<span class="keyword">else</span>，z=j</span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span> 结尾是以 jmp 结尾的，所以当看到 <span class="keyword">if</span> 跳转前面是 jmp 指令的话，说明上面的是 <span class="keyword">else</span> 语句。</span><br><span class="line"></span><br><span class="line">返回值分析：</span><br><span class="line">无</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>代码还原</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdafx.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> z;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">plus1</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> i,j;</span><br><span class="line">	i = z;</span><br><span class="line">	j = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(x&gt;=y)</span><br><span class="line">	&#123;</span><br><span class="line">		j=j+<span class="number">1</span>;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(x&lt;y)</span><br><span class="line">	&#123;</span><br><span class="line">		z=j+i;			</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		z=j;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="if…else-if…else-还原"><a href="#if…else-if…else-还原" class="headerlink" title="if…else if…else 还原"></a>if…else if…else 还原</h3><ol>
+<li><p>反汇编</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">004010B</span>0   push        ebp</span><br><span class="line"><span class="number">004010B</span>1   mov         ebp,esp</span><br><span class="line"><span class="number">004010B</span>3   sub         esp,<span class="number">4</span>Ch</span><br><span class="line"><span class="number">004010B</span>6   push        ebx</span><br><span class="line"><span class="number">004010B</span>7   push        esi</span><br><span class="line"><span class="number">004010B</span>8   push        edi</span><br><span class="line"><span class="number">004010B</span>9   lea         edi,[ebp<span class="number">-4</span>Ch]</span><br><span class="line"><span class="number">004010B</span>C   mov         ecx,<span class="number">13</span>h</span><br><span class="line"><span class="number">004010</span>C1   mov         eax,<span class="number">0</span>CCCCCCCCh</span><br><span class="line"><span class="number">004010</span>C6   rep stos    dword ptr [edi]</span><br><span class="line"><span class="number">004010</span>C8   mov         dword ptr [ebp<span class="number">-4</span>],<span class="number">0</span></span><br><span class="line"><span class="number">004010</span>CF   mov         dword ptr [ebp<span class="number">-8</span>],<span class="number">1</span></span><br><span class="line"><span class="number">004010</span>D6   mov         dword ptr [ebp<span class="number">-0</span>Ch],<span class="number">2</span></span><br><span class="line"><span class="number">004010</span>DD   mov         eax,dword ptr [ebp+<span class="number">8</span>]</span><br><span class="line"><span class="number">004010E0</span>   cmp         eax,dword ptr [ebp+<span class="number">0</span>Ch]</span><br><span class="line"><span class="number">004010E3</span>   jg         <span class="number">004010f</span>0</span><br><span class="line"><span class="number">004010E5</span>   mov         ecx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">004010E8</span>   sub         ecx,<span class="number">1</span></span><br><span class="line"><span class="number">004010</span>EB   mov         dword ptr [ebp<span class="number">-4</span>],ecx</span><br><span class="line"><span class="number">004010</span>EE   jmp         <span class="number">00401123</span></span><br><span class="line"><span class="number">004010F</span>0   mov         edx,dword ptr [ebp+<span class="number">0</span>Ch]</span><br><span class="line"><span class="number">004010F</span>3   cmp         edx,dword ptr [ebp+<span class="number">10</span>h]</span><br><span class="line"><span class="number">004010F</span>6   jl          <span class="number">00401103</span></span><br><span class="line"><span class="number">004010F</span>8   mov         eax,dword ptr [ebp<span class="number">-0</span>Ch]</span><br><span class="line"><span class="number">004010F</span>B   add         eax,<span class="number">1</span></span><br><span class="line"><span class="number">004010F</span>E   mov         dword ptr [ebp<span class="number">-4</span>],eax</span><br><span class="line"><span class="number">00401101</span>   jmp         <span class="number">00401123</span></span><br><span class="line"><span class="number">00401103</span>   mov         ecx,dword ptr [ebp+<span class="number">8</span>]</span><br><span class="line"><span class="number">00401106</span>   cmp         ecx,dword ptr [ebp+<span class="number">10</span>h]</span><br><span class="line"><span class="number">00401109</span>   jle         <span class="number">00401116</span></span><br><span class="line"><span class="number">0040110B</span>   mov         edx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">0040110</span>E   add         edx,dword ptr [ebp<span class="number">-0</span>Ch]</span><br><span class="line"><span class="number">00401111</span>   mov         dword ptr [ebp<span class="number">-4</span>],edx</span><br><span class="line"><span class="number">00401114</span>   jmp         <span class="number">00401123</span></span><br><span class="line"><span class="number">00401116</span>   mov         eax,dword ptr [ebp<span class="number">-0</span>Ch]</span><br><span class="line"><span class="number">00401119</span>   mov         ecx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">0040111</span>C   lea         edx,[ecx+eax<span class="number">-1</span>]</span><br><span class="line"><span class="number">00401120</span>   mov         dword ptr [ebp<span class="number">-4</span>],edx</span><br><span class="line"><span class="number">00401123</span>   mov         eax,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">00401126</span>   add         eax,<span class="number">1</span></span><br><span class="line"><span class="number">00401129</span>   pop         edi</span><br><span class="line"><span class="number">0040112</span>A   pop         esi</span><br><span class="line"><span class="number">0040112B</span>   pop         ebx</span><br><span class="line"><span class="number">0040112</span>C   mov         esp,ebp</span><br><span class="line"><span class="number">0040112</span>E   pop         ebp</span><br><span class="line"><span class="number">0040112F</span>   ret</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>还原步骤</p>
+</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">程序代码：</span><br><span class="line"><span class="number">004010</span>C8   mov         dword ptr [ebp<span class="number">-4</span>],<span class="number">0</span></span><br><span class="line"><span class="number">004010</span>CF   mov         dword ptr [ebp<span class="number">-8</span>],<span class="number">1</span></span><br><span class="line"><span class="number">004010</span>D6   mov         dword ptr [ebp<span class="number">-0</span>Ch],<span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="number">004010</span>DD   mov         eax,dword ptr [ebp+<span class="number">8</span>]</span><br><span class="line"><span class="number">004010E0</span>   cmp         eax,dword ptr [ebp+<span class="number">0</span>Ch]</span><br><span class="line"><span class="number">004010E3</span>   jg         <span class="number">004010f</span>0</span><br><span class="line"><span class="number">004010E5</span>   mov         ecx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">004010E8</span>   sub         ecx,<span class="number">1</span></span><br><span class="line"><span class="number">004010</span>EB   mov         dword ptr [ebp<span class="number">-4</span>],ecx</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">004010</span>EE   jmp         <span class="number">00401123</span></span><br><span class="line"><span class="number">004010F</span>0   mov         edx,dword ptr [ebp+<span class="number">0</span>Ch]</span><br><span class="line"><span class="number">004010F</span>3   cmp         edx,dword ptr [ebp+<span class="number">10</span>h]</span><br><span class="line"><span class="number">004010F</span>6   jl          <span class="number">00401103</span></span><br><span class="line"><span class="number">004010F</span>8   mov         eax,dword ptr [ebp<span class="number">-0</span>Ch]</span><br><span class="line"><span class="number">004010F</span>B   add         eax,<span class="number">1</span></span><br><span class="line"><span class="number">004010F</span>E   mov         dword ptr [ebp<span class="number">-4</span>],eax</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">00401101</span>   jmp         <span class="number">00401123</span></span><br><span class="line"><span class="number">00401103</span>   mov         ecx,dword ptr [ebp+<span class="number">8</span>]</span><br><span class="line"><span class="number">00401106</span>   cmp         ecx,dword ptr [ebp+<span class="number">10</span>h]</span><br><span class="line"><span class="number">00401109</span>   jle         <span class="number">00401116</span></span><br><span class="line"><span class="number">0040110B</span>   mov         edx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">0040110</span>E   add         edx,dword ptr [ebp<span class="number">-0</span>Ch]</span><br><span class="line"><span class="number">00401111</span>   mov         dword ptr [ebp<span class="number">-4</span>],edx</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">00401114</span>   jmp         <span class="number">00401123</span></span><br><span class="line"><span class="number">00401116</span>   mov         eax,dword ptr [ebp<span class="number">-0</span>Ch]</span><br><span class="line"><span class="number">00401119</span>   mov         ecx,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">0040111</span>C   lea         edx,[ecx+eax<span class="number">-1</span>]</span><br><span class="line"><span class="number">00401120</span>   mov         dword ptr [ebp<span class="number">-4</span>],edx</span><br><span class="line"></span><br><span class="line"><span class="number">00401123</span>   mov         eax,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">00401126</span>   add         eax,<span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">分析参数：</span><br><span class="line">[ebp+<span class="number">8</span>]：x</span><br><span class="line">[ebp+<span class="number">0</span>Ch]：y</span><br><span class="line">[ebp+<span class="number">10</span>h]：z</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">分析局部变量：</span><br><span class="line">[ebp<span class="number">-4</span>]：i</span><br><span class="line">[ebp<span class="number">-8</span>]：j</span><br><span class="line">[ebp<span class="number">-0</span>Ch]：n</span><br><span class="line"></span><br><span class="line">分析全局变量：</span><br><span class="line">无</span><br><span class="line"></span><br><span class="line">程序功能：</span><br><span class="line">i=<span class="number">0</span>；j=<span class="number">1</span>；n=<span class="number">2</span></span><br><span class="line"><span class="keyword">if</span> x&lt;=y;i=j<span class="number">-1</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> y&gt;=z；i=n+<span class="number">1</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> x&gt;z；i=j+n</span><br><span class="line"><span class="keyword">else</span> i=n+j<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">返回值：</span><br><span class="line">i+<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>代码还原</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdafx.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> z;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">plus1</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y,<span class="type">int</span> z)</span></span><br><span class="line">	<span class="type">int</span> i=<span class="number">0</span>;</span><br><span class="line">	<span class="type">int</span> j=<span class="number">1</span>;</span><br><span class="line">	<span class="type">int</span> n=<span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(x&lt;=y)</span><br><span class="line">	&#123;</span><br><span class="line">		i=j<span class="number">-1</span>;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(y&gt;=z)</span><br><span class="line">	&#123;</span><br><span class="line">		i=n+<span class="number">1</span>;			</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(x&gt;z)</span><br><span class="line">	&#123;</span><br><span class="line">		i=j+n;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		i=n+j<span class="number">-1</span>	;	</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> i+<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：C&amp;汇编基础-if语句</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2021-04-01 14:18:28</li>
+        <li>
+            本文链接：https://9unkk.github.io/2021/04/01/C&amp;汇编基础-if语句/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E9%80%86%E5%90%91/">#逆向</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/04/21/CTF%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">CTF逆向分析</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/04/01/C&amp;%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80-%E5%87%BD%E6%95%B0/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">C&amp;汇编基础-函数</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#if%E8%AF%AD%E5%8F%A5%E9%80%86%E5%90%91%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">if语句逆向分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E7%9A%84-if-%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.1.</span> <span class="nav-text">连续的 if 语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#if%E2%80%A6else%E2%80%A6%E8%AF%AD%E5%8F%A5%E9%80%86%E5%90%91%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">if…else…语句逆向分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#if%E2%80%A6else-if%E2%80%A6else%E9%80%86%E5%90%91%E5%88%86%E6%9E%90"><span class="nav-number">1.3.</span> <span class="nav-text">if…else if…else逆向分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#if%E2%80%A6else-%E5%B5%8C%E5%A5%97%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.4.</span> <span class="nav-text">if…else 嵌套语句</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%83%E4%B9%A0"><span class="nav-number">2.</span> <span class="nav-text">练习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E5%90%91%E4%BB%A3%E7%A0%81"><span class="nav-number">2.1.</span> <span class="nav-text">正向代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E8%BF%98%E5%8E%9F%E7%BB%83%E4%B9%A0"><span class="nav-number">2.2.</span> <span class="nav-text">代码还原练习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#if-%E8%AF%AD%E5%8F%A5%E8%BF%98%E5%8E%9F"><span class="nav-number">2.2.1.</span> <span class="nav-text">if 语句还原</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#if%E2%80%A6else%E8%AF%AD%E5%8F%A5%E8%BF%98%E5%8E%9F"><span class="nav-number">2.2.2.</span> <span class="nav-text">if…else语句还原</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#if%E2%80%A6else-if%E2%80%A6else-%E8%BF%98%E5%8E%9F"><span class="nav-number">2.2.3.</span> <span class="nav-text">if…else if…else 还原</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

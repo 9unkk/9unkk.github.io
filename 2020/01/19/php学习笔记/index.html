@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            php学习笔记 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">php学习笔记</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2020-01-19 11:24:10</span>
+        <span class="mobile">2020-01-19 11:24</span>
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h2 id="PHP-简介"><a href="#PHP-简介" class="headerlink" title="PHP 简介"></a>PHP 简介</h2><hr>
+<p>PHP（全称：PHP：Hypertext Preprocessor，即“ PHP：超文本预处理器 ”）是一种开源的通用计算机脚本语言，尤其适用于网络开发并可嵌入 HTML 中使用。PHP 的主要目标是允许网络开发人员快速编写动态页面，但 PHP 也被用于其他很多领域。</p>
+<p>PHP 的应用范围相当广泛，尤其是在网页程序的开发上。一般来说 PHP 大多运行在网页服务器上，透过运行 PHP 代码来产生用户浏览的网页。PHP 可以在多数的服务器和操作系统上运行，而且使用 PHP 完全是免费的。PHP 在 Windows 上有专门的官方移植编译项目，并且分多个 VC 编译器版本和线程安全特性来提供不同的版本支持。</p>
+<h3 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h3><hr>
+<p>PHP 原本的简称为 Personal Home Page，是拉斯姆斯·勒多夫为了要维护个人网页，而用 c 语言开发的一些 CGI 工具程序集，来取代原先使用的 Perl 程序。最初这些工具程序用来显示拉斯姆斯·勒多夫的个人履历，以及统计网页流量。他将这些程序和一些窗体解释器集成起来，称为 PHP&#x2F;FI。PHP&#x2F;FI 可以和数据库连接，产生简单的动态网页程序。</p>
+<p>拉斯姆斯·勒多夫在 1995 年 6 月 8 日将 PHP&#x2F;FI 公开发布，希望可以透过社群来加速程序开发与查找错误。这个发布的版本命名为 PHP 2。</p>
+<p>在 1997 年，任职于 Technion IIT 公司的两个以色列程序员：Zeev Suraski 和 Andi Gutmans，重写了 PHP 的语法分析器，成为 PHP 3 的基础，而 PHP 也在这个时候改称为 PHP: Hypertext Preprocessor。经过几个月测试，开发团队在 1997 年 11 月发布了 PHP&#x2F;FI 2，随后就开始 PHP 3 的开放测试，最后在 1998 年 6 月正式发布 PHP 3。</p>
+<p>Zeev Suraski 和 Andi Gutmans 在 PHP 3 发布后开始改写 PHP 的核心，这个在 1999 年发布的语法分析器称为 Zend Engine，他们也在以色列的 Ramat Gan 成立了 Zend Technologies 来管理 PHP 的开发。在 2000 年 5 月 22 日，以 Zend Engine 1.0 为基础的 PHP 4 正式发布</p>
+<p>2004 年 7 月 13 日则发布了 PHP 5，PHP 5则使用了第二代的 Zend Engine。</p>
+<p>2008 年时，PHP 5 成为了 PHP 唯一维护中的稳定版本。</p>
+<p>2015 年 12 月 3 日开发完 PHP 7。</p>
+<h3 id="版本历程"><a href="#版本历程" class="headerlink" title="版本历程"></a>版本历程</h3><hr>
+<table>
+<thead>
+<tr>
+<th>颜色</th>
+<th>代表意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><font color=red>红色</font></td>
+<td>过期版本；官方停止支持</td>
+</tr>
+<tr>
+<td><font color=yellow>黄色</font></td>
+<td>当前版本；官方仅提供安全问题修复</td>
+</tr>
+<tr>
+<td><font color=green>绿色</font></td>
+<td>当前版本；官方提供安全问题和一般问题的修复</td>
+</tr>
+<tr>
+<td><font color=blue>蓝色</font></td>
+<td>未来版本</td>
+</tr>
+<tr>
+<td><br></td>
+<td></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>发布日期</th>
+<th>结束支持日期</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><font color=red>1.0</font></td>
+<td>1995 年 6 月 8 日</td>
+<td></td>
+<td>正式名称为”Personal Home Page Tools (PHP Tools)”，第一次使用了”PHP”的名字。</td>
+</tr>
+<tr>
+<td><font color=red>2.0</font></td>
+<td>1996 年 4 月 16 日</td>
+<td></td>
+<td>针对PHP 1.0的改进版，速度更快、体积更小，更容易产生动态网页。</td>
+</tr>
+<tr>
+<td><font color=red>3.0</font></td>
+<td>1998 年 6 月 6 日</td>
+<td>2000 年 10 月 20 日</td>
+<td>开发方式改成多人共同参与。Zeev Suraski 和 Andi Gutmans 为了这个版本重写了剖析引擎。</td>
+</tr>
+<tr>
+<td><font color=red>4.0</font></td>
+<td>2000 年 5 月 22 日</td>
+<td>2001 年 6 月 23 日</td>
+<td>改成以 Zend 引擎作为语法分析器，具有两阶段剖析&#x2F;标签剖析系统等先进功能。</td>
+</tr>
+<tr>
+<td><font color=red>4.1</font></td>
+<td>2001 年 12 月 10 日</td>
+<td>2002 年 3 月 2 日</td>
+<td>加入”超全局变量”（superglobals）功能，包含了$_GET、$_POST、$_SESSION 等。</td>
+</tr>
+<tr>
+<td><font color=red>4.2</font></td>
+<td>2002 年 4 月 22 日</td>
+<td>2002 年 9 月 6 日</td>
+<td>默认取消 register_globals 功能。从网络接收的数据将不会设置成全局变量，增加程序安全性。</td>
+</tr>
+<tr>
+<td><font color=red>4.3</font></td>
+<td>2002 年 12 月 27 日</td>
+<td>2005 年 3 月 31 日</td>
+<td>加入命令行可执行文件，称为 CLI，用以补充 CGI</td>
+</tr>
+<tr>
+<td><font color=red>4.4</font></td>
+<td>2005 年 7 月 11 日</td>
+<td>2008 年 8 月 8 日</td>
+<td>Added man pages for phpize and php-config scripts.</td>
+</tr>
+<tr>
+<td><font color=red>5.0</font></td>
+<td>2004 年 7 月 13 日</td>
+<td>2005 年 9 月 5 日</td>
+<td>推出有着新的对象模型的 Zend Engine II。</td>
+</tr>
+<tr>
+<td><font color=red>5.1</font></td>
+<td>2005 年 11 月 24 日</td>
+<td>2006 年 8 月 24 日</td>
+<td>在往重新设计的 PHP 引擎引入编译变量时做了性能提升。添加了PHP数据对象（PDO）作为访问数据库的统一接口。</td>
+</tr>
+<tr>
+<td><font color=red>5.2</font></td>
+<td>2006 年 11 月 2 日</td>
+<td>2011 年 1 月 6 日</td>
+<td>默认打开”过滤”的扩展。本地的JSON支持。</td>
+</tr>
+<tr>
+<td><font color=red>5.3</font></td>
+<td>2009 年 6 月 30 日</td>
+<td>2014 年 8 月 14 日</td>
+<td>支持名字空间;使用 XMLReader 和 XMLWriter 增强 XML 支持;支持 SOAP ,延迟静态绑定，跳转标签（有限的goto）, 闭包，Native PHP archives。</td>
+</tr>
+<tr>
+<td><font color=red>5.4</font></td>
+<td>2012 年 3 月 1 日</td>
+<td>2015 年 9 月 3 日</td>
+<td>支持 Trait、简短数组表达式。移除了 register_globals, safe_mode, allow_call_time_pass_reference, session_register(), session_unregister(), magic_quotes 以及 session_is_registered()。加入了内建的 Web 服务器。增强了性能，减小内存使用量。</td>
+</tr>
+<tr>
+<td><font color=red>5.5</font></td>
+<td>2013 年 6 月 20 日</td>
+<td>2016 年 7 月 10 日</td>
+<td>支持 generators，用于异常处理的 finally ，将 OpCache（基于 Zend Optimizer+）加入官方发布中。</td>
+</tr>
+<tr>
+<td><font color=yellow>5.6</font></td>
+<td>2014 年 8 月 28 日</td>
+<td>2018 年 12 月 31 日</td>
+<td>支持常量标量表达式、可变参数函数、指数运算符，增加 phpdbg SAPI、统一的默认字符集。</td>
+</tr>
+<tr>
+<td><font color=yellow>6.x</font></td>
+<td>未发布</td>
+<td>不适用</td>
+<td>取消掉的、从未正式发布的PHP版本。</td>
+</tr>
+<tr>
+<td><font color=yellow>7.0</font></td>
+<td>2015 年 12 月 3 日</td>
+<td>2018 年 12 月 3 日</td>
+<td>Zend Engine 3 (性能提升并在 Windows 上支持 64-bit 整数)，统一的变量语法， 基于抽象语法树编译过程。</td>
+</tr>
+<tr>
+<td><font color=green>7.1</font></td>
+<td>2016 年 12 月 1 日</td>
+<td>2019 年 12 月 1 日</td>
+<td>void 返回值类型，类常量可见性修饰符</td>
+</tr>
+<tr>
+<td><font color=green>7.2</font></td>
+<td>2017 年 11 月 30 日</td>
+<td>2020 年 11 月 30 日</td>
+<td></td>
+</tr>
+<tr>
+<td><font color=green>7.3</font></td>
+<td>2018 年 12 月 6 日</td>
+<td>未表明</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="吉祥物"><a href="#吉祥物" class="headerlink" title="吉祥物"></a>吉祥物</h3><hr>
+<p>PHP 项目的吉祥物名叫 “elePHPant”，PHP 的 logo 在一头蓝象的里面，由文森·庞蒂尔(Vincent Pontier)在 1998 年设计。</p>
+<h3 id="彩蛋"><a href="#彩蛋" class="headerlink" title="彩蛋"></a>彩蛋</h3><hr>
+<p>PHP 含有多个彩蛋，可以透过在域名的后面加上特殊字符串显示彩蛋。PHP 版本的不同，logo也会不同；不过该特性已经在 5.5 版本中被移除。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">?=PHPB8B5F2A0-3C92-11d3-A3A9-4C7B08C10000 (PHP信息列表)</span><br><span class="line">?=PHPE9568F34-D428-11d2-A769-00AA001ACF42 (PHP的LOGO)</span><br><span class="line">?=PHPE9568F35-D428-11d2-A769-00AA001ACF42 (Zend LOGO)</span><br><span class="line">?=PHPE9568F36-D428-11d2-A769-00AA001ACF42 (PHP LOGO 蓝色大象)</span><br></pre></td></tr></table></figure>
+<h3 id="趣闻"><a href="#趣闻" class="headerlink" title="趣闻"></a>趣闻</h3><hr>
+<p>PHP编程语言的官方文档中曾写过“PHP是世界上最好的语言，那其他的语言如何呢？”，因此其经常被华语圈的程序员调侃为是世界上最好的语言。</p>
+<h2 id="PHP-语法"><a href="#PHP-语法" class="headerlink" title="PHP 语法"></a>PHP 语法</h2><h3 id="PHP-标记"><a href="#PHP-标记" class="headerlink" title="PHP 标记"></a>PHP 标记</h3><hr>
+<ul>
+<li><p>php 脚本可以放在文档中的任何位置。</p>
+</li>
+<li><p>php 脚本以 <code>&lt;?php</code> 开始， 以 <code>?&gt;</code> 结束。</p>
+</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;hello word !&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/11/24/J9MPnf8CNYQGpgq.png"
+                      alt="php-1.png"
+                ></p>
+<ul>
+<li>php 也允许使用短标记 <code>&lt;?</code> 和 <code>?&gt;</code> ，但是不建议使用。只有激活 php.ini 中的 <code>short_open_tag</code> 参数，php 才能使用短标记。</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;hello word !&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/11/24/QydPU74OhlxFapE.png"
+                      alt="php-2.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/11/24/SZRK3yvDYsiMLeN.png"
+                      alt="php-3.png"
+                ></p>
+<ul>
+<li>如果文件内容是纯 php 代码，最好在文件末尾删除 php 结束标记。避免在 php 结束标记后不小心加入空格或换行，导致 php 输出这些空白。</li>
+</ul>
+<h3 id="PHP-注释"><a href="#PHP-注释" class="headerlink" title="PHP 注释"></a>PHP 注释</h3><hr>
+<p>PHP 代码中的注释不会被作为程序来读取和执行。它唯一的作用是供代码编辑者阅读。</p>
+<p><strong>注释用于：</strong></p>
+<ul>
+<li><p>使其他人理解您正在做的工作 - 注释可以让其他程序员了解您在每个步骤进行的工作（如果您供职于团队）</p>
+</li>
+<li><p>提醒自己做过什么 - 大多数程序员都曾经历过一两年后对项目进行返工，然后不得不重新考虑他们做过的事情。注释可以记录您在写代码时的思路。</p>
+</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// 这是单行注释</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 这也是单行注释</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">这是多行注释块</span></span><br><span class="line"><span class="comment">它横跨了</span></span><br><span class="line"><span class="comment">多行</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="PHP-大小写敏感"><a href="#PHP-大小写敏感" class="headerlink" title="PHP 大小写敏感"></a>PHP 大小写敏感</h3><hr>
+<p>在 PHP 中，所有用户定义的函数、类和关键词（例如 if、else、echo 等等）都对大小写不敏感。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;hello world!&lt;br&gt;&quot;</span>;</span><br><span class="line">ECHO <span class="string">&quot;hello world!&lt;br&gt;&quot;</span>;</span><br><span class="line">Echo <span class="string">&quot;hello world!&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/11/24/wTzD2OMmgqukobX.png"
+                      alt="php-4.png"
+                ></p>
+<p>不过在 PHP 中，所有变量都对大小写敏感。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$color</span>=<span class="string">&quot;red&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;my car is &quot;</span> . <span class="variable">$color</span> .<span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;my house is &quot;</span> . <span class="variable">$COLOR</span> . <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;my car is &quot;</span> . <span class="variable">$Color</span> . <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/11/24/IXgDxWe12RbzJnV.png"
+                      alt="php-5.png"
+                ></p>
+<h3 id="PHP-分隔符"><a href="#PHP-分隔符" class="headerlink" title="PHP 分隔符"></a>PHP 分隔符</h3><hr>
+<p>同 C 或 Perl 一样，PHP 需要在每个语句后用分号结束指令。一段 PHP 代码中的结束标记隐含表示了一个分号；在一个 PHP 代码段中的最后一行可以不用分号结束。如果后面还有新行，则代码段的结束标记包含了行结束。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;This is a test&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">echo</span> <span class="string">&quot;This is a test&quot;</span> <span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">echo</span> <span class="string">&#x27;We omitted the last closing tag&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="PHP-echo-x2F-print"><a href="#PHP-echo-x2F-print" class="headerlink" title="PHP echo&#x2F;print"></a>PHP echo&#x2F;print</h3><hr>
+<p>echo 和 print 是 php 中的输出语句。</p>
+<p><strong>echo 和 print 的区别：</strong></p>
+<ul>
+<li>echo：能够输出一个或多个字符串</li>
+<li>print：只能输出一个字符串，并始终返回 1</li>
+</ul>
+<p>注：因为 echo 不返回值，所以 echo 执行速度比 print 稍快一些。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;c&lt;br&gt;&#x27;</span>; <span class="comment">// 同时输出多个字符串</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">&#x27;a&#x27;</span>;            <span class="comment">// 只能输出一个字符串</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/11/30/cIJHy6Nf4xSwT3q.png"
+                      alt="php-6.png"
+                ></p>
+<h2 id="PHP-变量"><a href="#PHP-变量" class="headerlink" title="PHP 变量"></a>PHP 变量</h2><h3 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h3><hr>
+<ul>
+<li>变量用一个美元符号（$）后面跟变量名来表示。</li>
+<li>变量名称必须以字母或下划线开头</li>
+<li>变量名称不能以数字开头</li>
+<li>变量名称只能包含字母数字字符和下划线（A-z、0-9、下划线，以及 ASCII 字符从 127 到 255）</li>
+<li>变量名是区分大小写的。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$var</span> = <span class="string">&#x27;Bob&#x27;</span>;</span><br><span class="line"><span class="variable">$Var</span> = <span class="string">&#x27;Joe&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;<span class="subst">$var</span>, <span class="subst">$Var</span>&quot;</span>;      <span class="comment">// 输出 &quot;Bob, Joe&quot;</span></span><br><span class="line"></span><br><span class="line">$<span class="number">4</span>site = <span class="string">&#x27;not yet&#x27;</span>;     <span class="comment">// 非法变量名；以数字开头</span></span><br><span class="line"><span class="variable">$_4site</span> = <span class="string">&#x27;not yet&#x27;</span>;    <span class="comment">// 合法变量名；以下划线开头</span></span><br><span class="line"><span class="variable">$i</span>站点is = <span class="string">&#x27;mansikka&#x27;</span>;  <span class="comment">// 合法变量名；可以用中文</span></span><br><span class="line"><span class="keyword">echo</span> $<span class="number">4</span>site;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$_4site</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$i</span>站点is;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/11/30/pUYdNKynfkja67G.png"
+                      alt="phpvar-2.png"
+                ></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$var</span> = <span class="string">&#x27;Bob&#x27;</span>;</span><br><span class="line"><span class="variable">$Var</span> = <span class="string">&#x27;Joe&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;<span class="subst">$var</span>, <span class="subst">$Var</span>&quot;</span>;      <span class="comment">// 输出 &quot;Bob, Joe&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">///$4site = &#x27;not yet&#x27;;     // 非法变量名；以数字开头</span></span><br><span class="line"><span class="variable">$_4site</span> = <span class="string">&#x27;not yet&#x27;</span>;    <span class="comment">// 合法变量名；以下划线开头</span></span><br><span class="line"><span class="variable">$i</span>站点is = <span class="string">&#x27;mansikka&#x27;</span>;  <span class="comment">// 合法变量名；可以用中文</span></span><br><span class="line"><span class="comment">//echo $4site;</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$_4site</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$i</span>站点is;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/11/30/jMaJ7QFkzl9OIL5.png"
+                      alt="phpvar-3.png"
+                ></p>
+<h4 id="创建变量（变量初始化）"><a href="#创建变量（变量初始化）" class="headerlink" title="创建变量（变量初始化）"></a>创建变量（变量初始化）</h4><hr>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//如果变量赋的值是字符串，需要用引号包围该值。</span></span><br><span class="line"><span class="variable">$txt</span>=<span class="string">&quot;hello world!&quot;</span>;</span><br><span class="line"><span class="variable">$x</span>=<span class="number">5</span>;</span><br><span class="line"><span class="variable">$y</span>=<span class="number">10.5</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$txt</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$x</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$y</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/11/30/FuTx6zZkXMhia8A.png"
+                      alt="phpvar-1.png"
+                ></p>
+<p>php 变量的数据类型是不需要声明的，php 会根据它的值，自动把变量转换为正确的数据类型。</p>
+<p>注：当你不初始化变量，变量会根据数据类型设置相应的默认值。例如：布尔值默认为 FALSE，整数和浮点数默认为 0，字符串为 null，数组为 empty array。</p>
+<h3 id="PHP-变量的作用域"><a href="#PHP-变量的作用域" class="headerlink" title="PHP 变量的作用域"></a>PHP 变量的作用域</h3><hr>
+<p>在 php 中，可以在脚本的任意位置对变量进行声明。变量的作用域指的是变量的生效范围，变量能被哪些脚本调用。</p>
+<p>PHP 有三种不同的作用域：</p>
+<ul>
+<li>local（局部）</li>
+<li>global（全局）</li>
+<li>static（静态）</li>
+</ul>
+<h4 id="Local-和-Global-作用域"><a href="#Local-和-Global-作用域" class="headerlink" title="Local 和 Global 作用域"></a>Local 和 Global 作用域</h4><hr>
+<p>函数之外声明的变量拥有 Global 作用域，只能在函数以外进行访问。</p>
+<p>函数内部声明的变量拥有 LOCAL 作用域，只能在函数内部进行访问。</p>
+<p>下面的例子测试了带有局部和全局作用域的变量：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$x</span>=<span class="number">5</span>; <span class="comment">// 全局作用域</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//我们可以在不同的函数中创建名称相同的局部变量，因为局部变量只能被在其中创建它的函数识别。</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myTest</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="variable">$y</span>=<span class="number">10</span>; <span class="comment">// 局部作用域</span></span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;&lt;p&gt;测试函数内部的变量：&lt;/p&gt;&quot;</span>;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;变量 x 是：<span class="subst">$x</span>&quot;</span>;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;变量 y 是：<span class="subst">$y</span>&quot;</span>;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">myTest</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;p&gt;测试函数之外的变量：&lt;/p&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;变量 x 是：<span class="subst">$x</span>&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;变量 y 是：<span class="subst">$y</span>&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/11/30/EGXMPODyi4YqRkZ.png"
+                      alt="phpvar-4.png"
+                ></p>
+<p><strong>注：</strong></p>
+<p>什么是函数？</p>
+<p>函数是可以在程序中重复使用的语句块。简单来说就是把写的多行代码，整合在一起，变成一块代码，并为它设个名称。</p>
+<h4 id="PHP-global-关键词"><a href="#PHP-global-关键词" class="headerlink" title="PHP global 关键词"></a>PHP global 关键词</h4><hr>
+<p>global 关键词用于在函数内访问全局变量，需要在（函数内部）变量前面使用 global 关键词：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$x</span>=<span class="number">5</span>;</span><br><span class="line"><span class="variable">$y</span>=<span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myTest</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">global</span> <span class="variable">$x</span>,<span class="variable">$y</span>;</span><br><span class="line">  <span class="variable">$y</span>=<span class="variable">$x</span>+<span class="variable">$y</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">myTest</span>();</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$y</span>; <span class="comment">// 输出 15</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/11/30/AC4OaHLMikKQ9o5.png"
+                      alt="phpvar-5.png"
+                ></p>
+<p>PHP 同时在名为 $GLOBALS[index] 的数组中存储了所有的全局变量。下标存有变量名。这个数组在函数内也可以访问，并能够用于直接更新全局变量。</p>
+<p>上面的例子可以这样重写：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$x</span>=<span class="number">5</span>;</span><br><span class="line"><span class="variable">$y</span>=<span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myTest</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="variable">$GLOBALS</span>[<span class="string">&#x27;y&#x27;</span>]=<span class="variable">$GLOBALS</span>[<span class="string">&#x27;x&#x27;</span>]+<span class="variable">$GLOBALS</span>[<span class="string">&#x27;y&#x27;</span>];</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">myTest</span>();</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$y</span>; <span class="comment">// 输出 15</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/11/30/EWoHUxJadjsFLbZ.png"
+                      alt="phpvar-6.png"
+                ></p>
+<h4 id="PHP-static-关键词"><a href="#PHP-static-关键词" class="headerlink" title="PHP static 关键词"></a>PHP static 关键词</h4><hr>
+<p>通常，当函数完成&#x2F;执行后，会删除所有变量。不过，有时我需要不删除某个局部变量。实现这一点需要首次声明变量时使用 static 关键词：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myTest</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">static</span> <span class="variable">$x</span>=<span class="number">0</span>;</span><br><span class="line">  <span class="keyword">echo</span> <span class="variable">$x</span>;</span><br><span class="line">  <span class="variable">$x</span>++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">myTest</span>();</span><br><span class="line"><span class="title function_ invoke__">myTest</span>();</span><br><span class="line"><span class="title function_ invoke__">myTest</span>();</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/11/30/aU5BTrkAH7DCxcm.png"
+                      alt="phpvar-7.png"
+                ></p>
+<p>注：然后，每当函数被调用时，这个变量所存储的信息都是函数最后一次被调用时所包含的信息。该变量仍然是函数的局部变量。</p>
+<h3 id="可变变量"><a href="#可变变量" class="headerlink" title="可变变量"></a>可变变量</h3><hr>
+<p>可变变量就是，一个变量的变量名可以动态的设置和使用。一个可变变量获取了一个普通变量的值作为这个可变变量的变量名。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$a</span> = <span class="string">&#x27;hello&#x27;</span>;   <span class="comment">// 普通变量</span></span><br><span class="line"><span class="variable">$$a</span> = <span class="string">&#x27;world&#x27;</span>;  <span class="comment">// 可变变量</span></span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$a</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$hello</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;<span class="subst">$a</span> $<span class="subst">&#123;$a&#125;</span>&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;<span class="subst">$a</span> <span class="subst">$hello</span>&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/11/30/Ud46wLCSoaiRfQg.png"
+                      alt="phpvar-8.png"
+                ></p>
+<p>要将可变变量用于数组，必须解决一个模棱两可的问题。这就是当写下 <code>$$a[1]</code> 时，解析器需要知道是想要 <code>$a[1]</code> 作为一个变量呢，还是想要 <code>$$a</code> 作为一个变量并取出该变量中索引为 <code>[1]</code> 的值。解决此问题的语法是，对第一种情况用 <code>$&#123;$a[1]&#125;</code>，对第二种情况用 <code>$&#123;$a&#125;[1]</code>。</p>
+<h2 id="PHP-常量"><a href="#PHP-常量" class="headerlink" title="PHP 常量"></a>PHP 常量</h2><h3 id="常量特点"><a href="#常量特点" class="headerlink" title="常量特点"></a>常量特点</h3><hr>
+<ul>
+<li>常量是单个值的标识符（名称）。在脚本中无法改变该值。</li>
+<li>有效的常量名以字符或下划线开头（常量名称前面没有 $ 符号）。</li>
+<li>与变量不同，常量贯穿整个脚本是自动全局的。</li>
+</ul>
+<h3 id="设置-PHP-常量"><a href="#设置-PHP-常量" class="headerlink" title="设置 PHP 常量"></a>设置 PHP 常量</h3><hr>
+<p>使用 define() 函数定义常量，它使用三个参数：</p>
+<ul>
+<li>首个参数定义常量的名称</li>
+<li>第二个参数定义常量的值</li>
+<li>可选的第三个参数规定常量名是否对大小写不敏感。默认是 false。</li>
+</ul>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><hr>
+<ul>
+<li>对大小写敏感</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&quot;GREETING&quot;</span>, <span class="string">&quot;Welcome to W3School.com.cn!&quot;</span>);</span><br><span class="line"><span class="keyword">echo</span> GREETING;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/03/AVoKfpeSkxTb7Fr.png"
+                      alt="php-var1.png"
+                ></p>
+<ul>
+<li>对大小写不敏感</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&quot;GREETING&quot;</span>, <span class="string">&quot;Welcome to W3School.com.cn!&quot;</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="keyword">echo</span> greeting;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/03/IcVe3jnh2AEJvQy.png"
+                      alt="php-var2.png"
+                ></p>
+<ul>
+<li>常量是全局的</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&quot;GREETING&quot;</span>, <span class="string">&quot;Welcome to W3School.com.cn!&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myTest</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> GREETING;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="title function_ invoke__">myTest</span>();</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/03/6jJGuD4OXWYh57i.png"
+                      alt="php-var3.png"
+                ></p>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><h3 id="布尔型（Boolean）"><a href="#布尔型（Boolean）" class="headerlink" title="布尔型（Boolean）"></a>布尔型（Boolean）</h3><p>布尔类型只有两个值 true 或 false，即真与假的概念。两个值都不区分大小写，常用于条件测试。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$x</span>=<span class="literal">true</span>;</span><br><span class="line"><span class="variable">$y</span>=<span class="literal">false</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$y</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/03/RBUnxtZQDszi1Ym.png"
+                      alt="php-boolean.png"
+                ></p>
+<h3 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h3><p>整数是没有小数的数字。</p>
+<p><strong>整数规则：</strong></p>
+<ul>
+<li>整数必须有至少一个数字（0-9）</li>
+<li>整数不能包含逗号或空格</li>
+<li>整数不能有小数点</li>
+<li>整数正负均可</li>
+<li>可以用三种格式规定整数：十进制、十六进制（前缀是 0x）、八进制（前缀是 0）或二进制（前缀是 0b）</li>
+</ul>
+<p>注：二进制表达的 integer 自 PHP 5.4.0 起可用。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="variable">$x</span> = <span class="number">5985</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>; </span><br><span class="line"><span class="variable">$x</span> = -<span class="number">345</span>; <span class="comment">// 负数</span></span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>; </span><br><span class="line"><span class="variable">$x</span> = <span class="number">0x8C</span>; <span class="comment">// 十六进制数</span></span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="variable">$x</span> = <span class="number">047</span>; <span class="comment">// 八进制数</span></span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="variable">$x</span> = <span class="number">0b11111111</span>; <span class="comment">// 二进制数</span></span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/03/rjBqGpTgf1AQREs.png"
+                      alt="php-int.png"
+                ></p>
+<h3 id="浮点型"><a href="#浮点型" class="headerlink" title="浮点型"></a>浮点型</h3><p>浮点数是有小数点或指数形式的数字。</p>
+<p><strong>示例:</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="variable">$x</span> = <span class="number">10.365</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>; </span><br><span class="line"><span class="variable">$x</span> = <span class="number">2.4e3</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>; </span><br><span class="line"><span class="variable">$x</span> = <span class="number">8E-5</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/03/UPszSkMHQJ2L1FX.png"
+                      alt="php-float.png"
+                ></p>
+<h3 id="字符串型"><a href="#字符串型" class="headerlink" title="字符串型"></a>字符串型</h3><p>字符串是字符序列，比如 “Hello world!”。字符串可以是引号内的任何文本,可以使用单引号或双引号。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="variable">$x</span> = <span class="string">&quot;Hello world!&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$x</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>; </span><br><span class="line"><span class="variable">$x</span> = <span class="string">&#x27;Hello world!&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$x</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/03/zLNnQ9sTaf3dcOv.png"
+                      alt="php-string.png"
+                ></p>
+<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>数组在一个变量中存储多个值。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="variable">$cars</span>=<span class="keyword">array</span>(<span class="string">&quot;Volvo&quot;</span>,<span class="string">&quot;BMW&quot;</span>,<span class="string">&quot;SAAB&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$cars</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/03/QKa9npt6HuzD24y.png"
+                      alt="php-array.png"
+                ></p>
+<h3 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h3><p>类：可以理解为类别。例如：人是一类、汽车是一类、电脑是一类。类还包含了属性、方法、对象。</p>
+<ul>
+<li>属性：就是人的特点，肌肉发达、头顶有点秃、WWE超级巨星</li>
+<li>方法：就是人会摔角、唱歌、表演等各种行为。</li>
+<li>对象：就是类里面的一个具体个体。例如：赵喜娜，就是一个具体的对象。</li>
+</ul>
+<p>实例化：即把赵喜娜拉到你面前，让他确实存在。</p>
+<p>在 PHP 中，首先我们必须声明类，然后将该类实例化为对象。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//人的成员属性</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> <span class="variable">$name</span>;    <span class="comment">//人的名字</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> <span class="variable">$age</span>;    <span class="comment">//人的年龄</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//人的成员 say() 方法</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">say</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;I am：&quot;</span>.<span class="variable language_">$this</span>-&gt;name.<span class="string">&quot;&lt;br /&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;我的年龄是：&quot;</span>.<span class="variable language_">$this</span>-&gt;age;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;    <span class="comment">//类定义结束</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//实例化一个对象</span></span><br><span class="line"><span class="variable">$zxn</span> = <span class="keyword">new</span> <span class="title class_">Person</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">//给 $zxn 对象属性赋值</span></span><br><span class="line"><span class="variable">$zxn</span>-&gt;name = <span class="string">&quot;赵喜娜&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$zxn</span>-&gt;age = <span class="string">&#x27;30&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//调用对象中的 say()方法</span></span><br><span class="line"><span class="variable">$zxn</span>-&gt;<span class="title function_ invoke__">say</span>();</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="comment">// $zxn 的数据类型</span></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">gettype</span>(<span class="variable">$zxn</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/03/8zHMOTQdlNsISGP.png"
+                      alt="php-object.png"
+                ></p>
+<h3 id="NULL"><a href="#NULL" class="headerlink" title="NULL"></a>NULL</h3><p>特殊的 NULL 值表示一个变量没有值。NULL 数据类型，唯一可能的值就是 NULL 。</p>
+<p>在下列情况下一个变量被认为是 NULL：</p>
+<ul>
+<li>被赋值为 NULL。</li>
+<li>尚未被赋值。</li>
+<li>被 unset()。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$x</span>=<span class="string">&quot;Hello world!&quot;</span>;</span><br><span class="line"><span class="variable">$x</span>=<span class="literal">null</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/03/vVQUJdnWErs5KYM.png"
+                      alt="php-null.png"
+                ></p>
+<h2 id="PHP-运算符"><a href="#PHP-运算符" class="headerlink" title="PHP 运算符"></a>PHP 运算符</h2><h3 id="PHP-算数运算符"><a href="#PHP-算数运算符" class="headerlink" title="PHP 算数运算符"></a>PHP 算数运算符</h3><hr>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>名称</th>
+<th>例子</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>+</td>
+<td>加法</td>
+<td>$x+$y</td>
+<td>$x 与 $y 求和</td>
+</tr>
+<tr>
+<td>-</td>
+<td>减法</td>
+<td>$x-$y</td>
+<td>$x 与 $y 的差数</td>
+</tr>
+<tr>
+<td>*</td>
+<td>乘法</td>
+<td>$x*$y</td>
+<td>$x 与 $y 的乘积</td>
+</tr>
+<tr>
+<td>&#x2F;</td>
+<td>除法</td>
+<td>$x&#x2F;$y</td>
+<td>$x 与 $y 的商数</td>
+</tr>
+<tr>
+<td>%</td>
+<td>取余</td>
+<td>$x%$y</td>
+<td>$x 除以 $y 的余数</td>
+</tr>
+</tbody></table>
+<p><strong>示例：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$x</span>=<span class="number">17</span>;</span><br><span class="line"><span class="variable">$y</span>=<span class="number">8</span>;</span><br><span class="line"><span class="keyword">echo</span> (<span class="variable">$x</span> + <span class="variable">$y</span>); <span class="comment">// 输出 25</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> (<span class="variable">$x</span> - <span class="variable">$y</span>); <span class="comment">// 输出 9</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> (<span class="variable">$x</span> * <span class="variable">$y</span>); <span class="comment">// 输出 136</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> (<span class="variable">$x</span> / <span class="variable">$y</span>); <span class="comment">// 输出 2.125</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> (<span class="variable">$x</span> % <span class="variable">$y</span>); <span class="comment">// 输出 1</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/04/LVyMdhUsjQOz259.png"
+                      alt="phpsf-1.png"
+                ></p>
+<h3 id="PHP-赋值运算符"><a href="#PHP-赋值运算符" class="headerlink" title="PHP 赋值运算符"></a>PHP 赋值运算符</h3><hr>
+<p>PHP 赋值运算符用于向变量写值。</p>
+<table>
+<thead>
+<tr>
+<th>赋值</th>
+<th>等同于</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>x&#x3D;y</td>
+<td>x&#x3D;y</td>
+<td>右侧表达式为左侧运算数设置值。</td>
+</tr>
+<tr>
+<td>x +&#x3D; y</td>
+<td>x &#x3D; x + y</td>
+<td>加</td>
+</tr>
+<tr>
+<td>x -&#x3D; y</td>
+<td>x &#x3D; x - y</td>
+<td>减</td>
+</tr>
+<tr>
+<td>x *&#x3D; y</td>
+<td>x &#x3D; x * y</td>
+<td>乘</td>
+</tr>
+<tr>
+<td>x &#x2F;&#x3D; y</td>
+<td>x &#x3D; x &#x2F; y</td>
+<td>除</td>
+</tr>
+<tr>
+<td>x %&#x3D; y</td>
+<td>x &#x3D; x % y</td>
+<td>模数</td>
+</tr>
+</tbody></table>
+<p><strong>示例：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="variable">$x</span>=<span class="number">17</span>; </span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$x</span>; <span class="comment">// 输出 17</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="variable">$y</span>=<span class="number">17</span>; </span><br><span class="line"><span class="variable">$y</span> += <span class="number">8</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$y</span>; <span class="comment">// 输出 25</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="variable">$z</span>=<span class="number">17</span>;</span><br><span class="line"><span class="variable">$z</span> -= <span class="number">8</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$z</span>; <span class="comment">// 输出 9</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="variable">$i</span>=<span class="number">17</span>;</span><br><span class="line"><span class="variable">$i</span> *= <span class="number">8</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$i</span>; <span class="comment">// 输出 136</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="variable">$j</span>=<span class="number">17</span>;</span><br><span class="line"><span class="variable">$j</span> /= <span class="number">8</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$j</span>; <span class="comment">// 输出 2.125</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="variable">$k</span>=<span class="number">17</span>;</span><br><span class="line"><span class="variable">$k</span> %= <span class="number">8</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$k</span>; <span class="comment">// 输出 1</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/04/4o5xvqVu3yEjbwY.png"
+                      alt="phpsf-2.png"
+                ></p>
+<h3 id="PHP-字符串运算符"><a href="#PHP-字符串运算符" class="headerlink" title="PHP 字符串运算符"></a>PHP 字符串运算符</h3><hr>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>名称</th>
+<th>例子</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>.</strong></td>
+<td>串接</td>
+<td>$txt1 &#x3D; “Hello” $txt2 &#x3D; $txt1 . “ world!”</td>
+<td>现在 $txt2 包含 “Hello world!”</td>
+</tr>
+<tr>
+<td><strong>.&#x3D;</strong></td>
+<td>串接赋值</td>
+<td>$txt1 &#x3D; “Hello” $txt1 .&#x3D; “ world!”</td>
+<td>现在 $txt1 包含 “Hello world!”</td>
+</tr>
+</tbody></table>
+<p><strong>示例：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$a</span> = <span class="string">&quot;Hello&quot;</span>;</span><br><span class="line"><span class="variable">$b</span> = <span class="variable">$a</span> . <span class="string">&quot; world!&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$b</span>; <span class="comment">// 输出 Hello world!</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="variable">$x</span>=<span class="string">&quot;Hello&quot;</span>;</span><br><span class="line"><span class="variable">$x</span> .= <span class="string">&quot; world!&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$x</span>; <span class="comment">// 输出 Hello world!</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/04/Ke3IvqzT7PCXQVF.png"
+                      alt="phpsf-3.png"
+                ></p>
+<h3 id="PHP-递增-x2F-递减运算符"><a href="#PHP-递增-x2F-递减运算符" class="headerlink" title="PHP 递增&#x2F;递减运算符"></a>PHP 递增&#x2F;递减运算符</h3><hr>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>++$x</td>
+<td>前递增</td>
+<td>$x 加一递增，然后返回 $x</td>
+</tr>
+<tr>
+<td>$x++</td>
+<td>后递增</td>
+<td>返回 $x，然后 $x 加一递增</td>
+</tr>
+<tr>
+<td>–$x</td>
+<td>前递减</td>
+<td>$x 减一递减，然后返回 $x</td>
+</tr>
+<tr>
+<td>$x–</td>
+<td>后递减</td>
+<td>返回 $x，然后 $x 减一递减</td>
+</tr>
+</tbody></table>
+<p><strong>示例：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$x</span>=<span class="number">17</span>; </span><br><span class="line"><span class="keyword">echo</span> ++<span class="variable">$x</span>; <span class="comment">// 输出 18</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="variable">$y</span>=<span class="number">17</span>; </span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$y</span>++; <span class="comment">// 输出 17</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="variable">$z</span>=<span class="number">17</span>;</span><br><span class="line"><span class="keyword">echo</span> --<span class="variable">$z</span>; <span class="comment">// 输出 16</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="variable">$i</span>=<span class="number">17</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$i</span>--; <span class="comment">// 输出 17</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/04/z9oHyPeruGpmh41.png"
+                      alt="phpsf-4.png"
+                ></p>
+<h3 id="PHP-比较运算符"><a href="#PHP-比较运算符" class="headerlink" title="PHP 比较运算符"></a>PHP 比较运算符</h3><hr>
+<p>PHP 比较运算符用于比较两个值（数字或字符串）</p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>名称</th>
+<th>例子</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x3D;&#x3D;</td>
+<td>等于</td>
+<td>$x &#x3D;&#x3D; $y</td>
+<td>如果 $x 等于 $y，则返回 true。</td>
+</tr>
+<tr>
+<td>&#x3D;&#x3D;&#x3D;</td>
+<td>全等（完全相同）</td>
+<td>$x &#x3D;&#x3D;&#x3D; $y</td>
+<td>如果 $x 等于 $y，且它们类型相同，则返回 true。</td>
+</tr>
+<tr>
+<td>!&#x3D;</td>
+<td>不等于</td>
+<td>$x !&#x3D; $y</td>
+<td>如果 $x 不等于 $y，则返回 true。</td>
+</tr>
+<tr>
+<td>&lt;&gt;</td>
+<td>不等于</td>
+<td>$x &lt;&gt; $y</td>
+<td>如果 $x 不等于 $y，则返回 true。</td>
+</tr>
+<tr>
+<td>!&#x3D;&#x3D;</td>
+<td>不全等（完全不同）</td>
+<td>$x !&#x3D;&#x3D; $y</td>
+<td>如果 $x 不等于 $y，或它们类型不相同，则返回 true。</td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>大于</td>
+<td>$x &gt; $y</td>
+<td>如果 $x 大于 $y，则返回 true。</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>小于</td>
+<td>$x &lt; $y</td>
+<td>如果 $x 小于 $y，则返回 true。</td>
+</tr>
+<tr>
+<td>&gt;&#x3D;</td>
+<td>大于或等于</td>
+<td>$x &gt;&#x3D; $y</td>
+<td>如果 $x 大于或者等于 $y，则返回 true.</td>
+</tr>
+<tr>
+<td>&lt;&#x3D;</td>
+<td>小于或等于</td>
+<td>$x &lt;&#x3D; $y</td>
+<td>如果 $x 小于或者等于 $y，则返回 true。</td>
+</tr>
+</tbody></table>
+<p><strong>示例：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$x</span>=<span class="number">17</span>; </span><br><span class="line"><span class="variable">$y</span>=<span class="string">&quot;17&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span> == <span class="variable">$y</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span> === <span class="variable">$y</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span> != <span class="variable">$y</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span> !== <span class="variable">$y</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$a</span>=<span class="number">17</span>;</span><br><span class="line"><span class="variable">$b</span>=<span class="number">8</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$a</span> &gt; <span class="variable">$b</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$a</span> &lt; <span class="variable">$b</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/04/5tbqidLvTrZaRu4.png"
+                      alt="phpsf-5.png"
+                ></p>
+<h3 id="PHP-逻辑运算符"><a href="#PHP-逻辑运算符" class="headerlink" title="PHP 逻辑运算符"></a>PHP 逻辑运算符</h3><hr>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>名称</th>
+<th>例子</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>and</td>
+<td>与</td>
+<td>$x and $y</td>
+<td>如果 $x 和 $y 都为 true，则返回 true。</td>
+</tr>
+<tr>
+<td>or</td>
+<td>或</td>
+<td>$x or $y</td>
+<td>如果 $x 和 $y 至少有一个为 true，则返回 true。</td>
+</tr>
+<tr>
+<td>xor</td>
+<td>异或</td>
+<td>$x xor $y</td>
+<td>如果 $x 和 $y 有且仅有一个为 true，则返回 true。</td>
+</tr>
+<tr>
+<td>&amp;&amp;</td>
+<td>与</td>
+<td>$x &amp;&amp; $y</td>
+<td>如果 $x 和 $y 都为 true，则返回 true。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>或</td>
+</tr>
+<tr>
+<td>!</td>
+<td>非</td>
+<td>!$x</td>
+<td>如果 $x 不为 true，则返回 true。</td>
+</tr>
+</tbody></table>
+<p><strong>示例：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// --------------------</span></span><br><span class="line"><span class="comment">// foo() 根本没机会被调用，被运算符“短路”了</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$a</span> = (<span class="literal">false</span> &amp;&amp; <span class="title function_ invoke__">foo</span>());</span><br><span class="line"><span class="variable">$b</span> = (<span class="literal">true</span>  || <span class="title function_ invoke__">foo</span>());</span><br><span class="line"><span class="variable">$c</span> = (<span class="literal">false</span> <span class="keyword">and</span> <span class="title function_ invoke__">foo</span>());</span><br><span class="line"><span class="variable">$d</span> = (<span class="literal">true</span>  <span class="keyword">or</span>  <span class="title function_ invoke__">foo</span>());</span><br><span class="line"></span><br><span class="line"><span class="comment">// --------------------</span></span><br><span class="line"><span class="comment">// &quot;||&quot; 比 &quot;or&quot; 的优先级高</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 表达式 (false || true) 的结果被赋给 $e</span></span><br><span class="line"><span class="comment">// 等同于：($e = (false || true))</span></span><br><span class="line"><span class="variable">$e</span> = <span class="literal">false</span> || <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 常量 false 被赋给 $f，true 被忽略</span></span><br><span class="line"><span class="comment">// 等同于：(($f = false) or true)</span></span><br><span class="line"><span class="variable">$f</span> = <span class="literal">false</span> <span class="keyword">or</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$e</span>, <span class="variable">$f</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="comment">// --------------------</span></span><br><span class="line"><span class="comment">// &quot;&amp;&amp;&quot; 比 &quot;and&quot; 的优先级高</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 表达式 (true &amp;&amp; false) 的结果被赋给 $g</span></span><br><span class="line"><span class="comment">// 等同于：($g = (true &amp;&amp; false))</span></span><br><span class="line"><span class="variable">$g</span> = <span class="literal">true</span> &amp;&amp; <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 常量 true 被赋给 $h，false 被忽略</span></span><br><span class="line"><span class="comment">// 等同于：(($h = true) and false)</span></span><br><span class="line"><span class="variable">$h</span> = <span class="literal">true</span> <span class="keyword">and</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$g</span>, <span class="variable">$h</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/04/CpWzvAMGHs67NoY.png"
+                      alt="phpsf-6.png"
+                ></p>
+<h3 id="PHP数组运算"><a href="#PHP数组运算" class="headerlink" title="PHP数组运算"></a>PHP数组运算</h3><hr>
+<p>PHP 数组运算符用于比较数组</p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>名称</th>
+<th>例子</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>+</td>
+<td>联合</td>
+<td>$x + $y</td>
+<td>$x 和 $y 的联合（但不覆盖重复的键）</td>
+</tr>
+<tr>
+<td>&#x3D;&#x3D;</td>
+<td>相等</td>
+<td>$x &#x3D;&#x3D; $y</td>
+<td>如果 $x 和 $y 拥有相同的键&#x2F;值对，则返回 true。</td>
+</tr>
+<tr>
+<td>&#x3D;&#x3D;&#x3D;</td>
+<td>全等</td>
+<td>$x &#x3D;&#x3D;&#x3D; $y</td>
+<td>如果 $x 和 $y 拥有相同的键&#x2F;值对，且顺序相同类型相同，则返回 true。</td>
+</tr>
+<tr>
+<td>!&#x3D;</td>
+<td>不相等</td>
+<td>$x !&#x3D; $y</td>
+<td>如果 $x 不等于 $y，则返回 true。</td>
+</tr>
+<tr>
+<td>&lt;&gt;</td>
+<td>不相等</td>
+<td>$x &lt;&gt; $y</td>
+<td>如果 $x 不等于 $y，则返回 true。</td>
+</tr>
+<tr>
+<td>!&#x3D;&#x3D;</td>
+<td>不全等</td>
+<td>$x !&#x3D;&#x3D; $y</td>
+<td>如果 $x 与 $y 完全不同，则返回 true。</td>
+</tr>
+</tbody></table>
+<p><strong>示例：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// a,b,c,d为键，apple等为值</span></span><br><span class="line"><span class="variable">$x</span> = <span class="keyword">array</span>(<span class="string">&quot;a&quot;</span> =&gt; <span class="string">&quot;apple&quot;</span>, <span class="string">&quot;b&quot;</span> =&gt; <span class="string">&quot;banana&quot;</span>); </span><br><span class="line"><span class="variable">$y</span> = <span class="keyword">array</span>(<span class="string">&quot;c&quot;</span> =&gt; <span class="string">&quot;orange&quot;</span>, <span class="string">&quot;d&quot;</span> =&gt; <span class="string">&quot;peach&quot;</span>);</span><br><span class="line"><span class="variable">$z</span> = <span class="variable">$x</span> + <span class="variable">$y</span>; <span class="comment">// $x 与 $y 的联合</span></span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$y</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$z</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span> == <span class="variable">$y</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span> === <span class="variable">$y</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span> != <span class="variable">$y</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span> &lt;&gt; <span class="variable">$y</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$x</span> !== <span class="variable">$y</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/04/qIfvi3RlxFOyN7D.png"
+                      alt="phpsf-7.png"
+                ></p>
+<h3 id="PHP位运算符"><a href="#PHP位运算符" class="headerlink" title="PHP位运算符"></a>PHP位运算符</h3><hr>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>名称</th>
+<th>例子</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&amp;</td>
+<td>按位与</td>
+<td>$a &amp; $b</td>
+<td>将把 $a 和 $b 中都为 1 的位设为 1。</td>
+</tr>
+<tr>
+<td>|</td>
+<td>按位或</td>
+<td>$a | $b</td>
+<td>将把 $a 和 $b 中任何一个为 1 的位设为 1。</td>
+</tr>
+<tr>
+<td>^</td>
+<td>按位异或</td>
+<td>$a ^ $b</td>
+<td>将把 $a 和 $b 中一个为 1 另一个为 0 的位设为 1。</td>
+</tr>
+<tr>
+<td>~</td>
+<td>按位取反</td>
+<td>~ $a</td>
+<td>将 $a 中为 0 的位设为 1，反之亦然。</td>
+</tr>
+<tr>
+<td>&lt;&lt;</td>
+<td>左移</td>
+<td>$a &lt;&lt; $b</td>
+<td>将 $a 中的位向左移动 $b 次（每一次移动都表示“乘以 2”）。</td>
+</tr>
+<tr>
+<td>&gt;&gt;</td>
+<td>右移</td>
+<td>$a &gt;&gt; $b</td>
+<td>将 $a 中的位向右移动 $b 次（每一次移动都表示“除以 2”）。</td>
+</tr>
+</tbody></table>
+<p><strong>注：</strong> 位移在 PHP 中是数学运算。向任何方向移出去的位都被丢弃。左移时右侧以零填充，符号位被移走意味着正负号不被保留。右移时左侧以符号位填充，意味着正负号被保留。</p>
+<h3 id="PHP错误控制运算符"><a href="#PHP错误控制运算符" class="headerlink" title="PHP错误控制运算符"></a>PHP错误控制运算符</h3><hr>
+<p>PHP 支持一个错误控制运算符：@。当将其放置在一个 PHP 表达式之前，该表达式可能产生的任何错误信息都被忽略掉。</p>
+<p>如果用 set_error_handler() 设定了自定义的错误处理函数，仍然会被调用，但是此错误处理函数可以（并且也应该）调用 error_reporting()，而该函数在出错语句前有 @ 时将返回 0。</p>
+<p>如果激活了 track_errors 特性，表达式所产生的任何错误信息都被存放在变量 $php_errormsg 中。此变量在每次出错时都会被覆盖，所以如果想用它的话就要尽早检查。</p>
+<p>示例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/* Intentional file error */</span></span><br><span class="line"><span class="variable">$my_file</span> = @<span class="title function_ invoke__">file</span> (<span class="string">&#x27;non_existent_file&#x27;</span>) <span class="keyword">or</span></span><br><span class="line"><span class="comment">// die 函数指定一个错误消息，并退出当前执行语句</span></span><br><span class="line">    <span class="keyword">die</span> (<span class="string">&quot;Failed opening file: error was &#x27;<span class="subst">$php_errormsg</span>&#x27;&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// this works for any expression, not just functions:</span></span><br><span class="line"><span class="variable">$value</span> = @<span class="variable">$cache</span>[<span class="variable">$key</span>];</span><br><span class="line"><span class="comment">// will not issue a notice if the index $key doesn&#x27;t exist.</span></span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/04/aVcxQAR6gwj2Ckv.png"
+                      alt="phpsf-8.png"
+                ></p>
+<p><strong>注：</strong> @ 运算符只对表达式有效。对新手来说一个简单的规则就是：如果能从某处得到值，就能在它前面加上 @ 运算符。例如，可以把它放在变量，函数和 include 调用，常量，等等之前。不能把它放在函数或类的定义之前，也不能用于条件结构例如 if 和 foreach 等。</p>
+<p><strong>警告：</strong> 目前的“@”错误控制运算符前缀甚至使导致脚本终止的严重错误的错误报告也失效。这意味着如果在某个不存在或者敲错了字母的函数调用前用了“@”来抑制错误信息，那脚本会没有任何迹象显示原因而死在那里。</p>
+<h3 id="PHP执行运算符"><a href="#PHP执行运算符" class="headerlink" title="PHP执行运算符"></a>PHP执行运算符</h3><hr>
+<p>PHP 支持一个执行运算符：反引号（&#96;&#96;）。PHP 将尝试将反引号中的内容作为 shell 命令来执行，并将其输出信息返回（即，可以赋给一个变量而不是简单地丢弃到标准输出）。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$output</span> = `ls -al`;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;<span class="subst">$output</span>&lt;/pre&gt;&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/04/JckWSCIhqVDYagZ.png"
+                      alt="phpsf-9.png"
+                ></p>
+<h2 id="PHP-条件语句"><a href="#PHP-条件语句" class="headerlink" title="PHP 条件语句"></a>PHP 条件语句</h2><hr>
+<p>在 PHP 中，可以使用以下条件语句：</p>
+<ul>
+<li>if 语句：如果指定条件为真，则执行代码</li>
+<li>if…else 语句：如果条件为 true，则执行代码；如果条件为 false，则执行另一端代码</li>
+<li>if…elseif….else 语句：根据两个以上的条件执行不同的代码块</li>
+<li>switch 语句：选择多个代码块之一来执行</li>
+</ul>
+<h3 id="if-语句"><a href="#if-语句" class="headerlink" title="if 语句"></a>if 语句</h3><p>if 语句用于在指定条件为 true 时执行代码。</p>
+<hr>
+<h4 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (条件) &#123;</span><br><span class="line">  当条件为 <span class="literal">true</span> 时执行的代码;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$t</span>=<span class="title function_ invoke__">date</span>(<span class="string">&quot;H&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$t</span>&lt;<span class="string">&quot;20&quot;</span>) &#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;Have a good day!&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/11/qdPafJRVvXBehxE.png"
+                      alt="phpif-1.png"
+                ></p>
+<h3 id="if…else-语句"><a href="#if…else-语句" class="headerlink" title="if…else 语句"></a>if…else 语句</h3><p>if….else 语句在条件为 true 时执行代码，在条件为 false 时执行另一段代码。</p>
+<hr>
+<h4 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (条件) &#123;</span><br><span class="line">  条件为 <span class="literal">true</span> 时执行的代码;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  条件为 <span class="literal">false</span> 时执行的代码;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$t</span>=<span class="title function_ invoke__">date</span>(<span class="string">&quot;H&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$t</span>&lt;<span class="string">&quot;20&quot;</span>) &#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;Have a good day!&quot;</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;Have a good night!&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/11/qdPafJRVvXBehxE.png"
+                      alt="phpif-2.png"
+                ></p>
+<h2 id="if…elseif…else-语句"><a href="#if…elseif…else-语句" class="headerlink" title="if…elseif…else 语句"></a>if…elseif…else 语句</h2><p>if….elseif…else 语句来根据两个以上的条件执行不同的代码。</p>
+<hr>
+<h4 id="语法-2"><a href="#语法-2" class="headerlink" title="语法"></a>语法</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (条件) &#123;</span><br><span class="line">  条件为 <span class="literal">true</span> 时执行的代码;</span><br><span class="line">&#125; <span class="keyword">elseif</span> (condition) &#123;</span><br><span class="line">  条件为 <span class="literal">true</span> 时执行的代码;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  条件为 <span class="literal">false</span> 时执行的代码;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$t</span>=<span class="title function_ invoke__">date</span>(<span class="string">&quot;H&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$t</span>&lt;<span class="string">&quot;10&quot;</span>) &#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;Have a good morning!&quot;</span>;</span><br><span class="line">&#125; <span class="keyword">elseif</span> (<span class="variable">$t</span>&lt;<span class="string">&quot;20&quot;</span>) &#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;Have a good day!&quot;</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;Have a good night!&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/11/8k4aDmiHJVCbonI.png"
+                      alt="phpif-3.png"
+                ></p>
+<h3 id="switch-语句"><a href="#switch-语句" class="headerlink" title="switch 语句"></a>switch 语句</h3><p>使用 Switch 语句可以避免冗长的 if..elseif..else 代码块。</p>
+<hr>
+<h4 id="语法-3"><a href="#语法-3" class="headerlink" title="语法"></a>语法</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (expression)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">case</span> label1:</span><br><span class="line">  expression = label1 时执行的代码 ;</span><br><span class="line">  <span class="keyword">break</span>;  </span><br><span class="line"><span class="keyword">case</span> label2:</span><br><span class="line">  expression = label2 时执行的代码 ;</span><br><span class="line">  <span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">  表达式的值不等于 label1 及 label2 时执行的代码;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/11/2cKlETx7wRdrQBu.png"
+                      alt="phpif-3.png"
+                ></p>
+<p><strong>工作原理：</strong></p>
+<ol>
+<li>对表达式（通常是变量）进行一次计算</li>
+<li>把表达式的值与结构中 case 的值进行比较</li>
+<li>如果存在匹配，则执行与 case 关联的代码</li>
+<li>代码执行后，break 语句阻止代码跳入下一个 case 中继续执行</li>
+<li>如果没有 case 为真，则使用 default 语句</li>
+</ol>
+<h4 id="实例-3"><a href="#实例-3" class="headerlink" title="实例"></a>实例</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$favfruit</span>=<span class="string">&quot;orange&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span> (<span class="variable">$favfruit</span>) &#123;</span><br><span class="line">   <span class="keyword">case</span> <span class="string">&quot;apple&quot;</span>:</span><br><span class="line">     <span class="keyword">echo</span> <span class="string">&quot;Your favorite fruit is apple!&quot;</span>;</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">   <span class="keyword">case</span> <span class="string">&quot;banana&quot;</span>:</span><br><span class="line">     <span class="keyword">echo</span> <span class="string">&quot;Your favorite fruit is banana!&quot;</span>;</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">   <span class="keyword">case</span> <span class="string">&quot;orange&quot;</span>:</span><br><span class="line">     <span class="keyword">echo</span> <span class="string">&quot;Your favorite fruit is orange!&quot;</span>;</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">   <span class="keyword">default</span>:</span><br><span class="line">     <span class="keyword">echo</span> <span class="string">&quot;Your favorite fruit is neither apple, banana, or orange!&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="PHP-循环"><a href="#PHP-循环" class="headerlink" title="PHP 循环"></a>PHP 循环</h2><hr>
+<p>在 PHP 中有以下循环语句：</p>
+<ul>
+<li>while - 只要指定条件为真，则循环代码块</li>
+<li>do…while - 先执行一次代码块，然后只要指定条件为真则重复循环</li>
+<li>for - 循环代码块指定次数</li>
+<li>foreach - 遍历数组中的每个元素并循环代码块</li>
+</ul>
+<h3 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h3><p>只要指定条件为真，while 循环就会执行代码块</p>
+<hr>
+<h4 id="语法-4"><a href="#语法-4" class="headerlink" title="语法"></a>语法</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (条件为真) &#123;</span><br><span class="line">  要执行的代码;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="实例-4"><a href="#实例-4" class="headerlink" title="实例"></a>实例</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 首先把变量 $x 设置为 1（$x=1）。然后执行 while 循环，只要 $x 小于或等于 5。循环每运行一次，$x 将递增 1</span></span><br><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="variable">$x</span>=<span class="number">1</span>; </span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="variable">$x</span>&lt;=<span class="number">5</span>) &#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;这个数字是：<span class="subst">$x</span> &lt;br&gt;&quot;</span>;</span><br><span class="line">  <span class="variable">$x</span>++;</span><br><span class="line">&#125; </span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/12/nRhJ6fYjNtVEAug.png"
+                      alt="while.png"
+                ></p>
+<h3 id="do…while循环"><a href="#do…while循环" class="headerlink" title="do…while循环"></a>do…while循环</h3><p>do…while 循环首先会执行一次代码块，然后检查条件，如果指定条件为真，则重复循环。</p>
+<hr>
+<h4 id="语法-5"><a href="#语法-5" class="headerlink" title="语法"></a>语法</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">  要执行的代码;</span><br><span class="line">&#125; <span class="keyword">while</span> (条件为真);</span><br></pre></td></tr></table></figure>
+
+<h4 id="实例-5"><a href="#实例-5" class="headerlink" title="实例"></a>实例</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 首先把变量 $x 设置为 1（$x=1）。然后，do while 循环输出一段字符串，然后对变量 $x 递增 1。随后对条件进行检查（$x 是否小于或等于 5）。只要 $x 小于或等于 5，循环将会继续运行</span></span><br><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="variable">$x</span>=<span class="number">1</span>; </span><br><span class="line"></span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;这个数字是：<span class="subst">$x</span> &lt;br&gt;&quot;</span>;</span><br><span class="line">  <span class="variable">$x</span>++;</span><br><span class="line">&#125; <span class="keyword">while</span> (<span class="variable">$x</span>&lt;=<span class="number">5</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/12/nRhJ6fYjNtVEAug.png"
+                      alt="do-while.png"
+                ></p>
+<h3 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h3><p>指定代码块循环执行的次数</p>
+<hr>
+<h4 id="语法-6"><a href="#语法-6" class="headerlink" title="语法"></a>语法</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (; test counter; increment counter) &#123;</span><br><span class="line">  code to be executed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数：</strong></p>
+<ul>
+<li>init counter：变量初始化值</li>
+<li>test counter：: 每次循环开始前求值。如果值为 TRUE，继续循环。如果它的值为 FALSE，循环结束。</li>
+<li>increment counter：增加循环计数器的值</li>
+</ul>
+<h4 id="实例-6"><a href="#实例-6" class="headerlink" title="实例"></a>实例</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 从 0 循环到 10，并输出每次循环的结果</span></span><br><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="keyword">for</span> (<span class="variable">$x</span>=<span class="number">0</span>; <span class="variable">$x</span>&lt;=<span class="number">10</span>; <span class="variable">$x</span>++) &#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;数字是：<span class="subst">$x</span> &lt;br&gt;&quot;</span>;</span><br><span class="line">&#125; </span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/12/kWXAxYRbz168ovj.png"
+                      alt="for.png"
+                ></p>
+<h3 id="foreach-循环"><a href="#foreach-循环" class="headerlink" title="foreach 循环"></a>foreach 循环</h3><p>foreach 循环只适用于数组，并用于遍历数组中的每个键&#x2F;值对。</p>
+<hr>
+<h4 id="语法-7"><a href="#语法-7" class="headerlink" title="语法"></a>语法</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 每进行一次循环，当前数组元素的值就会被赋值给 $value 变量，并且数组指针会逐一地移动，直到到达最后一个数组元素。</span></span><br><span class="line"><span class="keyword">foreach</span> (<span class="variable">$array</span> <span class="keyword">as</span> <span class="variable">$value</span>) &#123;</span><br><span class="line">  code to be executed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="实例-7"><a href="#实例-7" class="headerlink" title="实例"></a>实例</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="variable">$colors</span> = <span class="keyword">array</span>(<span class="string">&quot;red&quot;</span>,<span class="string">&quot;green&quot;</span>,<span class="string">&quot;blue&quot;</span>,<span class="string">&quot;yellow&quot;</span>); </span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> (<span class="variable">$colors</span> <span class="keyword">as</span> <span class="variable">$value</span>) &#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;<span class="subst">$value</span> &lt;br&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/12/kdhcD5Rsm1XgWJn.png"
+                      alt="foreach.png"
+                ></p>
+<h2 id="PHP-函数"><a href="#PHP-函数" class="headerlink" title="PHP 函数"></a>PHP 函数</h2><h3 id="用户自定义函数"><a href="#用户自定义函数" class="headerlink" title="用户自定义函数"></a>用户自定义函数</h3><p>函数是可以在程序中重复使用的语句块，PHP 可以创建自定义函数。页面加载时函数不会立即执行，只有在被调用时才会执行。</p>
+<ul>
+<li><p>函数名能够以字母或下划线开头（而非数字）。</p>
+</li>
+<li><p>函数名对大小写不敏感。</p>
+</li>
+</ul>
+<hr>
+<h4 id="语法-8"><a href="#语法-8" class="headerlink" title="语法"></a>语法</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 用户定义的函数声明以单词 &quot;function&quot; 开头：</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">functionName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  被执行的代码;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="实例-8"><a href="#实例-8" class="headerlink" title="实例"></a>实例</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在下面的例子中，创建了一个 sayHi() 的函数 &quot;&#123;&quot; 指的是函数代码的开始，&quot;&#125;&quot; 指的是函数的结束。此函数输出 &quot;hello world!&quot;</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayHi</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;Hello world!&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">sayhi</span>(); <span class="comment">// 调用函数</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/13/NVIoUG5mTu4X2CM.png"
+                      alt="php1.png"
+                ></p>
+<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>PHP 可以通过参数向函数传递信息，参数类似变量。</p>
+<p>参数被定义在函数之后的括号中。括号中可以添加任意多个参数，只要用逗号隔开就行。</p>
+<hr>
+<h4 id="实例-9"><a href="#实例-9" class="headerlink" title="实例"></a>实例</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下面的例子中的函数有一个参数（$fname）。当调用 familyName() 函数时，我们同时要传递一个名字（例如 Bill），这样会输出不同的名字，但是姓氏相同：</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">familyName</span>(<span class="params"><span class="variable">$fname</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;<span class="subst">$fname</span> Zhang.&lt;br&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">familyName</span>(<span class="string">&quot;Li&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">familyName</span>(<span class="string">&quot;Hong&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">familyName</span>(<span class="string">&quot;Tao&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">familyName</span>(<span class="string">&quot;Xiao Mei&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">familyName</span>(<span class="string">&quot;Jian&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/13/MWEBk1FsKOjXDYH.png"
+                      alt="php2.png"
+                ></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下面的例子中的函数有两个参数（$fname 和 $year）</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">familyName</span>(<span class="params"><span class="variable">$fname</span>,<span class="variable">$year</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;<span class="subst">$fname</span> Zhang. Born in <span class="subst">$year</span> &lt;br&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">familyName</span>(<span class="string">&quot;Li&quot;</span>,<span class="string">&quot;1975&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">familyName</span>(<span class="string">&quot;Hong&quot;</span>,<span class="string">&quot;1978&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">familyName</span>(<span class="string">&quot;Tao&quot;</span>,<span class="string">&quot;1983&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/13/GEtCLI2hkuWnDzS.png"
+                      alt="php3.png"
+                ></p>
+<h4 id="默认参数"><a href="#默认参数" class="headerlink" title="默认参数"></a>默认参数</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下面的例子展示了如何使用默认参数。如果我们调用没有参数的 setHeight() 函数，它的参数会取默认值：</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setHeight</span>(<span class="params"><span class="variable">$minheight</span>=<span class="number">50</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;The height is : <span class="subst">$minheight</span> &lt;br&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">setHeight</span>(<span class="number">350</span>);</span><br><span class="line"><span class="title function_ invoke__">setHeight</span>(); <span class="comment">// 将使用默认值 50</span></span><br><span class="line"><span class="title function_ invoke__">setHeight</span>(<span class="number">135</span>);</span><br><span class="line"><span class="title function_ invoke__">setHeight</span>(<span class="number">80</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/13/JzOfiYrejP2psBI.png"
+                      alt="php4.png"
+                ></p>
+<h3 id="函数返回值"><a href="#函数返回值" class="headerlink" title="函数返回值"></a>函数返回值</h3><hr>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用 return 语句，使函数返回值。</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params"><span class="variable">$x</span>,<span class="variable">$y</span></span>) </span>&#123;</span><br><span class="line">  <span class="variable">$z</span>=<span class="variable">$x</span>+<span class="variable">$y</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="variable">$z</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;5 + 10 = &quot;</span> . <span class="title function_ invoke__">sum</span>(<span class="number">5</span>,<span class="number">10</span>) . <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;7 + 13 = &quot;</span> . <span class="title function_ invoke__">sum</span>(<span class="number">7</span>,<span class="number">13</span>) . <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;2 + 4 = &quot;</span> . <span class="title function_ invoke__">sum</span>(<span class="number">2</span>,<span class="number">4</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/13/axg6Oihj7PUK4GI.png"
+                      alt="php5.png"
+                ></p>
+<h3 id="可变函数"><a href="#可变函数" class="headerlink" title="可变函数"></a>可变函数</h3><p>PHP 支持可变函数的概念。可变函数就是：如果一个变量名后有圆括号，PHP 将寻找与变量的值同名的函数，并且尝试执行它。</p>
+<hr>
+<h4 id="实例-10"><a href="#实例-10" class="headerlink" title="实例"></a>实例</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下面的例子中，定义了 3 个函数，并使用 $func() 来调用这些函数</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;In foo()&lt;br /&gt;\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"><span class="variable">$arg</span> = <span class="string">&#x27;&#x27;</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;In bar(); argument was &#x27;<span class="subst">$arg</span>&#x27;.&lt;br /&gt;\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 echo 的包装函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">echoit</span>(<span class="params"><span class="variable">$string</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$func</span> = <span class="string">&#x27;foo&#x27;</span>;</span><br><span class="line"><span class="variable">$func</span>();        <span class="comment">// 调用 foo()</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$func</span> = <span class="string">&#x27;bar&#x27;</span>;</span><br><span class="line"><span class="variable">$func</span>(<span class="string">&#x27;test&#x27;</span>);  <span class="comment">// 调用 bar()</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$func</span> = <span class="string">&#x27;echoit&#x27;</span>;</span><br><span class="line"><span class="variable">$func</span>(<span class="string">&#x27;test&#x27;</span>);  <span class="comment">// 调用 echoit()</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/13/LuxTDQ2kA8heMXY.png"
+                      alt="php6.png"
+                ></p>
+<h2 id="PHP-数组"><a href="#PHP-数组" class="headerlink" title="PHP 数组"></a>PHP 数组</h2><h3 id="数组的类型"><a href="#数组的类型" class="headerlink" title="数组的类型"></a>数组的类型</h3><ul>
+<li>索引数组 - 带有数字索引的数组</li>
+<li>关联数组 - 带有指定键的数组</li>
+<li>多维数组 - 包含一个或多个数组的数组</li>
+</ul>
+<h3 id="创建数组"><a href="#创建数组" class="headerlink" title="创建数组"></a>创建数组</h3><p>在 PHP 中， <code>array()</code> 函数用于创建数组：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">array</span>();</span><br></pre></td></tr></table></figure>
+
+<h3 id="索引数组"><a href="#索引数组" class="headerlink" title="索引数组"></a>索引数组</h3><p>PHP 有两种创建索引数组的方法：</p>
+<ol>
+<li>索引是自动分配的（索引从 0 开始）：</li>
+</ol>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$cars</span>=<span class="keyword">array</span>(<span class="string">&quot;porsche&quot;</span>,<span class="string">&quot;BMW&quot;</span>,<span class="string">&quot;Volvo&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>索引是手动分配的</li>
+</ol>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$cars</span>[<span class="number">0</span>]=<span class="string">&quot;porsche&quot;</span>;</span><br><span class="line"><span class="variable">$cars</span>[<span class="number">1</span>]=<span class="string">&quot;BMW&quot;</span>;</span><br><span class="line"><span class="variable">$cars</span>[<span class="number">2</span>]=<span class="string">&quot;volvo&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="实例-11"><a href="#实例-11" class="headerlink" title="实例"></a>实例</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建名为 $cars 的索引数组，为其分配 3 个元素，然后输出包含数组值的一段文本</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$cars</span>=<span class="keyword">array</span>(<span class="string">&quot;porsche&quot;</span>,<span class="string">&quot;BMW&quot;</span>,<span class="string">&quot;volvo&quot;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;I like&quot;</span> . <span class="variable">$cars</span>[<span class="number">0</span>] . <span class="string">&quot;, &quot;</span> . <span class="variable">$cars</span>[<span class="number">1</span>] . <span class="string">&quot; and &quot;</span> . <span class="variable">$cars</span>[<span class="number">2</span>] . <span class="string">&quot;.&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/27/UkN5m2W1z3jZegi.png"
+                      alt="phpsz-1.png"
+                ></p>
+<h3 id="获取数组长度"><a href="#获取数组长度" class="headerlink" title="获取数组长度"></a>获取数组长度</h3><p>count() 函数用于返回数组的长度</p>
+<h4 id="实例-12"><a href="#实例-12" class="headerlink" title="实例"></a>实例</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$cars</span>=<span class="keyword">array</span>(<span class="string">&quot;porsche&quot;</span>,<span class="string">&quot;BMW&quot;</span>,<span class="string">&quot;Volvo&quot;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">count</span>(<span class="variable">$cars</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/27/gMfrBZKCkq9E4QO.png"
+                      alt="phpsz-2.png"
+                ></p>
+<h3 id="遍历索引数组"><a href="#遍历索引数组" class="headerlink" title="遍历索引数组"></a>遍历索引数组</h3><p>使用 for 循环遍历并输出索引数组的所有值</p>
+<h4 id="实例-13"><a href="#实例-13" class="headerlink" title="实例"></a>实例</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$cars</span>=<span class="keyword">array</span>(<span class="string">&quot;porsche&quot;</span>,<span class="string">&quot;BMW&quot;</span>,<span class="string">&quot;Volvo&quot;</span>);</span><br><span class="line"><span class="variable">$arrlength</span>=<span class="title function_ invoke__">count</span>(<span class="variable">$cars</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="variable">$x</span>=<span class="number">0</span>;<span class="variable">$x</span>&lt;<span class="variable">$arrlength</span>;<span class="variable">$x</span>++) &#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="variable">$cars</span>[<span class="variable">$x</span>];</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/27/kZrNjEGunFcIU6m.png"
+                      alt="phpsz-3.png"
+                ></p>
+<h3 id="关联数组"><a href="#关联数组" class="headerlink" title="关联数组"></a>关联数组</h3><p>关联数组就是给数组的索引值指定相应的值。你可以把它们想象为一组卡片，每张卡片上半部分是索引而下半部分是数值。关联数组的索引值可以是任意非空值，而且关联数组的元素没有特定的顺序。</p>
+<p>有两种创建关联数组的方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$age</span>=<span class="keyword">array</span>(<span class="string">&quot;Bill&quot;</span>=&gt;<span class="string">&quot;35&quot;</span>,<span class="string">&quot;Steve&quot;</span>=&gt;<span class="string">&quot;37&quot;</span>,<span class="string">&quot;Elon&quot;</span>=&gt;<span class="string">&quot;43&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>或者：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$age</span>[<span class="string">&#x27;Bill&#x27;</span>]=<span class="string">&quot;63&quot;</span>;</span><br><span class="line"><span class="variable">$age</span>[<span class="string">&#x27;Steve&#x27;</span>]=<span class="string">&quot;56&quot;</span>;</span><br><span class="line"><span class="variable">$age</span>[<span class="string">&#x27;Elon&#x27;</span>]=<span class="string">&quot;47&quot;</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="实例-14"><a href="#实例-14" class="headerlink" title="实例"></a>实例</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$age</span>=<span class="keyword">array</span>(<span class="string">&quot;Bill&quot;</span>=&gt;<span class="string">&quot;63&quot;</span>,<span class="string">&quot;Steve&quot;</span>=&gt;<span class="string">&quot;56&quot;</span>,<span class="string">&quot;Elon&quot;</span>=&gt;<span class="string">&quot;47&quot;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Elon is &quot;</span> . <span class="variable">$age</span>[<span class="string">&#x27;Elon&#x27;</span>] . <span class="string">&quot; years old.&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/27/awtFfKlociUg821.png"
+                      alt="phpsz-4.png"
+                ></p>
+<h3 id="遍历关联数组"><a href="#遍历关联数组" class="headerlink" title="遍历关联数组"></a>遍历关联数组</h3><p>使用 foreach 循环遍历并输出关联数组的所有值</p>
+<h3 id="实例-15"><a href="#实例-15" class="headerlink" title="实例"></a>实例</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$age</span>=<span class="keyword">array</span>(<span class="string">&quot;Bill&quot;</span>=&gt;<span class="string">&quot;63&quot;</span>,<span class="string">&quot;Steve&quot;</span>=&gt;<span class="string">&quot;56&quot;</span>,<span class="string">&quot;Elon&quot;</span>=&gt;<span class="string">&quot;47&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span>(<span class="variable">$age</span> <span class="keyword">as</span> <span class="variable">$x</span>=&gt;<span class="variable">$x_value</span>) &#123;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;Key=&quot;</span> . <span class="variable">$x</span> . <span class="string">&quot;, Value=&quot;</span> . <span class="variable">$x_value</span>;</span><br><span class="line">  <span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/27/xbpQvtrJeSNoBVM.png"
+                      alt="phpsz-5.png"
+                ></p>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><hr>
+<p><a class="link"   target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/PHP" >PHP<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://wangye.org/blog/archives/606/" >关闭PHP Credits和隐藏的GUID图片Logo彩蛋的显示<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/ymlbright/article/details/39897041" >Php彩蛋<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://www.w3school.com.cn/php/php_variables.asp" >w3school php 教程<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://www.php.net/manual/zh/language.variables.php" >PHP 官方手册<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://www.php.cn/php-weizijiaocheng-360746.html" >php：对象（object）数据类型实例详解<i class="fas fa-external-link-alt"></i></a></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：php学习笔记</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2020-01-19 11:24:10</li>
+        <li>
+            本文链接：https://9unkk.github.io/2020/01/19/php学习笔记/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2020/02/03/ms17-010/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">ms17-010</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2020/01/18/Hydra%E7%AC%94%E8%AE%B0/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">Hydra笔记</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP-%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">PHP 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%86%E5%8F%B2"><span class="nav-number">1.1.</span> <span class="nav-text">历史</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E5%8E%86%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">版本历程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%89%E7%A5%A5%E7%89%A9"><span class="nav-number">1.3.</span> <span class="nav-text">吉祥物</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%A9%E8%9B%8B"><span class="nav-number">1.4.</span> <span class="nav-text">彩蛋</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B6%A3%E9%97%BB"><span class="nav-number">1.5.</span> <span class="nav-text">趣闻</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP-%E8%AF%AD%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">PHP 语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP-%E6%A0%87%E8%AE%B0"><span class="nav-number">2.1.</span> <span class="nav-text">PHP 标记</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP-%E6%B3%A8%E9%87%8A"><span class="nav-number">2.2.</span> <span class="nav-text">PHP 注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP-%E5%A4%A7%E5%B0%8F%E5%86%99%E6%95%8F%E6%84%9F"><span class="nav-number">2.3.</span> <span class="nav-text">PHP 大小写敏感</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP-%E5%88%86%E9%9A%94%E7%AC%A6"><span class="nav-number">2.4.</span> <span class="nav-text">PHP 分隔符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP-echo-x2F-print"><span class="nav-number">2.5.</span> <span class="nav-text">PHP echo&#x2F;print</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP-%E5%8F%98%E9%87%8F"><span class="nav-number">3.</span> <span class="nav-text">PHP 变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80"><span class="nav-number">3.1.</span> <span class="nav-text">基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%8F%98%E9%87%8F%EF%BC%88%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%89"><span class="nav-number">3.1.1.</span> <span class="nav-text">创建变量（变量初始化）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP-%E5%8F%98%E9%87%8F%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">3.2.</span> <span class="nav-text">PHP 变量的作用域</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Local-%E5%92%8C-Global-%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">3.2.1.</span> <span class="nav-text">Local 和 Global 作用域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-global-%E5%85%B3%E9%94%AE%E8%AF%8D"><span class="nav-number">3.2.2.</span> <span class="nav-text">PHP global 关键词</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-static-%E5%85%B3%E9%94%AE%E8%AF%8D"><span class="nav-number">3.2.3.</span> <span class="nav-text">PHP static 关键词</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E5%8F%98%E9%87%8F"><span class="nav-number">3.3.</span> <span class="nav-text">可变变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP-%E5%B8%B8%E9%87%8F"><span class="nav-number">4.</span> <span class="nav-text">PHP 常量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E7%89%B9%E7%82%B9"><span class="nav-number">4.1.</span> <span class="nav-text">常量特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE-PHP-%E5%B8%B8%E9%87%8F"><span class="nav-number">4.2.</span> <span class="nav-text">设置 PHP 常量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">4.3.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">5.</span> <span class="nav-text">数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%83%E5%B0%94%E5%9E%8B%EF%BC%88Boolean%EF%BC%89"><span class="nav-number">5.1.</span> <span class="nav-text">布尔型（Boolean）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E5%9E%8B"><span class="nav-number">5.2.</span> <span class="nav-text">整型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E5%9E%8B"><span class="nav-number">5.3.</span> <span class="nav-text">浮点型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%9E%8B"><span class="nav-number">5.4.</span> <span class="nav-text">字符串型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84"><span class="nav-number">5.5.</span> <span class="nav-text">数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1"><span class="nav-number">5.6.</span> <span class="nav-text">对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NULL"><span class="nav-number">5.7.</span> <span class="nav-text">NULL</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">6.</span> <span class="nav-text">PHP 运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP-%E7%AE%97%E6%95%B0%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">6.1.</span> <span class="nav-text">PHP 算数运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP-%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">6.2.</span> <span class="nav-text">PHP 赋值运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP-%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">6.3.</span> <span class="nav-text">PHP 字符串运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP-%E9%80%92%E5%A2%9E-x2F-%E9%80%92%E5%87%8F%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">6.4.</span> <span class="nav-text">PHP 递增&#x2F;递减运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP-%E6%AF%94%E8%BE%83%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">6.5.</span> <span class="nav-text">PHP 比较运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP-%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">6.6.</span> <span class="nav-text">PHP 逻辑运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP%E6%95%B0%E7%BB%84%E8%BF%90%E7%AE%97"><span class="nav-number">6.7.</span> <span class="nav-text">PHP数组运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">6.8.</span> <span class="nav-text">PHP位运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP%E9%94%99%E8%AF%AF%E6%8E%A7%E5%88%B6%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">6.9.</span> <span class="nav-text">PHP错误控制运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP%E6%89%A7%E8%A1%8C%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">6.10.</span> <span class="nav-text">PHP执行运算符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP-%E6%9D%A1%E4%BB%B6%E8%AF%AD%E5%8F%A5"><span class="nav-number">7.</span> <span class="nav-text">PHP 条件语句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#if-%E8%AF%AD%E5%8F%A5"><span class="nav-number">7.1.</span> <span class="nav-text">if 语句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-number">7.1.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">7.1.2.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#if%E2%80%A6else-%E8%AF%AD%E5%8F%A5"><span class="nav-number">7.2.</span> <span class="nav-text">if…else 语句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95-1"><span class="nav-number">7.2.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-1"><span class="nav-number">7.2.2.</span> <span class="nav-text">实例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#if%E2%80%A6elseif%E2%80%A6else-%E8%AF%AD%E5%8F%A5"><span class="nav-number">8.</span> <span class="nav-text">if…elseif…else 语句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95-2"><span class="nav-number">8.0.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-2"><span class="nav-number">8.0.2.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#switch-%E8%AF%AD%E5%8F%A5"><span class="nav-number">8.1.</span> <span class="nav-text">switch 语句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95-3"><span class="nav-number">8.1.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-3"><span class="nav-number">8.1.2.</span> <span class="nav-text">实例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP-%E5%BE%AA%E7%8E%AF"><span class="nav-number">9.</span> <span class="nav-text">PHP 循环</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#while%E5%BE%AA%E7%8E%AF"><span class="nav-number">9.1.</span> <span class="nav-text">while循环</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95-4"><span class="nav-number">9.1.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-4"><span class="nav-number">9.1.2.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#do%E2%80%A6while%E5%BE%AA%E7%8E%AF"><span class="nav-number">9.2.</span> <span class="nav-text">do…while循环</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95-5"><span class="nav-number">9.2.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-5"><span class="nav-number">9.2.2.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#for%E5%BE%AA%E7%8E%AF"><span class="nav-number">9.3.</span> <span class="nav-text">for循环</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95-6"><span class="nav-number">9.3.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-6"><span class="nav-number">9.3.2.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#foreach-%E5%BE%AA%E7%8E%AF"><span class="nav-number">9.4.</span> <span class="nav-text">foreach 循环</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95-7"><span class="nav-number">9.4.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-7"><span class="nav-number">9.4.2.</span> <span class="nav-text">实例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP-%E5%87%BD%E6%95%B0"><span class="nav-number">10.</span> <span class="nav-text">PHP 函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="nav-number">10.1.</span> <span class="nav-text">用户自定义函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95-8"><span class="nav-number">10.1.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-8"><span class="nav-number">10.1.2.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0"><span class="nav-number">10.2.</span> <span class="nav-text">函数参数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-9"><span class="nav-number">10.2.1.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0"><span class="nav-number">10.2.2.</span> <span class="nav-text">默认参数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">10.3.</span> <span class="nav-text">函数返回值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E5%87%BD%E6%95%B0"><span class="nav-number">10.4.</span> <span class="nav-text">可变函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-10"><span class="nav-number">10.4.1.</span> <span class="nav-text">实例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP-%E6%95%B0%E7%BB%84"><span class="nav-number">11.</span> <span class="nav-text">PHP 数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">11.1.</span> <span class="nav-text">数组的类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E7%BB%84"><span class="nav-number">11.2.</span> <span class="nav-text">创建数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84"><span class="nav-number">11.3.</span> <span class="nav-text">索引数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-11"><span class="nav-number">11.3.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E6%95%B0%E7%BB%84%E9%95%BF%E5%BA%A6"><span class="nav-number">11.4.</span> <span class="nav-text">获取数组长度</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-12"><span class="nav-number">11.4.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%8D%E5%8E%86%E7%B4%A2%E5%BC%95%E6%95%B0%E7%BB%84"><span class="nav-number">11.5.</span> <span class="nav-text">遍历索引数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-13"><span class="nav-number">11.5.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E8%81%94%E6%95%B0%E7%BB%84"><span class="nav-number">11.6.</span> <span class="nav-text">关联数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-14"><span class="nav-number">11.6.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%8D%E5%8E%86%E5%85%B3%E8%81%94%E6%95%B0%E7%BB%84"><span class="nav-number">11.7.</span> <span class="nav-text">遍历关联数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-15"><span class="nav-number">11.8.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-number">12.</span> <span class="nav-text">reference</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

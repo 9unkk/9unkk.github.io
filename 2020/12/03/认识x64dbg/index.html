@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            认识 x64dbg |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">认识 x64dbg</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2020-12-03 11:00:07</span>
+        <span class="mobile">2020-12-03 11:00</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E9%80%86%E5%90%91/">逆向</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/x64dbg/">x64dbg</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="下载安装-x64dbg"><a href="#下载安装-x64dbg" class="headerlink" title="下载安装 x64dbg"></a>下载安装 x64dbg</h1><p><a class="link"   target="_blank" rel="noopener" href="https://x64dbg.com/" >x64dbg 下载地址<i class="fas fa-external-link-alt"></i></a></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/03/7tocAxST6d8pXIY.jpg"
+                      alt="4.jpg"
+                ></p>
+<p>下载完成后，直接解压运行 x96dbg.exe。运行 x32dbg&#x2F;x64dbg 出现如下界面表示运行成功：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/03/WcUeZp8GMj35fVo.jpg"
+                      alt="5.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/03/ak2SGt3R576Uncf.jpg"
+                      alt="6.jpg"
+                ></p>
+<h1 id="x64dbg-界面介绍"><a href="#x64dbg-界面介绍" class="headerlink" title="x64dbg 界面介绍"></a>x64dbg 界面介绍</h1><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/03/or69yObMDYKdesu.jpg"
+                      alt="7.jpg"
+                ></p>
+<ol>
+<li>反汇编窗口</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th align="center">第一列</th>
+<th align="center">第二列</th>
+<th align="center">第三列</th>
+<th align="center">第四列</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">内存地址</td>
+<td align="center">汇编指令的机器码</td>
+<td align="center">汇编指令</td>
+<td align="center">注释</td>
+</tr>
+</tbody></table>
+<br>
+
+<ul>
+<li><p>内存地址：内存是被划分成多个内存单元来存储数据的。每个内存单元有 1byte 的空间来存储数据。为了读取内存单元的数据，所以使用内存地址来给内存单元编号，这样就能读取到相对应的内存单元中的数据。</p>
+</li>
+<li><p>机器码：汇编也是编程，只不过是最底层的编程。因为 CPU 只能识别 0 和 1组成的机器码，所以汇编指令需要转换成机器码 CPU 才能识别。</p>
+</li>
+<li><p>汇编指令：就是汇编编程的指令，指令这块的学习，可以边逆向边学习。</p>
+</li>
+<li><p>注释：x64dbg 可以对程序进行智能分析，并设置相应的注释。如：字符串、汇编指令等。也可自定注释内容，在逆向过程中非常有用。</p>
+</li>
+</ul>
+<ol start="2">
+<li>寄存器窗口</li>
+</ol>
+<p>这里显示的是当前所调试程序的寄存器信息。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/03/bewcoRflXEJPaSz.jpg"
+                      alt="8.jpg"
+                ></p>
+<table>
+<thead>
+<tr>
+<th align="center">第一块</th>
+<th align="center">第二块</th>
+<th align="center">第三块</th>
+<th align="center">第四块</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">常用寄存器</td>
+<td align="center">EIP寄存器</td>
+<td align="center">标志寄存器</td>
+<td align="center">调试寄存器</td>
+</tr>
+</tbody></table>
+<br>
+
+<ul>
+<li><p>常用寄存器：EAX~EDX（一般寄存器）、EBP和ESP（堆栈寄存器）、ESI&#x2F;EDI（源目标索引字符串）</p>
+</li>
+<li><p>EIP 寄存器：用来存储 CPU 要读取指令的地址。这里就表示程序将要读取执行 00401000 地址的指令。</p>
+</li>
+<li><p>标志寄存器：标志寄存器又称程序状态字，主要是反应处理器的状态和逻辑计算结果。在逆向过程中通常用在程序的跳转和算法中。</p>
+</li>
+<li><p>调试寄存器：对于 Dr0-Dr3 的四个调试寄存器，他们的作用是存放中断的地址；对于 Dr4，Dr5 这两个寄存器我们一般不使用他们，保留；对于 Dr6，Dr7 这两个寄存器的作用是用来记录你在 Dr0-Dr3 中下断的地址的属性。</p>
+</li>
+</ul>
+<ol start="3">
+<li>数据窗口</li>
+</ol>
+<p>这里一般查看的是内存地址的内容。最左边是地址，接着是对应地址的十六进制数据，最右侧是十六进制对应的 ASCII 码。</p>
+<ol start="4">
+<li>堆栈窗口</li>
+</ol>
+<p>显示一些堆栈的信息。</p>
+<h1 id="常用快捷键"><a href="#常用快捷键" class="headerlink" title="常用快捷键"></a>常用快捷键</h1><table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="left">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">F2</td>
+<td align="left">下断点（指定断点地址）</td>
+</tr>
+<tr>
+<td align="center">F3</td>
+<td align="left">加载一个可执行程序，进行调试分析</td>
+</tr>
+<tr>
+<td align="center">F4</td>
+<td align="left">程序执行到光标处</td>
+</tr>
+<tr>
+<td align="center">F5</td>
+<td align="left">缩小、还原当前窗口</td>
+</tr>
+<tr>
+<td align="center">F7</td>
+<td align="left">单步步入</td>
+</tr>
+<tr>
+<td align="center">F8</td>
+<td align="left">单步步过</td>
+</tr>
+<tr>
+<td align="center">F9</td>
+<td align="left">直接运行程序，遇到断点处，程序暂停</td>
+</tr>
+<tr>
+<td align="center">Ctrl+F2</td>
+<td align="left">重新运行程序到起始处，一般用于重新调试程序</td>
+</tr>
+<tr>
+<td align="center">Ctrl+F9</td>
+<td align="left">执行到函数返回处，用于跳出函数实现</td>
+</tr>
+<tr>
+<td align="center">Alt+F9</td>
+<td align="left">执行到用户代码处，用于快速跳出系统函数</td>
+</tr>
+<tr>
+<td align="center">Ctrl+G</td>
+<td align="left">输入十六进制地址，快速定位到该地址处</td>
+</tr>
+<tr>
+<td align="center">Alt+b</td>
+<td align="left">打开断点窗口（用户修改当前所设置的断点）</td>
+</tr>
+</tbody></table>
+<br>
+
+<p>把程序拖到 x64dbg 中可以看到如下图所示的界面。这个时候我们需要注意的是它并不是在要调试程序的模块内，这个时候我们直接 F9 运行。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/03/YMTup14xrhFgKlG.jpg"
+                      alt="9.jpg"
+                ></p>
+<p>当显示下图的界面才真正进入我们的程序内部。这个时候我们就可以开始分析啦。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/03/SL4l5isbMqXuj6K.jpg"
+                      alt="10.jpg"
+                ></p>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a class="link"   target="_blank" rel="noopener" href="https://bbs.pediy.com/thread-259952.htm" >x64dbg入门系列（一）-认识x64dbg<i class="fas fa-external-link-alt"></i></a></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：认识 x64dbg</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2020-12-03 11:00:07</li>
+        <li>
+            本文链接：https://9unkk.github.io/2020/12/03/认识x64dbg/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E9%80%86%E5%90%91/">#逆向</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/x64dbg/">#x64dbg</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2020/12/03/x64dbg%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%90%9C%E7%B4%A2/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">x64dbg-字符串搜索</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2020/11/03/OD%E8%B0%83%E8%AF%95-%E5%9F%BA%E7%A1%80%E7%AF%87/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">OD调试-基础篇</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85-x64dbg"><span class="nav-number">1.</span> <span class="nav-text">下载安装 x64dbg</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#x64dbg-%E7%95%8C%E9%9D%A2%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.</span> <span class="nav-text">x64dbg 界面介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-number">3.</span> <span class="nav-text">常用快捷键</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">4.</span> <span class="nav-text">reference</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

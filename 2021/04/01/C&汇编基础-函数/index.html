@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            C&amp;汇编基础-函数 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">C&amp;汇编基础-函数</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2021-04-01 14:18:28</span>
+        <span class="mobile">2021-04-01 14:18</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E9%80%86%E5%90%91/">逆向</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="C-函数的格式"><a href="#C-函数的格式" class="headerlink" title="C 函数的格式"></a>C 函数的格式</h1><p>函数名、参数名和变量名的命名规则：只包含字母、数字和_(下划线)且不能以数字开头。</p>
+<p>函数名、参数名和变量名不能使用 C 的关键词，如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> <span class="keyword">break</span> <span class="keyword">case</span> <span class="type">char</span> <span class="type">const</span> <span class="keyword">continue</span> <span class="keyword">default</span> <span class="keyword">do</span> <span class="type">double</span> <span class="keyword">else</span> <span class="keyword">enum</span> <span class="keyword">extern</span> <span class="type">float</span> <span class="keyword">for</span> </span><br></pre></td></tr></table></figure>
+
+<h2 id="无参数，无返回值的函数格式"><a href="#无参数，无返回值的函数格式" class="headerlink" title="无参数，无返回值的函数格式"></a>无参数，无返回值的函数格式</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> 函数名()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//代码(每行以 ; 结尾)    </span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="有参数，无返回值"><a href="#有参数，无返回值" class="headerlink" title="有参数，无返回值"></a>有参数，无返回值</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> 函数名(参数类型 参数名，参数类型 参数名)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//代码(每行以 ; 结尾)    </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="无参数，有返回值"><a href="#无参数，有返回值" class="headerlink" title="无参数，有返回值"></a>无参数，有返回值</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">返回值类型 函数名()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//代码(每行以 ; 结尾)    </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="有参数，有返回值"><a href="#有参数，有返回值" class="headerlink" title="有参数，有返回值"></a>有参数，有返回值</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">返回值类型 函数名(参数类型 参数名,参数类型 参数名....)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//代码(每行以 ; 结尾)</span></span><br><span class="line">    <span class="keyword">return</span> 具体的值，必须与返回值类型匹配    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<br>
+
+<h1 id="C-函数的调用"><a href="#C-函数的调用" class="headerlink" title="C 函数的调用"></a>C 函数的调用</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdafx.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Function</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;	</span><br><span class="line">	Function();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="函数的反汇编分析-空函数"><a href="#函数的反汇编分析-空函数" class="headerlink" title="函数的反汇编分析-空函数"></a>函数的反汇编分析-空函数</h2><h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdafx.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Function</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;	</span><br><span class="line">	Function();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="反汇编分析"><a href="#反汇编分析" class="headerlink" title="反汇编分析"></a>反汇编分析</h3><h4 id="整体-main-函数的反汇编"><a href="#整体-main-函数的反汇编" class="headerlink" title="整体 main 函数的反汇编"></a>整体 main 函数的反汇编</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">11</span>:   <span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span><br><span class="line">12:   &#123;</span><br><span class="line"><span class="number">004010</span>C0   push        ebp</span><br><span class="line"><span class="number">004010</span>C1   mov         ebp,esp</span><br><span class="line"><span class="number">004010</span>C3   sub         esp,<span class="number">40</span>h</span><br><span class="line"><span class="number">004010</span>C6   push        ebx</span><br><span class="line"><span class="number">004010</span>C7   push        esi</span><br><span class="line"><span class="number">004010</span>C8   push        edi</span><br><span class="line"><span class="number">004010</span>C9   lea         edi,[ebp<span class="number">-40</span>h]</span><br><span class="line"><span class="number">004010</span>CC   mov         ecx,<span class="number">10</span>h</span><br><span class="line"><span class="number">004010</span>D1   mov         eax,<span class="number">0</span>CCCCCCCCh</span><br><span class="line"><span class="number">004010</span>D6   rep stos    dword ptr [edi]</span><br><span class="line"><span class="number">13</span>:       Function();</span><br><span class="line"><span class="number">004010</span>D8   call        @ILT+<span class="number">30</span>(Function) (<span class="number">00401023</span>)</span><br><span class="line"><span class="number">14</span>:       <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"><span class="number">004010</span>DD   xor         eax,eax</span><br><span class="line"><span class="number">15</span>:   &#125;</span><br><span class="line"><span class="number">004010</span>DF   pop         edi</span><br><span class="line"><span class="number">004010E0</span>   pop         esi</span><br><span class="line"><span class="number">004010E1</span>   pop         ebx</span><br><span class="line"><span class="number">004010E2</span>   add         esp,<span class="number">40</span>h</span><br><span class="line"><span class="number">004010E5</span>   cmp         ebp,esp</span><br><span class="line"><span class="number">004010E7</span>   call        __chkesp (<span class="number">00401330</span>)</span><br><span class="line"><span class="number">004010</span>EC   mov         esp,ebp</span><br><span class="line"><span class="number">004010</span>EE   pop         ebp</span><br><span class="line"><span class="number">004010</span>EF   ret</span><br></pre></td></tr></table></figure>
+<p>从 main 的一个整体反汇编，我们可以看到函数 <code>Function()</code> 在反汇编中只是 <code>call 00401023</code>。其中 call 是调用，00401023 才是真正的 Function() 函数</p>
+<h4 id="空函数-Function-的反汇编"><a href="#空函数-Function-的反汇编" class="headerlink" title="空函数 Function 的反汇编"></a>空函数 Function 的反汇编</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//call 指令调用之后，会使用 jmp 指令跳转到 Function 函数入口</span></span><br><span class="line"><span class="number">00401023</span>   jmp         <span class="title function_">Function</span> <span class="params">(<span class="number">0040</span>eb30)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// Function 函数反汇编</span></span><br><span class="line">6:    <span class="type">void</span> <span class="title function_">Function</span><span class="params">()</span></span><br><span class="line">7:    &#123;</span><br><span class="line"><span class="number">0040</span>EB30   push        ebp</span><br><span class="line"><span class="number">0040</span>EB31   mov         ebp,esp</span><br><span class="line"><span class="number">0040</span>EB33   sub         esp,<span class="number">40</span>h</span><br><span class="line"><span class="number">0040</span>EB36   push        ebx</span><br><span class="line"><span class="number">0040</span>EB37   push        esi</span><br><span class="line"><span class="number">0040</span>EB38   push        edi</span><br><span class="line"><span class="number">0040</span>EB39   lea         edi,[ebp<span class="number">-40</span>h]</span><br><span class="line"><span class="number">0040</span>EB3C   mov         ecx,<span class="number">10</span>h</span><br><span class="line"><span class="number">0040</span>EB41   mov         eax,<span class="number">0</span>CCCCCCCCh</span><br><span class="line"><span class="number">0040</span>EB46   rep stos    dword ptr [edi]</span><br><span class="line"><span class="number">8</span>:</span><br><span class="line"><span class="number">9</span>:    &#125;</span><br><span class="line"><span class="number">0040</span>EB48   pop         edi</span><br><span class="line"><span class="number">0040</span>EB49   pop         esi</span><br><span class="line"><span class="number">0040</span>EB4A   pop         ebx</span><br><span class="line"><span class="number">0040</span>EB4B   mov         esp,ebp</span><br><span class="line"><span class="number">0040</span>EB4D   pop         ebp</span><br><span class="line"><span class="number">0040</span>EB4E   ret</span><br></pre></td></tr></table></figure>
+
+<p>空函数，无参数的反汇编分为如下几部分：</p>
+<ol>
+<li>保存栈底</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB30   push        ebp</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>提升堆栈</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB31   mov         ebp,esp</span><br><span class="line"><span class="number">0040</span>EB33   sub         esp,<span class="number">40</span>h</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>保护现场</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB36   push        ebx</span><br><span class="line"><span class="number">0040</span>EB37   push        esi</span><br><span class="line"><span class="number">0040</span>EB38   push        edi</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>填充缓冲区</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB39   lea         edi,[ebp<span class="number">-40</span>h]</span><br><span class="line"><span class="number">0040</span>EB3C   mov         ecx,<span class="number">10</span>h</span><br><span class="line"><span class="number">0040</span>EB41   mov         eax,<span class="number">0</span>CCCCCCCCh</span><br><span class="line"><span class="number">0040</span>EB46   rep stos    dword ptr [edi]</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>恢复现场</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB48   pop         edi</span><br><span class="line"><span class="number">0040</span>EB49   pop         esi</span><br><span class="line"><span class="number">0040</span>EB4A   pop         ebx</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>降低堆栈</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB4B   mov         esp,ebp</span><br><span class="line"><span class="number">0040</span>EB4D   pop         ebp</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>函数返回</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB4E   ret</span><br></pre></td></tr></table></figure>
+
+<br>
+
+<h1 id="函数的反汇编分析-简单功能-无返回值"><a href="#函数的反汇编分析-简单功能-无返回值" class="headerlink" title="函数的反汇编分析-简单功能(无返回值)"></a>函数的反汇编分析-简单功能(无返回值)</h1><h2 id="源码-1"><a href="#源码-1" class="headerlink" title="源码"></a>源码</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdafx.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Function</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span></span><br><span class="line">&#123;</span><br><span class="line">	x=x+y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;	</span><br><span class="line">	Function(<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="反汇编分析-1"><a href="#反汇编分析-1" class="headerlink" title="反汇编分析"></a>反汇编分析</h2><h3 id="函数的参数调用"><a href="#函数的参数调用" class="headerlink" title="函数的参数调用"></a>函数的参数调用</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">13</span>:       Function(<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line"><span class="number">004010</span>D8   push        <span class="number">2</span></span><br><span class="line"><span class="number">004010</span>DA   push        <span class="number">1</span></span><br><span class="line"><span class="number">004010</span>DC   call        @ILT+<span class="number">35</span>(Function) (<span class="number">00401028</span>)</span><br><span class="line"><span class="number">004010E1</span>   add         esp,<span class="number">8</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="函数的反汇编"><a href="#函数的反汇编" class="headerlink" title="函数的反汇编"></a>函数的反汇编</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//jmp 跳转到函数入口</span></span><br><span class="line"><span class="number">00401028</span>   jmp         <span class="title function_">Function</span> <span class="params">(<span class="number">0040</span>eb30)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//Function 函数反汇编</span></span><br><span class="line">6:    <span class="type">void</span> <span class="title function_">Function</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span></span><br><span class="line">7:    &#123;</span><br><span class="line"><span class="number">0040</span>EB30   push        ebp</span><br><span class="line"><span class="number">0040</span>EB31   mov         ebp,esp</span><br><span class="line"><span class="number">0040</span>EB33   sub         esp,<span class="number">40</span>h</span><br><span class="line"><span class="number">0040</span>EB36   push        ebx</span><br><span class="line"><span class="number">0040</span>EB37   push        esi</span><br><span class="line"><span class="number">0040</span>EB38   push        edi</span><br><span class="line"><span class="number">0040</span>EB39   lea         edi,[ebp<span class="number">-40</span>h]</span><br><span class="line"><span class="number">0040</span>EB3C   mov         ecx,<span class="number">10</span>h</span><br><span class="line"><span class="number">0040</span>EB41   mov         eax,<span class="number">0</span>CCCCCCCCh</span><br><span class="line"><span class="number">0040</span>EB46   rep stos    dword ptr [edi]</span><br><span class="line"><span class="number">8</span>:        x=x+y;</span><br><span class="line"><span class="number">0040</span>EB48   mov         eax,dword ptr [ebp+<span class="number">8</span>]</span><br><span class="line"><span class="number">0040</span>EB4B   add         eax,dword ptr [ebp+<span class="number">0</span>Ch]</span><br><span class="line"><span class="number">0040</span>EB4E   mov         dword ptr [ebp+<span class="number">8</span>],eax</span><br><span class="line"><span class="number">9</span>:    &#125;</span><br><span class="line"><span class="number">0040</span>EB51   pop         edi</span><br><span class="line"><span class="number">0040</span>EB52   pop         esi</span><br><span class="line"><span class="number">0040</span>EB53   pop         ebx</span><br><span class="line"><span class="number">0040</span>EB54   mov         esp,ebp</span><br><span class="line"><span class="number">0040</span>EB56   pop         ebp</span><br><span class="line"><span class="number">0040</span>EB57   ret</span><br></pre></td></tr></table></figure>
+
+<p>有参数，无返回值的函数反汇编分如下几部分</p>
+<ol>
+<li>保存栈底</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB30   push        ebp</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>提升堆栈</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB31   mov         ebp,esp</span><br><span class="line"><span class="number">0040</span>EB33   sub         esp,<span class="number">40</span>h</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>保护现场</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB36   push        ebx</span><br><span class="line"><span class="number">0040</span>EB37   push        esi</span><br><span class="line"><span class="number">0040</span>EB38   push        edi</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>填充缓冲区</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB39   lea         edi,[ebp<span class="number">-40</span>h]</span><br><span class="line"><span class="number">0040</span>EB3C   mov         ecx,<span class="number">10</span>h</span><br><span class="line"><span class="number">0040</span>EB41   mov         eax,<span class="number">0</span>CCCCCCCCh</span><br><span class="line"><span class="number">0040</span>EB46   rep stos    dword ptr [edi]</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>函数功能</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB48   mov         eax,dword ptr [ebp+<span class="number">8</span>]</span><br><span class="line"><span class="number">0040</span>EB4B   add         eax,dword ptr [ebp+<span class="number">0</span>Ch]</span><br><span class="line"><span class="number">0040</span>EB4E   mov         dword ptr [ebp+<span class="number">8</span>],eax</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>恢复现场</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB51   pop         edi</span><br><span class="line"><span class="number">0040</span>EB52   pop         esi</span><br><span class="line"><span class="number">0040</span>EB53   pop         ebx</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>降低堆栈</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB54   mov         esp,ebp</span><br><span class="line"><span class="number">0040</span>EB56   pop         ebp</span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>函数返回</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB57   ret</span><br></pre></td></tr></table></figure>
+
+<p>从 Function 函数的反汇编中可以看出：调用参数是使用 push 指令将参数压入堆栈中。还有参数存储在 [ebp+xxx] 中</p>
+<br>
+
+<h1 id="函数的反汇编分析-简单功能-有返回值"><a href="#函数的反汇编分析-简单功能-有返回值" class="headerlink" title="函数的反汇编分析-简单功能(有返回值)"></a>函数的反汇编分析-简单功能(有返回值)</h1><h2 id="源码-2"><a href="#源码-2" class="headerlink" title="源码"></a>源码</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdafx.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">Function</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> x+y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;	</span><br><span class="line">	Function(<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="反汇编分析-2"><a href="#反汇编分析-2" class="headerlink" title="反汇编分析"></a>反汇编分析</h2><h3 id="参数调用"><a href="#参数调用" class="headerlink" title="参数调用"></a>参数调用</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">13</span>:       Function(<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line"><span class="number">004010</span>D8   push        <span class="number">2</span></span><br><span class="line"><span class="number">004010</span>DA   push        <span class="number">1</span></span><br><span class="line"><span class="number">004010</span>DC   call        @ILT+<span class="number">40</span>(Function) (<span class="number">0040102</span>d)</span><br><span class="line"><span class="number">004010E1</span>   add         esp,<span class="number">8</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="函数的反汇编-1"><a href="#函数的反汇编-1" class="headerlink" title="函数的反汇编"></a>函数的反汇编</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">6</span>:    <span class="type">int</span> <span class="title function_">Function</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span></span><br><span class="line">7:    &#123;</span><br><span class="line"><span class="number">0040</span>EB30   push        ebp</span><br><span class="line"><span class="number">0040</span>EB31   mov         ebp,esp</span><br><span class="line"><span class="number">0040</span>EB33   sub         esp,<span class="number">40</span>h</span><br><span class="line"><span class="number">0040</span>EB36   push        ebx</span><br><span class="line"><span class="number">0040</span>EB37   push        esi</span><br><span class="line"><span class="number">0040</span>EB38   push        edi</span><br><span class="line"><span class="number">0040</span>EB39   lea         edi,[ebp<span class="number">-40</span>h]</span><br><span class="line"><span class="number">0040</span>EB3C   mov         ecx,<span class="number">10</span>h</span><br><span class="line"><span class="number">0040</span>EB41   mov         eax,<span class="number">0</span>CCCCCCCCh</span><br><span class="line"><span class="number">0040</span>EB46   rep stos    dword ptr [edi]</span><br><span class="line"><span class="number">8</span>:        <span class="keyword">return</span> x+y;</span><br><span class="line"><span class="number">0040</span>EB48   mov         eax,dword ptr [ebp+<span class="number">8</span>]</span><br><span class="line"><span class="number">0040</span>EB4B   add         eax,dword ptr [ebp+<span class="number">0</span>Ch]</span><br><span class="line"><span class="number">9</span>:    &#125;</span><br><span class="line"><span class="number">0040</span>EB4E   pop         edi</span><br><span class="line"><span class="number">0040</span>EB4F   pop         esi</span><br><span class="line"><span class="number">0040</span>EB50   pop         ebx</span><br><span class="line"><span class="number">0040</span>EB51   mov         esp,ebp</span><br><span class="line"><span class="number">0040</span>EB53   pop         ebp</span><br><span class="line"><span class="number">0040</span>EB54   ret</span><br></pre></td></tr></table></figure>
+
+<p>有参数的函数,有返回值的函数反汇编分如下几部分</p>
+<ol>
+<li>保存栈底</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB30   push        ebp</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>提升堆栈</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB31   mov         ebp,esp</span><br><span class="line"><span class="number">0040</span>EB33   sub         esp,<span class="number">40</span>h</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>保护现场</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB36   push        ebx</span><br><span class="line"><span class="number">0040</span>EB37   push        esi</span><br><span class="line"><span class="number">0040</span>EB38   push        edi</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>填充缓冲区</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB39   lea         edi,[ebp<span class="number">-40</span>h]</span><br><span class="line"><span class="number">0040</span>EB3C   mov         ecx,<span class="number">10</span>h</span><br><span class="line"><span class="number">0040</span>EB41   mov         eax,<span class="number">0</span>CCCCCCCCh</span><br><span class="line"><span class="number">0040</span>EB46   rep stos    dword ptr [edi]</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>输出返回值</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB48   mov         eax,dword ptr [ebp+<span class="number">8</span>]</span><br><span class="line"><span class="number">0040</span>EB4B   add         eax,dword ptr [ebp+<span class="number">0</span>Ch]</span><br></pre></td></tr></table></figure>
+
+
+<ol start="6">
+<li>恢复现场</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB4E   pop         edi</span><br><span class="line"><span class="number">0040</span>EB4F   pop         esi</span><br><span class="line"><span class="number">0040</span>EB50   pop         ebx</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>降低堆栈</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB51   mov         esp,ebp</span><br><span class="line"><span class="number">0040</span>EB53   pop         ebp</span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>函数返回</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040</span>EB54   ret</span><br></pre></td></tr></table></figure>
+
+<p>从上面的反汇编中红可以看到，返回值是存储到 eax 中的。</p>
+<br>
+
+<h1 id="函数的反汇编分析-嵌套调用"><a href="#函数的反汇编分析-嵌套调用" class="headerlink" title="函数的反汇编分析-嵌套调用"></a>函数的反汇编分析-嵌套调用</h1><h2 id="源码-3"><a href="#源码-3" class="headerlink" title="源码"></a>源码</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdafx.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">Plus1</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> x+y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">Plus2</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y,<span class="type">int</span> z)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> t;</span><br><span class="line">	<span class="type">int</span> r;</span><br><span class="line">	t = Plus1(x,y);</span><br><span class="line">	r = Plus1(t,z);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;	</span><br><span class="line">	Plus2(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="反汇编"><a href="#反汇编" class="headerlink" title="反汇编"></a>反汇编</h2><h3 id="参数调用-1"><a href="#参数调用-1" class="headerlink" title="参数调用"></a>参数调用</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00401128</span>   push        <span class="number">3</span></span><br><span class="line"><span class="number">0040112</span>A   push        <span class="number">2</span></span><br><span class="line"><span class="number">0040112</span>C   push        <span class="number">1</span></span><br><span class="line"><span class="number">0040112</span>E   call        @ILT+<span class="number">50</span>(Plus2) (<span class="number">00401037</span>)</span><br><span class="line"><span class="number">00401133</span>   add         esp,<span class="number">0</span>Ch</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数反汇编"><a href="#函数反汇编" class="headerlink" title="函数反汇编"></a>函数反汇编</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">11</span>:   <span class="type">int</span> <span class="title function_">Plus2</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y,<span class="type">int</span> z)</span></span><br><span class="line">12:   &#123;</span><br><span class="line"><span class="number">00401150</span>   push        ebp</span><br><span class="line"><span class="number">00401151</span>   mov         ebp,esp</span><br><span class="line"><span class="number">00401153</span>   sub         esp,<span class="number">48</span>h</span><br><span class="line"><span class="number">00401156</span>   push        ebx</span><br><span class="line"><span class="number">00401157</span>   push        esi</span><br><span class="line"><span class="number">00401158</span>   push        edi</span><br><span class="line"><span class="number">00401159</span>   lea         edi,[ebp<span class="number">-48</span>h]</span><br><span class="line"><span class="number">0040115</span>C   mov         ecx,<span class="number">12</span>h</span><br><span class="line"><span class="number">00401161</span>   mov         eax,<span class="number">0</span>CCCCCCCCh</span><br><span class="line"><span class="number">00401166</span>   rep stos    dword ptr [edi]</span><br><span class="line"><span class="number">13</span>:       <span class="type">int</span> t;</span><br><span class="line"><span class="number">14</span>:       <span class="type">int</span> r;</span><br><span class="line"><span class="number">15</span>:       t = Plus1(x,y);</span><br><span class="line"><span class="number">00401168</span>   mov         eax,dword ptr [ebp+<span class="number">0</span>Ch]</span><br><span class="line"><span class="number">0040116B</span>   push        eax</span><br><span class="line"><span class="number">0040116</span>C   mov         ecx,dword ptr [ebp+<span class="number">8</span>]</span><br><span class="line"><span class="number">0040116F</span>   push        ecx</span><br><span class="line"><span class="number">00401170</span>   call        @ILT+<span class="number">45</span>(Function) (<span class="number">00401032</span>)</span><br><span class="line"><span class="number">00401175</span>   add         esp,<span class="number">8</span></span><br><span class="line"><span class="number">00401178</span>   mov         dword ptr [ebp<span class="number">-4</span>],eax</span><br><span class="line"><span class="number">16</span>:       r = Plus1(t,z);</span><br><span class="line"><span class="number">0040117B</span>   mov         edx,dword ptr [ebp+<span class="number">10</span>h]</span><br><span class="line"><span class="number">0040117</span>E   push        edx</span><br><span class="line"><span class="number">0040117F</span>   mov         eax,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">00401182</span>   push        eax</span><br><span class="line"><span class="number">00401183</span>   call        @ILT+<span class="number">45</span>(Function) (<span class="number">00401032</span>)</span><br><span class="line"><span class="number">00401188</span>   add         esp,<span class="number">8</span></span><br><span class="line"><span class="number">0040118B</span>   mov         dword ptr [ebp<span class="number">-8</span>],eax</span><br><span class="line"><span class="number">17</span>:</span><br><span class="line"><span class="number">18</span>:       <span class="keyword">return</span> r;</span><br><span class="line"><span class="number">0040118</span>E   mov         eax,dword ptr [ebp<span class="number">-8</span>]</span><br><span class="line"><span class="number">19</span>:   &#125;</span><br><span class="line"><span class="number">00401191</span>   pop         edi</span><br><span class="line"><span class="number">00401192</span>   pop         esi</span><br><span class="line"><span class="number">00401193</span>   pop         ebx</span><br><span class="line"><span class="number">00401194</span>   add         esp,<span class="number">48</span>h</span><br><span class="line"><span class="number">00401197</span>   cmp         ebp,esp</span><br><span class="line"><span class="number">00401199</span>   call        __chkesp (<span class="number">00401330</span>)</span><br><span class="line"><span class="number">0040119</span>E   mov         esp,ebp</span><br><span class="line"><span class="number">004011</span>A0   pop         ebp</span><br><span class="line"><span class="number">004011</span>A1   ret</span><br></pre></td></tr></table></figure>
+
+<p>函数嵌套调用反汇编分如下几部分：</p>
+<ol>
+<li>保存栈底</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00401150</span>   push        ebp</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>提升堆栈</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00401151</span>   mov         ebp,esp</span><br><span class="line"><span class="number">00401153</span>   sub         esp,<span class="number">48</span>h</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>保护现场</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00401156</span>   push        ebx</span><br><span class="line"><span class="number">00401157</span>   push        esi</span><br><span class="line"><span class="number">00401158</span>   push        edi</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>填充缓冲区</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00401159</span>   lea         edi,[ebp<span class="number">-48</span>h]</span><br><span class="line"><span class="number">0040115</span>C   mov         ecx,<span class="number">12</span>h</span><br><span class="line"><span class="number">00401161</span>   mov         eax,<span class="number">0</span>CCCCCCCCh</span><br><span class="line"><span class="number">00401166</span>   rep stos    dword ptr [edi]</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>t&#x3D;Plus1(x,y)的函数调用</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00401168</span>   mov         eax,dword ptr [ebp+<span class="number">0</span>Ch]</span><br><span class="line"><span class="number">0040116B</span>   push        eax</span><br><span class="line"><span class="number">0040116</span>C   mov         ecx,dword ptr [ebp+<span class="number">8</span>]</span><br><span class="line"><span class="number">0040116F</span>   push        ecx</span><br><span class="line"><span class="number">00401170</span>   call        @ILT+<span class="number">45</span>(Function) (<span class="number">00401032</span>)</span><br><span class="line"><span class="number">00401175</span>   add         esp,<span class="number">8</span>                        <span class="comment">//平衡堆栈</span></span><br><span class="line"><span class="number">00401178</span>   mov         dword ptr [ebp<span class="number">-4</span>],eax        <span class="comment">//给边阿玲 t 赋值</span></span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>r &#x3D; Plus1(t,z)</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040117B</span>   mov         edx,dword ptr [ebp+<span class="number">10</span>h]</span><br><span class="line"><span class="number">0040117</span>E   push        edx</span><br><span class="line"><span class="number">0040117F</span>   mov         eax,dword ptr [ebp<span class="number">-4</span>]</span><br><span class="line"><span class="number">00401182</span>   push        eax</span><br><span class="line"><span class="number">00401183</span>   call        @ILT+<span class="number">45</span>(Function) (<span class="number">00401032</span>)</span><br><span class="line"><span class="number">00401188</span>   add         esp,<span class="number">8</span>                            <span class="comment">// 平衡堆栈</span></span><br><span class="line"><span class="number">0040118B</span>   mov         dword ptr [ebp<span class="number">-8</span>],eax            <span class="comment">//给变量 r 赋值</span></span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>传递返回值</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0040118</span>E   mov         eax,dword ptr [ebp<span class="number">-8</span>]</span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>恢复现场</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00401191</span>   pop         edi</span><br><span class="line"><span class="number">00401192</span>   pop         esi</span><br><span class="line"><span class="number">00401193</span>   pop         ebx</span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>降低栈顶</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00401194</span>   add         esp,<span class="number">48</span>h</span><br></pre></td></tr></table></figure>
+
+<ol start="10">
+<li>验证堆栈平衡</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00401197</span>   cmp         ebp,esp</span><br><span class="line"><span class="number">00401199</span>   call        __chkesp (<span class="number">00401330</span>)</span><br><span class="line"><span class="number">0040119</span>E   mov         esp,ebp</span><br></pre></td></tr></table></figure>
+
+<ol start="11">
+<li>降低栈底</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">004011</span>A0   pop         ebp</span><br></pre></td></tr></table></figure>
+
+<ol start="12">
+<li>函数返回</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">004011</span>A1   ret</span><br></pre></td></tr></table></figure>
+
+<p>从嵌套函数的反汇编中发现，程序中多了一步验证堆栈平衡的步骤。当然这只有在 VC6 的 debug 模式下才会有的代码。</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：C&amp;汇编基础-函数</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2021-04-01 14:18:28</li>
+        <li>
+            本文链接：https://9unkk.github.io/2021/04/01/C&amp;汇编基础-函数/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E9%80%86%E5%90%91/">#逆向</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/04/01/C&amp;%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80-if%E8%AF%AD%E5%8F%A5/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">C&amp;汇编基础-if语句</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/04/01/C&amp;%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80-%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">C&amp;汇编基础-循环语句</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C-%E5%87%BD%E6%95%B0%E7%9A%84%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">C 函数的格式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E5%8F%82%E6%95%B0%EF%BC%8C%E6%97%A0%E8%BF%94%E5%9B%9E%E5%80%BC%E7%9A%84%E5%87%BD%E6%95%B0%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">无参数，无返回值的函数格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E5%8F%82%E6%95%B0%EF%BC%8C%E6%97%A0%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">1.2.</span> <span class="nav-text">有参数，无返回值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E5%8F%82%E6%95%B0%EF%BC%8C%E6%9C%89%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">1.3.</span> <span class="nav-text">无参数，有返回值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E5%8F%82%E6%95%B0%EF%BC%8C%E6%9C%89%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">1.4.</span> <span class="nav-text">有参数，有返回值</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-%E5%87%BD%E6%95%B0%E7%9A%84%E8%B0%83%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">C 函数的调用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%8D%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90-%E7%A9%BA%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">函数的反汇编分析-空函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E7%A0%81"><span class="nav-number">2.1.1.</span> <span class="nav-text">源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90"><span class="nav-number">2.1.2.</span> <span class="nav-text">反汇编分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B4%E4%BD%93-main-%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%8D%E6%B1%87%E7%BC%96"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">整体 main 函数的反汇编</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A9%BA%E5%87%BD%E6%95%B0-Function-%E7%9A%84%E5%8F%8D%E6%B1%87%E7%BC%96"><span class="nav-number">2.1.2.2.</span> <span class="nav-text">空函数 Function 的反汇编</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%8D%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90-%E7%AE%80%E5%8D%95%E5%8A%9F%E8%83%BD-%E6%97%A0%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">3.</span> <span class="nav-text">函数的反汇编分析-简单功能(无返回值)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81-1"><span class="nav-number">3.1.</span> <span class="nav-text">源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90-1"><span class="nav-number">3.2.</span> <span class="nav-text">反汇编分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0%E8%B0%83%E7%94%A8"><span class="nav-number">3.2.1.</span> <span class="nav-text">函数的参数调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%8D%E6%B1%87%E7%BC%96"><span class="nav-number">3.2.2.</span> <span class="nav-text">函数的反汇编</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%8D%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90-%E7%AE%80%E5%8D%95%E5%8A%9F%E8%83%BD-%E6%9C%89%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">4.</span> <span class="nav-text">函数的反汇编分析-简单功能(有返回值)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81-2"><span class="nav-number">4.1.</span> <span class="nav-text">源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90-2"><span class="nav-number">4.2.</span> <span class="nav-text">反汇编分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E8%B0%83%E7%94%A8"><span class="nav-number">4.2.1.</span> <span class="nav-text">参数调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%8D%E6%B1%87%E7%BC%96-1"><span class="nav-number">4.2.2.</span> <span class="nav-text">函数的反汇编</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%8D%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90-%E5%B5%8C%E5%A5%97%E8%B0%83%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">函数的反汇编分析-嵌套调用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81-3"><span class="nav-number">5.1.</span> <span class="nav-text">源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E6%B1%87%E7%BC%96"><span class="nav-number">5.2.</span> <span class="nav-text">反汇编</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E8%B0%83%E7%94%A8-1"><span class="nav-number">5.2.1.</span> <span class="nav-text">参数调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%8F%8D%E6%B1%87%E7%BC%96"><span class="nav-number">5.2.2.</span> <span class="nav-text">函数反汇编</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

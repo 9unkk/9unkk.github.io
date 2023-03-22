@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            dn |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">dn</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2019-11-30 16:37:53</span>
+        <span class="mobile">2019-11-30 16:37</span>
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/github/">github</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><hr>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># git colne https://github.com/tomlockwood/dn.git</span></span><br><span class="line">[root@localhost ~]<span class="comment">#cd dn &amp;&amp; cat dn &gt;&gt; ~/.bashrc</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><hr>
+<p>dn：创建笔记（以日期来命名）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost dn]<span class="comment"># dn &quot;The same thing we do every night&quot;</span></span><br><span class="line">[root@localhost dn]<span class="comment"># cat 2019-11-30</span></span><br><span class="line"> * The same thing we <span class="keyword">do</span> every night</span><br></pre></td></tr></table></figure>
+
+<p>dno：和 dn 是一样的效果，但是第一个参数是文件名，用于给笔记添加注释</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost dn]<span class="comment"># dno 2019-11-30 &quot;fuck&quot;</span></span><br><span class="line">[root@localhost dn]<span class="comment"># cat 2019-11-30</span></span><br><span class="line"> * The same thing we <span class="keyword">do</span> every night</span><br><span class="line"> * fuck</span><br></pre></td></tr></table></figure>
+
+<p>dnt：显示今天的笔记</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost dn]<span class="comment"># dnt</span></span><br><span class="line">2019-11-30</span><br><span class="line"> * The same thing we <span class="keyword">do</span> every night</span><br><span class="line"> * fuck</span><br></pre></td></tr></table></figure>
+
+<p>dnview：查看所有的笔记，或者查看指定笔记</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost dn]<span class="comment"># dnview</span></span><br><span class="line">2019-11-30</span><br><span class="line"> * The same thing we <span class="keyword">do</span> every night</span><br><span class="line"> * fuck</span><br><span class="line">[root@localhost dn]<span class="comment"># dnview 2019-11-30</span></span><br><span class="line">2019-11-30</span><br><span class="line"> * The same thing we <span class="keyword">do</span> every night</span><br><span class="line"> * fuck</span><br></pre></td></tr></table></figure>
+
+<p>dnte：编辑今天的笔记</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost dn]<span class="comment"># dnte</span></span><br><span class="line"> * The same thing we <span class="keyword">do</span> every night</span><br><span class="line"> * fuck</span><br><span class="line"> ~</span><br><span class="line"> ~</span><br><span class="line"> ~</span><br><span class="line"> <span class="string">&quot;~/dn/2019-11-30&quot;</span> 2L, 44C</span><br></pre></td></tr></table></figure>
+
+<p>dnoe：编辑指定笔记，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost dn]<span class="comment"># dnoe 2019-11-30</span></span><br><span class="line"> * The same thing we <span class="keyword">do</span> every night</span><br><span class="line"> * fuck</span><br><span class="line"> ~</span><br><span class="line"> ~</span><br><span class="line"> ~</span><br><span class="line"> <span class="string">&quot;~/dn/2019-11-30&quot;</span> 2L, 44C</span><br></pre></td></tr></table></figure>
+
+<h2 id="脚本分析"><a href="#脚本分析" class="headerlink" title="脚本分析"></a>脚本分析</h2><hr>
+<h3 id="设置环境变量-DN-PATH"><a href="#设置环境变量-DN-PATH" class="headerlink" title="设置环境变量 DN_PATH"></a>设置环境变量 DN_PATH</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Daily Notes Aliases</span></span><br><span class="line"><span class="built_in">export</span> DN_PATH=~/dn</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="dn"><a href="#dn" class="headerlink" title="dn"></a>dn</h3><ul>
+<li>$1：表示从命令行接收第一个参数值。<br>例如：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ dn <span class="string">&quot;The same thing we do every night&quot;</span></span><br><span class="line"><span class="comment"># The same thing we do every night 就是第一个参数值。</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输出&quot;* 【第一个参数值】&quot; 并追加到 ~/dn/2019-11-30 中</span></span><br><span class="line"><span class="function"><span class="title">dn</span></span>() &#123;</span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot; * <span class="variable">$1</span>&quot;</span> &gt;&gt; <span class="variable">$DN_PATH</span>/$(<span class="built_in">date</span> <span class="string">&quot;+%Y-%m-%d&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="dno"><a href="#dno" class="headerlink" title="dno"></a>dno</h3><ul>
+<li>$2；表示从命令行接收第二个参数<br>例如：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ dno 2019-11-30 <span class="string">&quot;fuck&quot;</span></span><br><span class="line"><span class="comment"># 2019-11-30 第一个参数</span></span><br><span class="line"><span class="comment"># fuck 第二个参数</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输出&quot;* 【dno 命令的第二个参数值】&quot; 并追加到 ~/dn/【dno 命令的第一个参数值】 中</span></span><br><span class="line"><span class="function"><span class="title">dno</span></span>() &#123;</span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot; * <span class="variable">$2</span>&quot;</span> &gt;&gt; <span class="variable">$DN_PATH</span>/<span class="variable">$1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="dnoe"><a href="#dnoe" class="headerlink" title="dnoe"></a>dnoe</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编辑 ~/dn/【dnoe 命令的第一个参数值】文件</span></span><br><span class="line"><span class="function"><span class="title">dnoe</span></span>() &#123;</span><br><span class="line">  vim <span class="variable">$DN_PATH</span>/<span class="variable">$1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="dnt"><a href="#dnt" class="headerlink" title="dnt"></a>dnt</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输出今天的日期（2019-11-30），查看今天的笔记（2019-11-30）</span></span><br><span class="line"><span class="function"><span class="title">dnt</span></span>() &#123;</span><br><span class="line">  <span class="built_in">echo</span> $(<span class="built_in">date</span> <span class="string">&quot;+%Y-%m-%d&quot;</span>)</span><br><span class="line">  <span class="built_in">cat</span> <span class="variable">$DN_PATH</span>/$(<span class="built_in">date</span> <span class="string">&quot;+%Y-%m-%d&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="dnte"><a href="#dnte" class="headerlink" title="dnte"></a>dnte</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编辑今天的笔记（2019-11-30）</span></span><br><span class="line"><span class="function"><span class="title">dnte</span></span>() &#123;</span><br><span class="line">  vim <span class="variable">$DN_PATH</span>/$(<span class="built_in">date</span> <span class="string">&quot;+%Y-%m-%d&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="dnview"><a href="#dnview" class="headerlink" title="dnview"></a>dnview</h3><p><strong>find</strong></p>
+<p>作用：查找文件</p>
+<ul>
+<li>-type f：查找普通文件</li>
+<li>-exec：执行命令</li>
+<li>{}：用于与 -exec 选项结合使用来匹配查找到的所有文件</li>
+</ul>
+<p><strong>basename</strong></p>
+<p>作用：截取文件名称</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost dn]<span class="comment"># basename /root/dn/2019-11-30</span></span><br><span class="line">2019-11-30</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost dn]<span class="comment"># find $DN_PATH/$1* -type f</span></span><br><span class="line">/root/dn/2019-11-30</span><br><span class="line"></span><br><span class="line">[root@localhost dn]<span class="comment"># find $DN_PATH/$1* -type f -exec basename &#123;&#125; \;</span></span><br><span class="line">2019-11-30</span><br><span class="line"></span><br><span class="line">[root@localhost dn]<span class="comment"># find $DN_PATH/$1* -type f -exec cat &#123;&#125; \;</span></span><br><span class="line"> * The same thing we <span class="keyword">do</span> every night</span><br><span class="line"> * fuck</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查找 ~/dn/【第一个参数】或是所有（*）普通文件；之后再执行 basename 命令，截取文件名；最后执行 cat 命令，查看所有文件内容。</span></span><br><span class="line"><span class="function"><span class="title">dnview</span></span>() &#123;</span><br><span class="line">  find <span class="variable">$DN_PATH</span>/<span class="variable">$1</span>* -<span class="built_in">type</span> f -<span class="built_in">exec</span> <span class="built_in">basename</span> &#123;&#125; \; -<span class="built_in">exec</span> <span class="built_in">cat</span> &#123;&#125; \;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a class="link"   target="_blank" rel="noopener" href="https://man.linuxde.net/find" >find命令<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://riptutorial.com/bash/example/16884/-1--2--3-etc---" >$1 $2 $3等<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://github.com/tomlockwood/dn" >dn<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/wutao_water/article/details/39478631" >Linux命令之basename使用<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/Jerry_1126/article/details/79872110" >Linux中basename和dirname命令的妙用<i class="fas fa-external-link-alt"></i></a></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：dn</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2019-11-30 16:37:53</li>
+        <li>
+            本文链接：https://9unkk.github.io/2019/11/30/dn/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2019/12/01/CVE-2019-1388/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">CVE-2019-1388</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2019/11/26/base64%E7%BC%96%E7%A0%81/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">base64编码</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E5%88%86%E6%9E%90"><span class="nav-number">3.</span> <span class="nav-text">脚本分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F-DN-PATH"><span class="nav-number">3.1.</span> <span class="nav-text">设置环境变量 DN_PATH</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dn"><span class="nav-number">3.2.</span> <span class="nav-text">dn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dno"><span class="nav-number">3.3.</span> <span class="nav-text">dno</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dnoe"><span class="nav-number">3.4.</span> <span class="nav-text">dnoe</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dnt"><span class="nav-number">3.5.</span> <span class="nav-text">dnt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dnte"><span class="nav-number">3.6.</span> <span class="nav-text">dnte</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dnview"><span class="nav-number">3.7.</span> <span class="nav-text">dnview</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-number">4.</span> <span class="nav-text">reference</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

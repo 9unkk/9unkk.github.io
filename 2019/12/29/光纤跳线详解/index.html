@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            光纤跳线和尾纤详解 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">光纤跳线和尾纤详解</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2019-12-29 15:43:18</span>
+        <span class="mobile">2019-12-29 15:43</span>
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/%E9%80%9A%E4%BF%A1/">通信</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h2 id="什么是跳线和尾纤"><a href="#什么是跳线和尾纤" class="headerlink" title="什么是跳线和尾纤"></a>什么是跳线和尾纤</h2><hr>
+<p>跳线是与桌面计算机或设备直接相连接的线缆，以方便设备的连接和管理，跳线有较厚的保护层，常用于终端盒和光端机之间。</p>
+<p>尾纤又叫猪尾线只有一端有连接头，而另一端是一根光缆纤芯的断头，通过熔接与其他光缆纤芯相连，一般出现在光纤终端盒内。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic4.zhimg.com/v2-6b4821d94a3edd2d12af7f4961306a91_1200x500.jpg"
+                      alt=" "
+                ></p>
+<h2 id="光纤跳线的分类"><a href="#光纤跳线的分类" class="headerlink" title="光纤跳线的分类"></a>光纤跳线的分类</h2><hr>
+<p>光纤跳线按传输媒介的不同可分为常见的硅基光纤的单模、多模跳线，还有其它如以塑胶等为传输媒介的光纤跳线</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic3.zhimg.com/80/v2-5a587e3357f7e24a9001d46c0190ea32_hd.jpg"
+                      alt=" "
+                ></p>
+<p>单模光纤跳线一般为黄色，接头和保护套为蓝色，波长为1310nm&#x2F;1550nm，传输距离为10km&#x2F;40km，传输距离长；多模光纤跳线：一般为橙色或者湖水蓝，接头和保护套为米色或者黑色，波长为850nm，传输距离为500m，传输距离短。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.zhimg.com/80/v2-43cde0f63e3b40f8ffbaca48286a056c_hd.jpg"
+                      alt="双LC多模光纤"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.zhimg.com/80/v2-33fb8cb6fcddbbf0628aafad132fa858_hd.jpg"
+                      alt="双LC单模光纤"
+                ></p>
+<p>光纤跳线根据连接器的类型一般可分为以下几种：</p>
+<ol>
+<li>LC型光纤跳线：方型连接头，采用操作方便模块化插孔（RJ）闩锁机理制成，是连接SFP光模块的连接器，常用于路由器当中。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.zhimg.com/80/v2-33fb8cb6fcddbbf0628aafad132fa858_hd.jpg"
+                      alt="双LC单模光纤"
+                ></p>
+<ol start="2">
+<li>SC型光纤跳线：矩形连接头，采用插拔销闩式紧固方式，是连接GBIC光模块的连接器，常用于路由器和交换机上。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/80/v2-955168a3c727856c9d8a5c147e6d1c59_hd.jpg"
+                      alt="SC-SC单模"
+                ></p>
+<ol start="3">
+<li>ST型光纤跳线：圆头连接头，采用螺丝扣紧固，常用光纤配线架上。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/80/v2-231fb0ab88b3b243cccd50e7e35a4ad1_hd.jpg"
+                      alt="ST-ST单模"
+                ></p>
+<ol start="4">
+<li>FC型光纤跳线：圆形光纤连接头，外部采用金属材质，同样也是采用螺丝扣紧固，一般用在ODF侧。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic4.zhimg.com/80/v2-b7346b78b38612f858c5932baf6e17d3_hd.jpg"
+                      alt="FC-FC单模"
+                ></p>
+<ol start="5">
+<li>MPO型光纤跳线：由两个高精度塑料成型的连接器和光缆组成，采用小型化设计，密度大连接稳定可靠。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic4.zhimg.com/80/v2-5393bdf5e27ce42e8b56ecba5e86529f_hd.jpg"
+                      alt="MPO光纤跳线"
+                ></p>
+<ol start="6">
+<li>MTP型光纤跳线：芯数多，体积小的光纤跳线，应用于高密度集成光纤线路环境中</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/v2-523e045f95c388521c472b4eaf4b8c9d_r.jpg"
+                      alt="MPT光纤跳线"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic4.zhimg.com/80/v2-ee34f9e0003aaec5968adb6d8addabc7_hd.jpg"
+                      alt="光纤跳线类型"
+                ></p>
+<p>注：MTP连接器是MPO连接器的一种。</p>
+<h2 id="尾纤类型"><a href="#尾纤类型" class="headerlink" title="尾纤类型"></a>尾纤类型</h2><hr>
+<p>尾纤和光纤跳线类型一样，这里不过多介绍。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/80/v2-8ebb69f10b9fda8ad285992ff6e50401_hd.jpg"
+                      alt="尾纤类型"
+                ></p>
+<h2 id="跳线和尾纤的应用"><a href="#跳线和尾纤的应用" class="headerlink" title="跳线和尾纤的应用"></a>跳线和尾纤的应用</h2><hr>
+<p>跳线主要用于光纤配线架或光纤信息插座到交换机之间的连接、交换机与交换机之间的连接、交换机与桌面计算机之间的连接以及光纤信息插座到桌面计算机之间的连接，可应用于管理、设备间和工作区子系统。</p>
+<p>尾纤主要应用于光纤通信系统、光纤接入网、光纤数据传输、光纤 CATV、局域网(LAN)、测试设备、光纤传感器、串口服务器、FTTH&#x2F;FTTX、电信网络和预端接安装。</p>
+<h2 id="跳线和尾纤的注意事项"><a href="#跳线和尾纤的注意事项" class="headerlink" title="跳线和尾纤的注意事项"></a>跳线和尾纤的注意事项</h2><hr>
+<ol>
+<li><p>跳线连接的光模块收发波长必须相同，一般情况下，短波光模块搭配多模跳线，长波光模块搭配单模跳线，以保证数据传输的准确性。</p>
+</li>
+<li><p>跳线在布线过程中尽可能的减少绕圈，这样可以减少在传输过程中光信号的衰减。</p>
+</li>
+<li><p>跳线的接头应保持干净，在使用后应用保护套将接头封装起来，以防油渍和灰尘进入，如果弄上了污渍，应用棉签蘸取酒精清洁。</p>
+</li>
+<li><p>尾纤比较纤细，尾纤横截面呈8度角，不耐高温，超过100℃就会破损，因此要避免在高温环境下使用。</p>
+</li>
+</ol>
+<p>光纤连接器是光纤通信的重要组成部分，在数据传输方面，插芯的好坏、制作的技术与方法都决定了数据传输的稳定性。</p>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><hr>
+<p><a class="link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/97001442" >全面解析光纤跳线与尾纤的区别及使用注意事项<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/35701459" >光纤跳线详解<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/24173339" >MTP&#x2F;MPO主干光纤跳线，为何如此受青睐？<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/40631062" >[MPO&#x2F;MTP区别]全面介绍MPO光纤跳线参数及应用<i class="fas fa-external-link-alt"></i></a></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：光纤跳线和尾纤详解</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2019-12-29 15:43:18</li>
+        <li>
+            本文链接：https://9unkk.github.io/2019/12/29/光纤跳线详解/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2020/01/06/CVE-2018-4878%E5%A4%8D%E7%8E%B0/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">CVE-2018-4878复现</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2019/12/29/%E4%BB%80%E4%B9%88%E6%98%AFMIME%20types/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">什么是 MIME types</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%B7%B3%E7%BA%BF%E5%92%8C%E5%B0%BE%E7%BA%A4"><span class="nav-number">1.</span> <span class="nav-text">什么是跳线和尾纤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%89%E7%BA%A4%E8%B7%B3%E7%BA%BF%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">光纤跳线的分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%BE%E7%BA%A4%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">尾纤类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%B3%E7%BA%BF%E5%92%8C%E5%B0%BE%E7%BA%A4%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">跳线和尾纤的应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%B3%E7%BA%BF%E5%92%8C%E5%B0%BE%E7%BA%A4%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">5.</span> <span class="nav-text">跳线和尾纤的注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-number">6.</span> <span class="nav-text">reference</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

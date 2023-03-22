@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            8086汇编-逻辑运算和位移指令 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">8086汇编-逻辑运算和位移指令</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2022-05-22 14:58:29</span>
+        <span class="mobile">2022-05-22 14:58</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <p>这组指令主要分为逻辑指令、位移指令和循环指令三个部分。</p>
+<h1 id="逻辑指令"><a href="#逻辑指令" class="headerlink" title="逻辑指令"></a>逻辑指令</h1><p>逻辑指令中，除 NOT 指令不影响标志位，其他逻辑指令都会影响标志位。指令执行之后会使 CF 和 OF 清 0，PF、ZF、SF反映运算结果。</p>
+<h2 id="NOT（取反）"><a href="#NOT（取反）" class="headerlink" title="NOT（取反）"></a>NOT（取反）</h2><p>指令格式：</p>
+<blockquote>
+<p>NOT OPRD</p>
+</blockquote>
+<p>这条指令把 OPRD 取反，然后再送回 OPRD</p>
+<p>范例：</p>
+<blockquote>
+<p>NOT AX<br>NOT VAR</p>
+</blockquote>
+<h2 id="AND（与）"><a href="#AND（与）" class="headerlink" title="AND（与）"></a>AND（与）</h2><p>指令格式：</p>
+<blockquote>
+<p>AND OPRD1,OPRD2</p>
+</blockquote>
+<p>使用逻辑 “与” 运算，将结果传送到目的操作数 OPRD1</p>
+<p>范例：</p>
+<blockquote>
+<p>AND DH,DH<br>AND AX,ES:[SI]</p>
+</blockquote>
+<p>常见用途：</p>
+<ol>
+<li><p>保证操作数不变的情况下，让 CF 位清 0<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169685563-4478cdb3-1878-48c3-a779-d3faae19651b.png"
+                      alt="1"
+                ></p>
+</li>
+<li><p>将一个字节数据的高 4 位置 0<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169685652-fee0fc0d-bdf3-4e8c-bd53-4352242a268f.png"
+                      alt="2"
+                ></p>
+</li>
+</ol>
+<h2 id="OR（或）"><a href="#OR（或）" class="headerlink" title="OR（或）"></a>OR（或）</h2><p>指令格式：</p>
+<blockquote>
+<p>OR OPRD1,OPRD2</p>
+</blockquote>
+<p>使用逻辑 “或” 运算，结果送到目的操作数 OPRD1</p>
+<p>范例：</p>
+<blockquote>
+<p>OR AX,8080H<br>OR CL,AL<br>OR [BX-3],AX</p>
+</blockquote>
+<blockquote>
+<p>MOV　AL,41H<br>OR AL,20H</p>
+</blockquote>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169686370-83679d5a-653e-4c8d-a90d-618bff2c200a.png"
+                      alt="3"
+                ></p>
+<h2 id="XOR（异或）"><a href="#XOR（异或）" class="headerlink" title="XOR（异或）"></a>XOR（异或）</h2><p>指令格式：<br>XOR OPRD1,OPRD2</p>
+<p>常见用途：</p>
+<ol>
+<li><p>操作数和 CF 位同时置 0<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169687854-94328c1b-3d18-48b9-9216-a1aefea5eb90.png"
+                      alt="4"
+                ></p>
+</li>
+<li><p>将一个字节数据的低 4 位取反<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169688298-2dbc3d27-e268-4aca-b0fa-58cba50b92be.png"
+                      alt="5"
+                ></p>
+</li>
+</ol>
+<h2 id="TEST（测试指令）"><a href="#TEST（测试指令）" class="headerlink" title="TEST（测试指令）"></a>TEST（测试指令）</h2><p>指令格式：</p>
+<blockquote>
+<p>TEST OPRD1,OPRD2</p>
+</blockquote>
+<p>使用逻辑 “与” 运算，只影响标志位，不会改变 OPRD1。</p>
+<p>常见用途：</p>
+<ol>
+<li><p>判断某个位是否为1<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169689897-c4776e22-8b0a-4cb3-ae68-2d99041880b3.png"
+                      alt="6"
+                ></p>
+</li>
+<li><p>判断这个值是否为0<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169689997-1d03662d-e622-4886-84a4-a3a4cc7ed7ad.png"
+                      alt="7"
+                ></p>
+</li>
+</ol>
+<blockquote>
+<p>test 指令没有改变操作数，不完全属于逻辑运算指令。</p>
+</blockquote>
+<h1 id="位移指令"><a href="#位移指令" class="headerlink" title="位移指令"></a>位移指令</h1><p>所有位移指令如果位移多位，需要将移位位数存放在 CL 寄存器中。</p>
+<h2 id="SAL-x2F-SHL（算数左移指令-x2F-逻辑左移指令）"><a href="#SAL-x2F-SHL（算数左移指令-x2F-逻辑左移指令）" class="headerlink" title="SAL&#x2F;SHL（算数左移指令&#x2F;逻辑左移指令）"></a>SAL&#x2F;SHL（算数左移指令&#x2F;逻辑左移指令）</h2><p>算数左移和逻辑左移的硬编码相同，没有区别。根据编译器的不同，它只会选择一种汇编指令编译。</p>
+<p>指令格式：</p>
+<blockquote>
+<p>SAL OPRD,m<br>SHL OPRD,m</p>
+</blockquote>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169691173-98578274-b491-486a-a9ae-16e43c4c998e.png"
+                      alt="8"
+                ></p>
+<ol>
+<li><p>判断某个位是否为1<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169691284-d3fd52ea-6e21-437b-8b7f-f3f2ec681296.png"
+                      alt="9"
+                ></p>
+</li>
+<li><p>乘法运算：计算4*2<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169691747-f4dde9e8-eaf8-4364-90d7-22ffacdbd6a5.png"
+                      alt="10"
+                ></p>
+</li>
+</ol>
+<h2 id="SAR（算数右移指令）"><a href="#SAR（算数右移指令）" class="headerlink" title="SAR（算数右移指令）"></a>SAR（算数右移指令）</h2><p>指令格式：</p>
+<blockquote>
+<p>SAR OPRD,m</p>
+</blockquote>
+<p>操作数右移m位，同时每一栋一位，左边符号位保持不变，移出的最低位进入标志位CF。</p>
+<p>范例：</p>
+<blockquote>
+<p>SAR AL,1<br>SAR BX,CL</p>
+</blockquote>
+<p>对于有符号数而言，算数右移一位相当于除以2</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169696921-7a4fce65-a234-40fc-97a6-951a32be2f8e.png"
+                      alt="11"
+                ></p>
+<blockquote>
+<p>不建议用在无符号数，容易出错。</p>
+</blockquote>
+<h2 id="SHR（逻辑右移指令）"><a href="#SHR（逻辑右移指令）" class="headerlink" title="SHR（逻辑右移指令）"></a>SHR（逻辑右移指令）</h2><p>指令格式：</p>
+<blockquote>
+<p>SHR OPRD,m</p>
+</blockquote>
+<p>范例：</p>
+<blockquote>
+<p>SHR BL,1<br>SHR AX,CL</p>
+</blockquote>
+<p>对于无符号数而言，逻辑右移相当于除以2<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169697606-57ccb595-eba0-4afc-a105-9316b0eb0f49.png"
+                      alt="12"
+                ></p>
+<h2 id="循环位移指令"><a href="#循环位移指令" class="headerlink" title="循环位移指令"></a>循环位移指令</h2><p>8086 有四条循环位移指令：ROL（左循环位移），ROR（右循环位移），RCL（带进位左循环位移），RCR（带进位右循环位移）。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169700443-167effac-8fa4-4b74-8287-57cca8624631.png"
+                      alt="13"
+                ></p>
+<h3 id="ROL（左循环位移指令）"><a href="#ROL（左循环位移指令）" class="headerlink" title="ROL（左循环位移指令）"></a>ROL（左循环位移指令）</h3><p>每移位一次，操作数左移，其最高位移入最低位，同时最高位也移入进位标志 CF<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169700610-22fc07d3-a94b-4caa-8af5-0750b4ecba9a.png"
+                      alt="14"
+                ></p>
+<h3 id="ROR（右循环位移指令）"><a href="#ROR（右循环位移指令）" class="headerlink" title="ROR（右循环位移指令）"></a>ROR（右循环位移指令）</h3><p>每移位一次，操作数右移，其最低位移入最高位，同时最低位也移入进位标志 CF<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169700713-ec5ce22f-5efe-4631-8058-12c96d9265e0.png"
+                      alt="15"
+                ></p>
+<h3 id="RCL（带进位左循环位移指令）"><a href="#RCL（带进位左循环位移指令）" class="headerlink" title="RCL（带进位左循环位移指令）"></a>RCL（带进位左循环位移指令）</h3><p>每移位一次，操作数左移，其最高位移入进位标志 CF，CF 移入最低位。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169700857-e270d623-1eb4-4a23-a0df-6fac4d3873df.png"
+                      alt="16"
+                ></p>
+<h3 id="RCR（带进位右循环位移指令）"><a href="#RCR（带进位右循环位移指令）" class="headerlink" title="RCR（带进位右循环位移指令）"></a>RCR（带进位右循环位移指令）</h3><p>每移位一次，操作数右移，其最低位移入进位标志 CF，CF 移入最高位。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169700955-46505c83-742b-47e1-8717-2ee5230f0e20.png"
+                      alt="17"
+                ></p>
+<h1 id="转移指令"><a href="#转移指令" class="headerlink" title="转移指令"></a>转移指令</h1><h2 id="无条件转移指令"><a href="#无条件转移指令" class="headerlink" title="无条件转移指令"></a>无条件转移指令</h2><p>指令格式：</p>
+<blockquote>
+<p>jmp 标号</p>
+</blockquote>
+<p>条件转移指令分为段内转移和段间转移。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">;程序名：jmp1.asm</span><br><span class="line">;测试转移指令</span><br><span class="line">;=============================</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line"></span><br><span class="line">N:</span><br><span class="line">    mov ax,0</span><br><span class="line">    mov bx,0</span><br><span class="line">    jmp S</span><br><span class="line">P:</span><br><span class="line">    add ax,1</span><br><span class="line">S:</span><br><span class="line">    jmp O</span><br><span class="line">    inc ax</span><br><span class="line">    inc ax</span><br><span class="line">O:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<h3 id="段内转移"><a href="#段内转移" class="headerlink" title="段内转移"></a>段内转移</h3><p>段内转移的范围是 -128~127，默认使用一个字表示地址差。</p>
+<h4 id="使用-“标号”-进行跳转"><a href="#使用-“标号”-进行跳转" class="headerlink" title="使用 “标号” 进行跳转"></a>使用 “标号” 进行跳转</h4><p>“jmp+标号” 硬编码是 “EB+地址”，默认地址是一个字大小，不足一个字会使用 90 填充。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169984688-4fe30eb1-f366-4be0-8954-176bd9476983.png"
+                      alt="18"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169988466-41f84fdf-958d-4239-9502-bc010970a4ec.png"
+                      alt="19"
+                ></p>
+<p>如果确认一个字节可以表示地址差，那么可以在标号前使用 short 表示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">;程序名：jmp2.asm</span><br><span class="line">;测试转移指令</span><br><span class="line">;=============================</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line"></span><br><span class="line">N:</span><br><span class="line">    mov ax,0</span><br><span class="line">    mov bx,0</span><br><span class="line">    jmp short S</span><br><span class="line">P:</span><br><span class="line">    add ax,1</span><br><span class="line">S:</span><br><span class="line">    jmp short O</span><br><span class="line">    inc ax</span><br><span class="line">    inc ax</span><br><span class="line">O:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169989572-77907abb-bd6f-4ae8-bc97-cbf39af994b2.png"
+                      alt="20"
+                ></p>
+<blockquote>
+<p>由此可见，在当时硬盘和内存还很小的情况下，编写程序使用 short 可以节省一些硬盘和内存空间。</p>
+</blockquote>
+<h4 id="使用-“存储单元”-进行跳转"><a href="#使用-“存储单元”-进行跳转" class="headerlink" title="使用 “存储单元” 进行跳转"></a>使用 “存储单元” 进行跳转</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">;程序名：jmp3.asm</span><br><span class="line">;转移指令</span><br><span class="line">;=============================</span><br><span class="line"></span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">    addr dw 0eh</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">N:</span><br><span class="line">    mov ax,0</span><br><span class="line">    mov bx,0</span><br><span class="line">    jmp addr</span><br><span class="line">P:</span><br><span class="line">    add ax,1</span><br><span class="line">S:</span><br><span class="line">    jmp O</span><br><span class="line">    inc ax</span><br><span class="line">    inc ax</span><br><span class="line">O:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/169997205-87d45593-93d3-42d2-97b8-cea673958734.png"
+                      alt="21"
+                ></p>
+<blockquote>
+<p>使用存储单元跳转是直接，将内存数据传输到 IP 寄存器中。如果要这样写，需要手动计算 IP 的值，很容易出错。</p>
+</blockquote>
+<h4 id="使用-“-立即数”-进行跳转"><a href="#使用-“-立即数”-进行跳转" class="headerlink" title="使用 “$+立即数” 进行跳转"></a>使用 “$+立即数” 进行跳转</h4><p>“$“ 伪指令表示 IP 寄存器的值。使用 “jmp $+立即数” 可以跳转到相应地址。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">;程序名：jmp$.asm</span><br><span class="line">;转移指令</span><br><span class="line">;=============================</span><br><span class="line"></span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">    addr dw 0eh</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">N:</span><br><span class="line">    mov ax,0</span><br><span class="line">    mov bx,0</span><br><span class="line">    jmp $+5</span><br><span class="line">P:</span><br><span class="line">    add ax,1</span><br><span class="line">S:</span><br><span class="line">    jmp O</span><br><span class="line">    inc ax</span><br><span class="line">    inc ax</span><br><span class="line">O:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/170003764-294870a1-d28e-4f04-9451-5d75cfde10e4.png"
+                      alt="22"
+                ></p>
+<h3 id="段间直接转移"><a href="#段间直接转移" class="headerlink" title="段间直接转移"></a>段间直接转移</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/170848883-15968a75-ef03-49ce-9d14-e24c2fcca3ba.png"
+                      alt="23"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/170848899-064afafa-d5f2-4a2b-8ca7-8e15fe26df78.png"
+                      alt="24"
+                ></p>
+<h3 id="段间间接转移"><a href="#段间间接转移" class="headerlink" title="段间间接转移"></a>段间间接转移</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/170848909-6ad39471-35e8-47cb-956f-713d3c314012.png"
+                      alt="25"
+                ></p>
+<h2 id="条件转移指令"><a href="#条件转移指令" class="headerlink" title="条件转移指令"></a>条件转移指令</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/170849231-c6c750fd-0cd9-4dd5-b1b3-b8388073a588.png"
+                      alt="26"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/170849836-980b3a18-4acf-4ddc-bd9d-3fe372897e5c.png"
+                      alt="27"
+                ></p>
+<h2 id="循环指令"><a href="#循环指令" class="headerlink" title="循环指令"></a>循环指令</h2><p>条件转移指令和无条件转移指令可以实现循环，但为了方便循环指令的实现，8086 还提供了四条循环指令。</p>
+<blockquote>
+<p>循环指令不影响各标志位</p>
+</blockquote>
+<h3 id="LOOP-计数循环指令"><a href="#LOOP-计数循环指令" class="headerlink" title="LOOP(计数循环指令)"></a>LOOP(计数循环指令)</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/170850629-2472c4c8-0087-4a19-87cc-d9ccf708bae2.png"
+                      alt="28"
+                ></p>
+<h3 id="LOOPE-x2F-LOOPZ-等于-x2F-全零循环指令"><a href="#LOOPE-x2F-LOOPZ-等于-x2F-全零循环指令" class="headerlink" title="LOOPE&#x2F;LOOPZ(等于&#x2F;全零循环指令)"></a>LOOPE&#x2F;LOOPZ(等于&#x2F;全零循环指令)</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/170850671-5ebd20fb-c3f0-4072-bb72-ac352ac273fa.png"
+                      alt="29"
+                ></p>
+<h3 id="LOOPNE-x2F-LOOPNZ-不等于-x2F-非零循环指令"><a href="#LOOPNE-x2F-LOOPNZ-不等于-x2F-非零循环指令" class="headerlink" title="LOOPNE&#x2F;LOOPNZ(不等于&#x2F;非零循环指令)"></a>LOOPNE&#x2F;LOOPNZ(不等于&#x2F;非零循环指令)</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/170850699-869d664c-c460-4732-8150-d25bf3c5b18a.png"
+                      alt="30"
+                ></p>
+<h3 id="JCXZ-跳转指令"><a href="#JCXZ-跳转指令" class="headerlink" title="JCXZ(跳转指令)"></a>JCXZ(跳转指令)</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/170850766-a81f1d94-23b1-4247-8db7-5c83bb357089.png"
+                      alt="31"
+                ></p>
+<h1 id="代码补充"><a href="#代码补充" class="headerlink" title="代码补充"></a>代码补充</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">;程序名：shr.asm</span><br><span class="line">;功能：假设 DATA1 和 DATA2各长4位，分别存放在 AL 寄存器的低 4 位和高 4 位中，</span><br><span class="line">;现在要把它们分别存放在BL寄存器和BH寄存器的低 4 位</span><br><span class="line">;==========================================================================</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">    DATA1 db 08h</span><br><span class="line">    DATA2 db 04h</span><br><span class="line">data ends</span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov ax,0</span><br><span class="line">    mov cl,4</span><br><span class="line">    ;</span><br><span class="line">    mov al,DATA1</span><br><span class="line">    shl al,cl</span><br><span class="line">    or al,DATA2</span><br><span class="line">    mov bl,al</span><br><span class="line">    shl bx,cl</span><br><span class="line">    shr bl,cl</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">;程序名：ROL.asm</span><br><span class="line">;功能：实现把AL的高4位与低4位交换。</span><br><span class="line">;================================</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    xor ax,ax</span><br><span class="line">    mov al,37h</span><br><span class="line">    mov cl,4</span><br><span class="line">    rol al,cl</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">;程序名：ROR.asm</span><br><span class="line">;功能：实现把AL的最低位送入BL的最低位，仍保持AL不变</span><br><span class="line">;=================================================</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    xor ax,ax</span><br><span class="line">    xor bx,bx</span><br><span class="line">    mov al,29h</span><br><span class="line">    mov bl,28h</span><br><span class="line">    ;</span><br><span class="line">loop1:</span><br><span class="line">    ror bl,1</span><br><span class="line">    ror al,1</span><br><span class="line">    rcl bl,1</span><br><span class="line">    rol al,1</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">;程序名：yiwei.asm</span><br><span class="line">;功能：设DATA1存放在AL的低4位，DATA2存放在AH的低4位，DATA3存放在SI的低4位，DATA4存放在SI的高4位。</span><br><span class="line">;      现在要把这四个数据合并为16位，并存放到DX寄存器中。</span><br><span class="line"></span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">      DATA1 db 1</span><br><span class="line">      DATA2 db 2</span><br><span class="line">      DATA3 db 3</span><br><span class="line">      DATA4 db 4</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">      mov ax,data</span><br><span class="line">      mov ds,ax</span><br><span class="line">      ;</span><br><span class="line">      mov cl,4</span><br><span class="line">      mov al,DATA1</span><br><span class="line">      mov ah,DATA2</span><br><span class="line">      mov bl,DATA3</span><br><span class="line">      mov bh,DATA4</span><br><span class="line">      shl bh,cl</span><br><span class="line">      mov si,bx</span><br><span class="line">      xor bx,bx</span><br><span class="line">      ;</span><br><span class="line">      rol ax,cl</span><br><span class="line">      shr ah,cl</span><br><span class="line">      or ah,al</span><br><span class="line">      ;</span><br><span class="line">      mov dx,si</span><br><span class="line">      shl dl,cl</span><br><span class="line">      shr dh,cl</span><br><span class="line">      or dl,dh</span><br><span class="line">      mov dh,ah</span><br><span class="line">      ;</span><br><span class="line">      mov ax,4c00h</span><br><span class="line">      int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">;程序名：jae.asm</span><br><span class="line">;功能：比较两个无符号数的大小，较大的数存放在 AX 中，较小的数存放在 BX 中</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">num1 dw 24</span><br><span class="line">num2 dw 35</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov ax,num1</span><br><span class="line">    mov bx,num2</span><br><span class="line">    cmp ax,bx</span><br><span class="line">    jae stop</span><br><span class="line">    xchg ax,bx</span><br><span class="line">stop:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">;程序名：jge.asm</span><br><span class="line">;功能：比较两个无符号数的大小，较大的数存放在 AX 中，较小的数存放在 BX 中</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">num1 dw 24</span><br><span class="line">num2 dw 35</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov ax,num1</span><br><span class="line">    mov bx,num2</span><br><span class="line">    cmp ax,bx</span><br><span class="line">    jge stop</span><br><span class="line">    xchg ax,bx</span><br><span class="line">stop:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">;程序名：loop.asm</span><br><span class="line">;功能：十六进制数转换成ASCII输出</span><br><span class="line">;=============================</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">val dw 0A2B4h</span><br><span class="line">result db ?,?,?,?,&#x27;H&#x27;,24H</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    xor si,si</span><br><span class="line">    mov cx,4</span><br><span class="line">    mov ax,val[si]</span><br><span class="line">    ;</span><br><span class="line">loop_start:</span><br><span class="line">    push cx</span><br><span class="line">    mov cl,4</span><br><span class="line">    rol ax,cl</span><br><span class="line">    push ax</span><br><span class="line">    and al,0fh</span><br><span class="line">    cmp al,9</span><br><span class="line">    jnb char</span><br><span class="line">    add al,30h</span><br><span class="line">    mov result[si],al</span><br><span class="line">    jmp loop_end</span><br><span class="line">    ;</span><br><span class="line">char:</span><br><span class="line">    add al,37h</span><br><span class="line">    mov result[si],al</span><br><span class="line">    ;</span><br><span class="line">loop_end:</span><br><span class="line">    pop ax</span><br><span class="line">    pop cx</span><br><span class="line">    inc si</span><br><span class="line">    loop loop_start</span><br><span class="line">    ;</span><br><span class="line">    mov dx,offset result</span><br><span class="line">    mov ah,9</span><br><span class="line">    int 21h</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">;程序名：loop1.asm</span><br><span class="line">;功能：把从偏移 1000H 开始的 512 个字节的数据复制到从偏移 3000H 开始的缓冲区中</span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov si,1000H</span><br><span class="line">    mov di,3000H</span><br><span class="line">    mov cx,512</span><br><span class="line">next:</span><br><span class="line">    mov al,[si]</span><br><span class="line">    inc si</span><br><span class="line">    mov [di],al</span><br><span class="line">    inc di</span><br><span class="line">    loop next</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">;程序名：loopz.asm</span><br><span class="line">;功能：查找第一个非 &#x27;A&#x27; 字符，找到 BX 保存该字符的偏移地址，找不到 BX=0FFFFh</span><br><span class="line">;=========================================================================</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">val db &#x27;AAAAAAAA&#x27;,24h</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov cx,8</span><br><span class="line">    xor si,si</span><br><span class="line">    ;</span><br><span class="line">loop_start:</span><br><span class="line">    mov al,val[si]</span><br><span class="line">    inc si</span><br><span class="line">    cmp al,41h</span><br><span class="line">    ;loopz：cx不为0 and zf 标志位为 1 才会继续循环，只要其中一个条件不成立就会跳出循环</span><br><span class="line">    loopz loop_start</span><br><span class="line">    cmp byte ptr [si],24H</span><br><span class="line">    jz no_find</span><br><span class="line">    mov bx,si</span><br><span class="line">    jmp stop</span><br><span class="line">no_find:</span><br><span class="line">    mov bx,-1</span><br><span class="line">stop:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">;程序名：loopz2.asm</span><br><span class="line">;功能：查找第一个非 &#x27;A&#x27; 字符，找到 BX 保存该字符的偏移地址，找不到 BX=0FFFFh</span><br><span class="line">;=========================================================================</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">val db &#x27;AAABABAA&#x27;</span><br><span class="line">len = $ - val</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov cx,len</span><br><span class="line">    xor si,si</span><br><span class="line">    ;</span><br><span class="line">loop_start:</span><br><span class="line">    mov al,val[si]</span><br><span class="line">    inc si</span><br><span class="line">    cmp al,41h</span><br><span class="line">    ;循环判断字符串中的字符 &#x27;A&#x27;</span><br><span class="line">    loopz loop_start</span><br><span class="line">    ;如果 CX = 0，说明没有找到字符 &#x27;A&#x27;</span><br><span class="line">    cmp cx,0</span><br><span class="line">    jz no_find</span><br><span class="line">    mov bx,si</span><br><span class="line">    jmp stop</span><br><span class="line">no_find:</span><br><span class="line">    mov bx,-1</span><br><span class="line">stop:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">;程序名：loopz3.asm</span><br><span class="line">;功能：查找第一个非 &#x27;A&#x27; 字符，找到 BX 保存该字符的偏移地址，找不到 BX=0FFFFh</span><br><span class="line">;=========================================================================</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">val db &#x27;AAABABAA&#x27;</span><br><span class="line">len = $ - val</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov cx,len</span><br><span class="line">    xor si,si</span><br><span class="line">loop_start:</span><br><span class="line">    mov al,val[si]</span><br><span class="line">    inc si</span><br><span class="line">    cmp al,41h</span><br><span class="line">    loopz loop_start</span><br><span class="line">    ;正常循环结束后的 CX = 0</span><br><span class="line">    jz no_find</span><br><span class="line">    mov bx,si</span><br><span class="line">    jmp stop</span><br><span class="line">no_find:</span><br><span class="line">    mov bx,-1</span><br><span class="line">stop:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：8086汇编-逻辑运算和位移指令</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2022-05-22 14:58:29</li>
+        <li>
+            本文链接：https://9unkk.github.io/2022/05/22/8086汇编-逻辑运算和位移指令/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2022/05/30/8086%E6%B1%87%E7%BC%96-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">8086汇编-汇编语言</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2022/05/07/8086%E6%B1%87%E7%BC%96-%E7%AE%97%E6%95%B0%E8%BF%90%E7%AE%97%E6%8C%87%E4%BB%A4/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">8086汇编-算数运算指令</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E6%8C%87%E4%BB%A4"><span class="nav-number">1.</span> <span class="nav-text">逻辑指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#NOT%EF%BC%88%E5%8F%96%E5%8F%8D%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">NOT（取反）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AND%EF%BC%88%E4%B8%8E%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">AND（与）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OR%EF%BC%88%E6%88%96%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">OR（或）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XOR%EF%BC%88%E5%BC%82%E6%88%96%EF%BC%89"><span class="nav-number">1.4.</span> <span class="nav-text">XOR（异或）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TEST%EF%BC%88%E6%B5%8B%E8%AF%95%E6%8C%87%E4%BB%A4%EF%BC%89"><span class="nav-number">1.5.</span> <span class="nav-text">TEST（测试指令）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%8D%E7%A7%BB%E6%8C%87%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">位移指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SAL-x2F-SHL%EF%BC%88%E7%AE%97%E6%95%B0%E5%B7%A6%E7%A7%BB%E6%8C%87%E4%BB%A4-x2F-%E9%80%BB%E8%BE%91%E5%B7%A6%E7%A7%BB%E6%8C%87%E4%BB%A4%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">SAL&#x2F;SHL（算数左移指令&#x2F;逻辑左移指令）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SAR%EF%BC%88%E7%AE%97%E6%95%B0%E5%8F%B3%E7%A7%BB%E6%8C%87%E4%BB%A4%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">SAR（算数右移指令）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SHR%EF%BC%88%E9%80%BB%E8%BE%91%E5%8F%B3%E7%A7%BB%E6%8C%87%E4%BB%A4%EF%BC%89"><span class="nav-number">2.3.</span> <span class="nav-text">SHR（逻辑右移指令）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E4%BD%8D%E7%A7%BB%E6%8C%87%E4%BB%A4"><span class="nav-number">2.4.</span> <span class="nav-text">循环位移指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ROL%EF%BC%88%E5%B7%A6%E5%BE%AA%E7%8E%AF%E4%BD%8D%E7%A7%BB%E6%8C%87%E4%BB%A4%EF%BC%89"><span class="nav-number">2.4.1.</span> <span class="nav-text">ROL（左循环位移指令）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ROR%EF%BC%88%E5%8F%B3%E5%BE%AA%E7%8E%AF%E4%BD%8D%E7%A7%BB%E6%8C%87%E4%BB%A4%EF%BC%89"><span class="nav-number">2.4.2.</span> <span class="nav-text">ROR（右循环位移指令）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RCL%EF%BC%88%E5%B8%A6%E8%BF%9B%E4%BD%8D%E5%B7%A6%E5%BE%AA%E7%8E%AF%E4%BD%8D%E7%A7%BB%E6%8C%87%E4%BB%A4%EF%BC%89"><span class="nav-number">2.4.3.</span> <span class="nav-text">RCL（带进位左循环位移指令）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RCR%EF%BC%88%E5%B8%A6%E8%BF%9B%E4%BD%8D%E5%8F%B3%E5%BE%AA%E7%8E%AF%E4%BD%8D%E7%A7%BB%E6%8C%87%E4%BB%A4%EF%BC%89"><span class="nav-number">2.4.4.</span> <span class="nav-text">RCR（带进位右循环位移指令）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">转移指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E6%9D%A1%E4%BB%B6%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4"><span class="nav-number">3.1.</span> <span class="nav-text">无条件转移指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AE%B5%E5%86%85%E8%BD%AC%E7%A7%BB"><span class="nav-number">3.1.1.</span> <span class="nav-text">段内转移</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-%E2%80%9C%E6%A0%87%E5%8F%B7%E2%80%9D-%E8%BF%9B%E8%A1%8C%E8%B7%B3%E8%BD%AC"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">使用 “标号” 进行跳转</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-%E2%80%9C%E5%AD%98%E5%82%A8%E5%8D%95%E5%85%83%E2%80%9D-%E8%BF%9B%E8%A1%8C%E8%B7%B3%E8%BD%AC"><span class="nav-number">3.1.1.2.</span> <span class="nav-text">使用 “存储单元” 进行跳转</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-%E2%80%9C-%E7%AB%8B%E5%8D%B3%E6%95%B0%E2%80%9D-%E8%BF%9B%E8%A1%8C%E8%B7%B3%E8%BD%AC"><span class="nav-number">3.1.1.3.</span> <span class="nav-text">使用 “$+立即数” 进行跳转</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AE%B5%E9%97%B4%E7%9B%B4%E6%8E%A5%E8%BD%AC%E7%A7%BB"><span class="nav-number">3.1.2.</span> <span class="nav-text">段间直接转移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AE%B5%E9%97%B4%E9%97%B4%E6%8E%A5%E8%BD%AC%E7%A7%BB"><span class="nav-number">3.1.3.</span> <span class="nav-text">段间间接转移</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4"><span class="nav-number">3.2.</span> <span class="nav-text">条件转移指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E6%8C%87%E4%BB%A4"><span class="nav-number">3.3.</span> <span class="nav-text">循环指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#LOOP-%E8%AE%A1%E6%95%B0%E5%BE%AA%E7%8E%AF%E6%8C%87%E4%BB%A4"><span class="nav-number">3.3.1.</span> <span class="nav-text">LOOP(计数循环指令)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LOOPE-x2F-LOOPZ-%E7%AD%89%E4%BA%8E-x2F-%E5%85%A8%E9%9B%B6%E5%BE%AA%E7%8E%AF%E6%8C%87%E4%BB%A4"><span class="nav-number">3.3.2.</span> <span class="nav-text">LOOPE&#x2F;LOOPZ(等于&#x2F;全零循环指令)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LOOPNE-x2F-LOOPNZ-%E4%B8%8D%E7%AD%89%E4%BA%8E-x2F-%E9%9D%9E%E9%9B%B6%E5%BE%AA%E7%8E%AF%E6%8C%87%E4%BB%A4"><span class="nav-number">3.3.3.</span> <span class="nav-text">LOOPNE&#x2F;LOOPNZ(不等于&#x2F;非零循环指令)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JCXZ-%E8%B7%B3%E8%BD%AC%E6%8C%87%E4%BB%A4"><span class="nav-number">3.3.4.</span> <span class="nav-text">JCXZ(跳转指令)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E8%A1%A5%E5%85%85"><span class="nav-number">4.</span> <span class="nav-text">代码补充</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

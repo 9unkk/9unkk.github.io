@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            8086汇编-输入输出与中断 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">8086汇编-输入输出与中断</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2022-09-27 17:15:00</span>
+        <span class="mobile">2022-09-27 17:15</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="输入输出的基本概念"><a href="#输入输出的基本概念" class="headerlink" title="输入输出的基本概念"></a>输入输出的基本概念</h1><p>各种输入输出设备（如：打印机、键盘、鼠标等）都要通过一个硬件接口或控制器和 CPU 相连。例如，打印机通过打印接口与系统相连；显示器通过显示控制器和系统相连。从程序设计的角度看，接口由一组寄存器组成，是完成输入输出的桥梁。程序利用 I&#x2F;O 指令，存取接口上的寄存器，获得外部设备的状态信息，控制外部设备的动作，从而实现输入输出。</p>
+<h2 id="I-x2F-O端口地址和I-x2F-O指令"><a href="#I-x2F-O端口地址和I-x2F-O指令" class="headerlink" title="I&#x2F;O端口地址和I&#x2F;O指令"></a>I&#x2F;O端口地址和I&#x2F;O指令</h2><h3 id="I-x2F-O端口地址"><a href="#I-x2F-O端口地址" class="headerlink" title="I&#x2F;O端口地址"></a>I&#x2F;O端口地址</h3><p>为了存取接口上的寄存器，系统给这些寄存器分配专门的存取地址，这样的地址称为I&#x2F;O端口地址。<br>在某些微型机上，I&#x2F;O端口地址和存储单元地址统一编址。这相当于把 I&#x2F;O 接口（设备）视为一个或几个存储单元，利用存取内存单元的指令就可存取接口上的寄存器。但这会减少原本就有限的一部分存储空间，同时由于访问内存的指令一般超过2字节，从而延长了外部设备与处理器进行数据交换的时间。<br>在以 Intel 的 8086 系列的处理器为 CPU 的系统中，I&#x2F;O端口地址和存储单元的地址是各自独立的，分别占两个不同的地址空间。8086&#x2F;8088 提供的I&#x2F;O端口地址空间达 64K 个 8 位端口（或32K个16位端口）。但实际上PC机一般只使用 0 到 3FFH 之间的 I&#x2F;O端口地址。</p>
+<h3 id="I-x2F-O-指令"><a href="#I-x2F-O-指令" class="headerlink" title="I&#x2F;O 指令"></a>I&#x2F;O 指令</h3><p>由于 8086&#x2F;8088 的 I&#x2F;O端口地址和内存单元地址是独立的，所以要用专门的I&#x2F;O指令来存取端口上的寄存器，也就是说要用专门的I&#x2F;O指令进行输入输出。</p>
+<p>I&#x2F;O指令属于数据传送指令组<br>（1）输入指令<br>输入指令一般格式如下：</p>
+<blockquote>
+<p>IN 累加器，端口地址</p>
+</blockquote>
+<ol>
+<li>输入指令从一个输入端口读取一个字节或一个字，传送至AL或AX中。</li>
+<li>端口地址可采用直接方式表示，也可采用间接方式表示。</li>
+<li>当采用直接方式表示端口地址时，端口地址仅为8位，即0~255；当采用间接方式表示端口地址时，端口地址存放在DX寄存器中，端口地址可为16位。</li>
+<li>输入指令有如下四种方式：</li>
+</ol>
+<p>直接端口寻址<br>IN AL,PORT      ;PORT 是一个8位的立即数<br>IN AX,PORT</p>
+<p>间接端口寻址<br>IN AL,DX        ;PORT 是一个字时，相当于同时从n和n+1分别读取一个字节。<br>IN AX,DX</p>
+<blockquote>
+<p>当端口地址超过255时，只能采用dx间接端口寻址</p>
+</blockquote>
+<p>（2）输出指令<br>OUT 端口地址,累加器</p>
+<p>输出指令将 AL 中的一个字节，或在AX中的一个字，输出到指定端口。与 IN 指令一样，端口地址可采用直接方式和间接方式。</p>
+<p>直接方式<br>OUT PORT,AL<br>OUT PORT,AX</p>
+<p>间接方式<br>OUT DX,AL       ;PORT 是一个字时，相当于同时从n和n+1分别输出一个字节。<br>OUT DX,AX</p>
+<h2 id="数据传送方式"><a href="#数据传送方式" class="headerlink" title="数据传送方式"></a>数据传送方式</h2><h3 id="CPU与外设之间交换的信息"><a href="#CPU与外设之间交换的信息" class="headerlink" title="CPU与外设之间交换的信息"></a>CPU与外设之间交换的信息</h3><p>CPU与外设之间交换的信息包括数据、控制和状态信息。尽管这三种信息具有不同性质，但他们都通过 IN 和 OUT 指令在数据总线上进行传送，所以通常采用分配不同端口的方法将它们加以区别。</p>
+<p>数据是CPU和外设真正要交换的信息。数据通常为8位或16位。可分为各种不同类型。不同的外设要传送的数据类型也是不同的。<br>控制信息输出到I&#x2F;O接口，告诉接口和设备要做什么工作。<br>从接口输入的状态信息，表示 I&#x2F;O 设备当前状态。在输入数据前，通常要先取得表示设备是否已准备好的状态信息；在输出数据前，往往要先取得表示设备是否在忙的状态信息。</p>
+<h3 id="数据传送方式-1"><a href="#数据传送方式-1" class="headerlink" title="数据传送方式"></a>数据传送方式</h3><p>系统中数据传送的方式主要有：<br>（1）无条件传送方式<br>在不需要查询外设装填，即已知外设已经准备好或不忙时，可以直接使用 IN 或 OUT 指令实现数据传送。这种方式软件实现简单，只要在指令中指明端口地址，就可选通过指定外设进行输入输出。<br>无条件传送方式是方便的，但要求外设工作速度能与CPU同步，否则就可能出错。例如，在外设还没有准备好的情况下，就用 IN 指令得到数据就可能是不正确的数据。</p>
+<p>（2）查询方式<br>查询传送方式适用于 CPU 与外设不同步的情况。输入之前，查询外设数据是否已准备好，弱数据已准备好，则输入；否则继续查询，直到数据准备好。输出之前，查询外设是否 “忙”，若不”忙”，则输出；否则继续查询，直到不 “忙”。也就是说，要等待到外设准备好时才能输入或输出数据，而通常外设速度要远远慢于 CPU 速度，于是查询时间就将花费大量时间。</p>
+<p>（3）中断方式<br>为了提供CPU的效率，可采用中断方式。当外设准备好时，外设向CPU 发出中断请求，CPU转入中断处理程序，完成输入输出工作。</p>
+<p>（4）直接存储器传送（DMA）方式<br>由于告诉 I&#x2F;O 设别（如磁盘机等）准备数据的时间短，要爱u传送速度快等特点，所以一般采用直接存储器传送方式，即告诉设备与内存储器直接交换数据。这种方式传送数据是成组进行的。其过程是：先把数据在告诉外设中存放的起始位置、数据在内存储器中存放的起始地址、传送数据长度等参数输出到连接高速外设的接口（控制器），然后启动高速外设，设备住呢比开始直接传送数据。当高速外设直接传送准备好后，向处理机发送一个直接传送的请求信号，处理机以最短时间批准进行直接传送，并让出总线控制权，高速外设在其控制器控制下交换数据。数据交换完毕后，由高速外设发出 “完成中断请求”，并交回总线控制权。处理机响应上述中断，由对应的中断处理程序对高速外设进行控制或对已经传送的数据进行处理，中断返回后，原程继续运行。</p>
+<h3 id="存取-RT-x2F-CMOS-RAM"><a href="#存取-RT-x2F-CMOS-RAM" class="headerlink" title="存取 RT&#x2F;CMOS RAM"></a>存取 RT&#x2F;CMOS RAM</h3><h4 id="关于-RT-x2F-CMOS-RAM"><a href="#关于-RT-x2F-CMOS-RAM" class="headerlink" title="关于 RT&#x2F;CMOS RAM"></a>关于 RT&#x2F;CMOS RAM</h4><ol>
+<li>RT&#x2F;CMOS RAM 是一种低耗电存储器，其主要作用是用来存放系统配置信息，以及系统日期。</li>
+<li>RT&#x2F;CMOS RAM 作为一个 I&#x2F;O 接口芯片，系统分配的 I&#x2F;O 端口地址为 70H 至 7FH，通过 IN 和 OUT 指令对其进行存取。它共提供64个字节RAM单元，前14个字节用于实时钟，剩下的50个字节用于系统配置。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/193170677-35304a55-ea05-4d28-a2ea-d0112e234c0c.png"
+                      alt="1"
+                ></li>
+</ol>
+<h4 id="存取-RT-x2F-CMOS-RAM-1"><a href="#存取-RT-x2F-CMOS-RAM-1" class="headerlink" title="存取 RT&#x2F;CMOS RAM"></a>存取 RT&#x2F;CMOS RAM</h4><p>在存取 RT&#x2F;CMOS RAM 芯片内部的 64 个字节内容时，往往要分两步进行。即先把要存取单元的地址传入端口70H，然后再存取端口 71H。单元地址指的是上图中的位移。</p>
+<p>（1）读操作代码片段</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MOV AL,n        ;n 是要访问的单元地址</span><br><span class="line">OUT 70H,AL      ;把要访问的单元地址送入端口</span><br><span class="line">JMP $+2         ;延时</span><br><span class="line">IN AL,71H       ;从数据端口取访问单元的内容</span><br></pre></td></tr></table></figure>
+
+<p>案例：读取 CMOS 并显示当前是几月份。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">;程序名：RCMOS.asm</span><br><span class="line">;功能：演示如何读取 CMOS RAM，并显示当前是几月份。</span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov al,8</span><br><span class="line">    out 70h,al</span><br><span class="line">    jmp $+2</span><br><span class="line">    in al,71h</span><br><span class="line">    ;</span><br><span class="line">    mov dl,al</span><br><span class="line">    add dl,30h</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/193173760-d45dc1ac-41b7-40be-b7e8-a667ae7856b3.png"
+                      alt="2"
+                ></p>
+<p>（2）写操作代码片段</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">MOV AL,n        ;n 是要访问的单元地址</span><br><span class="line">OUT 70H,AL      ;把要访问单元的地址传送至端口</span><br><span class="line">JMP $+2         ;延时</span><br><span class="line">MOV AL,m        ;m 是要输出的数据</span><br><span class="line">OUT 71H,AL      ;把数据从数据端口输出</span><br></pre></td></tr></table></figure>
+
+<p>案例：修改并重新读取 CMOS 报警秒。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">;程序名：WCMOS.asm</span><br><span class="line">;功能：演示如何修改并重新读取 CMOS RAM，并显示当前报警秒。</span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    ;修改 CMOS 报警秒</span><br><span class="line">    mov al,1</span><br><span class="line">    out 70h,al</span><br><span class="line">    jmp $+2</span><br><span class="line">    mov al,5</span><br><span class="line">    out 71h,al</span><br><span class="line">    ;读取CMOS月份</span><br><span class="line">    mov al,1</span><br><span class="line">    out 70h,al</span><br><span class="line">    jmp $+2</span><br><span class="line">    in al,71h</span><br><span class="line">    ;输出当前月份信息</span><br><span class="line">    mov dl,al</span><br><span class="line">    add dl,30h</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/193204418-a284f99e-b528-440b-b3ce-5ce86302072f.png"
+                      alt="3"
+                ></p>
+<blockquote>
+<p>CMOS　RAM累加和检查和查询方式传送数据，就不写了。这些都是和硬件相关的知识，暂时用不到。</p>
+</blockquote>
+<h1 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h1><p>中断是一种使 CPU 挂起正在执行的程序而转去处理特殊事件的操作。特殊事件是来自外设的输入输出请求，例如键盘引起的键盘中断，由串行口引起的串行口中断等；也可能是计算机的一些异常事件或其他内部原因，例如：除数为0</p>
+<h2 id="中断的传送方式"><a href="#中断的传送方式" class="headerlink" title="中断的传送方式"></a>中断的传送方式</h2><p>中断传送方式的具体过程是：当 CPU 需要输入或输出数据时，先作一些必要的准备工作（有时包括启动外部设备），然后继续执行程序；当外设完成一个数据的输入或输出后，则向 CPU 发出中断请求，CPU 就挂起正在执行的程序，转去执行输入或输出擦欧总，在完成输入或输出操作后，返回原程序继续执行。<br>中断传送方式是CPU和外部设备进行输入输出的有效方式，一直被大多数计算机所采用，它可以避免因反复查询外部设备的状态而浪费时间，从而提高CPU的效率。不过，每中断依次，只传送依次数据，数据的传送效率并不高，所以，中断传送方式一般用于低速外设。另外，与查询方式相比，中断方式实现比较复杂，对硬件的条件也较多。</p>
+<h2 id="中断向量表"><a href="#中断向量表" class="headerlink" title="中断向量表"></a>中断向量表</h2><p>IBM PC 系列及其兼容机共能支持256种类型的中断，系统给每一种中断都安排一个中断类型号（简称中断号），中断类型号依次为 0~FFH。例如，属于外部中断的定时器中断类型号为 08 和键盘中断类型号 09，属于内部中断的除法出错中断类型号为 0 等等。</p>
+<p>每种类型的中断都由响应的中断处理程序来处理，为了使系统在响应中断后，CPU 能快速地转入对应地中断处理程序，系统用一张表来保存这些中断处理程序的入口地址，该表就称为中断向量表。中断向量表的每一项保存一个中断处理程序的入口地址，它相当于一个指向中断处理程序的指针，所以称为中断向量。中断向量也依次编号为 0~FFH，n号中断向量就是保存处理中断类型为 n 的中断处理程序的入口地址。所以，一般不再取分中断类型号和中断向量号。</p>
+<p>中断向量表被存放在内存最低端的 1K 字节空间种。其中每个中断向量占用四个字节，前两个字节保存中断处理程序入口地址的偏移，后两个字节保存中断处理程序的入口地址的段值，所以含有256个中断向量的中断向量表需要占用1K字内存空间。</p>
+<p>中断向量所在的单元地址&#x3D;中断向量号<em>4，如 21h号中断向量在中断向量表的 21</em>4&#x3D;84&#x3D;54h&#x3D;0000:0054h 处。</p>
+<p>在 IBM PC系列及其兼容机上，除保留给用户使用的 60H<del>68H 和 F1H</del>FFH 中断向量号外，可以认为其他中断向量号已被分配。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/193244775-b6dc8c69-ed55-4b71-b8e8-4900ab65c67f.png"
+                      alt="4"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/193244876-e609a3cb-e68b-4c92-98e4-ab7444e3ff2f.png"
+                      alt="5"
+                ></p>
+<blockquote>
+<p>中断向量不一定非要指向中断处理程序，也可以作为指向一组数据的指针。如，1DH号中断向量就指向显示器参数，1EH号中断向量指向软盘基数。当然，如果中断向量m没有指向中断处理程序，那么就不应该发生类型为m的中断。</p>
+</blockquote>
+<h3 id="设置和获取中断向量"><a href="#设置和获取中断向量" class="headerlink" title="设置和获取中断向量"></a>设置和获取中断向量</h3><p>在系统程序或应用程序由于某种需要而提供新的中断处理程序时，就要设置对应的中断向量，使其指向新的中断处理程序。<br>下面的程序片段直接设置 n 号中断向量，假设对应中断处理程序的入口标号是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">INTHAND:</span><br><span class="line">    ....</span><br><span class="line">    MOV AX,0</span><br><span class="line">    MOV DS,AX</span><br><span class="line">    MOV BX,n*4                          ;准备设置n号中断向量</span><br><span class="line">    CLI                                 ;关中断</span><br><span class="line">    MOV WORD PTR [BX],OFFSET INTHAND    ;置偏移</span><br><span class="line">    MOV WORD PTR [BX+2],SEG INTHAND     ;置段值</span><br><span class="line">    STI</span><br><span class="line">    ....</span><br></pre></td></tr></table></figure>
+
+<p>在上面的程序片段中使用了关中断指令 CLI，关中断就是关闭中断指令，此时中断指令是无法使用的。这样做目的是保证用于设置中断向量的两条传送指令能够连续执行，避免中间执行其他中断指令导致中断程序出错。如果能确定当前是关中断状态，当然就不再需要使用关中断指令，也不需要随后地开中断指令。另外，如果能够肯定在设置 n 号中断向量过程中不发生类型为n地中断，那么可不考虑是否设为关中断状态。</p>
+<p>实际上，通常是利用 DOS 提供地25h号系统功能调用设置中断向量，这样可以避免考虑许多细节。<br>25号系统功能调用时设置中断向量，其入口参数如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AL=中断向量（类型）号</span><br><span class="line">DS=中断处理程序入口地址的段值</span><br><span class="line">DX=中断处理程序入口地址的偏移</span><br></pre></td></tr></table></figure>
+<p>下面的程序片段设置 n 号中断向量，假设对应中断处理程序入口标号是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">INTHAND:</span><br><span class="line">    ....</span><br><span class="line">    MOV AX,SEG INTHAND</span><br><span class="line">    MOV DS,AX</span><br><span class="line">    MOV DX,OFFSET INTHAND</span><br><span class="line">    MOV AH,25H</span><br><span class="line">    MOV AL,n</span><br><span class="line">    INT 21H</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>有时需要取得中断向量。例如：在应用程序要用自己的中断处理程序代替系统原有的某个中断处理程序时，先要保存原中断向量，待应用程序结束时再恢复原中断向量。<br>下面的程序片段直接从中断向量中取得 n 号中断向量，并保存到双字变量 OLDVECTOR 中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">....</span><br><span class="line">XOR AX,AX</span><br><span class="line">MOV ES,AX</span><br><span class="line">MOV AX,ES:[n*4]</span><br><span class="line">MOV WORD PTR OLDVECTOR,AX</span><br><span class="line">MOV AX,ES:[n*4+2]</span><br><span class="line">MOV WORD PTR OLDVECTOR+2,AX</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+
+<p>与利用 DOS 功能调用设置中断向量一样，实际上一般都利用ODS提供的35H号系统功能调用取得中断向量。35H号系统调用的功能是获取中断向量，其入口参数如下：<br>入口参数：</p>
+<p><code>AL=中断向量（类型）号</code></p>
+<p>出口参数：</p>
+ <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ES=中断处理程序入口地址的段值</span><br><span class="line">BX=中断处理程序入口地址的偏移 </span><br></pre></td></tr></table></figure>
+
+<p>下面是程序片段取得n号中断向量，并将其保存到双字变量 OLDVECTOR 中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">....</span><br><span class="line">MOV AH,25H</span><br><span class="line">MOV AL,N</span><br><span class="line">INT 21H</span><br><span class="line">MOV WORD PTR OLDVECTOR,ES</span><br><span class="line">MOV WORD PTR OLDVECTOR,BX</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+
+<h2 id="中断响应过程"><a href="#中断响应过程" class="headerlink" title="中断响应过程"></a>中断响应过程</h2><h3 id="中断响应过程-1"><a href="#中断响应过程-1" class="headerlink" title="中断响应过程"></a>中断响应过程</h3><p>通常 CPU 在执行完每一条指令后均要检测是否有中断请求，在有中断请求且满足一定条件时就响应中断，这个过程如下图所示：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194038078-29926f24-2f83-4a96-8d38-b3fffab5e2e6.png"
+                      alt="6"
+                ></p>
+<ol>
+<li>取得中断类型号</li>
+<li>把标志寄存器的内容压入堆栈中</li>
+<li>禁止为外部中断和单步中断（使IF和TF标志位为0）</li>
+<li>把下一条要执行的指令的地址压入堆栈（CS和IP）</li>
+<li>根据中断类型号从中断向量表中取中断处理程序入口地址</li>
+<li>转入中断处理程序</li>
+</ol>
+<p>在CPU响应中断转入中断程序时，中断处理程序在最后从堆栈中弹出返回地址和原标志寄存器的值结束中断，返回被中断的程序。</p>
+<h3 id="中断返回指令"><a href="#中断返回指令" class="headerlink" title="中断返回指令"></a>中断返回指令</h3><p>中断处理程序利用中断返回指令从堆栈中弹出返回地址和原标志值。中断返回指令格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IRET</span><br></pre></td></tr></table></figure>
+<p>该指令的功能从中断返回。具体操作如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">IP &lt;= [SP]</span><br><span class="line">SP &lt;= SP+2</span><br><span class="line">CS &lt;= [SP]</span><br><span class="line">SP &lt;= SP+2</span><br><span class="line">FLAGS &lt;= [SP]</span><br></pre></td></tr></table></figure>
+<p>在执行中断返回指令 IRET 时的堆栈变化如下<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194068203-ed2c4766-cead-4d56-a17a-f56b7698ebe8.png"
+                      alt="7"
+                ></p>
+<h3 id="外部中断"><a href="#外部中断" class="headerlink" title="外部中断"></a>外部中断</h3><p>由于发生在 CPU 外部的某个事件引起的中断称为外部中断。外部中断以完全随机的方式中断正在运行的程序。<br>外部中断有两条外部中断请求线：INTR（可屏蔽中断请求），NMI（非屏蔽中断请求）<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194092190-b9ca0aad-3224-49ec-baa9-0938fac7b19d.png"
+                      alt="8"
+                ></p>
+<h4 id="可屏蔽外部中断"><a href="#可屏蔽外部中断" class="headerlink" title="可屏蔽外部中断"></a>可屏蔽外部中断</h4><p>键盘和硬盘等外设的中断请求都通过中断控制器 8259A 传给可屏蔽中断请求INTR。中断控制器 8259A 共能接收 8 个独立的中断请求信号 IRQ0<del>IRQ7。在AT机上，有两种中断控制器 8259A，一主一从。从 8259A 连接到主 8259A 的 IRQ2 上，这样 AT 系统就可以接收15个独立的中断请求信号。<br>中断控制器 8259A 在控制外设中断方面起着重要的作用。如果接收到一个中断请求信号，并且满足一定的条件，那么它就把中断请求信号传到 CPU 的可屏蔽中断请求线 INTR，使CPU感知到有外部中断请求；同时也把相应的中断请求类型号送给 CPU，使 CPU 在响应中断时可根据中断类型号取得中断向量，转相应的中断处理程序。<br>中断控制器 8259A 是可编程的，也就是说可由程序设置它如何控制中断。在及其系统加电初始化期间，已对 8259A 进行过初始化。在初始化时规定了在传出中断请求 IRQ0</del>IRQ7时，送出的对应中断类型号分别是 08H~0FH 如下图所示<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/193170677-35304a55-ea05-4d28-a2ea-d0112e234c0c.png"
+                      alt="1"
+                ></p>
+<p>例如，设传出中断请求 IRQ1（键盘中断），那么送出的中断类型号为9，所以键盘中断类型号为9，键盘中断处理程序入口地址存放在 9 号中断向量中。<br>从普通汇编语言设计角度看，中断控制器 8259A 包含了两个寄存器：中断屏蔽寄存器和中断命令寄存器，它们决定了传出一个中断请求信号的条件。中断屏蔽寄存器的 I&#x2F;O 端口地址是 21H，它的8位对应控制8个外部设备，通过设置这个寄存器的某个位为 0 或 1 来允许或禁止相应外部设备中断。当第 i 位为 0 时，表示允许传出来自 IRQi 的中断请求信号，当第 i 位为 1 时，表示禁止传出来自 IRQi 的中断请求信号。中断屏蔽寄存器的内容称为中断屏蔽字。在 PC 系列及其兼容机上，中断屏蔽寄存器各位与对应的外设的关系如下图所示：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194215574-da8925d9-a9fc-4931-af28-aba85e9d6b61.png"
+                      alt="9"
+                ><br>例如：为了使中断控制器 8259A 只传出来自键盘的中断请求信号，可设置中断屏蔽字 11111101B，程序片段如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOV AL,11111101B</span><br><span class="line">OUT 21H,AL</span><br></pre></td></tr></table></figure>
+
+<p>例如：下面的程序片段使中断屏蔽寄存器的位 4 为 0，从而允许传出来自串行通信口 1 的中断请求信号：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">IN AL,21H</span><br><span class="line">AND AL,11101111B</span><br><span class="line">OUT 21H,AL</span><br></pre></td></tr></table></figure>
+<p>尽管中断控制器把外设的中断请求信号由 INTR 传给 CPU，但 CPU 是否响应还取决于中断允许标志位 IF。如果 IF 为 0，则 CPU 仍不响应由 INTR 传入的中断请求。所以，由 INTR 传入的外部中断请求称为可屏蔽外部中断请求，由此引起的中断称为可屏蔽中断。由于外设的中断请求均由 INTR 传给 CPU，CPU 响应外设中断请求称为开中断（IF&#x3D;1），反之称为关中断（IF&#x3D;0）。CPU 在响应中断时会自动关中断，从而避免在中断过程中再响应其他外设中断。程序员在程序中可使用关中断指令 CLI和开中断指令 STI。</p>
+<h4 id="非屏蔽外部中断"><a href="#非屏蔽外部中断" class="headerlink" title="非屏蔽外部中断"></a>非屏蔽外部中断</h4><p>当收到从 NMI 传来的中断请求信号时，不论是否处于开中断状态 CPU 总会响应。所以，由 NMI 传入的外部中断请求称为非屏蔽外部中断请求，由此引发的中断称为非屏蔽中断。不可屏蔽中断请求由电源掉电、存储器出错或者总线奇偶校验出错等紧急故障产生，要求 CPU 及时处理。</p>
+<h3 id="内部中断"><a href="#内部中断" class="headerlink" title="内部中断"></a>内部中断</h3><p>由发生在 CPU 内部的某个事件引起的中断称为内部中断。由于内部中断是 CPU 在执行某些指令时产生，所以也称为软件中断。其特征是：不需要外部硬件的支持；不受标志 IF 的控制。</p>
+<h4 id="中断指令-INT-引起的中断"><a href="#中断指令-INT-引起的中断" class="headerlink" title="中断指令 INT 引起的中断"></a>中断指令 INT 引起的中断</h4><p>中断指令一般格式如下：</p>
+<p><code>INT n</code></p>
+<p>其中，n是一个 0~0FFH的立即数。CPU 在执行中断指令后，便产生一个类型号为 n 的中断，从而转入对应的中断程序。<br>例如，为了调用DOS系统功能，就在程序中安排如下的中断指令：</p>
+<p><code>INT 21H</code></p>
+<p>当CPU 执行该指令后，就产生一个类型为 21H 的中断，从而转入对应的中断处理程序，也即转入 DOS 系统功能服务程序。值得指出的是，程序员根据需要在程序中安排中断指令，所以它不会真正随机产生，而完全受程序控制。</p>
+<h4 id="CPU-遇到特殊情况引起的中断"><a href="#CPU-遇到特殊情况引起的中断" class="headerlink" title="CPU 遇到特殊情况引起的中断"></a>CPU 遇到特殊情况引起的中断</h4><ol>
+<li>除法错误中断<br>在执行除法指令时，如果 CPU 发现除数为 0 或者商超过规定的范围，那么就产生一个除法错误中断，中断类型号为0。<br>例如，在执行下面的程序片段时，会产生一个0号类型的中断：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MOV AX,1234</span><br><span class="line">MOV CL,3</span><br><span class="line">DIV CL      ;商超过 255（AL容纳不下）</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>为了避免产生0号类型的中断，可改写上述程序片段如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">MOV AX,1234</span><br><span class="line">MOV CL,3</span><br><span class="line">XOR DX,DX</span><br><span class="line">XOR CH,CH</span><br><span class="line">DIV CX</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>溢出中断<br>8086&#x2F;8088提供一条专门检测运算溢出的指令，该指令的格式如下：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INTO</span><br></pre></td></tr></table></figure>
+在溢出标志位 OF 置 1 时，如果执行该指令，则产生溢出中断。溢出中断的类型号规定为 4。如果溢出标志 OF 为 0，则执行该指令后并不断产生溢出中断。</li>
+</ol>
+<h4 id="用于程序调试的中断"><a href="#用于程序调试的中断" class="headerlink" title="用于程序调试的中断"></a>用于程序调试的中断</h4><ol>
+<li><p>单步中断<br>如单步中断 TF 为 1，则在每条指令执行后产生一个单步中断，中断类型号规定为1。产生但不中断后，CPU就执行单步中断处理程序。由于CPU在响应中断时，已把 TF 置为0，所以，不会以单步方式执行单步中断程序。通常，由调试工具把 TF 置 1，在执行完一条被调试程序的指令后，就转入单步中断处理程序，一般情况下，但不中断处理程序报告各寄存器的当前内容，程序员可据此调试程序。</p>
+</li>
+<li><p>断点中断<br>8086&#x2F;8088 提供一条特殊的中断指令 “INT 3”,调试工具可用它替换断点处的代码，当 CPU 执行这条中断指令后，就产生类型号为3的中断。这种中断称为断点中断。通常情况下，断点中断处理程序恢复被替换的代码，并报告各寄存器的当前内容，程序员可据此调试程序。所以说中断指令 “INT 3”特殊是因为它只有一个字节长，其他的中断指令长 2 字节。</p>
+</li>
+</ol>
+<h3 id="中断优先级和中断嵌套"><a href="#中断优先级和中断嵌套" class="headerlink" title="中断优先级和中断嵌套"></a>中断优先级和中断嵌套</h3><ol>
+<li><p>中断优先级<br>系统中有多个中断源，当多个中断源同时向 CPU 请求中断时，CPU 按系统设计时规定的优先级响应中断请求。在 IBM PC 系列及其兼容机系统中，规定的优先级如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194326185-aeb42dce-9ca8-46f3-8444-011b133d9647.png"
+                      alt="10"
+                ></p>
+</li>
+<li><p>中断嵌套<br>CPU 在执行中断处理程序时，又发生中断，这种情况称为中断嵌套。<br>在中断处理过程中，发生内部中断，引起中断嵌套是经常的事。例如：CPU在执行中断处理程序时，遇到软中断指令，就会引起中断嵌套。在中断处理过程中，发生非屏蔽中断，也会引起中断嵌套。<br>由于 CPU 在响应中断的过程中，已自动关中断，所以 CPU 也就不再自动响应可屏蔽中断。如果需要在中断处理过程的某些时候响应可屏蔽中断，那么可在中断处理程序中安排开中断指令，CPU在执行中断指令后，就处于开中断状态，也就可以响应可屏蔽中断了，直到再关中断。所以，如果再中断处理程序中使用了开中断指令，也就可能会发生可屏蔽中断引起的中断嵌套。<br>8086&#x2F;8088没有限制中断嵌套的深度（层次），但客观生受到堆栈容量限制。</p>
+</li>
+</ol>
+<h3 id="中断处理程序的设计"><a href="#中断处理程序的设计" class="headerlink" title="中断处理程序的设计"></a>中断处理程序的设计</h3><p>CPU 在响应中断后，自动根据中断类型，取中断向量，并转入中断处理程序，所以，具体的处理工作由中断处理程序完成。不同的中断处理，由不同的中断处理程序完成。对应外设中断的外设中断处理程序和对应指令中断的软中断处理程序有些区别，下面对它们的设计分别作些介绍。</p>
+<ol>
+<li><p>外设中断处理程序<br>在开中断的情况下，外设中断的发生时随机的，在设计外设中断处理程序时必须充分注意到这一点。外设中断处理程序的主要步骤如下：<br>（1）必须保护现场。这里的现场可理解为中断发生时CPU各内部寄存器的内容。CPU 在响应中断时，已把各标志和返回地址压入堆栈，所以要保护的现场主要是指通用寄存器的内容和除代码段寄存器外的其他三个段寄存器的内容。因为中断的发生是随机的，所以凡是中断处理程序中要重新赋值的各个寄存器的原有内容必须预先保护。保护的一般方法是把它们压入堆栈。<br>（2）尽快完成中断处理。外设中断处理必须尽快完成，所以外设中断处理必须追求速度上的高效率。因为在进行外设中断处理时，往往不再响应其他外设的中断请求，因此必须快，以免影响其他外设的中断请求。<br>（3）恢复现场。在中断处理完成后，依次恢复被保护寄存器的原有内容。<br>（4）通知中断控制器中断已结束。如果应用需要，也可提早通知中断控制器中断结束，这样做必须考虑到外设中断的嵌套。<br>（5）利用 IRET 指令实现中断返回。<br>此外，应及时开中断。除非必要，中断处理程序应尽早开中断，以便CPU响应具有更高优先级的中断请求。</p>
+</li>
+<li><p>软中断处理程序<br>由中断指令引起的软件中断尽管是不可屏蔽的，但它不会随机发生，只有在CPU执行了中断指令后，才会发生。所以，中断指令类似于子程序调用指令相应的软中断处理程序在很大程度上类似于子程序，但并不等同于子程序。软中断的主要步骤如下：<br>（1）考虑切换堆栈，由于软中断处理程序往往在开中断状态下执行，并且可能较复杂（要占用大量的堆栈空间），所以因该考虑切换堆栈。切换堆栈对实现中断嵌套等均较为有利。<br>（2）及时开中断。开中断后，CPU就可响应可屏蔽的外设中断请求，或者说使外设中断请求可及时得到处理。但要注意，如如果软中断程序要被外设中断处理程序 “调用”，则是否要开中断或者核实开中断应另外考虑。<br>（3）应保护现场。应该保护中断处理程序要重新赋值的寄存器原有内容，这样使用软中断指令时，可不必考虑有关寄存器内容的保护问题。<br>（4）完成中断处理。但不必过分追求速度上的高效率，除非它是被外设中断处理程序 “调用” 的。<br>（5）恢复现场。依次恢复被保护寄存器的原内容。<br>（6）堆栈切换。如果在开始时切换了堆栈，那么也要再重新切换回原堆栈。<br>（7）一般利用 IRET 指令实现中断返回。</p>
+</li>
+</ol>
+<h1 id="基本输入输出系统-BIOS"><a href="#基本输入输出系统-BIOS" class="headerlink" title="基本输入输出系统 BIOS"></a>基本输入输出系统 BIOS</h1><p>介绍 BIOS 基本概念的基础上，介绍键盘输入、显示和打印输出。</p>
+<h2 id="基本输入输出系统-BIOS-概念"><a href="#基本输入输出系统-BIOS-概念" class="headerlink" title="基本输入输出系统 BIOS 概念"></a>基本输入输出系统 BIOS 概念</h2><p>固化在 ROM 中的基本输入输出系统 BIOS 包含了主要I&#x2F;O设备的处理程序和许多常用例行程序，它们一般以中断处理程序的形式存在。例如：负责显示输出的 显示I&#x2F;O程序作为 10H 号中断处理程序存在，负责打印输出的打印I&#x2F;O程序作为17H号中断处理程序存在，而负责键盘输入的键盘 I&#x2F;O 程序作为 16H号中断处理程序存在。再如，获取内存容量的例行程序作为 12H号中断处理程序存在。BIOS是直接建立再硬件基础上。<br>磁盘操作系统DOS建立在BIOS的基础上，通过BIOS操纵控制硬件。例如，DOS调用BIOS显示I&#x2F;O程序完成显示输出，调用打印I&#x2F;O程序完成打印输出，调用键盘 I&#x2F;O程序完成键盘输入。尽管 DOS和BIOS都提供某些相同的功能，但它们之间的层次关系是明显的。<br>应用程序DOS、BIOS和外设接口之间的关系如下图所示:<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194467131-fa6c7cf5-f6b5-40fb-8144-6f5b78547aae.png"
+                      alt="11"
+                ><br>通常应用程序应该调用 DOS 提供的系统功能完成输入输出或其他操作。这样做不仅实现容易，而且对硬件的依赖性最少。但有时 DOS不提供某种服务，例如，取打印机状态信息，那么就不能调用DOS实现了。<br>应用程序可以通过BIOS进行输入输出或完成其他功能。在下列三种场合可考虑BIOS：一是需要利用BIOS提供而DOS不提供的功能场合；二是不能利用 DOS 功能调用的场合；三是出于某种原因需要绕过DOS的场合。由于 BIOS 提供的设备处理程序和常用例行程序都以中断处理程序的形式存在，所以应用程序调用BIOS较为方便。但 BIOS 毕竟比 DOS　更靠近硬件。<br>应用程序也可以直接操纵外设接口来控制外设，从而获得速度上最高的效率，但这样的应用程序不仅复杂而且与硬件关系十分密切，此外，还需要程序员对硬件性能比较了解熟悉。所以，应用程序一般不能直接与硬件发生关系。<br>值得指出的是，有时应用程序需要扩充或替换　ROM　BIOS　中的某些处理程序或例行程序，那么这些新的　BIOS程序原则上不能调用　DOS　提供的功能。</p>
+<h2 id="键盘输入"><a href="#键盘输入" class="headerlink" title="键盘输入"></a>键盘输入</h2><h3 id="键盘中断处理程序"><a href="#键盘中断处理程序" class="headerlink" title="键盘中断处理程序"></a>键盘中断处理程序</h3><p>当用户按键盘时，键盘接口会得到一个代表被按键的键盘扫描码，同时产生一个中断请求。如果键盘中断是允许的，并且CPU处于开中断状态，那么 CPU 通常会响应中断请求。由于键盘中断的中断类型号为 9，所以 CPU 响应键盘中断，就是转入 9 号中断处理程序。我们把 9 号中断处理程序称为键盘中断处理程序。它属于外设中断处理程序这一类。<br>键盘中断处理程序首先从键盘接口取得代表被按键的扫描码，然后根据扫描码判定用户所按的键并作相应的处理，最后通知中断控制器中断结束并实现中断返回。键盘上面的键可简单地分成五种类型：字符键（字母、数字和符号等），功能键（如F1等），控制键（Ctrl、Alt和左右Shift），双态字（如Num Lock和Caps Lock等），特殊请求键（如Print screen等）。键盘中断处理程序对五种键地基本处理如下：<br>如果用户按的是双态键，那么就设置有关标志，在 AT 以上档次的系统上还要改变 LED 指示器状态。如果用户按的是控制键，那么就设置有关标志。如果用户按的是功能键，那么就根据键盘扫描码和是否按下某些控制键（如Alt）确定系统扫描码，把系统扫描码和一个全0字节一起存入键盘缓冲区。如果用户是字符键，那么就根据键盘扫描码和是否按下某些控制键（如Ctrl）确定系统扫描码，并且得出对应的ASCII码，把系统扫描码和ASCII码一起存入键盘缓冲区。如果用户按的是特殊请求键，那么就产生一个相应的动作，例如用户按 Print screen 键，那么就调用 5H 号中断处理程序打印屏幕。</p>
+<h3 id="键盘缓冲区"><a href="#键盘缓冲区" class="headerlink" title="键盘缓冲区"></a>键盘缓冲区</h3><p>键盘缓冲区是一个先进先出的环形队列，结构和占用的内存区域如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BUFF_HEAD  DW ?         ;0040:001AH</span><br><span class="line">BUFF_TAIL DW ?          ;0040:001CH</span><br><span class="line">KB_BUFFER DW 16 DUP(?)  ;0040:001EH~003DH</span><br></pre></td></tr></table></figure>
+<p>BUFF_HEAD 和 BUFF_TAIL 是缓冲区的头指针和尾指针，当这两个指针相等时，表示缓冲区为空。由于缓冲区本身16个字，而存放一个键的扫描码和对应的 ASCII 码需要占用一个字，所以键盘缓冲区可实际存放 15 个键的扫描码和ASCII码。键盘中断处理程序把所按字符键或功能键的扫描码和对应的ASCII码依次存入键盘缓冲区。如缓冲区已满，则不再存入，而是发出 “嘟” 的一声。</p>
+<blockquote>
+<p>键盘中断处理程序根据控制键和双态键建立的标志在内存单元 0040:0017H 字单元中。</p>
+</blockquote>
+<p>案例：验证键盘缓冲区是否在 0040:001EH~003DH 中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br></pre></td><td class="code"><pre><span class="line">;程序名：keyboard.asm</span><br><span class="line">;功能：输出 0040:001EH 键盘缓冲区的内容，再用 int 16H 的 0 号功能接收键盘输入，最后再打印键盘缓冲区内容。</span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    call MEM_ECHO</span><br><span class="line">    call NEWLINE</span><br><span class="line">    ;</span><br><span class="line">    mov cx,10</span><br><span class="line">L1:</span><br><span class="line">    mov ah,0</span><br><span class="line">    int 16h</span><br><span class="line">    loop L1</span><br><span class="line">    ;</span><br><span class="line">    call NEWLINE</span><br><span class="line">    call MEM_ECHO</span><br><span class="line">L2:</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">MEM_ECHO PROC</span><br><span class="line">    push cx</span><br><span class="line">    push ax</span><br><span class="line">    push es</span><br><span class="line">    push di</span><br><span class="line">    push bx</span><br><span class="line">    push dx</span><br><span class="line">    ;</span><br><span class="line">    mov cx,2eh</span><br><span class="line">    mov ax,0040h</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov di,001Eh</span><br><span class="line">    mov bx,cx</span><br><span class="line">MEM_ECHO1:</span><br><span class="line">    sub bx,0fh</span><br><span class="line">MEM_ECHO2:</span><br><span class="line">    mov dl,20h</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    ;</span><br><span class="line">    call BYTE_ECHO</span><br><span class="line">    inc di</span><br><span class="line">    cmp cx,bx</span><br><span class="line">    jz MEM_ECHO3</span><br><span class="line">    loop MEM_ECHO2</span><br><span class="line">    jmp MEM_ECHO4</span><br><span class="line">MEM_ECHO3:</span><br><span class="line">    call NEWLINE</span><br><span class="line">    jmp MEM_ECHO1</span><br><span class="line">    ;</span><br><span class="line">MEM_ECHO4:</span><br><span class="line">    pop dx</span><br><span class="line">    pop bx</span><br><span class="line">    pop di</span><br><span class="line">    pop es</span><br><span class="line">    pop ax</span><br><span class="line">    pop cx</span><br><span class="line">    ret</span><br><span class="line">MEM_ECHO ENDP</span><br><span class="line"></span><br><span class="line">BYTE_ECHO PROC</span><br><span class="line">    push ax</span><br><span class="line">    push es</span><br><span class="line">    push di</span><br><span class="line">    push cx</span><br><span class="line">    push dx</span><br><span class="line">    mov al,byte ptr es:[di]</span><br><span class="line">    call AHTOASC</span><br><span class="line">    mov cx,2</span><br><span class="line">    mov dx,ax</span><br><span class="line">BYTE_ECHO1:</span><br><span class="line">    xchg dh,dl</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    loop BYTE_ECHO1</span><br><span class="line">    pop dx</span><br><span class="line">    pop cx</span><br><span class="line">    pop di</span><br><span class="line">    pop es</span><br><span class="line">    pop ax</span><br><span class="line">    ret</span><br><span class="line">BYTE_ECHO ENDP</span><br><span class="line">;-----------------------------------------------------</span><br><span class="line">AHTOASC PROC</span><br><span class="line">;</span><br><span class="line">; 功能：把8位二进制数转换为2位 ASCII 码</span><br><span class="line">; 传参方式：寄存器传参</span><br><span class="line">; 入口参数：AL=要转换的值</span><br><span class="line">; 出口参数：AH = 十六进制数高位的 ASCII 码</span><br><span class="line">;           AL = 十六进制数低位的 ASCII 码</span><br><span class="line">;其他说明：(1)近过程</span><br><span class="line">;          (2)除 AX 寄存器外,不影响其他寄存器</span><br><span class="line">;          (3)调用HTOASC 实现十六进制数到ASCII码的转换</span><br><span class="line">;-----------------------------------------------------</span><br><span class="line">    mov ah,al</span><br><span class="line">    shr al,1</span><br><span class="line">    shr al,1</span><br><span class="line">    shr al,1</span><br><span class="line">    shr al,1</span><br><span class="line">    call HTOASC</span><br><span class="line">    xchg ah,al</span><br><span class="line">    call HTOASC</span><br><span class="line">    ret</span><br><span class="line">AHTOASC endp</span><br><span class="line"></span><br><span class="line">;-----------------------------------------------------</span><br><span class="line">HTOASC PROC NEAR</span><br><span class="line">;</span><br><span class="line">; 功能：把一个十六进制数转换为对应的 ASCII 码</span><br><span class="line">; 传参方式：寄存器传参</span><br><span class="line">; 入口参数：al</span><br><span class="line">; 出口参数：al</span><br><span class="line">;-----------------------------------------------------</span><br><span class="line">    pushf</span><br><span class="line">    and al,0fh</span><br><span class="line">    cmp al,0ah</span><br><span class="line">    jb num_add</span><br><span class="line">    add al,37h</span><br><span class="line">    jmp pop_stack</span><br><span class="line">num_add:</span><br><span class="line">    add al,30h</span><br><span class="line">pop_stack:</span><br><span class="line">    popf</span><br><span class="line">    ret</span><br><span class="line">HTOASC endp</span><br><span class="line"></span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">NEWLINE PROC</span><br><span class="line">; 功能：形成回车和换行（光标移到写一行首）</span><br><span class="line">; 入口参数：无</span><br><span class="line">; 出口参数：无</span><br><span class="line">; 说    明：通过显示回车符形成回车，通过显示换行符形成换行</span><br><span class="line">;---------------------------------------------------------</span><br><span class="line">    push ax</span><br><span class="line">    push dx</span><br><span class="line">    mov dl,0dh</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    mov dl,0ah</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    pop dx</span><br><span class="line">    pop ax</span><br><span class="line">    ret</span><br><span class="line">NEWLINE endp</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194700758-170644c1-9836-41bd-b100-68f7d730672a.png"
+                      alt="15"
+                ></p>
+<blockquote>
+<p>我这边输入的是键盘字母键的第一行 q~p，键盘缓冲区中也存入了相应的字符.</p>
+</blockquote>
+<h3 id="键盘I-x2F-O程序"><a href="#键盘I-x2F-O程序" class="headerlink" title="键盘I&#x2F;O程序"></a>键盘I&#x2F;O程序</h3><p>尽管系统程序和应用程序可从键盘缓冲区中取得用户所按键的代码，但除非特殊情况，一般不宜直接存取键盘缓冲区，而应调用BIOS提供的I&#x2F;O程序。<br>键盘 I&#x2F;O 程序以 16H 号中断处理程序的形式存在，它属于软中断程序这一类。它的主要功能是进行键盘输入。一般情况下，系统程序和应用程序的键盘输入最后都是调用它完成的。简单的键盘 I&#x2F;O 程序从键盘缓冲区中取得所有键的ASCII码和扫描码返回给调用者。键盘中断程序、键盘缓冲区和键盘I&#x2F;O程序之间的关系如下图所示：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194686694-245f1e96-fe44-476c-a287-e009ced704dd.png"
+                      alt="12"
+                ></p>
+<h3 id="键盘-I-x2F-O-程序的功能和调用方法"><a href="#键盘-I-x2F-O-程序的功能和调用方法" class="headerlink" title="键盘 I&#x2F;O 程序的功能和调用方法"></a>键盘 I&#x2F;O 程序的功能和调用方法</h3><p>键盘 I&#x2F;O 程序提供的每一个功能都有一个编号。在调用键盘 I&#x2F;O 程序时，把功能编号置入 AH 寄存器，然后发出中断指令 “INT 16H”。调用返回后，从有关寄存器中取得出口参数。除保存出口参数的寄存器外，其他寄存器内容保持不变。<br>我们把控制键和双态键统称为变换键，调用键盘 I&#x2F;O 程序的 2 号功能可获得各变换键的状态。变换键状态字节各位的定义如下图所示：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194686990-91adb384-755f-4505-a665-322760a1236c.png"
+                      alt="13"
+                ><br>其中高4位记录双态键的变换情况，每按一下双态键，则对应的位值取反；低4位反应控制键是否正被按下，按着某个控制键时，对应的位为1。</p>
+<h3 id="16H-号基本功能"><a href="#16H-号基本功能" class="headerlink" title="16H 号基本功能"></a>16H 号基本功能</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194687248-b48ce19c-bdf5-4fe8-9684-edbb6ab63655.png"
+                      alt="14"
+                ><br>如果键盘缓冲区中有字符，那么中断处理就会很快结束，读到的字符是调用发出之前用户按下的字符。如果键盘缓冲区空，那么就等待用户按键后调用才会返回，读到的字符是调用发出之后按下的字符。如果程序员处于某种原因，要从键盘取得在调用发出之后用户按下的字符，那么就要先清除键盘缓冲区。下面的程序片段先清除键盘缓冲区，然后再从键盘读取一个字符：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">AGAIN:</span><br><span class="line">    MOV AH,1</span><br><span class="line">    INT 16H     ;判断缓冲区是否为空</span><br><span class="line">    JZ NEXT     ;为空，跳转</span><br><span class="line">    MOV AH,0</span><br><span class="line">    INT 16H     ;从键盘中取走一个字符</span><br><span class="line">    JMP AGAIN   ;继续</span><br><span class="line">NEXT:</span><br><span class="line">    MOV AH,0</span><br><span class="line">    INT 16H     ;等待键盘输入</span><br><span class="line">    ....</span><br></pre></td></tr></table></figure>
+
+<p>案例：查验键盘缓冲区指针变化（相关子程序查看上面的案例）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">;程序名：keyboard_point.asm</span><br><span class="line">;功能：查验键盘缓冲区指针变化</span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    call MEM_ECHO</span><br><span class="line">    call NEWLINE</span><br><span class="line">    ;</span><br><span class="line">    mov cx,2</span><br><span class="line">    ;</span><br><span class="line">    mov ah,0</span><br><span class="line">    int 16h</span><br><span class="line">    </span><br><span class="line">    call MEM_ECHO</span><br><span class="line">    call NEWLINE</span><br><span class="line">L1:</span><br><span class="line">    mov ah,0</span><br><span class="line">    int 16h</span><br><span class="line">    loop L1</span><br><span class="line">    ;</span><br><span class="line">    call NEWLINE</span><br><span class="line">    call MEM_ECHO</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194711552-9f82bbc2-eae3-4c09-89cf-e5a2f6923207.png"
+                      alt="16"
+                ></p>
+<blockquote>
+<p>从运行结果来看，我们键盘输入一个字符后，触发9号中断，将数据存储到键盘缓冲区，尾指针+2。随后用 int 16每取一个字母，键盘缓冲区头指针就会+2。通过这个案例应该更容易理解上面清除键盘缓冲区的代码片段。</p>
+</blockquote>
+<p>案例：通过修改缓冲区头指针，使键盘缓冲区不为空，并打印出键盘缓冲区的数据（相关子程序查看上面的案例）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">message db &#x27;Keyboard buffer is empty&#x27;,&#x27;$&#x27;</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    call MEM_ECHO</span><br><span class="line">    call NEWLINE</span><br><span class="line">    ;</span><br><span class="line">    mov ax,0040h</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov si,001Ah</span><br><span class="line">    mov bx,es:[si]     ;备份键盘缓冲区头指针</span><br><span class="line"></span><br><span class="line">    mov cx,5        ;输入5个字符</span><br><span class="line">L1:</span><br><span class="line">    mov ah,0</span><br><span class="line">    int 16h</span><br><span class="line">    loop L1</span><br><span class="line">    mov es:[si],bx     ;还原键盘缓冲区头指针</span><br><span class="line">    call NEWLINE       ;打印键盘缓冲区</span><br><span class="line">    call MEM_ECHO</span><br><span class="line">    call NEWLINE</span><br><span class="line">L2:</span><br><span class="line">    ;判断键盘缓冲区是否为空</span><br><span class="line">    mov ah,1</span><br><span class="line">    int 16h</span><br><span class="line">    jnz L3</span><br><span class="line">    call NEWLINE</span><br><span class="line">    mov ah,9</span><br><span class="line">    lea dx,message</span><br><span class="line">    int 21h</span><br><span class="line">    jmp L4</span><br><span class="line">L3:</span><br><span class="line">    ;键盘缓冲区不为空就打印结果</span><br><span class="line">    mov ah,0</span><br><span class="line">    int 16h</span><br><span class="line">    mov dl,al</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    jmp L2</span><br><span class="line">    ;</span><br><span class="line">L4:</span><br><span class="line">    call NEWLINE</span><br><span class="line">    call MEM_ECHO</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194716699-c235fdba-94d8-42fb-9e3a-8747bcebfee4.png"
+                      alt="17"
+                ></p>
+<blockquote>
+<p>int 16H 的 1 号功能只做判断，不会改变头指针地址。通过该程序，加深键盘缓冲区的了解。</p>
+</blockquote>
+<p>例1：写一个程序完成如下功能：读键盘，并把所按键盘显示出来，在检测到按下 SHIFT 键后，就结束运行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T5-1.asm</span><br><span class="line">;功能：读键盘，并把按键显示出来，在检测到按下shift键后，就结束运行</span><br><span class="line">;步骤1：调用键盘I/O程序（int 16中断）的2号功能取得变换键状态字节</span><br><span class="line">;步骤2：判断是否按下SHIFT键</span><br><span class="line">;步骤3：在调用 0 号功能读键盘之前，先调用1号功能判断键盘是否有键可读，否则会导致不能及时检测到用户按下的SHIFT</span><br><span class="line">;步骤4：0号功能读键盘</span><br><span class="line">;步骤5：DOS 6号功能调用显示</span><br><span class="line"></span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">l_shift = 00000010b</span><br><span class="line">r_shift = 00000001b</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 16h</span><br><span class="line">    test al,l_shift+r_shift</span><br><span class="line">    jnz stop</span><br><span class="line">    mov ah,1</span><br><span class="line">    int 16h</span><br><span class="line">    jz start</span><br><span class="line">    mov ah,0</span><br><span class="line">    int 16h</span><br><span class="line">    mov dl,al</span><br><span class="line">    mov ah,6</span><br><span class="line">    int 21h</span><br><span class="line">    jmp start</span><br><span class="line">stop:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>键盘 I&#x2F;O 程序的 2 号功能取得变换键状态字节，其中最低的两位有一个为1 表示按下 shift 键。在调用 0 号功能读键盘之前，要先调用 1 号功能判断键盘缓冲区是否为空，不然读错了会导致不能及时检测到用户按下的 shift 键。</p>
+</blockquote>
+<h3 id="显示输出"><a href="#显示输出" class="headerlink" title="显示输出"></a>显示输出</h3><p>显示器通过显示适配卡与系统相连，显示适配卡是显示输出的接口。母千常用的显示适配卡是 VGA 和 TVGA 等。它们都支持两种显示方法：文本显示方式和图形显示方式，每一类显示方式还含有多种显示模式。</p>
+<h4 id="文本显示方式"><a href="#文本显示方式" class="headerlink" title="文本显示方式"></a>文本显示方式</h4><p>所谓文本显示方式是指以字符为单位显示的方式。字符通常是指字母、数字、普通符号（如运算符号）和一些特殊符号（如棱形块和矩形块）。<br>通常 0~3 号显示模式为文本显示方式，它们之间的区别是每屏可显示的字符和可使用的颜色数目不同。这里以最常用的 3 号显示模式作为代表介绍。<br>在 3 号文本显示模式下，显示器的屏幕被划分成 80 列 25 行，所以每一屏最多可显示2000（80x25）个字符。我们用行号和位号组成的坐标来定位屏幕上的每个可显示位置，左上角的坐标规定为（0，0），向右增加列号，向下增加行号。</p>
+<h4 id="显示属性"><a href="#显示属性" class="headerlink" title="显示属性"></a>显示属性</h4><p>屏幕上显示的字符取决于字符代码和字符属性。这里的属性是指显示属性，它规定字符显示时的特性。在单色显示时，属性定义了前景色和背景色。下图给出了彩色显示时字节各位的定义。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194733567-0af93225-f9ab-43c7-82f9-0c42f214ea43.png"
+                      alt="18"
+                ></p>
+<p>在属性字节中，RGB分别表示红、绿、蓝，I表示亮度，BL表示闪烁。位0<del>3组合 16 中前景色，位4</del>6组合8种背景色，亮度和闪烁只能用于前景色。下图给出了彩色文本模式下 IRGB 组合成的通常颜色。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194733722-31d1dc80-0da5-4b60-8628-1721666ebf79.png"
+                      alt="19"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194733778-5fcd44d4-60c9-4077-b1e3-bd74e1ef7c26.png"
+                      alt="20"
+                ></p>
+<h4 id="显示存储区"><a href="#显示存储区" class="headerlink" title="显示存储区"></a>显示存储区</h4><p>显示适配卡带有显示存储器，用于存放屏幕上显示文本的代码及属性或图形信息。显示存储器作为系统存储器的一部分，可用访问普通内存的方法访问显示存储器。通常，为显示存储器安排的存储地址空间的段值是 B800H 或 B000H，对应的内存区域称为显示存储区。<br>3号文本模式下，屏幕上每一个显示位置依次对应显示存储区的两个字节单元，这种对应关系如下图所示：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194733911-32704259-1831-4ec5-abfd-f69968ca2a38.png"
+                      alt="21"
+                ></p>
+<blockquote>
+<p>低字节是 ASCII 码，高字节是属性</p>
+</blockquote>
+<p>为了屏幕上某个位置显示字符，只需要把显示字符的代码及其属性填到显示存储区种的对应存储单元即可。</p>
+<p>案例：写一个程序在屏幕的左上角以黑底白字显示字符 “A”：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">;程序名：screen.asm</span><br><span class="line">;功能：在屏幕的左上角以黑底白字显示字符 &quot;A&quot;</span><br><span class="line">;这里意思是：把 黑底白字的字符&#x27;A&#x27; 写到 B800H:0000H 处。显存种存储字符需要两个字节，高字节存储字符属性，低字节存储 ASCII 码。</span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,0B800h</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov bx,0</span><br><span class="line">    ;高字节存储字符属性，低字节存储 ASCII 码</span><br><span class="line">    mov al,&#x27;A&#x27;</span><br><span class="line">    mov ah,07h</span><br><span class="line">    mov [bx],ax</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194734682-7f7f84ba-3274-4592-b858-be7116c160bd.png"
+                      alt="22"
+                ></p>
+<p>为了了解屏幕上某个显示位置所显示的字符是什么，或显示的颜色是什么，那么只要从显示存储区种的对应存储单元中取出字符的代码和属性即可。</p>
+<p>案例：写一个程序片段在屏幕右下角显示黑底蓝字的字母’A’，再复制该字符到屏幕左上角。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">;程序名：screen1.asm</span><br><span class="line">;功能：写一个程序片段在屏幕右下角显示黑底蓝字的字母&#x27;A&#x27;，再复制该字符到屏幕左上角。</span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,0B800h</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov bx,(80*2*25)-2</span><br><span class="line">    ;在右下角输出黑底蓝字字符&#x27;A&#x27;</span><br><span class="line">    mov ah,1</span><br><span class="line">    mov al,&#x27;A&#x27;</span><br><span class="line">    mov [bx],ax</span><br><span class="line">    ;复制字符到屏幕左上角</span><br><span class="line">    mov ax,[bx]</span><br><span class="line">    xor bx,bx</span><br><span class="line">    mov [bx],ax</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p>例2：采用直接写屏法在屏幕上用多种属性显示字符串 “HELLO”</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T5-2.asm</span><br><span class="line">;功能：采用直接写屏的方法在屏幕上显示&quot;HELLO&quot;，然后用户按&quot;-&quot;键后后，再换一种属性显示，如果按ESC键结束程序运行。</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">;将坐标定义为常量，常量替换为相应的值，变量替换为内存地址，同时编译器无法将变量带入计算。</span><br><span class="line">line = 5</span><br><span class="line">column = 10</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">string db &#x27;HELLO&#x27;,0</span><br><span class="line">color db 01h,04h,07h,0Eh,87h</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov ax,0b800h</span><br><span class="line">    mov es,ax</span><br><span class="line">reset:</span><br><span class="line">    ;初始化bx</span><br><span class="line">    xor bx,bx</span><br><span class="line">reset1:</span><br><span class="line">    ;如果颜色值是最后一个，就重新初始化bx、si、cx、di（定位）</span><br><span class="line">    cmp bx,5</span><br><span class="line">    jz reset</span><br><span class="line">    ;初始化si、cx、di</span><br><span class="line">    ;定位：这里直接用编译器计算结果</span><br><span class="line">    mov di,(80*2*(line-1))+column*2</span><br><span class="line">    xor si,si</span><br><span class="line">    mov cx,5</span><br><span class="line">print:</span><br><span class="line">    mov al,string[si]</span><br><span class="line">    mov ah,color[bx]</span><br><span class="line">    mov es:[di],ax</span><br><span class="line">    add di,2</span><br><span class="line">    inc si</span><br><span class="line">    loop print</span><br><span class="line">user_input:</span><br><span class="line">    ;等待键盘输入</span><br><span class="line">    mov ah,0</span><br><span class="line">    int 16h</span><br><span class="line">    ;如果是ESC就结束程序</span><br><span class="line">    cmp al,01bh</span><br><span class="line">    jz stop</span><br><span class="line">    ;如果不是就换color</span><br><span class="line">    inc bx</span><br><span class="line">    ;如果是 &#x27;-&#x27;，就重新打印</span><br><span class="line">    cmp al,02dh</span><br><span class="line">    jz reset1</span><br><span class="line">    jmp reset</span><br><span class="line">stop:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这个例子中，坐标是用编译器来算的，而书中的例子用 mul 指令来算的（这会降低程序运行的速度）。</p>
+</blockquote>
+<h4 id="显示-I-x2F-O-程序的功能和调用方法"><a href="#显示-I-x2F-O-程序的功能和调用方法" class="headerlink" title="显示 I&#x2F;O 程序的功能和调用方法"></a>显示 I&#x2F;O 程序的功能和调用方法</h4><p>利用直接写屏的方法，程序可以快速显示，但为了实现直接写屏，必须了解显示存储器用存储空间的具体细节和显示存储区与屏幕显示位置的对应关系，并且最终程序也与显示适配卡相关。所以，除非追求显示速度，一般不采用直接写屏的方法，而实调用BIOS提供的显示I&#x2F;O程序。<br>BIOS 提供的显示 I&#x2F;O 程序作为 10H 号中断处理程序。显示 I&#x2F;O 程序的主要功能如下图所示：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194742065-307131d4-878e-47a5-ae47-1b28ceb6bd80.png"
+                      alt="24"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194742090-ab7572ce-2917-4556-a97f-0e8c12f40ea0.png"
+                      alt="25"
+                ></p>
+<blockquote>
+<p>页号：为了支持屏幕上显示 2000 多个字符，需要显示存储器容量约为4KB。如果显示存储器的内容为 32KB ，那么显示存储器可存放 8 屏显示内容。为此，把显示存储器再分成若干段，称为显示页。</p>
+</blockquote>
+<p>例3：写一个程序完成如下功能：再屏幕中间不为开出一个窗口，随后接收用户按键，并把按键字符显示字窗口的最底行，当窗口运行满时，窗口内容向上滚动一行；用户按 CTRL+C键时，结束运行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T5-3.asm</span><br><span class="line">;功能：在屏幕中间位置开出一个窗口，然后接收用户按键，并把按键字符显示在窗口的最底行，</span><br><span class="line">;当窗口底行内容满时，窗口内容就向上滚动一行，用户按 Ctrl+C 结束程序运行</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line">data segment</span><br><span class="line">pagen db 0</span><br><span class="line">color db 74h</span><br><span class="line">L_line db 6</span><br><span class="line">L_column = 20</span><br><span class="line">R_line = 18</span><br><span class="line">R_column = 59</span><br><span class="line">width1 = (R_column - L_column)+1</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov ah,5</span><br><span class="line">    mov al,pagen</span><br><span class="line">    int 10h</span><br><span class="line">    ;开一个窗口</span><br><span class="line">    mov ah,6</span><br><span class="line">    mov al,0ch</span><br><span class="line">    mov bh,color</span><br><span class="line">    mov ch,L_line</span><br><span class="line">    mov cl,L_column</span><br><span class="line">    mov dh,R_line</span><br><span class="line">    mov dl,R_column</span><br><span class="line">    int 10h</span><br><span class="line">    ;</span><br><span class="line">reset:</span><br><span class="line">    mov dl,L_column</span><br><span class="line">next:</span><br><span class="line">    mov ah,2</span><br><span class="line">    mov bh,pagen</span><br><span class="line">    mov dh,R_line</span><br><span class="line">    int 10h</span><br><span class="line">    ;接收键盘输入并输出</span><br><span class="line">    mov ah,0</span><br><span class="line">    int 16h</span><br><span class="line">    cmp al,03h</span><br><span class="line">    jz stop</span><br><span class="line">    ;使用int10输出字符</span><br><span class="line">    mov ah,0ah</span><br><span class="line">    mov bh,pagen</span><br><span class="line">    mov cx,1</span><br><span class="line">    int 10h</span><br><span class="line">    ;</span><br><span class="line">    inc dl</span><br><span class="line">    cmp dl,R_column+1</span><br><span class="line">    jnz next</span><br><span class="line">    ;向上滚动一行</span><br><span class="line">    mov ah,6</span><br><span class="line">    mov al,1</span><br><span class="line">    mov bh,color</span><br><span class="line">    mov ch,L_line</span><br><span class="line">    mov cl,L_column</span><br><span class="line">    mov dh,R_line</span><br><span class="line">    mov dl,R_column</span><br><span class="line">    int 10h</span><br><span class="line">    jmp reset</span><br><span class="line">stop:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p>例4：调用显示 I&#x2F;O 程序实现 T5-2.asm 显示字符串的代码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T5-4.asm</span><br><span class="line">;功能：采用直接写屏的方法在屏幕上显示&quot;HELLO&quot;，然后用户按&quot;-&quot;键后后，再换一种属性显示，如果按ESC键结束程序运行。</span><br><span class="line">;方法：调用显示 I/O 程序实现 T5-2.asm 显示字符串的代码。</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">;将坐标定义为常量，常量替换为相应的值，变量替换为内存地址，同时编译器无法将变量带入计算。</span><br><span class="line">line = 5</span><br><span class="line">column = 10</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">string db &#x27;HELLO&#x27;,0</span><br><span class="line">color db 01h,04h,07h,0Eh,87h</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov es,ax</span><br><span class="line">reset:</span><br><span class="line">    ;初始化bx</span><br><span class="line">    xor bx,bx</span><br><span class="line">reset1:</span><br><span class="line">    ;如果颜色值是最后一个，就重新初始化bx</span><br><span class="line">    cmp bx,5</span><br><span class="line">    jz reset</span><br><span class="line">    xor bh,bh       ;bh置0</span><br><span class="line">    push bx         ;程序运行时 bx 会被改动，备份bx</span><br><span class="line">    ;</span><br><span class="line">    mov dh,line-1</span><br><span class="line">    mov dl,column-1</span><br><span class="line">    mov bp,offset string</span><br><span class="line">print:</span><br><span class="line">    mov al,0</span><br><span class="line">    mov bh,0</span><br><span class="line">    mov bl,color[bx]</span><br><span class="line">    mov cx,5</span><br><span class="line">    mov ah,13h</span><br><span class="line">    int 10h</span><br><span class="line">user_input:</span><br><span class="line">    ;等待键盘输入</span><br><span class="line">    mov ah,0</span><br><span class="line">    int 16h</span><br><span class="line">    ;如果是ESC就结束程序</span><br><span class="line">    cmp al,01bh</span><br><span class="line">    jz stop</span><br><span class="line">    ;如果不是就换color</span><br><span class="line">    pop bx      ;恢复bx</span><br><span class="line">    inc bx</span><br><span class="line">    ;如果是 &#x27;-&#x27;，就重新打印</span><br><span class="line">    cmp al,02dh</span><br><span class="line">    jz reset1</span><br><span class="line">    jmp reset</span><br><span class="line">stop:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+
+<h3 id="打印输出"><a href="#打印输出" class="headerlink" title="打印输出"></a>打印输出</h3><h4 id="打印-I-x2F-O-程序的功能和调用方法"><a href="#打印-I-x2F-O-程序的功能和调用方法" class="headerlink" title="打印 I&#x2F;O 程序的功能和调用方法"></a>打印 I&#x2F;O 程序的功能和调用方法</h4><p>BIOS提供的打印 IO 程序为 17H 号中断处理程序。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194745297-ac613800-d4af-4550-97e3-8258d5cc51ae.png"
+                      alt="26"
+                ></p>
+<p>例5：写一个在0号打印机上打印屏幕内容的程序。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T5-5.asm</span><br><span class="line">;功能：写一个在0号打印机上打印屏幕内容的程序</span><br><span class="line">;打印流程图</span><br><span class="line">;利用显示I/O程序8号功能获取屏幕内容</span><br><span class="line">;以行为单位从左到右打印屏幕内容，从顶行开始到底行结束，二重循环结构</span><br><span class="line">;把一行内容输出到打印机后，追加输出一个回车字符和一个换行字符，使用打印机实施打印动作。</span><br><span class="line">;------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">;定义常量</span><br><span class="line">time_out=00000001b</span><br><span class="line">io_error=00001000b</span><br><span class="line">out_of_p=00100000b</span><br><span class="line">flag=time_out+io_error+out_of_p</span><br><span class="line">;代码段</span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ah,0fh  ;取当前显示页号和最大列数</span><br><span class="line">    int 10h</span><br><span class="line">    mov cl,ah   ;最大列数保存</span><br><span class="line">    mov ch,25   ;满屏行数送CH</span><br><span class="line">    push cx</span><br><span class="line">    mov ah,3    ;取当前光标位置</span><br><span class="line">    int 10h</span><br><span class="line">    pop cx</span><br><span class="line">    push dx     ;保存当前光标</span><br><span class="line">    ;</span><br><span class="line">    xor dx,dx   ;准备从左上角开始</span><br><span class="line">pri1:</span><br><span class="line">    mov ah,2    ;置光标</span><br><span class="line">    int 10h</span><br><span class="line">    mov ah,8    ;取当前光标处字符</span><br><span class="line">    int 10h</span><br><span class="line">    or al,al    ;字符有效?</span><br><span class="line">    jnz pri2    ;是，转</span><br><span class="line">    mov al,&#x27; &#x27;  ;作为空格处理</span><br><span class="line">pri2:</span><br><span class="line">    push dx</span><br><span class="line">    xor dx,dx   ;0号打印机</span><br><span class="line">    xor ah,ah   ;所有取字符送打印机</span><br><span class="line">    int 17h</span><br><span class="line">    pop dx</span><br><span class="line"></span><br><span class="line">    test ah,flag    ;打印机ok?</span><br><span class="line">    jnz err1        ;否，跳转</span><br><span class="line">    inc di          ;是，光标+1</span><br><span class="line">    cmp cl,dl       ;到右边界?</span><br><span class="line">    jnz pri1        ;否，继续下一列</span><br><span class="line">    push dx</span><br><span class="line">    xor dx,dx       ;是，发出回车和换行控制符</span><br><span class="line">    mov ax,0dh</span><br><span class="line">    int 17h</span><br><span class="line">    mov ax,0ah</span><br><span class="line">    int 17h</span><br><span class="line">    pop dx</span><br><span class="line"></span><br><span class="line">    xor dl,dl   ;光标转杯到下一行左边</span><br><span class="line">    inc dh      ;为此，行号+1</span><br><span class="line">    cmp ch,dh   ;最后一行完?</span><br><span class="line">    jnz pri1    ;否，继续下一行</span><br><span class="line">    pop dx      ;恢复保存的光标位置</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 10h</span><br><span class="line">    jmp short exit</span><br><span class="line"></span><br><span class="line">err1:</span><br><span class="line">    pop dx      ;恢复保存的光标位置</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 10h     ;把光标置回原处</span><br><span class="line">err2:</span><br><span class="line">    mov al,7</span><br><span class="line">    mov ah,0eh</span><br><span class="line">    int 10h     ;打印机故障，发出三声&quot;嘟&quot;&quot;</span><br><span class="line">    int 10h</span><br><span class="line">    int 10h</span><br><span class="line">exit:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>没有打印机，直接抄代码，加深点映像。后续，右打印机再进行测试。</p>
+</blockquote>
+<h1 id="软中断程序举例"><a href="#软中断程序举例" class="headerlink" title="软中断程序举例"></a>软中断程序举例</h1><h2 id="时钟显示程序"><a href="#时钟显示程序" class="headerlink" title="时钟显示程序"></a>时钟显示程序</h2><p>在系统加电初始化期间，把系统定时器初始化位每隔约 55 毫秒发出一次中断请求。CPU 在响应定时中断请求后转入 8H 号中断处理程序。BIOS 提供的 8H 号中断程序中有一条中断指令 “INT 1CH”，所以每秒要调用到约 18.2 次 1CH 号中断处理程序。而 BIOS 的 1CH 号中断处理程序实际上并没有做任何工作，只有一条中断返回指令。这样安排的目的是为应用程序留下一个软接口，应用程序质押奥提供新的 1CH 号中断处理程序，就可能实现某些周期性的工作。</p>
+<p>例6：利用该软接口，实现时钟显示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T5-6.asm</span><br><span class="line">;功能：在程序的右上角输出时间，按 ctrl+c 结束程序运行。</span><br><span class="line">;知识点：在中断向量表中，有一个 1Ch 号中断，系统每隔55毫秒执行一次 1C 号中断。</span><br><span class="line">;但是 1C 号中断没有任何功能（不做任何工作），只有一条 RETI（中断返回）指令，</span><br><span class="line">;这样安排的目的是为应用程序留下一个软接口，应用程序只要提供一个新的 1Ch 号中断处理程序，</span><br><span class="line">;就能实现某些周期性的工作。</span><br><span class="line">;思路：保护原中断、写入新中断、恢复原中断（修改偏移来实现）</span><br><span class="line">;新中断功能：先计数执行18次后获取时间，再把时间输出到屏幕上</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">OLDVECTOR dd 0</span><br><span class="line">n = 1ch</span><br><span class="line">count_val = 18</span><br><span class="line">count db 0</span><br><span class="line">dpage = 0</span><br><span class="line">column  = 72</span><br><span class="line">line = 0</span><br><span class="line">cursor dw 0</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">    ;显示时间</span><br><span class="line">    system_time proc far</span><br><span class="line">    ;判断是否开始输出时间</span><br><span class="line">    cmp ds:count,0</span><br><span class="line">    jz next</span><br><span class="line">    dec ds:count</span><br><span class="line">    IRET</span><br><span class="line">next:</span><br><span class="line">    mov count,count_val</span><br><span class="line">    sti     ;开中断</span><br><span class="line">    ;再真正执行程序之前保护寄存器</span><br><span class="line">    push ds</span><br><span class="line">    push es</span><br><span class="line">    push ax</span><br><span class="line">    push bx</span><br><span class="line">    push cx</span><br><span class="line">    push dx</span><br><span class="line">    push si</span><br><span class="line">    push bp</span><br><span class="line">    push ds</span><br><span class="line">    pushf</span><br><span class="line">    ;取原光标位置</span><br><span class="line">    mov ah,3</span><br><span class="line">    mov bh,dpage</span><br><span class="line">    int 10h</span><br><span class="line">    mov cursor,dx</span><br><span class="line">    ;定位</span><br><span class="line">    mov ah,2</span><br><span class="line">    mov bh,dpage</span><br><span class="line">    mov dh,line</span><br><span class="line">    mov dl,column</span><br><span class="line">    int 10h</span><br><span class="line">    ;输出时间</span><br><span class="line">    call far ptr GET_T</span><br><span class="line">    ;还原光标位置</span><br><span class="line">    mov ah,2</span><br><span class="line">    mov dx,cursor</span><br><span class="line">    int 10h</span><br><span class="line">    ;</span><br><span class="line">    popf</span><br><span class="line">    pop ds</span><br><span class="line">    pop bp</span><br><span class="line">    pop si</span><br><span class="line">    pop dx</span><br><span class="line">    pop cx</span><br><span class="line">    pop bx</span><br><span class="line">    pop ax</span><br><span class="line">    pop es</span><br><span class="line">    pop ds</span><br><span class="line">    ;结束程序</span><br><span class="line">    iret</span><br><span class="line">    system_time endp</span><br><span class="line"></span><br><span class="line">    GET_T proc far</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 1ah</span><br><span class="line">    ;输出小时</span><br><span class="line">    mov al,ch</span><br><span class="line">    call far ptr TTASC</span><br><span class="line">    call far ptr TECHO</span><br><span class="line">    mov ah,2</span><br><span class="line">    mov dl,3ah</span><br><span class="line">    int 21h</span><br><span class="line">    ;输出分钟</span><br><span class="line">    mov al,cl</span><br><span class="line">    call far ptr TTASC</span><br><span class="line">    call far ptr TECHO</span><br><span class="line">    mov ah,2</span><br><span class="line">    mov dl,3ah</span><br><span class="line">    int 21h</span><br><span class="line">    ;输出秒</span><br><span class="line">    mov al,dh</span><br><span class="line">    call far ptr TTASC</span><br><span class="line">    call far ptr TECHO</span><br><span class="line">    ret</span><br><span class="line">    GET_T endp</span><br><span class="line"></span><br><span class="line">    ;将时间的压缩bcd码转换为ascii</span><br><span class="line">    ;输入参数al</span><br><span class="line">    ;输出参数ax</span><br><span class="line">    TTASC proc far</span><br><span class="line">    pushf</span><br><span class="line">    ;清空标志位</span><br><span class="line">    pushf</span><br><span class="line">    pop bx</span><br><span class="line">    and bx,0</span><br><span class="line">    push bx</span><br><span class="line">    popf</span><br><span class="line">    mov ah,al</span><br><span class="line">    and al,0fh</span><br><span class="line">    shr ah,1</span><br><span class="line">    shr ah,1</span><br><span class="line">    shr ah,1</span><br><span class="line">    shr ah,1</span><br><span class="line">    add ax,3030h</span><br><span class="line">    popf</span><br><span class="line">    ret</span><br><span class="line">    TTASC endp</span><br><span class="line"></span><br><span class="line">    ;输出时间</span><br><span class="line">    ;入口参数 ax</span><br><span class="line">    TECHO proc far</span><br><span class="line">    push cx</span><br><span class="line">    push dx</span><br><span class="line">    ;</span><br><span class="line">    mov cx,2</span><br><span class="line">    mov dx,ax</span><br><span class="line">    T_ECHO:</span><br><span class="line">    xchg dh,dl</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    loop T_ECHO</span><br><span class="line">    ;</span><br><span class="line">    pop dx</span><br><span class="line">    pop cx</span><br><span class="line">    ret</span><br><span class="line">    TECHO endp</span><br><span class="line"></span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;保存1Ch号中断向量</span><br><span class="line">    xor ax,ax</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov ax,es:[n*4]</span><br><span class="line">    mov word ptr OLDVECTOR,ax</span><br><span class="line">    mov ax,es:[n*4+2]</span><br><span class="line">    mov word ptr OLDVECTOR+2,ax</span><br><span class="line">    ;设置新的1Ch号中断</span><br><span class="line">    mov es:[n*4+2],cs</span><br><span class="line">    mov ax,offset system_time</span><br><span class="line">    mov es:[n*4],ax</span><br><span class="line"></span><br><span class="line">    call far ptr system_time</span><br><span class="line">    ;等待输入ctrl_c</span><br><span class="line">i_ret:</span><br><span class="line">    mov ah,0</span><br><span class="line">    int 16h</span><br><span class="line">    cmp al,03h</span><br><span class="line">    jnz i_ret</span><br><span class="line">    ;恢复原1CH号中断向量</span><br><span class="line">    mov ax,word ptr OLDVECTOR</span><br><span class="line">    mov es:[n*4],ax</span><br><span class="line">    mov ax,word ptr OLDVECTOR+2</span><br><span class="line">    mov es:[N*4+2],ax</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>打印软中断程序，因为没有打印机，暂时先忽略。</p>
+</blockquote>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：8086汇编-输入输出与中断</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2022-09-27 17:15:00</li>
+        <li>
+            本文链接：https://9unkk.github.io/2022/09/27/8086汇编-输入输出与中断/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2022/10/09/8086%E6%B1%87%E7%BC%96-%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%AE%BE%E8%AE%A1/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">8086汇编-简单应用程序的设计</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2022/08/16/8086%E6%B1%87%E7%BC%96-%E5%AD%90%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">8086汇编-子程序设计</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">输入输出的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#I-x2F-O%E7%AB%AF%E5%8F%A3%E5%9C%B0%E5%9D%80%E5%92%8CI-x2F-O%E6%8C%87%E4%BB%A4"><span class="nav-number">1.1.</span> <span class="nav-text">I&#x2F;O端口地址和I&#x2F;O指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#I-x2F-O%E7%AB%AF%E5%8F%A3%E5%9C%B0%E5%9D%80"><span class="nav-number">1.1.1.</span> <span class="nav-text">I&#x2F;O端口地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I-x2F-O-%E6%8C%87%E4%BB%A4"><span class="nav-number">1.1.2.</span> <span class="nav-text">I&#x2F;O 指令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%96%B9%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">数据传送方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CPU%E4%B8%8E%E5%A4%96%E8%AE%BE%E4%B9%8B%E9%97%B4%E4%BA%A4%E6%8D%A2%E7%9A%84%E4%BF%A1%E6%81%AF"><span class="nav-number">1.2.1.</span> <span class="nav-text">CPU与外设之间交换的信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%96%B9%E5%BC%8F-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">数据传送方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%98%E5%8F%96-RT-x2F-CMOS-RAM"><span class="nav-number">1.2.3.</span> <span class="nav-text">存取 RT&#x2F;CMOS RAM</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-RT-x2F-CMOS-RAM"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">关于 RT&#x2F;CMOS RAM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%98%E5%8F%96-RT-x2F-CMOS-RAM-1"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">存取 RT&#x2F;CMOS RAM</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%AD%E6%96%AD"><span class="nav-number">2.</span> <span class="nav-text">中断</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E6%96%AD%E7%9A%84%E4%BC%A0%E9%80%81%E6%96%B9%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">中断的传送方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E6%96%AD%E5%90%91%E9%87%8F%E8%A1%A8"><span class="nav-number">2.2.</span> <span class="nav-text">中断向量表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%92%8C%E8%8E%B7%E5%8F%96%E4%B8%AD%E6%96%AD%E5%90%91%E9%87%8F"><span class="nav-number">2.2.1.</span> <span class="nav-text">设置和获取中断向量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E6%96%AD%E5%93%8D%E5%BA%94%E8%BF%87%E7%A8%8B"><span class="nav-number">2.3.</span> <span class="nav-text">中断响应过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E6%96%AD%E5%93%8D%E5%BA%94%E8%BF%87%E7%A8%8B-1"><span class="nav-number">2.3.1.</span> <span class="nav-text">中断响应过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E6%96%AD%E8%BF%94%E5%9B%9E%E6%8C%87%E4%BB%A4"><span class="nav-number">2.3.2.</span> <span class="nav-text">中断返回指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%96%E9%83%A8%E4%B8%AD%E6%96%AD"><span class="nav-number">2.3.3.</span> <span class="nav-text">外部中断</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E5%B1%8F%E8%94%BD%E5%A4%96%E9%83%A8%E4%B8%AD%E6%96%AD"><span class="nav-number">2.3.3.1.</span> <span class="nav-text">可屏蔽外部中断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9E%E5%B1%8F%E8%94%BD%E5%A4%96%E9%83%A8%E4%B8%AD%E6%96%AD"><span class="nav-number">2.3.3.2.</span> <span class="nav-text">非屏蔽外部中断</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E9%83%A8%E4%B8%AD%E6%96%AD"><span class="nav-number">2.3.4.</span> <span class="nav-text">内部中断</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%AD%E6%96%AD%E6%8C%87%E4%BB%A4-INT-%E5%BC%95%E8%B5%B7%E7%9A%84%E4%B8%AD%E6%96%AD"><span class="nav-number">2.3.4.1.</span> <span class="nav-text">中断指令 INT 引起的中断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CPU-%E9%81%87%E5%88%B0%E7%89%B9%E6%AE%8A%E6%83%85%E5%86%B5%E5%BC%95%E8%B5%B7%E7%9A%84%E4%B8%AD%E6%96%AD"><span class="nav-number">2.3.4.2.</span> <span class="nav-text">CPU 遇到特殊情况引起的中断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E4%BA%8E%E7%A8%8B%E5%BA%8F%E8%B0%83%E8%AF%95%E7%9A%84%E4%B8%AD%E6%96%AD"><span class="nav-number">2.3.4.3.</span> <span class="nav-text">用于程序调试的中断</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E6%96%AD%E4%BC%98%E5%85%88%E7%BA%A7%E5%92%8C%E4%B8%AD%E6%96%AD%E5%B5%8C%E5%A5%97"><span class="nav-number">2.3.5.</span> <span class="nav-text">中断优先级和中断嵌套</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E6%96%AD%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.3.6.</span> <span class="nav-text">中断处理程序的设计</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E7%B3%BB%E7%BB%9F-BIOS"><span class="nav-number">3.</span> <span class="nav-text">基本输入输出系统 BIOS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E7%B3%BB%E7%BB%9F-BIOS-%E6%A6%82%E5%BF%B5"><span class="nav-number">3.1.</span> <span class="nav-text">基本输入输出系统 BIOS 概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5"><span class="nav-number">3.2.</span> <span class="nav-text">键盘输入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%AE%E7%9B%98%E4%B8%AD%E6%96%AD%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F"><span class="nav-number">3.2.1.</span> <span class="nav-text">键盘中断处理程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%AE%E7%9B%98%E7%BC%93%E5%86%B2%E5%8C%BA"><span class="nav-number">3.2.2.</span> <span class="nav-text">键盘缓冲区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%AE%E7%9B%98I-x2F-O%E7%A8%8B%E5%BA%8F"><span class="nav-number">3.2.3.</span> <span class="nav-text">键盘I&#x2F;O程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%AE%E7%9B%98-I-x2F-O-%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%8A%9F%E8%83%BD%E5%92%8C%E8%B0%83%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">3.2.4.</span> <span class="nav-text">键盘 I&#x2F;O 程序的功能和调用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16H-%E5%8F%B7%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD"><span class="nav-number">3.2.5.</span> <span class="nav-text">16H 号基本功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E8%BE%93%E5%87%BA"><span class="nav-number">3.2.6.</span> <span class="nav-text">显示输出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E6%98%BE%E7%A4%BA%E6%96%B9%E5%BC%8F"><span class="nav-number">3.2.6.1.</span> <span class="nav-text">文本显示方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E5%B1%9E%E6%80%A7"><span class="nav-number">3.2.6.2.</span> <span class="nav-text">显示属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E5%AD%98%E5%82%A8%E5%8C%BA"><span class="nav-number">3.2.6.3.</span> <span class="nav-text">显示存储区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA-I-x2F-O-%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%8A%9F%E8%83%BD%E5%92%8C%E8%B0%83%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">3.2.6.4.</span> <span class="nav-text">显示 I&#x2F;O 程序的功能和调用方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%93%E5%8D%B0%E8%BE%93%E5%87%BA"><span class="nav-number">3.2.7.</span> <span class="nav-text">打印输出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%93%E5%8D%B0-I-x2F-O-%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%8A%9F%E8%83%BD%E5%92%8C%E8%B0%83%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">3.2.7.1.</span> <span class="nav-text">打印 I&#x2F;O 程序的功能和调用方法</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BD%AF%E4%B8%AD%E6%96%AD%E7%A8%8B%E5%BA%8F%E4%B8%BE%E4%BE%8B"><span class="nav-number">4.</span> <span class="nav-text">软中断程序举例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E6%98%BE%E7%A4%BA%E7%A8%8B%E5%BA%8F"><span class="nav-number">4.1.</span> <span class="nav-text">时钟显示程序</span></a></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

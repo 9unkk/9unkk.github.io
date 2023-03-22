@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            8086汇编-寻址方式和指令集 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">8086汇编-寻址方式和指令集</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2022-04-27 15:17:05</span>
+        <span class="mobile">2022-04-27 15:17</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="8086-寻址方式"><a href="#8086-寻址方式" class="headerlink" title="8086 寻址方式"></a>8086 寻址方式</h1><p>汇编指令格式：</p>
+<blockquote>
+<p>操作码 操作数1,操作数2</p>
+</blockquote>
+<p>我们执行汇编指令时，其中表示指令中的操作数（需要处理的数据）在哪里的方法，被称为寻址方式。</p>
+<h2 id="立即寻址"><a href="#立即寻址" class="headerlink" title="立即寻址"></a>立即寻址</h2><p>操作数包含在指令中，它作为指令的一部分，跟在操作码后存放在代码段中，这种操作数被称为立即数。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165470080-cf207684-d99c-4843-9edf-463a226c6d1e.png"
+                      alt="1"
+                ></p>
+<h2 id="寄存器寻址"><a href="#寄存器寻址" class="headerlink" title="寄存器寻址"></a>寄存器寻址</h2><p>操作数在寄存器中，指令中指定了寄存器。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165474555-1cf4dd3d-ba22-4fc0-8872-4f9537a3bea6.png"
+                      alt="2"
+                ></p>
+<blockquote>
+<p>由于操作数在寄存器中，不需要通过访问内存（存储器）来取得操作数，所以采用这种寻址方式的指令执行速度较快。</p>
+</blockquote>
+<h2 id="直接寻址"><a href="#直接寻址" class="headerlink" title="直接寻址"></a>直接寻址</h2><p>操作数在存储器中，指令直接包含有操作数的有效地址。汇编中使用 <code>[偏移地址]</code> 来表示读取某个偏移地址的操作数。操作数一般存放在数据段中，所以操作数段地址默认在 ds 段中。如果要读取其他段中的操作数，就要加上段超越前缀，如 <code>ES:[1234]</code>。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165478051-53c57d88-b498-4547-8343-e7eed100d410.png"
+                      alt="3"
+                ></p>
+<h2 id="寄存器间接寻址"><a href="#寄存器间接寻址" class="headerlink" title="寄存器间接寻址"></a>寄存器间接寻址</h2><p>操作数的有效地址在 SI、DI、BX、BP 这四个寄存器之一中，如 <code>mov ax,[si]</code>。一般情况下 SI、DI、BX 作为有效地址使用的是 DS 段寄存器，BP 使用的是 SS 段寄存器。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165482180-1df5daf6-e586-4478-a701-96c054069d69.png"
+                      alt="4"
+                ></p>
+<h2 id="寄存器相对寻址"><a href="#寄存器相对寻址" class="headerlink" title="寄存器相对寻址"></a>寄存器相对寻址</h2><p>操作数的有效地址是 “基地址+立即数”，使用一个基址寄存器（BX、BP）或变址寄存器（SI、DI）存储基地址。如： <code>mov ax,[bx+4]</code> 还可写成 <code>mov ax,4[bx]</code>。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165491060-637ddc21-26d2-446d-9ba7-dfe2ed0f9315.png"
+                      alt="6"
+                ></p>
+<h2 id="基址加变址寻址方式"><a href="#基址加变址寻址方式" class="headerlink" title="基址加变址寻址方式"></a>基址加变址寻址方式</h2><p>操作数的有效地址是 “基地址+变址”，使用一个基址寄存器（BX、BP）存储基地址和变址寄存器（SI、DI）存储偏移地址。如： <code>mov ax,[bx+si]</code> 还可写成 <code>mov ax,[si][bx]</code>。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165489514-6a8a6f02-3d31-471c-82ae-57f0c825f9c7.png"
+                      alt="5"
+                ></p>
+<h2 id="相对基址加变址寻址方式"><a href="#相对基址加变址寻址方式" class="headerlink" title="相对基址加变址寻址方式"></a>相对基址加变址寻址方式</h2><p>操作数的有效地址是 “基地址+变址”，使用一个基址寄存器（BX、BP）存储基地址；变址寄存器（SI、DI）存储变址；立即数作为固定的偏移量。如： <code>mov ax,[bx+si+1]</code> 还可写成 <code>mov ax,1[si][bx]</code>。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165493516-ddaf8b0c-0b68-438d-8a0d-a1d3d9e20fa5.png"
+                      alt="7"
+                ></p>
+<h2 id="代码练习"><a href="#代码练习" class="headerlink" title="代码练习"></a>代码练习</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">;程序名：addressasm</span><br><span class="line">;功能：7种不同的寻址方式</span><br><span class="line">;=======================================</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">X = 1234h	;X EQU 1234h(常量定义)</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">;val2 db 1	</span><br><span class="line">;al db ?</span><br><span class="line">val db 1,2,3,4,5,6,7,8,9,0,1,2,5,6</span><br><span class="line">val2 db 12345678h</span><br><span class="line">data ends	</span><br><span class="line">	</span><br><span class="line">code segment	</span><br><span class="line">start:	</span><br><span class="line">	mov ax,data</span><br><span class="line">	mov ds,ax</span><br><span class="line"></span><br><span class="line">	;立即寻址</span><br><span class="line">	mov ax,X		;常量 X 编译时被转换成立即数</span><br><span class="line">	mov ax,5678h</span><br><span class="line"></span><br><span class="line">	;寄存器寻址</span><br><span class="line">	mov ax,es</span><br><span class="line">	mov al,dh</span><br><span class="line"></span><br><span class="line">	;直接寻址</span><br><span class="line">	mov ax,[1234h]</span><br><span class="line">	mov ax,es:[1234h]</span><br><span class="line">	mov ax,word ptr val</span><br><span class="line">  	mov al,[val+1]</span><br><span class="line"></span><br><span class="line">	;间接寻址方式</span><br><span class="line">	mov si,offset val</span><br><span class="line">	mov bx,[si]</span><br><span class="line"></span><br><span class="line">	;寄存器相对寻址</span><br><span class="line">	mov ax,[si+2]</span><br><span class="line">  	mov ax,2[si]</span><br><span class="line"></span><br><span class="line">	;基址加变址寻址方式</span><br><span class="line">	mov bx,4</span><br><span class="line">	mov ax,[si+bx]</span><br><span class="line">  	mov ax,[bx][si]</span><br><span class="line">  	mov ax,[si][bx]</span><br><span class="line"></span><br><span class="line">  	lds di,val2        ;LDS 指令的功能是：读取偏移地址处的32位数据，将高 16 位作为段值传送给DS,低 16 位作为偏移地址传给DI.</span><br><span class="line"></span><br><span class="line">	;相对基址加变址寻址方式</span><br><span class="line">	mov bx,offset val</span><br><span class="line">	mov si,0</span><br><span class="line">	mov cx,9      ;表示执行循环次数</span><br><span class="line">L1:</span><br><span class="line">	mov al,[bx+si+1]</span><br><span class="line">  	mov al,[bx][si][1]</span><br><span class="line">  	mov al,[si][bx][1]</span><br><span class="line">  	mov al,[1][si][bx]</span><br><span class="line">	inc si</span><br><span class="line">	loop L1       ;cx减1，并跳转到标号 L1 处，直至cx为0</span><br><span class="line">	;</span><br><span class="line">	mov ax,4c00h</span><br><span class="line">	int 21h</span><br><span class="line">	</span><br><span class="line">code ends	</span><br><span class="line">end start	</span><br></pre></td></tr></table></figure>
+
+<h1 id="汇编指令"><a href="#汇编指令" class="headerlink" title="汇编指令"></a>汇编指令</h1><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165664340-e119a4d9-4a43-40ac-a154-b9eb0cd61b73.png"
+                      alt="a"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165664441-43f28bae-876b-4b21-adfd-c923d6f12f90.png"
+                      alt="b"
+                ></p>
+<h2 id="数据传送指令"><a href="#数据传送指令" class="headerlink" title="数据传送指令"></a>数据传送指令</h2><p>数据传送指令可分为：传送指令、交换指令、地址传送指令、堆栈操作指令、标志传送指令、查表指令、输入输出指令。</p>
+<blockquote>
+<p>除了SAHF 和 POPF 指令外，这组指令对标志寄存器没有影响。</p>
+</blockquote>
+<h3 id="传送指令（MOV）"><a href="#传送指令（MOV）" class="headerlink" title="传送指令（MOV）"></a>传送指令（MOV）</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165701457-c5db91c3-0f77-431c-afbf-404027159e65.png"
+                      alt="h"
+                ></p>
+<h4 id="CPU-内部寄存器之间的数据传送"><a href="#CPU-内部寄存器之间的数据传送" class="headerlink" title="CPU 内部寄存器之间的数据传送"></a>CPU 内部寄存器之间的数据传送</h4><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165701744-ac8b49be-efad-4226-8c7b-a9bf9688e12d.png"
+                      alt="i"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165700145-6179a00e-f957-4a20-a778-95b40c381cb7.png"
+                      alt="e"
+                ></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mov si,al		;错，必须是两个相同大小寄存器才能传送数据</span><br><span class="line">mov ds,es		;错，源和目的操作数不能同时都是段段寄存器</span><br><span class="line"></span><br><span class="line">mov cs,ax		;把 ax 的值传送给代码段</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165669700-95077cb2-f4d9-44de-b89a-67a426a0a3e8.png"
+                      alt="c"
+                ></p>
+<blockquote>
+<p>错，能执行通过，但是会产生 int 中断 CDH，并再次跳转到原来的指令处。一直循环执行，导致程序崩溃。</p>
+</blockquote>
+<p>那为什么会出现这种情况能呢？在此之前我们要从计算机的角度去思考程序如何跳转到其他地方并正确执行指令。</p>
+<p>首先我们要先确定计算机执行程序指令的规则：程序执行指令是通过 CS:IP 来指定要执行的指令。</p>
+<p>其次如果我们是计算机要跳到其他地方执行指令 CS:IP 要符合哪些条件，分别有如下两种情况：</p>
+<ul>
+<li><p>段内执行指令<br>要在第一个代码段 CS1 中执行指令，此时要执行正确的指令 CS 不能改变，IP 改变。</p>
+</li>
+<li><p>跨段跳转执行指令<br>要跳转到第二个代码段 CS2 中执行指令，此时要执行正确的指令 CS 需要改变，IP 也需要改变。</p>
+</li>
+</ul>
+<blockquote>
+<p>回到刚才执行的指令，我们只改变了 CS 代码段，没有改变 IP。所以导致系统无法找到正确的指令，程序奔溃。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov ax,ip</span><br><span class="line">mov ip,ax		;错，指令指针 IP 不能作为源，也不能作为目的</span><br></pre></td></tr></table></figure>
+<p>那为什么会这样呢？很简单如果我们是计算机，想要完整的执行程序并实现程序功能，那么我们就必须按照程序的指令顺序一条指令一条指令地来执行，不能在执行过程中随意修改 IP 导致程序输出错误或者崩溃。因此 IP 一定是不能人为修改的（所有的系统都是一样），但是我们可以通过计算机的运行机制，来恶意修改 CS:IP 执行我们的代码，这个就是后面学习的内容了。</p>
+<h4 id="立即数传送至通用寄存器或存储单元"><a href="#立即数传送至通用寄存器或存储单元" class="headerlink" title="立即数传送至通用寄存器或存储单元"></a>立即数传送至通用寄存器或存储单元</h4><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165700715-ec74253d-2d61-419b-84ba-509d8e2a1e91.png"
+                      alt="f"
+                ></p>
+<ul>
+<li><p>立即数不能直接传送到段寄存器<br>在写汇编程序的过程中你会用到很多的寄存器，如果你不小心把立即数传送到段寄存器，或者程序执行过程中修改了段寄存器，那么程序很容易就会崩溃。因为为了保证段寄存器得可控性，所以适当的做一些限制。</p>
+</li>
+<li><p>立即数永远不能作为目的操作数<br>寄存器是用来存储数据，然后交给运算器处理的作用。立即数又没有这种功能，肯定会错了。</p>
+</li>
+</ul>
+<h4 id="寄存器与存储器之间的数据传送"><a href="#寄存器与存储器之间的数据传送" class="headerlink" title="寄存器与存储器之间的数据传送"></a>寄存器与存储器之间的数据传送</h4><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165700873-f98bdcba-f294-47ce-9ac0-560672bbed16.png"
+                      alt="g"
+                ></p>
+<ul>
+<li><p>源操作数和目的操作数的类型要一致</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov ax,word ptr VARB		;注意当变量类型和寄存器大小不同时，需要我们人为指定告诉计算机我要传送多大的数据到寄存器中。</span><br><span class="line">mov byte ptr VARW,DL		;同上，两个操作数大小（类型）需要一样</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>除了串操作指令外，源操作数和目的操作数不能同时是存储器操作数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">;错</span><br><span class="line">;1、指令集里面没有这种指令</span><br><span class="line">;2、所有的数据传送指令，两边都不能同时为内存操作数。</span><br><span class="line">mov [si],[di]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>具体为什么这样，我也不清楚。暂时先放着，后续等搞懂了再进行补充。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="交换指令（XCHG）"><a href="#交换指令（XCHG）" class="headerlink" title="交换指令（XCHG）"></a>交换指令（XCHG）</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165703655-70b73016-05fa-4ee3-83ad-cbe8e7dd5caf.png"
+                      alt="j"
+                ></p>
+<p>例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">;交换 op1 和 op2 内存数据</span><br><span class="line">mov bx,op1</span><br><span class="line">xchg bx,op2</span><br><span class="line">mov op1,bx</span><br><span class="line"></span><br><span class="line">;类似于</span><br><span class="line">mov ax,op1</span><br><span class="line">mov bx,op2</span><br><span class="line">mov op2,ax</span><br><span class="line">mov op1,bx</span><br></pre></td></tr></table></figure>
+<p>XCHG 是复合指令，即使用多个简单的汇编指令组成一个 XCHG 指令。设计复合指令的目的是为了提高程序员编程的效率。</p>
+<h3 id="地址传送指令"><a href="#地址传送指令" class="headerlink" title="地址传送指令"></a>地址传送指令</h3><h4 id="LEA（Load-Effective-Address）"><a href="#LEA（Load-Effective-Address）" class="headerlink" title="LEA（Load Effective Address）"></a>LEA（Load Effective Address）</h4><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165707735-cc8fc5c1-52d9-4cc0-88fc-4631473b006a.png"
+                      alt="k"
+                ></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov si,offset string	;offset 是操作符，由编译器识别解析的。在编译过程中 &quot;offset string&quot; 会被替换为 string 变量的偏移地址。</span><br><span class="line">lea si,string			;lea 是指令，在程序加载到内存后，执行该指令时将 string 变量的偏移地址传送给 si</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>使用 “offset” 的缺陷：如果 string 变量是局部变量（动态内存分配），在程序执行之前还没有为其分配地址，那么编译器无法取得它的地址肯定会出错。</p>
+</blockquote>
+<h4 id="lea-指令的探究"><a href="#lea-指令的探究" class="headerlink" title="lea 指令的探究"></a>lea 指令的探究</h4><p>lea 是用来传送内存地址的，如：<code>lea ax,[1234]</code>，本质上是将中括号中的内容 “1234” 传送给 ax。而有效偏移地址范围是在 0000~FFFF 之间，也就是我可以输入其中的任意值。同时在 8086 指令集中，寻址可以使用加法运算。</p>
+<p><strong>那么我们是否可以使用 lea 做加法运算呢？</strong></p>
+<p>例如：将 “1+2+3” 的值，并传送给AX寄存器。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165715014-0c7048f5-10d1-4760-b624-862087a032db.png"
+                      alt="m"
+                ></p>
+<blockquote>
+<p>在 x86 计算机中，寻址方式加上了乘法运算，因此可以使用 “lea ax,[1+2*3]” 进行算数运算。</p>
+</blockquote>
+<h4 id="LDS（Load-pointer-into-DS）"><a href="#LDS（Load-pointer-into-DS）" class="headerlink" title="LDS（Load pointer into DS）"></a>LDS（Load pointer into DS）</h4><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165716091-a069ed5b-0f63-4f2a-a8e9-7b260a30a97e.png"
+                      alt="n"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165716195-c8ceeef0-1ef9-4643-a3ae-475579b85aa2.png"
+                      alt="o"
+                ></p>
+<h4 id="LES（Load-pointer-into-ES）"><a href="#LES（Load-pointer-into-ES）" class="headerlink" title="LES（Load pointer into ES）"></a>LES（Load pointer into ES）</h4><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165717293-6f89bae6-7eaf-4928-80ab-4a8a378d35c3.png"
+                      alt="q"
+                ></p>
+<h4 id="堆栈操作指令"><a href="#堆栈操作指令" class="headerlink" title="堆栈操作指令"></a>堆栈操作指令</h4><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165718096-0630f406-2875-4849-80e2-2c50f22ca51d.png"
+                      alt="r"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165718235-c33ff892-39e8-4fb6-a86e-e885bda1de41.png"
+                      alt="s"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165718456-3989bed9-0b81-4686-a105-f9cdfae1ad29.png"
+                      alt="t"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165718595-726ca6a7-d812-4cf2-996d-58b51def9178.png"
+                      alt="u"
+                ></p>
+<h4 id="标志操作指令"><a href="#标志操作指令" class="headerlink" title="标志操作指令"></a>标志操作指令</h4><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165719355-f9f1727c-9919-4ace-8dae-31b243799f3a.png"
+                      alt="x"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165719819-2a80485f-0a46-44ad-9613-7b77b6f566f6.png"
+                      alt="y"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165720082-34f6e12a-ead7-4125-97fd-cba8a26c1990.png"
+                      alt="z"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/165720254-84829a48-a0ca-4041-9e02-56c6c305fdfd.png"
+                      alt="0"
+                ></p>
+<blockquote>
+<p>从 LDS 开始后面的指令有印象就行。等后面写汇编程序，优化代码时用到的时候再说。</p>
+</blockquote>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：8086汇编-寻址方式和指令集</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2022-04-27 15:17:05</li>
+        <li>
+            本文链接：https://9unkk.github.io/2022/04/27/8086汇编-寻址方式和指令集/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2022/05/07/8086%E6%B1%87%E7%BC%96-%E7%AE%97%E6%95%B0%E8%BF%90%E7%AE%97%E6%8C%87%E4%BB%A4/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">8086汇编-算数运算指令</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2022/04/17/8086%E6%B1%87%E7%BC%96-%E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A8/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">8086汇编-标志寄存器</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#8086-%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">8086 寻址方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%8B%E5%8D%B3%E5%AF%BB%E5%9D%80"><span class="nav-number">1.1.</span> <span class="nav-text">立即寻址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8%E5%AF%BB%E5%9D%80"><span class="nav-number">1.2.</span> <span class="nav-text">寄存器寻址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E5%AF%BB%E5%9D%80"><span class="nav-number">1.3.</span> <span class="nav-text">直接寻址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8%E9%97%B4%E6%8E%A5%E5%AF%BB%E5%9D%80"><span class="nav-number">1.4.</span> <span class="nav-text">寄存器间接寻址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8%E7%9B%B8%E5%AF%B9%E5%AF%BB%E5%9D%80"><span class="nav-number">1.5.</span> <span class="nav-text">寄存器相对寻址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E5%9D%80%E5%8A%A0%E5%8F%98%E5%9D%80%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F"><span class="nav-number">1.6.</span> <span class="nav-text">基址加变址寻址方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%AF%B9%E5%9F%BA%E5%9D%80%E5%8A%A0%E5%8F%98%E5%9D%80%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F"><span class="nav-number">1.7.</span> <span class="nav-text">相对基址加变址寻址方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%BB%83%E4%B9%A0"><span class="nav-number">1.8.</span> <span class="nav-text">代码练习</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B1%87%E7%BC%96%E6%8C%87%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">汇编指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A4"><span class="nav-number">2.1.</span> <span class="nav-text">数据传送指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A4%EF%BC%88MOV%EF%BC%89"><span class="nav-number">2.1.1.</span> <span class="nav-text">传送指令（MOV）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CPU-%E5%86%85%E9%83%A8%E5%AF%84%E5%AD%98%E5%99%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">CPU 内部寄存器之间的数据传送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AB%8B%E5%8D%B3%E6%95%B0%E4%BC%A0%E9%80%81%E8%87%B3%E9%80%9A%E7%94%A8%E5%AF%84%E5%AD%98%E5%99%A8%E6%88%96%E5%AD%98%E5%82%A8%E5%8D%95%E5%85%83"><span class="nav-number">2.1.1.2.</span> <span class="nav-text">立即数传送至通用寄存器或存储单元</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8%E4%B8%8E%E5%AD%98%E5%82%A8%E5%99%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81"><span class="nav-number">2.1.1.3.</span> <span class="nav-text">寄存器与存储器之间的数据传送</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2%E6%8C%87%E4%BB%A4%EF%BC%88XCHG%EF%BC%89"><span class="nav-number">2.1.2.</span> <span class="nav-text">交换指令（XCHG）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%B0%E5%9D%80%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A4"><span class="nav-number">2.1.3.</span> <span class="nav-text">地址传送指令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LEA%EF%BC%88Load-Effective-Address%EF%BC%89"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">LEA（Load Effective Address）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lea-%E6%8C%87%E4%BB%A4%E7%9A%84%E6%8E%A2%E7%A9%B6"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">lea 指令的探究</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LDS%EF%BC%88Load-pointer-into-DS%EF%BC%89"><span class="nav-number">2.1.3.3.</span> <span class="nav-text">LDS（Load pointer into DS）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LES%EF%BC%88Load-pointer-into-ES%EF%BC%89"><span class="nav-number">2.1.3.4.</span> <span class="nav-text">LES（Load pointer into ES）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A0%86%E6%A0%88%E6%93%8D%E4%BD%9C%E6%8C%87%E4%BB%A4"><span class="nav-number">2.1.3.5.</span> <span class="nav-text">堆栈操作指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%87%E5%BF%97%E6%93%8D%E4%BD%9C%E6%8C%87%E4%BB%A4"><span class="nav-number">2.1.3.6.</span> <span class="nav-text">标志操作指令</span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>
