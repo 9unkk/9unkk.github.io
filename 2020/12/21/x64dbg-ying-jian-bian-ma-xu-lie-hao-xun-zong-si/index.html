@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            x64dbg-硬件编码序列号寻踪四 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">x64dbg-硬件编码序列号寻踪四</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2020-12-21 14:18:28</span>
+        <span class="mobile">2020-12-21 14:18</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E9%80%86%E5%90%91/">逆向</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>716 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>2 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="目标程序"><a href="#目标程序" class="headerlink" title="目标程序"></a>目标程序</h1><p>程序下载：<a class="link"   target="_blank" rel="noopener" href="https://9unkk.github.io//Download/Basic/crakmeeasy.7z" >crakmeeasy<i class="fas fa-external-link-alt"></i></a></p>
+<p>解压密码：9unk</p>
+<p>任务目标：寻找正确序列号</p>
+<h1 id="观察程序"><a href="#观察程序" class="headerlink" title="观察程序"></a>观察程序</h1><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/ERQy26xwadnD7fj.jpg"
+                      alt="1.jpg"
+                ></p>
+<h1 id="序列号寻踪"><a href="#序列号寻踪" class="headerlink" title="序列号寻踪"></a>序列号寻踪</h1><p>同样运行程序，并对 GetDlgItemTextA 设置断点。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/tl8HfcWUo2zI7pq.jpg"
+                      alt="2.jpg"
+                ></p>
+<p>运行程序到断点处</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/7TQOjSMoz2IdqvD.jpg"
+                      alt="3.jpg"
+                ></p>
+<p>“Ctrl+F9” 运行程序到返回处，在数据敞口可以看到错误序列号</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/f6sT5NbUBQuSv1J.jpg"
+                      alt="5.jpg"
+                ></p>
+<p>继续运行到程序主模块，发现下面有个 10445678951 的字符串，注意这里的值是从低位向高位存储。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/otiUCaJnDLw568I.jpg"
+                      alt="4.jpg"
+                ></p>
+<p>继续执行后，发现把上面字符串的内存地址存存到 eax 中。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/xdgSZqbLtKA9onE.jpg"
+                      alt="6.jpg"
+                ></p>
+<p>继续执行，可以看到这里把 eax（内存地址：00401222） 的前 4 个字符放到 edx 中。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/Wj7f9ixh8QMtDE3.jpg"
+                      alt="7.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/pb27F1wg4AzMoak.jpg"
+                      alt="8.jpg"
+                ></p>
+<p>我们继续单步运行，可以看到这段是把字符串存储到内存地址 0240F7A8 中</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/JWSwkPKGZUlgsEh.jpg"
+                      alt="9.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/J4h3IUVEAv9dMKw.jpg"
+                      alt="10.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/1Wbzc7jQag8ON6R.jpg"
+                      alt="11.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/q39MBxYwLWUdlGA.jpg"
+                      alt="12.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/AZOCMzqU64tvEGj.jpg"
+                      alt="13.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/j52LzvoNKdV4Y3T.jpg"
+                      alt="14.jpg"
+                ></p>
+<p>我们执行到执行到 memset 函数处，之这里有（count、c、dest）三个参数。我们这里先找一下 memset 函数的相关参数。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/fZct8ARjdMSr972.jpg"
+                      alt="15.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/O2hJqQUrc9SfiVY.jpg"
+                      alt="16.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/YikJzEPZKgVA8M7.jpg"
+                      alt="17.jpg"
+                ></p>
+<blockquote>
+<p>从 dest 这个变量的内存地址往后 8 个字符用 0 填充</p>
+</blockquote>
+<p>我们继续运行这 memset 函数，可以看到后面的值都被填充为 0。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/cvBjko4YUDAfVJC.jpg"
+                      alt="18.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/ZpPNtf5cM4hYnH9.jpg"
+                      alt="19.jpg"
+                ></p>
+<p>接下来调用的是 lstrlen 函数，用于计算字符串的长度。在堆栈中可以看到填充的内容。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/20/vuZIYc1OC6VpqeJ.jpg"
+                      alt="20.jpg"
+                ></p>
+<p>然后 lstrlen 函数，将长度的返回值存到 eax，返回的字符串存到 ecx 中。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/21/EDfPJvWj1YM4LNT.jpg"
+                      alt="21.jpg"
+                ></p>
+<p>这里 把 eax 值减 1，然后存储到 edx 中。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/21/7DUr5lF2TEvq3Bu.jpg"
+                      alt="22.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/21/ahjLUgeo2kFfObP.jpg"
+                      alt="23.jpg"
+                ></p>
+<p>这里把 edx 的 0A 和 值 00 进行比较。如果 0 小于 0A，就会跳转到 401360</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/21/fow9jZNmWKpXgkR.jpg"
+                      alt="24.jpg"
+                ></p>
+<blockquote>
+<p>JB: jump not above and equal 低于，即不高于且不等于则转移。CMP 比较无符号数后影响的是 CF。</p>
+</blockquote>
+<p>继续执行，这里把错误的序列号存到 eax 中，然后再对 edx 初始化为 0 。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/21/azo1i6YEtPSmQVu.jpg"
+                      alt="25.jpg"
+                ></p>
+<p>然后创建一个循环 eax + edx，然后 EDX 依次递增来获取我们输入序列号的每一个字节。这里将错误序列号的第一个字节 ‘1’ 存储到 edx 中，可以看到此时 edx 值变成了 31 </p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/21/18mV7pMverfyd2i.jpg"
+                      alt="26.jpg"
+                ></p>
+<blockquote>
+<p>movsx 指令是将指定字节保存到 edx 中，然后再向高位填充零，如果该字节为负数高位补 1</p>
+</blockquote>
+<p>edx 的值 31 减去 14，然后将结果保存到 eax 中。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/21/6chM1NlVqH59SAU.jpg"
+                      alt="28.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/21/oi3jdO2wSuHIgD8.jpg"
+                      alt="27.jpg"
+                ></p>
+<blockquote>
+<p>lea 指令，将中括号里的算数结果存储到指定的寄存器中</p>
+</blockquote>
+<p>下一条指令 ebp-30，这里 edx 指向的内存地址是字符串 ‘10445678951’</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/21/BrfA49sNSawXpxk.jpg"
+                      alt="29.jpg"
+                ></p>
+<p>下一条指令是把 ecx 初始化为 0，然后 ecx + edx 的第一个字节存储到 edx，此时 edx 值为 31</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/21/EmpMZUPhuVSRsxb.jpg"
+                      alt="30.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/21/Ww3cJeEAkXrUZya.jpg"
+                      alt="31.jpg"
+                ></p>
+<p><strong>后面就是使用 eax 和 edx 进行比较，eax 是错误的序列号 ‘31-14’，edx 程序给的常量 ‘31’</strong></p>
+<p>也就是说：</p>
+<p>正确的序列号 - 14 &#x3D; 常量</p>
+<p>正确的序列号 &#x3D; 常量 + 14 </p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/21/8KDvAqLfQXGZYok.jpg"
+                      alt="32.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/21/Lm7SArDJjNGMvcF.jpg"
+                      alt="34.jpg"
+                ></p>
+<p>因此，正确的序列号为：EDHHIJKLMIE</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/21/ZVlsgDzSf3uEkTc.jpg"
+                      alt="33.jpg"
+                ></p>
+<p><strong>分析 API 插件：</strong><a class="link"   target="_blank" rel="noopener" href="https://github.com/ThunderCls/xAnalyzer/releases/tag/2.5.5" >xAnalyzer<i class="fas fa-external-link-alt"></i></a></p>
+<blockquote>
+<p>注意：下载 xAnalyzer.dp32 、 xAnalyzer.dp32、apis_def.zip（分别解压到 plugins 中）</p>
+</blockquote>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/12/21/97kFOAZIdz3bS4n.jpg"
+                      alt="35.jpg"
+                ></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：x64dbg-硬件编码序列号寻踪四</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2020-12-21 14:18:28</li>
+        <li>
+            本文链接：https://9unkk.github.io/2020/12/21/x64dbg-ying-jian-bian-ma-xu-lie-hao-xun-zong-si/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E9%80%86%E5%90%91/">#逆向</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2020/12/21/x64dbg-ying-jian-bian-ma-xu-lie-hao-xun-zong-wu/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">x64dbg-硬件编码序列号寻踪五</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2020/12/17/x64dbg-ying-jian-bian-ma-xu-lie-hao-xun-zong-san/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">x64dbg-硬件编码序列号寻踪三</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.</span> <span class="nav-text">目标程序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%82%E5%AF%9F%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.</span> <span class="nav-text">观察程序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8F%B7%E5%AF%BB%E8%B8%AA"><span class="nav-number">3.</span> <span class="nav-text">序列号寻踪</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

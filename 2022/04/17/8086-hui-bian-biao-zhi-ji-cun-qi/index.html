@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            8086汇编-标志寄存器 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">8086汇编-标志寄存器</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2022-04-17 01:07:13</span>
+        <span class="mobile">2022-04-17 01:07</span>
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/">汇编基础</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/16%E4%BD%8D%E6%B1%87%E7%BC%96/">16位汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>2.3k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>9 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <p>CPU 内部的寄存器中，有一种特殊的寄存器（根据不同的处理器，个数和结构都可能不同）具有以下 3 种作用。</p>
+<ol>
+<li>用来存储相关指令的某些执行结果</li>
+<li>用来为 CPU 执行相关指令提供行为依据</li>
+<li>用来控制 CPU 相关的工作方式</li>
+</ol>
+<p>这种特殊的寄存器在 8086CPU 中，被称为标志寄存器。8086CPU 的标志寄存器有 16 位，其中存储的信息通常被称为程序状态字（PSW）。</p>
+<p>8086CPU 的 flag 寄存器的结构如下图所示：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/08/30/VQ7RMIBLcCe6A23.png"
+                      alt="139.png"
+                ></p>
+<p>flag 寄存器的 1、3、5、12、13、14、15 位在 8086CPU 中没有使用，不具有任何含义。而 0、2、4、6、7、8、9、10、11 位都具有特殊的含义。</p>
+<p>在 debug 调试器中各标志位的状态如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/163695297-5c610a94-1af1-49ac-9c67-80f7738cfe9a.png"
+                      alt="图片"
+                ></p>
+<h1 id="状态标志位"><a href="#状态标志位" class="headerlink" title="状态标志位"></a>状态标志位</h1><h2 id="CF-标志位"><a href="#CF-标志位" class="headerlink" title="CF 标志位"></a>CF 标志位</h2><p>flag 的第 0 位是 CF 位，进位标志位，用来记录无符号运算的结果。当逻辑运算，出现超出寄存器大小的范围进位时 CF 位置 1，或者向超出寄存器大小范围进行借位时 CF 位置 1。</p>
+<p>例1(进位)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">al=FF=0(进位值) 1(最高有效位)111 1111</span><br><span class="line">al+1=1(进位值) 1111 1111</span><br><span class="line"></span><br><span class="line">这里 al+1 的结果多了超出 al 寄存器范围的1，此时CF位置1</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/163695548-f9137e5a-8c55-41fe-b6b8-25f01f78e5b8.png"
+                      alt="图片"
+                ></p>
+<p>例2(借位)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">al=5=0(借位值) 0101</span><br><span class="line">al-6=1(借位值) 0101-6=FF</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/163695997-86b67789-233d-415b-b37c-d3cd58e393fb.png"
+                      alt="图片"
+                ></p>
+<p>这里的进位或者借位，就可以当成 CF 位，当两个数相加或相减的操作数超过寄存器的大小，CF 位就会置 1。</p>
+<h2 id="PF-标志位"><a href="#PF-标志位" class="headerlink" title="PF 标志位"></a>PF 标志位</h2><p>flag 的第 2 位是 PF，奇偶标志位。它记录了相关指令执行后，其结果的所有 bit 位中 1 的个数是否为偶数。如果 1 的个数偶数，pf&#x3D;1，如果为奇数，那么 pf&#x3D;0。</p>
+<p>例1：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov al,1</span><br><span class="line">add al,10</span><br></pre></td></tr></table></figure>
+<p>执行后，结果为 00010001B，其中有 2（偶数）个 1，则 pf&#x3D;1；</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/163696380-c116e2bc-a63c-4169-a7fe-16e0556efa1d.png"
+                      alt="图片"
+                ></p>
+<p>例2：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sub al,10</span><br></pre></td></tr></table></figure>
+
+<p>执行后，结果为 00000001B，其中有 1（奇数）个 1，则 pf&#x3D;0。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/163696449-2daec5ba-0bb0-4d81-a360-5d063b098bd7.png"
+                      alt="图片"
+                ></p>
+<blockquote>
+<p>PF位通常用来做校验的，校验数据传输的结果是否正确，或者校验数据拷贝的结果是否正确。例如：传输的时候有 4 个 1，但是接收的时候是3 个 1，这个时候就说明你传输的结果错了。</p>
+</blockquote>
+<h2 id="ZF-标志"><a href="#ZF-标志" class="headerlink" title="ZF 标志"></a>ZF 标志</h2><p>flag 的第 6 位是 ZF，零标志位。它记录相关指令执行后，其结果是否为 0。结果为 0，那么 zf&#x3D;1；如果结果不为 0，那么 zf&#x3D;0。</p>
+<p>例1：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov ax,1</span><br><span class="line">sub ax,1</span><br></pre></td></tr></table></figure>
+<p>执行后，结果为 0，则 zf&#x3D;1，表示 “结果是 0”</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/163696706-7760a9d0-3cd9-4ec3-be6f-effe5efd6197.png"
+                      alt="6"
+                ></p>
+<p>例2：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov ax,2</span><br><span class="line">sub ax,1</span><br></pre></td></tr></table></figure>
+<p>执行后，结果不为0，则 zf&#x3D;0，表示 “结果非 0”</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/163696741-cfc6d8a0-e811-4802-9582-97452e4acd74.png"
+                      alt="7"
+                ></p>
+<blockquote>
+<p>在 8086CPU 的指令集中，大多数逻辑运算指令的执行是影响标志寄存器的，大多数数据转移指令的执行对标志寄存器没有影响。</p>
+</blockquote>
+<h2 id="SF-标志"><a href="#SF-标志" class="headerlink" title="SF 标志"></a>SF 标志</h2><p>flag 的第 7 位是 SF，符号标志位。它记录相关指令执行后，其结果是否为负。如果结果为负，sf&#x3D;1；如果非负，sf&#x3D;0。</p>
+<p>在计算机中我们可以人为把一个数据看作是有符号数，也可以看成是无符号数。当把一个数看作有符号数，其最高位就是符号位（不包括在数值运算中）</p>
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0000 0001B，有符号数+1；</span><br><span class="line">1000 0001B，有符号数-127。</span><br></pre></td></tr></table></figure>
+
+<p>例1(3+4)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov al,3</span><br><span class="line">add al,4</span><br></pre></td></tr></table></figure>
+<p>计算结果：3+4&#x3D;7</p>
+<p>两个正数相加，最高位是 0，SF 置 0</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/163699195-bdd32788-7206-4a4e-8cbf-98bcf09d4440.png"
+                      alt="10"
+                ></p>
+<p>例2(-1-1)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov al,ff</span><br><span class="line">add al,ff</span><br></pre></td></tr></table></figure>
+<p>计算结果：-1+(-1)&#x3D;-2(FE)<br>当 2 个负数相加最高位是1，所以 SF 置 1 。同时又因为这两个值相加导致出现溢出，所以 CF 位也置 1 。我们可以得出有符号数的运算，是会影响到无符号数运算的 CF 标志位。那这个会对无符号数运算有影响吗？</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/163697882-55cb5591-b439-4971-ab3b-1c2d414c8431.png"
+                      alt="9"
+                ></p>
+<blockquote>
+<p>SF位和CF位同时改变对计算结果没有影响，SF 位是符号位只表示这个值是正数还是负数，不会影响结果。如果我们做的是无符号计算，对于我们来说 SF 位如何改动都是没有意义的。</p>
+</blockquote>
+<h2 id="OF-标志"><a href="#OF-标志" class="headerlink" title="OF 标志"></a>OF 标志</h2><p>flag 的第 11 位是 OF，溢出标志位(针对有符号数的进位运算)。如果有符号数运算结果超出机器所能表达的范围，将产生溢出，这里的溢出只是对有符号数运算而言。对于 8 位的有符号数据，机器所能表示的范围是 -128<del>127，对于 16 位有符号数据，机器所能表示的范围是 -32768</del>23767。</p>
+<p>例1(100+100)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov al,64</span><br><span class="line">add al,64</span><br></pre></td></tr></table></figure>
+<p>计算结果：100+100&#x3D;00C8</p>
+<p>al 最大有符号数 127(7F)，当 2 个正数相加得到的结果是负数，那就说明计算结果超过该寄存器有符号数的存储范围 OF 置 1 ，否则 OF 为 0</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/163699296-bf4f6be1-67d4-4a4a-8b8f-3b4fb05a23c3.png"
+                      alt="11"
+                ></p>
+<blockquote>
+<p>OF位和CF位同样互不影响，你要计算有符号数的进位，就看OF位；要计算无符号数的进位就看 CF 位。计算的时候别把这两个位搞混了，你想计算有符号数的进位，但是用的是CF位来计算，那就出问题了。</p>
+</blockquote>
+<h1 id="控制标志位"><a href="#控制标志位" class="headerlink" title="控制标志位"></a>控制标志位</h1><h2 id="TF-位"><a href="#TF-位" class="headerlink" title="TF 位"></a>TF 位</h2><p>TF 位用于单步执行，调试器中的 T 命令就是单步执行。默认情况下 TF 位是为 0 的，也就是说 IP指针寄存器自动加1，程序会自动往下一条一条地执行指令。当 TF 置 1 时，就是单步执行，调试器里面的单步调试，就是 CPU 里面已经设置好了 TF 位，允许单步执行，所以调试器才可以单步执行。</p>
+<h2 id="IF-位"><a href="#IF-位" class="headerlink" title="IF 位"></a>IF 位</h2><p>IF 位默认状态是置 1 的，这个是中断标志位。中断可以理解为高级语言中的函数，其功能是控制计算机的外设数据的输入&#x2F;输出。IF 置 1 表示开中断，IF 置 0 表示关中断。如果 IF 位置 0 了，那么外设就无法使用了，你无法通过外设向计算机中输入任何的数据。</p>
+<h2 id="DF-位"><a href="#DF-位" class="headerlink" title="DF 位"></a>DF 位</h2><p>DF 位默认状态是 0 ，是方向标志位。表示数据读取&#x2F;拷贝是从左向右拷贝数据，还是从右向左拷贝数据。DF 置 0 是从左往右，即从低地址向高地址读取&#x2F;拷贝数据。DF 置 1 是则相反。</p>
+<h1 id="JCC-指令"><a href="#JCC-指令" class="headerlink" title="JCC 指令"></a>JCC 指令</h1><p>JCC 指令是根据状态标志位，进行跳转的指令，它主要分为 3 组</p>
+<p>一组是直接判断状态标志位<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/163709127-15b2211c-a5bc-48e4-b044-b4503b0be0c9.png"
+                      alt="13"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/163709100-4e12abf3-0cdb-421b-99fa-11c8878b5d01.png"
+                      alt="12"
+                ></p>
+<p>一组是无符号数的JCC指令<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/163709197-0a2beea1-e509-4156-be04-9ebd0eab6dbd.png"
+                      alt="14"
+                ></p>
+<p>一组是有符号数的JCC指令<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/163709267-89d6dbea-9625-4bc2-8f10-6d460c8680ba.png"
+                      alt="15"
+                ></p>
+<h2 id="代码练习"><a href="#代码练习" class="headerlink" title="代码练习"></a>代码练习</h2><ol>
+<li><p>JB.asm</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">;程序名：jb.asm</span><br><span class="line">;功能：显示一个字符串</span><br><span class="line">;===========================</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">;8086汇编中的变量定义</span><br><span class="line">;在数据段偏移地址0处，定义一个以字节为单位的string变量</span><br><span class="line">;为其分配 22 个字节大小的内存空间，并将数值初始化为相应字符</span><br><span class="line">string db &quot;hello ,welcome to JB!&quot;,&quot;$&quot; </span><br><span class="line"></span><br><span class="line">;在数据段偏移地址 number 处，定义一个以字节为单位的 number 变量,</span><br><span class="line">;为其分配 6 个字节大小的内存空间，并将数值初始化为 &quot;1,2,3,4,5,6&quot;</span><br><span class="line"></span><br><span class="line">number db 1,2,3,4,5,6   </span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment </span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;jb(jmp below)无符号数跳转,[si] &lt; [si+1] CF=0</span><br><span class="line">    mov si,offset number</span><br><span class="line">    mov al,byte ptr ds:[si]</span><br><span class="line">    cmp al,[si+1]         ;使用减法运算，功能与 sub 指令一样，区别在于该指令不会改变寄存器中的值</span><br><span class="line">    jb str</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">    ;</span><br><span class="line">str:</span><br><span class="line">    mov dx,offset string</span><br><span class="line">    mov ah,9</span><br><span class="line">    int 21h</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>JL.asm</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">;程序名：JL.asm</span><br><span class="line">;功能：显示一个字符串</span><br><span class="line">;===========================</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">string db &quot;hello ,welcome to JL!&quot;,&quot;$&quot;</span><br><span class="line">number db 1,2,3,4,5,6</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment </span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;jL(jmp less)有符号数跳转,[si] &lt; [si+1] SF xor OF=1 跳转</span><br><span class="line">    mov si,offset number</span><br><span class="line">    mov al,-1          </span><br><span class="line">    cmp al,1           ;有符号数 -1&lt;1</span><br><span class="line">    ;jb str            ;用无符号数跳转，程序出现错误</span><br><span class="line">    jl  str</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">    ;</span><br><span class="line">str:</span><br><span class="line">    mov dx,offset string</span><br><span class="line">    mov ah,9</span><br><span class="line">    int 21h</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>je.asm</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">;程序名：je.asm</span><br><span class="line">;功能：显示一个字符串</span><br><span class="line">;===========================</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">string db &quot;hello ,welcome to jE!&quot;,0dh,0ah,24h</span><br><span class="line">number db 1,2,3,4,5,6</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment </span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;je(jmp equal）相等就跳转,[si] == [si] ZF=1</span><br><span class="line">    mov si,offset number</span><br><span class="line">    mov al,byte ptr ds:[si]</span><br><span class="line">    cmp al,[si]</span><br><span class="line">    je str</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">str:</span><br><span class="line">    mov dx,offset string</span><br><span class="line">    mov ah,9</span><br><span class="line">    int 21h</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure></li>
+</ol>
+<blockquote>
+<p>注意：你要进行有符号数运算，就用有符号数跳转；无符号数运算，用无符号数跳转。无符号数跳转中含有B（Below）和A（Above），有符号数跳转中含有L（Less）和G（greater）。如有其他问题，自己修改代码进行验证。</p>
+</blockquote>
+<p>跳转指令太多，有映像就行，不需要死记，如果忘了就去查，这些指令用多了就记住了。</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：8086汇编-标志寄存器</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2022-04-17 01:07:13</li>
+        <li>
+            本文链接：https://9unkk.github.io/2022/04/17/8086-hui-bian-biao-zhi-ji-cun-qi/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/16%E4%BD%8D%E6%B1%87%E7%BC%96/">#16位汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2022/04/27/8086-hui-bian-xun-zhi-fang-shi-he-zhi-ling-ji/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">8086汇编-寻址方式和指令集</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2022/03/28/8086-hui-bian-duan-ji-cun-qi/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">8086汇编-段寄存器</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E6%A0%87%E5%BF%97%E4%BD%8D"><span class="nav-number">1.</span> <span class="nav-text">状态标志位</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CF-%E6%A0%87%E5%BF%97%E4%BD%8D"><span class="nav-number">1.1.</span> <span class="nav-text">CF 标志位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PF-%E6%A0%87%E5%BF%97%E4%BD%8D"><span class="nav-number">1.2.</span> <span class="nav-text">PF 标志位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ZF-%E6%A0%87%E5%BF%97"><span class="nav-number">1.3.</span> <span class="nav-text">ZF 标志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SF-%E6%A0%87%E5%BF%97"><span class="nav-number">1.4.</span> <span class="nav-text">SF 标志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OF-%E6%A0%87%E5%BF%97"><span class="nav-number">1.5.</span> <span class="nav-text">OF 标志</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E6%A0%87%E5%BF%97%E4%BD%8D"><span class="nav-number">2.</span> <span class="nav-text">控制标志位</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TF-%E4%BD%8D"><span class="nav-number">2.1.</span> <span class="nav-text">TF 位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IF-%E4%BD%8D"><span class="nav-number">2.2.</span> <span class="nav-text">IF 位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DF-%E4%BD%8D"><span class="nav-number">2.3.</span> <span class="nav-text">DF 位</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JCC-%E6%8C%87%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">JCC 指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%BB%83%E4%B9%A0"><span class="nav-number">3.1.</span> <span class="nav-text">代码练习</span></a></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

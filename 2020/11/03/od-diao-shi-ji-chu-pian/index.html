@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            OD调试-基础篇 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">OD调试-基础篇</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2020-11-03 11:00:07</span>
+        <span class="mobile">2020-11-03 11:00</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E9%80%86%E5%90%91/">逆向</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/OllyDdbg/">OllyDdbg</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>2.9k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>10 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h1><ol>
+<li>了解内存地址、寄存器、栈</li>
+<li>了解 x86 的寻址方式</li>
+<li>学习理解重要的汇编指令（可在逆向过程中学习）</li>
+</ol>
+<h1 id="逆向分析技术"><a href="#逆向分析技术" class="headerlink" title="逆向分析技术"></a>逆向分析技术</h1><ol>
+<li><p>静态分析技术<br>所谓静态分析技术，就是将程序反编译成汇编代码，手动对程序的逻辑结构、各模块的运行方式等进行分析。常用静态分析工具有 IDA 等。</p>
+</li>
+<li><p>动态分析技术<br>通过静态分析可以了解各个模块的功能，以及整个软件的编程思路，但是不能真正了解软件各模块的技术细节。所以对软件分析来说，静态分析只是第一步，动态跟踪才是分析软件的关键。所谓动态分析就是利用 OllyDbg 、X64dbg、WinDbg 等工具将程序反编译，并一步一步地执行汇编指令，跟踪分析程序的运行原理及过程。</p>
+</li>
+</ol>
+<h1 id="OllyDdbg-调试器"><a href="#OllyDdbg-调试器" class="headerlink" title="OllyDdbg 调试器"></a>OllyDdbg 调试器</h1><p>OllDbg（简称 “OD”） 是由 Oleh Yuschuk 编写的一款结合了动态调试和静态分析且具有可视化界面的用户调试器。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/24/KERw4sQkcgZWiIV.jpg"
+                      alt="1.jpg"
+                ></p>
+<ul>
+<li>1：汇编代码对应的地址窗口</li>
+<li>2：汇编代码对应的十六进制对应的机器码窗口</li>
+<li>3：反汇编窗口</li>
+<li>4：反汇编对应的注释信息窗口</li>
+<li>5：寄存器信息窗口</li>
+<li>6：当前执行到的反汇编代码的信息窗口</li>
+<li>7~9：数据所在的内存地址，十六进制，ACSII码</li>
+<li>10~12：栈地址、存放的数据、对应的说明信息</li>
+</ul>
+<h2 id="OD-基本快捷键及功能"><a href="#OD-基本快捷键及功能" class="headerlink" title="OD 基本快捷键及功能"></a>OD 基本快捷键及功能</h2><table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="left">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">F2</td>
+<td align="left">下断点（指定断点地址）</td>
+</tr>
+<tr>
+<td align="center">F3</td>
+<td align="left">加载一个可执行程序，进行调试分析</td>
+</tr>
+<tr>
+<td align="center">F4</td>
+<td align="left">程序执行到光标处</td>
+</tr>
+<tr>
+<td align="center">F5</td>
+<td align="left">缩小、还原当前窗口</td>
+</tr>
+<tr>
+<td align="center">F7</td>
+<td align="left">单步步入</td>
+</tr>
+<tr>
+<td align="center">F8</td>
+<td align="left">单步步过</td>
+</tr>
+<tr>
+<td align="center">F9</td>
+<td align="left">直接运行程序，遇到断点处，程序暂停</td>
+</tr>
+<tr>
+<td align="center">Ctrl+F2</td>
+<td align="left">重新运行程序到起始处，一般用于重新调试程序</td>
+</tr>
+<tr>
+<td align="center">Ctrl+F9</td>
+<td align="left">执行到函数返回处，用于跳出函数实现</td>
+</tr>
+<tr>
+<td align="center">Alt+F9</td>
+<td align="left">执行到用户代码处，用于快速跳出系统函数</td>
+</tr>
+<tr>
+<td align="center">Ctrl+G</td>
+<td align="left">输入十六进制地址，快速定位到该地址处</td>
+</tr>
+<tr>
+<td align="center">Alt+b</td>
+<td align="left">打开断点窗口（用户修改当前所设置的断点）</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>F7 和 F8 的区别：遇到 call、loop等指令，按 “F7” 键调试器会跟进到函数内部单步执行，按 “F8” 键调试器会执行到直接执行完整个函数并跳到下一跳指令。</p>
+</blockquote>
+<p>逆向一般有两种方式分别是爆破法、算法分析。</p>
+<ul>
+<li>爆破法：通过反编译调试，锁定程序的关键跳转判断语句，通过修改该判断语句，使程序成功破解。</li>
+<li>算法分析：通过反编译调试，详细分析程序的密钥算法，最后写出相应的秘钥或破解程序。</li>
+</ul>
+<h2 id="TraceMe-破解（爆破法）"><a href="#TraceMe-破解（爆破法）" class="headerlink" title="TraceMe 破解（爆破法）"></a>TraceMe 破解（爆破法）</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/25/WAjaDH4zfo9np28.jpg"
+                      alt="3.jpg"
+                ></p>
+<ol>
+<li>按 “F3” 打开 TraceMe.exe 程序。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/lUExOnKg2vwWNck.jpg"
+                      alt="4.jpg"
+                ></p>
+<blockquote>
+<p>打开程序时，OllDbg 默认会指定到程序入口点。</p>
+</blockquote>
+<ol start="2">
+<li>按 “Ctrl+G” 输入函数名称，跳转到该函数入口点。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/vS7ncDTMbYLekOE.jpg"
+                      alt="5.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/iWoj8CKt7faxNMc.jpg"
+                      alt="6.jpg"
+                ></p>
+<ol start="3">
+<li>按 “F2” 设置断点，按 “Alt+b” 查看当前设置的断点。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/VJfqOYe7aEShn28.jpg"
+                      alt="7.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/PnsozC5GQqLtFcr.jpg"
+                      alt="8.jpg"
+                ></p>
+<ol start="4">
+<li>按 “Ctrl+F2” 重新加载运行程序。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/vlY9SPw2HI6hb1m.jpg"
+                      alt="9.jpg"
+                ></p>
+<ol start="5">
+<li>按 “F9” 运行程序到断点处，并输入任意用户名密码。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/nVd2MZFCJE7Itrz.jpg"
+                      alt="10.jpg"
+                ></p>
+<ol start="6">
+<li>点击 “check” 程序进入 GetDlgltemTextA 函数入口。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/Cu7Fn2WMQwpZ51h.jpg"
+                      alt="11.jpg"
+                ></p>
+<ol start="7">
+<li>一直按 “F8” 单步步过执行指令，找到 GetDlgltemTextA 函数获取到用户名的位置。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/a4fLZUlcxDtgCdM.jpg"
+                      alt="12.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/ZDceBQgmx8uwOsS.jpg"
+                      alt="13.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/gvZnV5uBkDMPAFH.jpg"
+                      alt="14.jpg"
+                ></p>
+<ol start="8">
+<li>执行到 “test” 判断指令</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/SKTCQpGOLWFVihA.jpg"
+                      alt="15.jpg"
+                ></p>
+<ol start="9">
+<li>“F8” 继续执行 “je short 0040122E”，将标志位 “Z” 的值双击取反。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/12yQjWNdt7Pbk4Y.jpg"
+                      alt="16.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/UvteKf1PoVgEmCj.jpg"
+                      alt="17.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/J3ZYOz9mUTQAFrl.jpg"
+                      alt="18.jpg"
+                ></p>
+<ol start="10">
+<li>继续按 “F8” 执行程序发现，程序注册成功。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/oJhHmOwjDcazt32.jpg"
+                      alt="19.jpg"
+                ></p>
+<ol start="11">
+<li>将跳转语句 “je short 0040122E” 填充为 nop</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/RkMZozPypX58YFU.jpg"
+                      alt="20.jpg"
+                ></p>
+<ol start="12">
+<li>另存文件</li>
+</ol>
+<p>右击 –&gt; 复制到可执行文件 –&gt; 选择 –&gt; 在窗口中右击 –&gt; 备份 –&gt; 保存数据到文件</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/a6pkrgeUT1nWvVj.jpg"
+                      alt="21.jpg"
+                ></p>
+<ol start="13">
+<li>最后输入任意用户名，密码，程序破解成功。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/xY6SO8vKbUVR4lh.jpg"
+                      alt="22.jpg"
+                ></p>
+<h2 id="CRACKME-破解（爆破）"><a href="#CRACKME-破解（爆破）" class="headerlink" title="CRACKME 破解（爆破）"></a>CRACKME 破解（爆破）</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/oYv6rQlEathfOiL.jpg"
+                      alt="23.jpg"
+                ></p>
+<ol>
+<li>找 GetMessage 函数入口</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/LQYpcriDaEAB4h2.jpg"
+                      alt="24.jpg"
+                ></p>
+<ol start="3">
+<li>重新加载程序，并按 “F9” 运行程序到断点处</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/HQeVWjGUxAuP9Ts.jpg"
+                      alt="26.jpg"
+                ></p>
+<ol start="4">
+<li>按 “f8” 运行程序，直到窗口有提示</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/uBTNcSwZUxaEvCl.jpg"
+                      alt="27.jpg"
+                ></p>
+<ol start="5">
+<li>在光标处 “call 0040137E”  ，设置断点。然后禁用这个断点（主要是为了做标记）</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/1InkMClh3NZOcL8.jpg"
+                      alt="28.jpg"
+                ></p>
+<ol start="6">
+<li>重新加载程序，并按 “F7” 到 “call 0040137E” 查看子程序的内容。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/a8soMpuBwWJPAbQ.jpg"
+                      alt="29.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/osyZIJ6BkREL1OW.jpg"
+                      alt="30.jpg"
+                ></p>
+<ol start="7">
+<li>经过多次尝试，发现这个子程序是用来判断用户名中是否有数字，如果有就输出失败的结果。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/U2DJZjl6EigSwbI.jpg"
+                      alt="31.jpg"
+                ></p>
+<ol start="8">
+<li>将用户名全部换成字母，再次进行调试，程序可以继续向下执行。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/fGWJon3xVbs5mi1.jpg"
+                      alt="32.jpg"
+                ></p>
+<ol start="9">
+<li>查看下面的跳转 和 call 子程序的内容</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/zyXNvd6VKthD8cO.jpg"
+                      alt="34.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/L2kGTHz98lxu7fR.jpg"
+                      alt="35.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/8DHnwI9z5a2B6lx.jpg"
+                      alt="36.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/41oBDcHrLtw7sf8.jpg"
+                      alt="37.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/U8ZLfxG9rBQTb2I.jpg"
+                      alt="38.jpg"
+                ></p>
+<blockquote>
+<p>发现只要 “je short 0040124C” 跳转成功，程序就会注册正确。JE:等于则跳转,也就是“ZF” 标志位为 1，就会跳过。ZF（zero flag）：零标志位。判断结果是不是0。如果结果为0，就置1；不为0，就置0。</p>
+</blockquote>
+<ol start="11">
+<li>将  “je short 0040124C” 改为 “jmp short 0040124C”</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/GkDeZyTjRruE8c4.jpg"
+                      alt="39.jpg"
+                ></p>
+<ol start="12">
+<li>保存，并测试运行文件</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/9j1C3bzIhHEfp8X.jpg"
+                      alt="40.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/26/pgBtPVKUMshCzai.jpg"
+                      alt="41.jpg"
+                ></p>
+<h1 id="技术总结"><a href="#技术总结" class="headerlink" title="技术总结"></a>技术总结</h1><h2 id="windows-消息循环机制"><a href="#windows-消息循环机制" class="headerlink" title="windows 消息循环机制"></a>windows 消息循环机制</h2><ol>
+<li><p>消息：事件可分为几种，由输入设备触发的，比如鼠标键盘等等。由窗体控件触发的，比如 button 控件，file 菜单等。还有就是来自 Windows 内部的事件。这三种称为事件。而消息，是由事件翻译而来的。事件产生消息。</p>
+</li>
+<li><p>消息队列：消息队列有两种，分为系统消息队列和应用程序消息队列。产生的消息首先由 Windows 系统捕获，放在系统消息队列，再拷贝到对应的应用程序消息队列。32&#x2F;64 位系统为每一个应用程序维护一个消息队列。</p>
+</li>
+<li><p>消息循环：系统为每个应用程序维护一个消息循环，消息循环会不断检索自身的消息队列。每有一个消息，就用 GetMessage() 取出消息。</p>
+</li>
+<li><p>GetMessage 具有阻塞机制。当消息队列中没有消息时，程序非忙等，程序会一直停留在 GetMessage 内部，由此减少 CPU 的消耗。当收到 WM_QUIT 时，GetMessage 返回 false，循环停止，同时应用程序终止。</p>
+</li>
+<li><p>消息处理：DispatchMessage() 把取出来的消息分配给相应的窗口或线程，由窗口过程处理函数 DefWindowProc() 处理。</p>
+</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/25/cOpBqn2475DAYfe.jpg"
+                      alt="2.jpg"
+                ></p>
+<p>读取文本框内容的 API 函数：</p>
+<table>
+<thead>
+<tr>
+<th align="center">16 位</th>
+<th align="center">32 位（ANSI 版）</th>
+<th align="center">32 位（Unicode 版）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">GetDlgltemText</td>
+<td align="center">GetDlgItemTextA</td>
+<td align="center">GetDlgItemTextW</td>
+</tr>
+<tr>
+<td align="center">GetWindowsText</td>
+<td align="center">GetWindowsTextA</td>
+<td align="center">GetWindowsTextW</td>
+</tr>
+</tbody></table>
+<p>在一般情况下，是不知道程序调用了什么函数来处理字符，因此，只能多试几次找出相关函数。</p>
+<h2 id="逆向中常见的指令"><a href="#逆向中常见的指令" class="headerlink" title="逆向中常见的指令"></a>逆向中常见的指令</h2><h3 id="比较运算符"><a href="#比较运算符" class="headerlink" title="比较运算符"></a>比较运算符</h3><ul>
+<li><p>test指令：test 对两个参数进行 and 逻辑操作（1与0结果为0，1与1结果为1，0与0结果为0）。通常用来判断某个位是否为 0，或者判断寄存器的值是否为空（例如：<code>test eax, eax</code>）</p>
+</li>
+<li><p>cmp 指令：cmp 对两个参数进行相减，通常用来判断两个值是否相等。</p>
+</li>
+<li><p>xor 指令：xor 对两个参数进行异或操作（1 xor 1&#x3D;0，0 xor 0&#x3D;0，1 xor 0&#x3D;1，0 xor 1&#x3D;1），通常用来将两个寄存器的值置 0，方便后续使用该寄存器(例如：<code>xor eax,eax</code>)。</p>
+</li>
+</ul>
+<h4 id="跳转指令"><a href="#跳转指令" class="headerlink" title="跳转指令"></a>跳转指令</h4><ul>
+<li>jmp 指令：无条件跳转（在修改程序时，可使用 jmp 指令进行强制跳转）</li>
+<li>je（jump When Equal） 指令：两个值相等就跳转，也就是 ZF 标志位等于 1 就跳转</li>
+<li>jnz(jump no Zero)&#x2F;jne（jump no Equals） 指令：两个值不相等就跳转，也就是 ZF 标志位等于 0 就跳转。</li>
+<li>jb（jump not above and equal）：低于且不等于就跳转，同常用在无符号数计算。也就是说 CF 等于 1 就跳转。</li>
+<li>jl（jump less）：低于且不等于就跳转，同常用在有符号数计算。也就是说 CF 等于 1 就跳转。</li>
+</ul>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><ul>
+<li>lea 指令：取地址指令，主要用于动态内存定位</li>
+</ul>
+<h3 id="爆破操作流程"><a href="#爆破操作流程" class="headerlink" title="爆破操作流程"></a>爆破操作流程</h3><ol>
+<li>找到程序文本框入口 “GetDlgItemTextA” ，并使用 “F2” 进行软件断点。</li>
+<li>使用 “F9” 运行程序到断点处，输入任意用户名和注册码，正常运行程序。</li>
+<li>按 “F8” 依次执行汇编指令直到程序出错，在报错位置附近找到相应的判断、跳转指令，并在跳转指令处设置断点。如果程序在 call 指令中报错，需要使用 “F7” 进入 call 子程序，查看相应的跳转和报错。</li>
+<li>按 “Ctrl+F2” 重新加载程序，按 “F9” 再次运行程序到断点处，并修改跳转指令相应的标志位，使程序以正确的方式运行。然后继续按步骤 3 继续执行程序。</li>
+<li>重复上面的步骤 3 和 步骤 4 直到程序注册成功。</li>
+</ol>
+<blockquote>
+<p>“Alt+b” 可以用来修改断点，可将之前的断点禁用或删除，也可以用来做地址标记。</p>
+</blockquote>
+<blockquote>
+<p>点击汇编代码窗口， “Ctrl+G” 匹配查找 API 函数。</p>
+</blockquote>
+<h2 id="reverseMe-分析（算法分析）"><a href="#reverseMe-分析（算法分析）" class="headerlink" title="reverseMe 分析（算法分析）"></a>reverseMe 分析（算法分析）</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/VTBQhOUxgRKvjsF.jpg"
+                      alt="1.jpg"
+                ></p>
+<ol>
+<li>先用爆破了解程序的结构</li>
+</ol>
+<p>加载程序，一直按 “F8” 使程序发生错误。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/lcke7Qip6LrIPZE.jpg"
+                      alt="2.jpg"
+                ></p>
+<p>稍微往上可以看到 “cmp” 和 “jnz” 跳转指令，认真看一下可以发现 “jnz” 不跳转就会报错 “Evaluation period out of date. Purchase new license”，所以这里一定要成功跳转。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/f6v2SEDNV4URiM9.jpg"
+                      alt="3.jpg"
+                ></p>
+<p>“f2” 设置断点</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/JBUEeksW5d7a2XQ.jpg"
+                      alt="4.jpg"
+                ></p>
+<p>“ctrl+f2” 重新加载程序，“f9” 程序运行到断点处，将标志位 ZF 设为 0，使程序成功跳转。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/g3eLmUoKa2hBXOR.jpg"
+                      alt="5.jpg"
+                ></p>
+<p>按 “f8” 继续向下执行，这里就不再重复操作，直接分析。“jnz” 如果不跳转，下面的“jmp” 就报错 “Keyfile is not valid. Sorry.”</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/x8HPNwkmTr7bBgu.jpg"
+                      alt="6.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/NRhol7ZIreS9vDE.jpg"
+                      alt="7.jpg"
+                ></p>
+<p>所以这里阿静 ZF 位设为 0，使程序成功跳转。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/bkomrJXOYyhpTZs.jpg"
+                      alt="8.jpg"
+                ></p>
+<p>最后测试在 “jl” 跳转后报错 “Keyfile is not valid. Sorry.”</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/vw87r91FdRqptja.jpg"
+                      alt="9.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/avR84M2HmtpcUYr.jpg"
+                      alt="10.jpg"
+                ></p>
+<p>修改 sf 标志位为 0 ，是程序成功跳转。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/BSyIkNYKqR71J29.jpg"
+                      alt="11.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/5hz2qOrXIwMSAfC.jpg"
+                      alt="12.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/Kr2LgSIBYxkQjlW.jpg"
+                      alt="13.jpg"
+                ></p>
+<p>执行到最后程序完成爆破</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/OK9oLgJTQxhdMpr.jpg"
+                      alt="14.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/IXvz81abJPVn6Ud.jpg"
+                      alt="15.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/j6Hk2BJIgmhfObX.jpg"
+                      alt="16.jpg"
+                ></p>
+<ol start="2">
+<li>对程序的算法结构进行分析</li>
+</ol>
+<ul>
+<li>调用API Createfile 判断是否创建了 Keyfile.dat，如果没有报错“Evaluation period out of date. Purchase new license”</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/ZGxKUAHef45mI2w.jpg"
+                      alt="17.jpg"
+                ></p>
+<blockquote>
+<p>反汇编窗口最右边的注释窗口中，红色的字符串表示一个 API，要了解相应的API参数，可参考 win32 API 大全。</p>
+</blockquote>
+<ul>
+<li>调用API Readfile 判断文件是否可读，如果不可读报错 “Evaluation period out of date. Purchase new license”</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/TLmXaRWeKUiyYCg.jpg"
+                      alt="18.jpg"
+                ></p>
+<ul>
+<li>判断读的字节小于 “0x10” 个，就报错 “Keyfile is not valid. Sorry.”</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/KzYyV9XPfJha5kp.jpg"
+                      alt="22.jpg"
+                ></p>
+<blockquote>
+<p>前面的 xor ebx,ebx 和 xor esi,esi 的意思是将 ebx 和 esi 置 0，因为后面要用到这两个寄存器。</p>
+</blockquote>
+<ul>
+<li>然后从 buffer 取得数据，进行循环判断，如果值为空就跳转，判断 esi 是否小于8，小于就报错 “Evaluation period out of date. Purchase new license”</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/foZi968pILXDF4G.jpg"
+                      alt="23.jpg"
+                ></p>
+<ul>
+<li>如果值等于 0x47 (ebx+1)；如果值等于 0x47 就不跳转（esi+1 和 ebx+1）；如果不等于 0x47 就跳转(ebx+1)</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/s9hXkc8I7Tp6MEP.jpg"
+                      alt="24.jpg"
+                ></p>
+<p>最后从 ASCII 表中找到 0x47 对应的字母是 “G”，所以最后的密码文件如下：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/10/28/I9qETRCtiLf6Yy2.jpg"
+                      alt="25.jpg"
+                ></p>
+<h2 id="技术总结-1"><a href="#技术总结-1" class="headerlink" title="技术总结"></a>技术总结</h2><ol>
+<li>同样使用爆破法，找到程序运行的相应跳转的位置，并在附近找到程序的密钥算法部分。</li>
+<li>对密钥算法部分依次执行理解，在执行过程中可以不停地修改密钥，写出满足一定条件的密钥来理解程序的算法。</li>
+<li>最后写出正确的密钥。</li>
+</ol>
+<blockquote>
+<p>程序领空（运行程序的内存空间）：内存地址是以 40000（开始）<br>系统领空（运行系统dll等程序的内存空间）：内存地址是以：6000、7000（开始）<br>OD 调试器打开程序后一直在 ntdll（系统领空），无法进入程序领空（程序能正常运行）。出现这种情况可能是插件问题，我这边将 srongOD 插件删除就好了。</p>
+</blockquote>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：OD调试-基础篇</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2020-11-03 11:00:07</li>
+        <li>
+            本文链接：https://9unkk.github.io/2020/11/03/od-diao-shi-ji-chu-pian/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E9%80%86%E5%90%91/">#逆向</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/OllyDdbg/">#OllyDdbg</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2020/12/03/ren-shi-x64dbg/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">认识 x64dbg</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2020/10/26/80386-hui-bian-di-yi-ge-chuang-kou-cheng-xu/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">80386汇编-第一个窗口程序</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">前置知识</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%E6%8A%80%E6%9C%AF"><span class="nav-number">2.</span> <span class="nav-text">逆向分析技术</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OllyDdbg-%E8%B0%83%E8%AF%95%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">OllyDdbg 调试器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OD-%E5%9F%BA%E6%9C%AC%E5%BF%AB%E6%8D%B7%E9%94%AE%E5%8F%8A%E5%8A%9F%E8%83%BD"><span class="nav-number">3.1.</span> <span class="nav-text">OD 基本快捷键及功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TraceMe-%E7%A0%B4%E8%A7%A3%EF%BC%88%E7%88%86%E7%A0%B4%E6%B3%95%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">TraceMe 破解（爆破法）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CRACKME-%E7%A0%B4%E8%A7%A3%EF%BC%88%E7%88%86%E7%A0%B4%EF%BC%89"><span class="nav-number">3.3.</span> <span class="nav-text">CRACKME 破解（爆破）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">技术总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#windows-%E6%B6%88%E6%81%AF%E5%BE%AA%E7%8E%AF%E6%9C%BA%E5%88%B6"><span class="nav-number">4.1.</span> <span class="nav-text">windows 消息循环机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%86%E5%90%91%E4%B8%AD%E5%B8%B8%E8%A7%81%E7%9A%84%E6%8C%87%E4%BB%A4"><span class="nav-number">4.2.</span> <span class="nav-text">逆向中常见的指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E8%BE%83%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">4.2.1.</span> <span class="nav-text">比较运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B7%B3%E8%BD%AC%E6%8C%87%E4%BB%A4"><span class="nav-number">4.2.1.1.</span> <span class="nav-text">跳转指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">4.2.1.2.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%88%86%E7%A0%B4%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">4.2.2.</span> <span class="nav-text">爆破操作流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reverseMe-%E5%88%86%E6%9E%90%EF%BC%88%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%89"><span class="nav-number">4.3.</span> <span class="nav-text">reverseMe 分析（算法分析）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93-1"><span class="nav-number">4.4.</span> <span class="nav-text">技术总结</span></a></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

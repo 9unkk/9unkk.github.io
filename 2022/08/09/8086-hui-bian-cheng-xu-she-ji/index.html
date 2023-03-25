@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            8086汇编-程序设计 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">8086汇编-程序设计</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2022-08-09 10:09:00</span>
+        <span class="mobile">2022-08-09 10:09</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>5k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>23 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="顺序程序设计"><a href="#顺序程序设计" class="headerlink" title="顺序程序设计"></a>顺序程序设计</h1><p>使用汇编些顺序程序时，要注意指令的先后顺序，写代码时有些指令顺序可以前后颠倒，有些则不行。此外，还需要注意顺序的优化，充分利用前面指令的处理结果，尽量避免重复操作。</p>
+<h2 id="例1"><a href="#例1" class="headerlink" title="例1"></a>例1</h2><p>设 X 和 Y 均为16位无符号数，写一个求表达式 16X+Y 值的程序。</p>
+<h3 id="程序逻辑结构图"><a href="#程序逻辑结构图" class="headerlink" title="程序逻辑结构图"></a>程序逻辑结构图</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/183583181-5328708d-a3e4-4029-83d2-df0795dde1b8.png"
+                      alt="T3-2"
+                ></p>
+<h3 id="加法运算"><a href="#加法运算" class="headerlink" title="加法运算"></a>加法运算</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-2.asm</span><br><span class="line">;算法1：加法运算</span><br><span class="line">;功能：计算 16X+Y（X 和 Y 均为 16 位无符号数）。</span><br><span class="line">DESG SEGMENT</span><br><span class="line">X DW  2345H</span><br><span class="line">Y DW  5678H</span><br><span class="line">Z DD  ?</span><br><span class="line">DESG    ENDS</span><br><span class="line"></span><br><span class="line">CSEG SEGMENT</span><br><span class="line">    ASSUME  cs:CSEG,ds:DESG</span><br><span class="line">start:</span><br><span class="line">    mov AX,DESG</span><br><span class="line">    mov DS,AX</span><br><span class="line">    mov AX,X</span><br><span class="line">    xor DX,DX</span><br><span class="line">    add AX,AX   ;x * 2</span><br><span class="line">    adc dx,dx</span><br><span class="line">    add ax,ax   ;x * 4</span><br><span class="line">    adc dx,dx</span><br><span class="line">    add ax,ax   ;x * 8</span><br><span class="line">    adc dx,dx</span><br><span class="line">    add ax,ax   ;x * 16</span><br><span class="line">    adc dx,dx</span><br><span class="line">    add ax,Y  ;在 x*16的结果上加上y</span><br><span class="line">    adc dx,0</span><br><span class="line">    mov word ptr Z,ax</span><br><span class="line">    mov word ptr Z+2,dx</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">CSEG ENDS</span><br><span class="line">     END start</span><br></pre></td></tr></table></figure>
+
+<h3 id="移位法"><a href="#移位法" class="headerlink" title="移位法"></a>移位法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-2-1.asm</span><br><span class="line">;算法2：移位法</span><br><span class="line">;程序结构：顺序结构</span><br><span class="line">;功能：计算 16X+Y（X 和 Y 均为 16 位无符号数）,使用移位法运算。</span><br><span class="line">DESG SEGMENT</span><br><span class="line">XXX DW  2345H</span><br><span class="line">YYY DW  5678H</span><br><span class="line">ZZZ DD  ?</span><br><span class="line">DESG    ENDS</span><br><span class="line"></span><br><span class="line">CSEG SEGMENT</span><br><span class="line">    ASSUME  cs:CSEG,ds:DESG</span><br><span class="line">start:</span><br><span class="line">    mov AX,DESG</span><br><span class="line">    mov DS,AX</span><br><span class="line">    mov ax,xxx</span><br><span class="line">    mov dl,ah</span><br><span class="line">    ;这两段指令操作是一样的，只不过一个是手写4次；另一个是让CPU自行循环重复执行4次。</span><br><span class="line">    ;shl ax,1</span><br><span class="line">    ;adc dx,0</span><br><span class="line">    ;shl ax,1</span><br><span class="line">    ;adc dx,0</span><br><span class="line">    ;shl ax,1</span><br><span class="line">    ;adc dx,0</span><br><span class="line">    ;shl ax,1</span><br><span class="line">    ;adc dx,0</span><br><span class="line">    mov cx,4</span><br><span class="line">    shl ax,cl</span><br><span class="line">    shr dx,cl</span><br><span class="line">    mov bx,yyy</span><br><span class="line">    add ax,bx</span><br><span class="line">    mov word ptr zzz,ax</span><br><span class="line">    mov word ptr zzz+2,dx</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">CSEG ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+
+<h3 id="乘法指令"><a href="#乘法指令" class="headerlink" title="乘法指令"></a>乘法指令</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-2-2.asm</span><br><span class="line">;算法3：乘法运算</span><br><span class="line">;程序结构：顺序结构</span><br><span class="line">;功能：计算 16X+Y（X 和 Y 均为 16 位无符号数）,使用mul指令。</span><br><span class="line">DESG SEGMENT</span><br><span class="line">XXX DW  2345H</span><br><span class="line">YYY DW  5678H</span><br><span class="line">ZZZ DD  ?</span><br><span class="line">result dw 0,0</span><br><span class="line">db 24h</span><br><span class="line">DESG    ENDS</span><br><span class="line"></span><br><span class="line">CSEG SEGMENT</span><br><span class="line">    ASSUME  cs:CSEG,ds:DESG</span><br><span class="line">start:</span><br><span class="line">    mov AX,DESG</span><br><span class="line">    mov DS,AX</span><br><span class="line">    mov ax,16</span><br><span class="line">    ;</span><br><span class="line">    ;mov bx,xxx</span><br><span class="line">    ;mul bx</span><br><span class="line">    mul xxx</span><br><span class="line">    ;</span><br><span class="line">    ;mov cx,yyy</span><br><span class="line">    ;add ax,cx</span><br><span class="line">    add ax,yyy</span><br><span class="line">    adc dx,0</span><br><span class="line">    mov word ptr zzz,ax</span><br><span class="line">    mov word ptr zzz+2,dx</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">CSEG ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>代码越短并不意味着执行速度越快，因为一条乘除法指令所花的时间较多。当乘数是2的倍数时，往往可使用移位指令实现乘法运算；当乘数较小时，往往可采用加法实现乘法运算；对执行速度要求不大的情况下，可直接使用乘法指令实现乘法运算。</p>
+</blockquote>
+<h2 id="例2"><a href="#例2" class="headerlink" title="例2"></a>例2</h2><p>把压缩存放的 8421 BCD码，转换为对应十进制数字 ASCII 码的程序。</p>
+<p>8421 BCD码就是，将4位二进制数，转换为1位十进制的编码方式<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/183588205-bba2f618-43ad-4efb-9634-7560424f1d0e.png"
+                      alt="图片"
+                ></p>
+<blockquote>
+<p>所谓压缩存放是指一个字节中存放两个BDC码，即低4位存放一个BCD码，高4位存放一个BCD码。如果仅仅低4位存放一个BCD码，就称为非压缩BCD码。</p>
+</blockquote>
+<h3 id="算法1"><a href="#算法1" class="headerlink" title="算法1"></a>算法1</h3><ol>
+<li>程序逻辑结构图</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/184138033-d4b6d4fd-8304-4633-8eb8-a05d36cd54c5.png"
+                      alt="T3-3"
+                ></p>
+<ol start="2">
+<li>代码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-3.asm</span><br><span class="line">;功能：把压缩存放的 8421 BCD码，转换为对应十进制数字 ASCII 码的程序。</span><br><span class="line">;算法1：使用左移+与运算</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">number db 12h</span><br><span class="line">result db 0,0,&#x27;$&#x27;</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov al,number</span><br><span class="line">    mov cl,4</span><br><span class="line">    shr al,cl</span><br><span class="line">    add al,30h</span><br><span class="line">    mov result,al</span><br><span class="line">    mov al,number</span><br><span class="line">    and al,0fh</span><br><span class="line">    add al,30h</span><br><span class="line">    mov result+1,al</span><br><span class="line">    ;</span><br><span class="line">    mov dx,offset result</span><br><span class="line">    mov ah,9</span><br><span class="line">    int 21h</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="算法2"><a href="#算法2" class="headerlink" title="算法2"></a>算法2</h3><ol>
+<li>程序逻辑结构图</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/184140556-37dfd52e-8f0e-430e-a0e4-ae2fe9b3b0ac.png"
+                      alt="T3-3-1"
+                ></p>
+<ol start="2">
+<li>代码</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-3-1.asm</span><br><span class="line">;功能：把压缩存放的 8421 BCD码，转换为对应十进制数字 ASCII 码的程序。</span><br><span class="line">;算法2：使用循环右移+右移</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">number db 12h</span><br><span class="line">result dw 0</span><br><span class="line">db &#x27;$&#x27;</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    xor ax,ax</span><br><span class="line">    mov al,number</span><br><span class="line">    mov cl,4</span><br><span class="line">    ror ax,cl</span><br><span class="line">    shr ah,cl</span><br><span class="line">    add ax,3030h</span><br><span class="line">    mov result,ax</span><br><span class="line">    ;</span><br><span class="line">    mov dx,offset result</span><br><span class="line">    mov ah,9</span><br><span class="line">    int 21h</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：ah是高4位，al是低4位，计算机输出是从低内存数到高内存数打印。即低4位是31h，高4位是32h</p>
+</blockquote>
+<h2 id="例3"><a href="#例3" class="headerlink" title="例3"></a>例3</h2><p>把 16 进制数转换成七段数码管</p>
+<h3 id="程序逻辑结构图-1"><a href="#程序逻辑结构图-1" class="headerlink" title="程序逻辑结构图"></a>程序逻辑结构图</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/184163343-487dd57c-20ce-42c0-9650-87b7bfe0b109.png"
+                      alt="T3-4"
+                ></p>
+<h3 id="查表法"><a href="#查表法" class="headerlink" title="查表法"></a>查表法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-4.asm</span><br><span class="line">;功能：把 16 进制数转换成七段数码管并输出</span><br><span class="line">;============================================</span><br><span class="line">;算法一：查表法（类似于数组）</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">tab db 1000000B,1111001B,0100100B,0110000B</span><br><span class="line">    db 0011001B,0010010B,0000010B,1111000B</span><br><span class="line">    db 00000000B,0010000B,0001000B,0000011B</span><br><span class="line">    db 1000110B,0100001B,0000110B,0001110B</span><br><span class="line">number db 0</span><br><span class="line">result db 0</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    xor bx,bx</span><br><span class="line">    mov bx,number</span><br><span class="line">    ;</span><br><span class="line">    mov dl,tab[bx]</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+
+<h3 id="查表指令"><a href="#查表指令" class="headerlink" title="查表指令"></a>查表指令</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-4-1.asm</span><br><span class="line">;功能：把 16 进制数转换成七段数码管并输出</span><br><span class="line">;============================================</span><br><span class="line">;方法二：查表指令xlat</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">tab db 1000000B,1111001B,0100100B,0110000B,0011001B,0010010B,0000010B,1111000B,00000000B,0010000B,0001000B,0000011B,1000110B,0100001B,0000110B,0001110B</span><br><span class="line">number db 0</span><br><span class="line">result db 0</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov bx,offset tab   ;bx为首地址</span><br><span class="line">    mov al,number       ;al为偏移地址</span><br><span class="line">    and al,0fh          ;number 最大值是 F(16)</span><br><span class="line">    xlat                ;取出偏移地址（al）的值，传给al寄存器</span><br><span class="line">    ;</span><br><span class="line">    mov dl,al</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+
+<h3 id="例4"><a href="#例4" class="headerlink" title="例4"></a>例4</h3><p>设X是一个1～10之间的整数，写一个求函数Y&#x3D;LG(X)值的程序。</p>
+<h3 id="程序逻辑结构图-2"><a href="#程序逻辑结构图-2" class="headerlink" title="程序逻辑结构图"></a>程序逻辑结构图</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/184292583-578c81bf-ba03-49a4-a76b-5f395139f2b1.png"
+                      alt="T3-5"
+                ></p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-5.asm</span><br><span class="line">;例4：设X是一个1～10之间的整数，写一个求函数Y=LG(X)值的程序。</span><br><span class="line">;求1~10的对数值，以10为底的对数在0~1之间，为了表示方便和考虑精度，对数值放大10000倍。</span><br><span class="line"></span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">VLAUE DB 4</span><br><span class="line">ANSWER DW ?</span><br><span class="line">TAB DW 0,3010,4771,6021,6990,7782,8451,9031,9542,10000  ;对数表</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    xor ax,ax</span><br><span class="line">    mov al,VLAUE</span><br><span class="line">    dec ax</span><br><span class="line">    add ax,ax</span><br><span class="line">    mov bx,ax</span><br><span class="line">    mov ax,TAB[bx]</span><br><span class="line">    mov ANSWER,ax</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+
+<h1 id="分支程序设计"><a href="#分支程序设计" class="headerlink" title="分支程序设计"></a>分支程序设计</h1><h2 id="例1-1"><a href="#例1-1" class="headerlink" title="例1"></a>例1</h2><p>实现三个无符号数的有大到小的排序</p>
+<h3 id="程序逻辑结构图-3"><a href="#程序逻辑结构图-3" class="headerlink" title="程序逻辑结构图"></a>程序逻辑结构图</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/184307495-45510e79-403e-4be8-b390-7b18f9a5be5d.png"
+                      alt="T3-6"
+                ></p>
+<h3 id="寄存器数据交换"><a href="#寄存器数据交换" class="headerlink" title="寄存器数据交换"></a>寄存器数据交换</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-6.asm</span><br><span class="line">;功能：实现三个无符号数的有大到小的排序</span><br><span class="line">;方法一：使用寄存器实现数据交换</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">buffer db 87,234,123</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov si,offset buffer</span><br><span class="line">    mov al,[si]</span><br><span class="line">    mov bl,[si+1]</span><br><span class="line">    mov cl,[si+2]</span><br><span class="line">    cmp al,bl</span><br><span class="line">    jae next1</span><br><span class="line">    xchg al,bl</span><br><span class="line">next1:</span><br><span class="line">    cmp al,cl</span><br><span class="line">    jae next2</span><br><span class="line">    xchg al,cl</span><br><span class="line">next2:</span><br><span class="line">    cmp bl,cl</span><br><span class="line">    jae next3</span><br><span class="line">    xchg bl,cl</span><br><span class="line">next3:</span><br><span class="line">    mov [si],al</span><br><span class="line">    mov [si+1],bl</span><br><span class="line">    mov [si+2],cl</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+
+<h3 id="内存数据交换"><a href="#内存数据交换" class="headerlink" title="内存数据交换"></a>内存数据交换</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-6-1.asm</span><br><span class="line">;功能：实现三个无符号数的有大到小的排序</span><br><span class="line">;方法二：使用内存实现数据交换</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">buffer db 87,123,234</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov al,buffer[si]</span><br><span class="line">    cmp al,[si+1]</span><br><span class="line">    jae next1</span><br><span class="line">    xchg al,[si+1]</span><br><span class="line">    xchg [si],al</span><br><span class="line">next1:</span><br><span class="line">    mov al,buffer[si]</span><br><span class="line">    cmp al,[si+2]</span><br><span class="line">    jae next2</span><br><span class="line">    xchg [si+2],al</span><br><span class="line">    xchg [si],al </span><br><span class="line">next2:</span><br><span class="line">    mov ax,[si+1]</span><br><span class="line">    cmp al,ah</span><br><span class="line">    jae next3</span><br><span class="line">    xchg al,ah</span><br><span class="line">    mov [si+1],ax</span><br><span class="line">next3:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+
+<h2 id="例2-1"><a href="#例2-1" class="headerlink" title="例2"></a>例2</h2><p>实现把一个十六进制数转换为对应的 ASCII 码的程序。</p>
+<h3 id="程序逻辑结构图-4"><a href="#程序逻辑结构图-4" class="headerlink" title="程序逻辑结构图"></a>程序逻辑结构图</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/184311493-661de37b-c96a-4912-96e7-423a51215e98.png"
+                      alt="T3-7"
+                ></p>
+<h4 id="算法1-1"><a href="#算法1-1" class="headerlink" title="算法1"></a>算法1</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-7.asm</span><br><span class="line">;功能：实现把一个十六进制数转换为对应的 ASCII 码的程序。</span><br><span class="line">;方法一：分开计算，数字+30h，字母+37h</span><br><span class="line">assume ds:data,cs:code</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">number db 0Fh</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov al,number</span><br><span class="line">    and al,0fh</span><br><span class="line">    cmp al,0ah</span><br><span class="line">    jb num_add</span><br><span class="line">    add al,37h</span><br><span class="line">    mov dl,al</span><br><span class="line">    jmp output</span><br><span class="line">num_add:</span><br><span class="line">    add al,30h</span><br><span class="line">    mov dl,al</span><br><span class="line">output:</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h3 id="算法2-1"><a href="#算法2-1" class="headerlink" title="算法2"></a>算法2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-7-1.asm</span><br><span class="line">;功能：实现把一个十六进制数转换为对应的 ASCII 码的程序。</span><br><span class="line">;方法二：分开计算，如果是字母+7h，再加30h；如果是数字+30h</span><br><span class="line">assume ds:data,cs:code</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">number db 0Fh</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov al,number</span><br><span class="line">    and al,0fh</span><br><span class="line">    cmp al,0ah</span><br><span class="line">    jb num</span><br><span class="line">    add al,7</span><br><span class="line">num:</span><br><span class="line">    add al,30h</span><br><span class="line">    mov dl,al</span><br><span class="line">output:</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h2 id="例3-1"><a href="#例3-1" class="headerlink" title="例3"></a>例3</h2><p>写一个实现把一位十六进制数所对应的 ASCII 码转换为十六进制数的程序。</p>
+<h3 id="方法1"><a href="#方法1" class="headerlink" title="方法1"></a>方法1</h3><p>存入一个 ASCII，先判断是否为数字（是 -30h），再判断是否为大写字母（是 -37h），再判断是否为小写字母（是 -57h），最后输出结果。</p>
+<ol>
+<li>程序逻辑结构图</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/184326124-7bc8d3fc-0f37-44a0-88ed-e5d15981b622.png"
+                      alt="T3-8"
+                ></p>
+<ol start="2">
+<li>代码</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-8.asm</span><br><span class="line">;功能：写一个实现把一位十六进制数所对应的 ASCII 码转换为十六进制数的程序。如果要转换的ASCII码没有对应的十六进制码，则转换为特殊值负1</span><br><span class="line">assume ds:data,cs:code</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">ascii db &#x27;$&#x27;</span><br><span class="line">err db &#x27;-&#x27;,&#x27;1&#x27;,&#x27;$&#x27;</span><br><span class="line">data  ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov dl,ascii</span><br><span class="line">    cmp dl,&#x27;0&#x27;</span><br><span class="line">    jb error</span><br><span class="line">    cmp dl,&#x27;9&#x27;</span><br><span class="line">    ja char_A</span><br><span class="line">    sub dl,30h</span><br><span class="line">    jmp output</span><br><span class="line">char_A:</span><br><span class="line">    cmp dl,&#x27;A&#x27;</span><br><span class="line">    jb error</span><br><span class="line">    cmp dl,&#x27;F&#x27;</span><br><span class="line">    ja char_aa</span><br><span class="line">    sub dl,37h</span><br><span class="line">    jmp output</span><br><span class="line">char_aa:</span><br><span class="line">    cmp dl,&#x27;a&#x27;</span><br><span class="line">    jb error</span><br><span class="line">    cmp dl,&#x27;f&#x27;</span><br><span class="line">    ja error</span><br><span class="line">    sub dl,57h</span><br><span class="line">    jmp output</span><br><span class="line">error:</span><br><span class="line">    xor dh,dh</span><br><span class="line">    mov dh,-1</span><br><span class="line">output:</span><br><span class="line">    cmp dh,-1</span><br><span class="line">    jz char_error</span><br><span class="line">    cmp dl,9</span><br><span class="line">    ja char</span><br><span class="line">    add dl,30h</span><br><span class="line">char:</span><br><span class="line">    add dl,37h</span><br><span class="line">    ;</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    jmp stop</span><br><span class="line">char_error:</span><br><span class="line">    mov dx,offset err</span><br><span class="line">    mov ah,9</span><br><span class="line">    int 21h</span><br><span class="line">stop:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这段代码的问题是，一直在重复判断，重复运算。写了很多冗余代码</p>
+</blockquote>
+<h4 id="方法2"><a href="#方法2" class="headerlink" title="方法2"></a>方法2</h4><ol>
+<li>程序逻辑结构图</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/184475617-c4b111fa-8705-4c17-9344-6c97d6064ce6.png"
+                      alt="T3-8-1"
+                ></p>
+<ol start="2">
+<li>代码</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-8-1.asm</span><br><span class="line">;功能：写一个实现把一位十六进制数所对应的 ASCII 码转换为十六进制数的程序。</span><br><span class="line">assume ds:data,cs:code</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">ascii db &#x27;g&#x27;</span><br><span class="line">err db &#x27;-&#x27;,&#x27;1&#x27;,&#x27;$&#x27;</span><br><span class="line">data  ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov dl,ascii</span><br><span class="line">    sub dl,30h</span><br><span class="line">    cmp dl,9</span><br><span class="line">    jbe output</span><br><span class="line">    cmp dl,0f0h</span><br><span class="line">    ja error</span><br><span class="line">char_a:</span><br><span class="line">    sub dl,7</span><br><span class="line">    cmp dl,0ah</span><br><span class="line">    jb error</span><br><span class="line">    cmp dl,0fh</span><br><span class="line">    jbe output</span><br><span class="line">    cmp dl,0f0h</span><br><span class="line">    ja error</span><br><span class="line">char_AA:</span><br><span class="line">    sub dl,20h</span><br><span class="line">    cmp dl,0ah</span><br><span class="line">    jb error</span><br><span class="line">    cmp dl,0fh</span><br><span class="line">    jbe output</span><br><span class="line">    jmp error</span><br><span class="line">output:</span><br><span class="line">    mov dl,ascii</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    jmp stop</span><br><span class="line">error:</span><br><span class="line">    mov al,0ffh</span><br><span class="line">    mov dx,offset err</span><br><span class="line">    mov ah,9</span><br><span class="line">    int 21h</span><br><span class="line">stop:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h1 id="循环程序设计"><a href="#循环程序设计" class="headerlink" title="循环程序设计"></a>循环程序设计</h1><h2 id="例1-2"><a href="#例1-2" class="headerlink" title="例1"></a>例1</h2><p>求内存中从地址 0040:0000H 开始的 1024 个字的字校验和。</p>
+<h3 id="程序逻辑结构图-5"><a href="#程序逻辑结构图-5" class="headerlink" title="程序逻辑结构图"></a>程序逻辑结构图</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/184476304-620da488-cbf6-4c8b-bab0-930d16ab5e66.png"
+                      alt="T3-9"
+                ></p>
+<h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-9.asm</span><br><span class="line">;功能：求内存中从地址 0040:0000H 开始的 1024 个字的字校验和。</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">sum dw 0</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov ax,0040h</span><br><span class="line">    mov es,ax</span><br><span class="line">    ;</span><br><span class="line">    xor ax,ax</span><br><span class="line">    mov cx,1024</span><br><span class="line">summer:</span><br><span class="line">    add ax,es:[si]</span><br><span class="line">    add si,2</span><br><span class="line">    loop summer</span><br><span class="line">    mov sum,ax</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h2 id="例2-2"><a href="#例2-2" class="headerlink" title="例2"></a>例2</h2><p>不使用乘法实现乘法运算</p>
+<h3 id="累加法"><a href="#累加法" class="headerlink" title="累加法"></a>累加法</h3><ol>
+<li>程序逻辑结构图</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/184476849-261ff1d1-7bd2-4095-aea0-0a1fd549875a.png"
+                      alt="T3-10"
+                ></p>
+<ol start="2">
+<li>代码</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-10.asm</span><br><span class="line">;功能：不使用乘法实现乘法运算(累加法)</span><br><span class="line"></span><br><span class="line">assume ds:data,cs:code</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">x db 234    ;被乘数</span><br><span class="line">y db 125    ;乘数</span><br><span class="line">z dw 0</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov al,x</span><br><span class="line">    xor ah,ah</span><br><span class="line">    mov cl,y</span><br><span class="line">    xor ch,ch   ;设置循环次数</span><br><span class="line">    xor dx,dx</span><br><span class="line">muls:</span><br><span class="line">    add dx,ax</span><br><span class="line">    loop muls</span><br><span class="line">    mov z,dx</span><br><span class="line">stop:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h3 id="位移相加法"><a href="#位移相加法" class="headerlink" title="位移相加法"></a>位移相加法</h3><ol>
+<li>程序逻辑结构图</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/184479390-649b153e-a482-47af-a8ab-adb3ff83fc79.png"
+                      alt="T3-10-1"
+                ></p>
+<ol start="2">
+<li>代码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-10-1.asm</span><br><span class="line">;功能：不使用乘法实现乘法运算(位移相加法)</span><br><span class="line">;例：AX（乘数）、bl（被乘数），dx（乘积）</span><br><span class="line">;此时 bl=4=0100，ax=12=2^0, dx=0</span><br><span class="line">;bl 右移1位，发现是0，也就是被乘数比2^0大</span><br><span class="line">;既然被乘数不是2^0，那有可能是2^1，那么 ax 提前累加，ax=ax+ax=24</span><br><span class="line">;bl 右移1位，发现是0，也就是被乘数比2^1大</span><br><span class="line">;那么 ax 提前累加，ax=ax+ax=48</span><br><span class="line">;bl 右移1位，发现是1，也就是被乘数包含2^2，那么 dx(乘积) = ax+dx=48</span><br><span class="line">;就这样，循环8次，只要 bl 的 bit 位是1，ax的累加值就放到乘积dx中；反之ax继续累加，直到循环结束</span><br><span class="line"></span><br><span class="line">assume ds:data,cs:code</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">x db 234    ;被乘数</span><br><span class="line">y db 125    ;乘数</span><br><span class="line">z dw 0</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov al,x</span><br><span class="line">    xor ah,ah</span><br><span class="line">    mov bl,y</span><br><span class="line">    xor dx,dx</span><br><span class="line">    mov cx,8    ;按位相加运算，两个都是 8 位的值</span><br><span class="line">muls:</span><br><span class="line">    shr bl,1</span><br><span class="line">    JNC next    ;乘数右移一位，如果溢出说明该值是1</span><br><span class="line">    add dx,ax   ;溢出 dx=dx+ax</span><br><span class="line">next:</span><br><span class="line">    add ax,ax   ;没有溢出 ax*2</span><br><span class="line">    loop muls</span><br><span class="line">    mov z,dx</span><br><span class="line">stop:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="例3-2"><a href="#例3-2" class="headerlink" title="例3"></a>例3</h2><p>把一个16位二进制数转换为一个5位十进制数，并输出。</p>
+<h3 id="程序逻辑结构图-6"><a href="#程序逻辑结构图-6" class="headerlink" title="程序逻辑结构图"></a>程序逻辑结构图</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/184506485-236ebfe3-5794-4468-b8b3-d6d98707fdff.png"
+                      alt="T3-11"
+                ></p>
+<blockquote>
+<p>循环中有这行代码 mov ax,dx，当时考虑到 “被除数不能是0”，所以把第一次计算排除在循环中。</p>
+</blockquote>
+<h3 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-11.asm</span><br><span class="line">;功能：把一个16位二进制数转换为一个5位十进制数，并输出。</span><br><span class="line">;算法：假设X为12345，除以 10000,1000,100,10,1 获取商进行输出</span><br><span class="line">assume ds:data,cs:code</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">number dw 0ABCDh</span><br><span class="line">result db 0,0,0,0,0,&#x27;$&#x27;</span><br><span class="line">jm dw 10000,1000,100,10,1</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov ax,number</span><br><span class="line">    mov bx,0</span><br><span class="line">    push bx</span><br><span class="line">    xor dx,dx</span><br><span class="line">    xor si,si</span><br><span class="line">    mov cx,4</span><br><span class="line">    ;</span><br><span class="line">    mov bx,jm[si]</span><br><span class="line">    div bx</span><br><span class="line">    add ax,30h</span><br><span class="line">    pop bx</span><br><span class="line">    mov result[bx],al</span><br><span class="line">    add si,2</span><br><span class="line">    inc bx</span><br><span class="line">    push bx</span><br><span class="line">divs:</span><br><span class="line">    mov ax,dx</span><br><span class="line">    xor dx,dx</span><br><span class="line">    mov bx,jm[si]</span><br><span class="line">    div bx</span><br><span class="line">    add ax,30h</span><br><span class="line">    pop bx</span><br><span class="line">    mov result[bx],al</span><br><span class="line">    add si,2</span><br><span class="line">    inc bx</span><br><span class="line">    push bx</span><br><span class="line">    loop divs</span><br><span class="line">    ;</span><br><span class="line">    mov dx,offset result</span><br><span class="line">    mov ah,9</span><br><span class="line">    int 21h</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+
+<h4 id="优化1"><a href="#优化1" class="headerlink" title="优化1"></a>优化1</h4><p>利用di作为循环次数，cx作为除数，bx和si存储偏移地址，同时把 “divs” 标号，上面一段代码去掉。</p>
+<blockquote>
+<p>去掉第一段代码的方法：把原始的 “被除数” 作为 “余数” 看待，提前把这个值传给dx。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-11-1.asm</span><br><span class="line">;功能：把一个16位二进制数转换为一个5位十进制数，并输出。</span><br><span class="line">;算法：假设X为12345，除以 10000,1000,100,10,1 获取商进行输出</span><br><span class="line">;优化1：不使用loop 指令，可优化掉大多数重复指令</span><br><span class="line">assume ds:data,cs:code</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">number dw 0ABCDh</span><br><span class="line">result db 0,0,0,0,0,&#x27;$&#x27;</span><br><span class="line">jm dw 10000,1000,100,10,1</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov ax,number</span><br><span class="line">    lea bx,jm</span><br><span class="line">    lea si,result</span><br><span class="line">    ;初始化</span><br><span class="line">    mov dx,ax   ;备份要转换的值</span><br><span class="line">    mov di,si</span><br><span class="line">    add di,5    ;定义循环次数</span><br><span class="line">L1:</span><br><span class="line">    mov ax,dx   ;每次循环将余数传给ax</span><br><span class="line">    xor dx,dx   ;div使用 DX:AX 除以16位，需要将dx置为0（被除数扩展）</span><br><span class="line">    ;div指令除以16位,商在ax中，余数在dx中</span><br><span class="line">    mov cx,[bx]</span><br><span class="line">    div cx</span><br><span class="line">    add al,30h</span><br><span class="line">    mov [si],al</span><br><span class="line">    inc si</span><br><span class="line">    add bx,2</span><br><span class="line">    cmp si,di</span><br><span class="line">    jnz L1</span><br><span class="line">    sub si,5</span><br><span class="line">    ;</span><br><span class="line">    mov dx,offset result</span><br><span class="line">    mov ah,9</span><br><span class="line">    int 21h</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+
+<h4 id="优化2"><a href="#优化2" class="headerlink" title="优化2"></a>优化2</h4><p>之前是利用商作为结果来存储，这里使用余数作为结果来存储。这种方法大大减少了代码，不需要再去到内存中一一读取除数。</p>
+<blockquote>
+<p>写代码时，多换几种思路会减少很多麻烦。同时你所理解的知识多少，也影响写代码的思路。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-11-2.asm</span><br><span class="line">;功能：把一个16位二进制数转换为一个5位十进制数，并输出。</span><br><span class="line">;算法：假设X为12345，每次循环除以 10，获取余数进行输出</span><br><span class="line">;优化2：使用余数来处理，省掉除数列表</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">number dw 0ABCDh</span><br><span class="line">result db 0,0,0,0,0,&#x27;$&#x27;</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov di,5</span><br><span class="line">    mov cx,10</span><br><span class="line">    mov ax,number</span><br><span class="line">L1:</span><br><span class="line">    xor dx,dx</span><br><span class="line">    div cx</span><br><span class="line">    add dl,30h</span><br><span class="line">    mov result[di-1],dl     ;用di判断循环，但是存储结果di需要减1</span><br><span class="line">    dec di</span><br><span class="line">    jnz L1</span><br><span class="line">    ;</span><br><span class="line">    lea dx,result</span><br><span class="line">    mov ah,9</span><br><span class="line">    int 21h</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h2 id="例4-1"><a href="#例4-1" class="headerlink" title="例4"></a>例4</h2><p>把一个字符串中的所有大写字母改写成小写。</p>
+<h3 id="程序逻辑结构图-7"><a href="#程序逻辑结构图-7" class="headerlink" title="程序逻辑结构图"></a>程序逻辑结构图</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/184507752-b3ef3f7b-36ce-46d9-af89-da8a8c60682e.png"
+                      alt="T3-12"
+                ></p>
+<h3 id="代码-3"><a href="#代码-3" class="headerlink" title="代码"></a>代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-12.asm</span><br><span class="line">;功能：把一个字符串中的所有大写字母改写成小写。</span><br><span class="line"></span><br><span class="line">assume ds:data,cs:code</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">char db &#x27;HOW are yoU !&#x27;,0</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">char_A:</span><br><span class="line">    mov dl,char[si]</span><br><span class="line">    cmp dl,0</span><br><span class="line">    jz stop</span><br><span class="line">    ;</span><br><span class="line">    cmp dl,41h</span><br><span class="line">    jb output</span><br><span class="line">    cmp dl,5Ah</span><br><span class="line">    ja output</span><br><span class="line">    add dl,20h</span><br><span class="line">    ;</span><br><span class="line">output:</span><br><span class="line">    inc si</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    jmp char_A</span><br><span class="line">    ;</span><br><span class="line">stop:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+
+<h2 id="例5"><a href="#例5" class="headerlink" title="例5"></a>例5</h2><p>判定从地址 0040：0000H 开始的 2048 个内存字节单元中是否有字符 ‘A’。<br>如有则把第一个（按地址由小到大为序）含此指定字符的存储单元的地址偏移送到  0000:03FEH 单元中<br>如果没有把特征值 0FFFFH 送到 0000：03FEH 单元</p>
+<h3 id="程序逻辑结构图-8"><a href="#程序逻辑结构图-8" class="headerlink" title="程序逻辑结构图"></a>程序逻辑结构图</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/184508096-386cf607-7836-4b65-b88c-eed958b4477a.png"
+                      alt="T3-13"
+                ></p>
+<h3 id="代码-4"><a href="#代码-4" class="headerlink" title="代码"></a>代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-13.asm</span><br><span class="line">;功能：判定从地址 0040：0000H 开始的 2048 个内存字节单元中是否有字符 &#x27;A&#x27;。</span><br><span class="line">;如有则把第一个（按地址由小到大为序）含此指定字符的存储单元的地址偏移送到  0000:03FEH 单元中</span><br><span class="line">;如果没有把特征值 0FFFFH 送到 0000：03FEH 单元</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">;常量定义</span><br><span class="line">segaddr = 40h   ;源地址段值</span><br><span class="line">offaddr = 0     ;源地址偏移</span><br><span class="line">count = 2048    ;长度（计数）</span><br><span class="line">keychar = &#x27;A&#x27;   ;指定字符</span><br><span class="line">segresu = 0     ;目的保存单元段值</span><br><span class="line">offresu = 03FEh ;目的保存单元偏移</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,segaddr</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov ax,offaddr</span><br><span class="line">    mov si,ax</span><br><span class="line">    mov ax,segresu</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov ax,offresu</span><br><span class="line">    mov di,ax</span><br><span class="line">    mov cx,count</span><br><span class="line">    mov ah,keychar</span><br><span class="line">    ;</span><br><span class="line">find:</span><br><span class="line">    mov al,[si]</span><br><span class="line">    cmp ah,al</span><br><span class="line">    jnz loops</span><br><span class="line">    inc di</span><br><span class="line">    mov [di],si</span><br><span class="line">loops:</span><br><span class="line">    inc si</span><br><span class="line">    loop find</span><br><span class="line">    mov di,03FEh</span><br><span class="line">    mov dh,[di]</span><br><span class="line">    cmp dh,ah</span><br><span class="line">    jz stop</span><br><span class="line">    mov dx,-1</span><br><span class="line">    mov [di],dx</span><br><span class="line">stop:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+
+<h2 id="例6"><a href="#例6" class="headerlink" title="例6"></a>例6</h2><h3 id="程序逻辑结构图-9"><a href="#程序逻辑结构图-9" class="headerlink" title="程序逻辑结构图"></a>程序逻辑结构图</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/184508831-9ea4aa48-94b0-4b86-afc3-51d03da0a6f2.png"
+                      alt="T3-14"
+                ></p>
+<h3 id="代码-5"><a href="#代码-5" class="headerlink" title="代码"></a>代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-14.asm</span><br><span class="line">;功能：设缓冲区 DATA 中有一组单字节有符号数，以0为结束标志。</span><br><span class="line">;程序功能：把前5个正数依次送入缓冲区 PDATA，把前 5 个负数依次送入缓冲区MDATA；如正数或负数不足5个，则用 0 补足</span><br><span class="line"></span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">DATA1 db 1,2,-1,3,-4,-5,0</span><br><span class="line">PDATA db 0Ch,0Ch,0Ch,0Ch,0Ch</span><br><span class="line">MDATA db 0Ch,0Ch,0Ch,0Ch,0Ch</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov es,ax</span><br><span class="line">    ;</span><br><span class="line">    mov cx,10</span><br><span class="line">    xor bx,bx</span><br><span class="line">mnum:</span><br><span class="line">    mov al,DATA1[si]</span><br><span class="line">    cmp al,0</span><br><span class="line">    jz supp1</span><br><span class="line">    and al,80h</span><br><span class="line">    cmp al,0</span><br><span class="line">    jnz pnum</span><br><span class="line">    mov al,DATA1[si]</span><br><span class="line">    mov MDATA[di],al</span><br><span class="line">    inc di</span><br><span class="line">    inc si</span><br><span class="line">    loop mnum</span><br><span class="line">    jmp supp1</span><br><span class="line">pnum:</span><br><span class="line">    mov al,DATA1[si]</span><br><span class="line">    mov PDATA[bx],al</span><br><span class="line">    inc bx</span><br><span class="line">    inc si</span><br><span class="line">    loop mnum</span><br><span class="line">supp1:</span><br><span class="line">    mov ax,5</span><br><span class="line">    sub ax,di</span><br><span class="line">    jz supp2</span><br><span class="line">    mov cx,ax</span><br><span class="line">P0:</span><br><span class="line">    mov PDATA[di],0</span><br><span class="line">    inc di</span><br><span class="line">    loop P0</span><br><span class="line">supp2:</span><br><span class="line">    mov ax,5</span><br><span class="line">    sub ax,bx</span><br><span class="line">    jz stop</span><br><span class="line">    mov cx,ax</span><br><span class="line">m0:</span><br><span class="line">    mov MDATA[BX],0</span><br><span class="line">    inc bx</span><br><span class="line">    loop m0</span><br><span class="line">stop:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+<h2 id="例7"><a href="#例7" class="headerlink" title="例7"></a>例7</h2><p>设 BUFFER 缓冲区中有10各单字节无符号整数，写一个程序将他们由小到大排序</p>
+<h3 id="算法1-2"><a href="#算法1-2" class="headerlink" title="算法1"></a>算法1</h3><ol>
+<li>程序逻辑结构图</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/184524550-a6ae23e5-134e-4910-b447-4186e296c82d.png"
+                      alt="T3-15"
+                ></p>
+<ol start="2">
+<li>代码</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-15.asm</span><br><span class="line">;功能：说明二重循环的实现</span><br><span class="line">;算法：简单选择法</span><br><span class="line">assume cs:cseg,ds:dseg</span><br><span class="line"></span><br><span class="line">dseg segment</span><br><span class="line">;buffer db 23,12,45,32,127,3,9,58,81,72</span><br><span class="line">number db 4,1,6,0,3,2,9,8,7,5</span><br><span class="line">N EQU 10</span><br><span class="line">dseg ends</span><br><span class="line"></span><br><span class="line">cseg segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,dseg</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov bx,offset number-1</span><br><span class="line">    mov si,1</span><br><span class="line">forI:</span><br><span class="line">    mov di,si</span><br><span class="line">    inc di</span><br><span class="line">forJ:</span><br><span class="line">    mov al,[bx+si]</span><br><span class="line">    cmp al,[bx+di]</span><br><span class="line">    jbe nextJ</span><br><span class="line">    xchg al,[bx+di]</span><br><span class="line">    mov [bx+si],al</span><br><span class="line">nextJ:</span><br><span class="line">    inc di</span><br><span class="line">    cmp di,N</span><br><span class="line">    jbe forJ</span><br><span class="line">nextI:</span><br><span class="line">    inc si</span><br><span class="line">    cmp si,N-1</span><br><span class="line">    jbe forI</span><br><span class="line">    ;</span><br><span class="line">    xor si,si</span><br><span class="line">    mov cx,10</span><br><span class="line">print:</span><br><span class="line">    mov dl,number[si]</span><br><span class="line">    add dl,30h</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    inc si</span><br><span class="line">    loop print</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">cseg ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h4 id="算法2-2"><a href="#算法2-2" class="headerlink" title="算法2"></a>算法2</h4><ol>
+<li>程序逻辑结构图</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/184540841-604f2126-7252-4a36-832f-653c4ae19839.png"
+                      alt="T3-15-2"
+                ></p>
+<ol start="2">
+<li>代码</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-15-2.asm</span><br><span class="line">;功能：设 BUFFER 缓冲区中有10各单字节无符号整数。</span><br><span class="line">;算法一：冒泡排序</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">number db 3,4,6,5,7,8,1,2,0,9</span><br><span class="line">;3,4,5,6,7,1,2,0,8,9</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">L0:</span><br><span class="line">    mov cx,9</span><br><span class="line">L1:</span><br><span class="line">    sub cx,bx               ;BX 表示外循环次数</span><br><span class="line">    jz output               ;外循环结束后，结束程序</span><br><span class="line">L2:</span><br><span class="line">    inc si</span><br><span class="line">    mov al,number[si-1]</span><br><span class="line">    cmp al,number[si]       ;第一个数(a)和第二个数(b)进行比较</span><br><span class="line">    jnb move                ;如果 a&gt;b，交换数据</span><br><span class="line">    dec cx                  ;循环次数-1</span><br><span class="line">    jz reset                ;内循环结束后，初始化数据，准备外循环</span><br><span class="line">    jmp L2                  ;不交换数据，继续内循环</span><br><span class="line">move:</span><br><span class="line">    xchg al,number[si]</span><br><span class="line">    mov number[si-1],al</span><br><span class="line">    loop L2                 ;交换数据，继续内循环</span><br><span class="line">reset:</span><br><span class="line">    inc bx</span><br><span class="line">    xor si,si</span><br><span class="line">    jmp L0</span><br><span class="line">output:</span><br><span class="line">    xor si,si</span><br><span class="line">    mov cx,10</span><br><span class="line">print:</span><br><span class="line">    mov dl,number[si]</span><br><span class="line">    add dl,30h</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    inc si</span><br><span class="line">    loop print</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h2 id="例8"><a href="#例8" class="headerlink" title="例8"></a>例8</h2><p>分别有两个以0结尾的字符串在不同的数据段中。如果数据段1的字符串，包含了数据段2的字符串，flag变量置为1，否则将其清0。</p>
+<h3 id="程序逻辑结构图-10"><a href="#程序逻辑结构图-10" class="headerlink" title="程序逻辑结构图"></a>程序逻辑结构图</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/184541231-43ae9fca-eb8d-4102-b93a-27bb3d112891.png"
+                      alt="T3-16"
+                ></p>
+<h3 id="代码-6"><a href="#代码-6" class="headerlink" title="代码"></a>代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T3-16.asm</span><br><span class="line">;功能：分别有两个以0结尾的字符串在不同的数据段中。如果数据段1的字符串，包含了数据段2的字符串，flag变量置为1，否则将其清0。</span><br><span class="line">assume cs:code1,ds:data1,es:data2</span><br><span class="line"></span><br><span class="line">data1 segment</span><br><span class="line">char1 db &#x27;welcome to masm!&#x27;,0</span><br><span class="line">data1 ends</span><br><span class="line"></span><br><span class="line">data2 segment</span><br><span class="line">char2 db &#x27;masm&#x27;,0</span><br><span class="line">len = ($ - char2)-1</span><br><span class="line">flag db 0</span><br><span class="line">data2 ends</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">code1 segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data1</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov ax,data2</span><br><span class="line">    mov es,ax</span><br><span class="line">    ;</span><br><span class="line">    mov cx,len-1</span><br><span class="line">not_find:</span><br><span class="line">    xor di,di</span><br><span class="line">    mov bl,char1[si]</span><br><span class="line">    cmp bl,0</span><br><span class="line">    jz stop</span><br><span class="line">    mov al,char2[di]</span><br><span class="line">    cmp al,bl</span><br><span class="line">    jz find</span><br><span class="line">    inc si</span><br><span class="line">    jmp not_find</span><br><span class="line">find:</span><br><span class="line">    inc si</span><br><span class="line">    mov bl,char1[si]</span><br><span class="line">    inc di</span><br><span class="line">    mov al,char2[di]</span><br><span class="line">    cmp al,bl</span><br><span class="line">    jnz not_find</span><br><span class="line">    loop find</span><br><span class="line">    mov flag,1</span><br><span class="line">stop:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code1 ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：8086汇编-程序设计</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2022-08-09 10:09:00</li>
+        <li>
+            本文链接：https://9unkk.github.io/2022/08/09/8086-hui-bian-cheng-xu-she-ji/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2022/08/16/8086-hui-bian-zi-cheng-xu-she-ji/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">8086汇编-子程序设计</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2022/05/30/8086-hui-bian-hui-bian-yu-yan/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">8086汇编-汇编语言</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A1%BA%E5%BA%8F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text">顺序程序设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B1"><span class="nav-number">1.1.</span> <span class="nav-text">例1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84%E5%9B%BE"><span class="nav-number">1.1.1.</span> <span class="nav-text">程序逻辑结构图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E6%B3%95%E8%BF%90%E7%AE%97"><span class="nav-number">1.1.2.</span> <span class="nav-text">加法运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E4%BD%8D%E6%B3%95"><span class="nav-number">1.1.3.</span> <span class="nav-text">移位法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%98%E6%B3%95%E6%8C%87%E4%BB%A4"><span class="nav-number">1.1.4.</span> <span class="nav-text">乘法指令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B2"><span class="nav-number">1.2.</span> <span class="nav-text">例2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%951"><span class="nav-number">1.2.1.</span> <span class="nav-text">算法1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%952"><span class="nav-number">1.2.2.</span> <span class="nav-text">算法2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B3"><span class="nav-number">1.3.</span> <span class="nav-text">例3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84%E5%9B%BE-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">程序逻辑结构图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%A1%A8%E6%B3%95"><span class="nav-number">1.3.2.</span> <span class="nav-text">查表法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%A1%A8%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.3.</span> <span class="nav-text">查表指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B4"><span class="nav-number">1.3.4.</span> <span class="nav-text">例4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84%E5%9B%BE-2"><span class="nav-number">1.3.5.</span> <span class="nav-text">程序逻辑结构图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">1.3.6.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.</span> <span class="nav-text">分支程序设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B1-1"><span class="nav-number">2.1.</span> <span class="nav-text">例1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84%E5%9B%BE-3"><span class="nav-number">2.1.1.</span> <span class="nav-text">程序逻辑结构图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8%E6%95%B0%E6%8D%AE%E4%BA%A4%E6%8D%A2"><span class="nav-number">2.1.2.</span> <span class="nav-text">寄存器数据交换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%95%B0%E6%8D%AE%E4%BA%A4%E6%8D%A2"><span class="nav-number">2.1.3.</span> <span class="nav-text">内存数据交换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B2-1"><span class="nav-number">2.2.</span> <span class="nav-text">例2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84%E5%9B%BE-4"><span class="nav-number">2.2.1.</span> <span class="nav-text">程序逻辑结构图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%97%E6%B3%951-1"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">算法1</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%952-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">算法2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B3-1"><span class="nav-number">2.3.</span> <span class="nav-text">例3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%951"><span class="nav-number">2.3.1.</span> <span class="nav-text">方法1</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%952"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">方法2</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.</span> <span class="nav-text">循环程序设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B1-2"><span class="nav-number">3.1.</span> <span class="nav-text">例1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84%E5%9B%BE-5"><span class="nav-number">3.1.1.</span> <span class="nav-text">程序逻辑结构图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="nav-number">3.1.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B2-2"><span class="nav-number">3.2.</span> <span class="nav-text">例2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%AF%E5%8A%A0%E6%B3%95"><span class="nav-number">3.2.1.</span> <span class="nav-text">累加法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%8D%E7%A7%BB%E7%9B%B8%E5%8A%A0%E6%B3%95"><span class="nav-number">3.2.2.</span> <span class="nav-text">位移相加法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B3-2"><span class="nav-number">3.3.</span> <span class="nav-text">例3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84%E5%9B%BE-6"><span class="nav-number">3.3.1.</span> <span class="nav-text">程序逻辑结构图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-2"><span class="nav-number">3.3.2.</span> <span class="nav-text">代码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%961"><span class="nav-number">3.3.2.1.</span> <span class="nav-text">优化1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%962"><span class="nav-number">3.3.2.2.</span> <span class="nav-text">优化2</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B4-1"><span class="nav-number">3.4.</span> <span class="nav-text">例4</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84%E5%9B%BE-7"><span class="nav-number">3.4.1.</span> <span class="nav-text">程序逻辑结构图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-3"><span class="nav-number">3.4.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B5"><span class="nav-number">3.5.</span> <span class="nav-text">例5</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84%E5%9B%BE-8"><span class="nav-number">3.5.1.</span> <span class="nav-text">程序逻辑结构图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-4"><span class="nav-number">3.5.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B6"><span class="nav-number">3.6.</span> <span class="nav-text">例6</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84%E5%9B%BE-9"><span class="nav-number">3.6.1.</span> <span class="nav-text">程序逻辑结构图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-5"><span class="nav-number">3.6.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B7"><span class="nav-number">3.7.</span> <span class="nav-text">例7</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%951-2"><span class="nav-number">3.7.1.</span> <span class="nav-text">算法1</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%97%E6%B3%952-2"><span class="nav-number">3.7.1.1.</span> <span class="nav-text">算法2</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B8"><span class="nav-number">3.8.</span> <span class="nav-text">例8</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84%E5%9B%BE-10"><span class="nav-number">3.8.1.</span> <span class="nav-text">程序逻辑结构图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-6"><span class="nav-number">3.8.2.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

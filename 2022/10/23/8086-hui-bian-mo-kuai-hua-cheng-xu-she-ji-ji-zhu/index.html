@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            8086汇编-模块化程序设计 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">8086汇编-模块化程序设计</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2022-10-23 18:53:00</span>
+        <span class="mobile">2022-10-23 18:53</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>6.9k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>27 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/197553001-bcbc6f36-06f2-438f-86e1-cb53d650ef1d.png"
+                      alt="1"
+                ></p>
+<h1 id="段的完整定义"><a href="#段的完整定义" class="headerlink" title="段的完整定义"></a>段的完整定义</h1><p>一个复杂的程序通常由若干个模块组成。源模块可用汇编语言编写，也可用高级语言编写。每个模块被单独汇编或编译成目标（OBJ）模块，最后由连接程序（LINKER）把各目标模块连接成一个完整的而可执行程序。<br>由于 8086&#x2F;80808 采用分段的形式访问内存，所以一个模块往往又含有多个段。一个程序的若干个模块之间的段于段的定义，通常用以下两种方法：完整的段定义和简化段定义。</p>
+<h2 id="完整的段定义"><a href="#完整的段定义" class="headerlink" title="完整的段定义"></a>完整的段定义</h2><p>完整的段定义提供了彻底控制段的机制，该机制可使得各模块的各个段严格按要求组合和衔接。</p>
+<h3 id="一般格式定义"><a href="#一般格式定义" class="headerlink" title="一般格式定义"></a>一般格式定义</h3><p>完整段定义一般格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">段名 SEGMENT [定位类型] [组合类型] [&#x27;类别&#x27;]</span><br><span class="line">语句</span><br><span class="line">段名 ENDS</span><br></pre></td></tr></table></figure>
+<p>段名可以是唯一的，也可以与其他的段名相同。在同一模块中，如果已用相同的段名定义过，那么当前这个段被视为前一个同名段的继续，即同一个段。<br>对一个模块中的同名段而言，后续同名段的定义选项值应与前一个同名段相同，或者不再定义选项值而默认与前一个同名段相同。</p>
+<p>例1：如下程序 T8-1.asm 中含有两个名为 DSEG 的段和两个名为 CSEG 的段。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-1.asm</span><br><span class="line">;功能：打印字符串 HELLO</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line">Sseg segment</span><br><span class="line">    Db 1024 dup(?)</span><br><span class="line">Sseg ends</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">mess db &#x27;HEL&#x27;</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov dx,offset mess</span><br><span class="line">    mov ah,9</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">;</span><br><span class="line">data segment</span><br><span class="line">    db &#x27;LO&#x27;,0dh,0ah,&#x27;$&#x27;</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/197558610-2311828e-ea30-47b1-b082-3b09ee724923.png"
+                      alt="2"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/197558855-7027bf56-520c-4d52-8f33-1756466bea1b.png"
+                      alt="3"
+                ></p>
+<p>由于后面的同名段被视为前一个同名段的继续，所以汇编后只有 DSEG 和 CSEG 两个段。</p>
+<h3 id="定位类型"><a href="#定位类型" class="headerlink" title="定位类型"></a>定位类型</h3><p>定位类型表示，当前段开始起始地址的要求，从而指示连接程序如何衔接相邻的两个段。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/197567117-610fc21c-f5ee-4190-acd0-a0cb9565ede5.png"
+                      alt="4"
+                ></p>
+<ol>
+<li>一般情况下（80386以下）默认的定位类型实 PARA，即段起始地址位于可用的第一个节（每节为 16 个字节）的边界处。</li>
+<li>定位类型 BYTE 使得当前段紧接前一段，前后两个段之间没有空闲单元，所以是最节约的定位类型。</li>
+<li>定位类型 WORD 使得段从偶地址开始，不仅较为节约，而且可以利用它把数据单元定位在偶地址。</li>
+<li>定位类型 DWORD 常用于 80386 的 32 位段。</li>
+<li>定位类型 PAGE（页）一页等于 256 字节，所以它可产生最大的段间隔。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-2.asm</span><br><span class="line">;功能：略</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment dword</span><br><span class="line">mess db &#x27;HELLO!&#x27;,0dh,0ah,&#x27;$&#x27;</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment dword</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov dx,offset mess</span><br><span class="line">    mov ah,9</span><br><span class="line">    int 21h</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/197570742-702b9ceb-8b7c-4799-ae2f-346ad60f24ef.png"
+                      alt="5"
+                ></p>
+<h3 id="组合类型"><a href="#组合类型" class="headerlink" title="组合类型"></a>组合类型</h3><p>不同模块的同名段的组合，为更有效更便利地使用存储器提供了方便。组合类型就是用于通知连接程序，如何把不同模块内段名相同地段组合到一起。有如下组合类型：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/197572317-05229cab-ca43-4de5-9122-afb5dcf542a9.png"
+                      alt="6"
+                ></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-3-1.asm</span><br><span class="line">;功能：略</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment para public</span><br><span class="line">mess db &#x27;HELLO!&#x27;,0dh,0ah,&#x27;$&#x27;</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment para public</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov dx,offset mess</span><br><span class="line">    mov ah,9</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-3-2.asm</span><br><span class="line">;功能：略</span><br><span class="line"></span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment para common</span><br><span class="line">    db &#x27;ok&#x27;</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment para public</span><br><span class="line">    mov ax,4c00h </span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/197577808-d819c3b9-f698-4683-893e-57ad8588565c.png"
+                      alt="7"
+                ></p>
+<h3 id="类别"><a href="#类别" class="headerlink" title="类别"></a>类别</h3><p>类别用于表示段的分类。LINK 程序总是使类别相同的段相邻。实际上只有类别相同的同名段名才根据组合类型组合。<br>类别是由程序员指定的字符串，但必须用单引号括起。如果一个段没有给出类别，那么这个段的类别就为空。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">;程序名：MODULE1.asm</span><br><span class="line">;功能：演示段的完整定义的类别属性</span><br><span class="line">assume cs:cseg,ds:dseg</span><br><span class="line"></span><br><span class="line">dseg segment byte public &#x27;DATA&#x27;</span><br><span class="line">MESS1 db &#x27;he&#x27;</span><br><span class="line">dseg ends</span><br><span class="line"></span><br><span class="line">cseg segment para public &#x27;CODE&#x27;</span><br><span class="line">start:</span><br><span class="line">    mov ax,dseg</span><br><span class="line">    mov ds,ax</span><br><span class="line">cseg ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">;程序名：MODULE2.asm</span><br><span class="line">;功能：演示段的完整定义的类别属性</span><br><span class="line">assume cs:cseg,ds:dseg</span><br><span class="line"></span><br><span class="line">dseg segment byte public &#x27;XYZ&#x27;</span><br><span class="line">MESS1 db &#x27;!&#x27;,&#x27;$&#x27;</span><br><span class="line">dseg ends</span><br><span class="line"></span><br><span class="line">cseg segment byte public &#x27;CODE&#x27;</span><br><span class="line">    mov dx,offset MESS1</span><br><span class="line">    mov ah,9</span><br><span class="line">    int 21h</span><br><span class="line">cseg ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">;程序名：MODULE3.asm</span><br><span class="line">;功能：演示段的完整定义的类别属性</span><br><span class="line">assume cs:cseg,ds:dseg</span><br><span class="line"></span><br><span class="line">dseg segment byte public &#x27;DATA&#x27;</span><br><span class="line">MESS1 db &#x27;llo&#x27;,&#x27;$&#x27;</span><br><span class="line">dseg ends</span><br><span class="line"></span><br><span class="line">cseg segment para public &#x27;CODE&#x27;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">cseg ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/197794355-7ab143b6-aeab-4f7e-9bcf-a8409db247d6.png"
+                      alt="8"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/197794744-34403563-6f93-4f2b-bc1d-62a220ecf61e.png"
+                      alt="9"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/197796852-088e1d53-e4ca-42a4-a4da-b72237170bf1.png"
+                      alt="10"
+                ></p>
+<h2 id="关于堆栈的说明"><a href="#关于堆栈的说明" class="headerlink" title="关于堆栈的说明"></a>关于堆栈的说明</h2><p>一个完整的汇编语言程序一般含有一个堆栈段，只有 COM 型程序例外。<br>当把某个段的组合类型指定为 STACK 时，这个段就被指定为堆栈段了。当然，如果在程序的其他模块中也有组合类型为 STACK 的同名段，那么连接时将以接续的方式组合到一起，这样会构成一个存储空间更大的堆栈。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-1a.asm</span><br><span class="line">;功能：使用段组合类型 STACK，为 T8-1.asm 增加一个大小为 1024 字节的堆栈段</span><br><span class="line">assume cs:code,ds:data</span><br><span class="line"></span><br><span class="line">data segment para STACK</span><br><span class="line">    db 1024 dup (?)</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">mess db &#x27;HELLO!&#x27;,0dh,0ah,&#x27;$&#x27;</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment dword</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    mov dx,offset mess</span><br><span class="line">    mov ah,9</span><br><span class="line">    int 21h</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/197806369-2c88ce78-8771-4844-a484-e288e9702e82.png"
+                      alt="11"
+                ></p>
+<p>LINK 程序会把组合类型为 STACK 的段的有关信息写入可执行程序文件中。于是在执行该程序时，操作系统的装入程序就会根据这些信息自动设置寄存器 SS 和 SP，从而构成物理堆栈。设置的 SS 的值是组合类型为 STACK 的段的段值，设置的 SP 值是堆栈段的大小，即 SS:SP 指向堆栈尾。</p>
+<h2 id="段组的说明和使用"><a href="#段组的说明和使用" class="headerlink" title="段组的说明和使用"></a>段组的说明和使用</h2><p>程序中定义使用多个数据段</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-4.asm</span><br><span class="line">;功能：略</span><br><span class="line"></span><br><span class="line">assume cs:code,ds:data1 ;DS 关联 data1</span><br><span class="line"></span><br><span class="line">data1 segment public   ;数据段1</span><br><span class="line">var1 db ?</span><br><span class="line">data1 ends</span><br><span class="line"></span><br><span class="line">data2 segment public    ;数据段2</span><br><span class="line">var2 db ?</span><br><span class="line">data2 ends</span><br><span class="line"></span><br><span class="line">code segment public    ;代码段</span><br><span class="line">start:</span><br><span class="line">    mov ax,data1</span><br><span class="line">    mov ds,ax          ;DS 对应 data1</span><br><span class="line">    mov bl,var1</span><br><span class="line">    ;</span><br><span class="line">    assume ds:data2    ;DS 重新关联 data2</span><br><span class="line">    mov ax,data2</span><br><span class="line">    mov ds,ax          ;DS 对应 data2</span><br><span class="line">    mov var2,bl</span><br><span class="line">    ;</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p>如果频繁地使用上面的方法交叉访问两个数据段中的数据，这样不仅很麻烦，而且程序也会变得冗长。为了解决这个问题，编译器设计了段组的概念，让多个不同的段作为一个段来处理。<br>伪指令 GROUP 用于把源程序模块中若干不同名的段集合成一个组，并且赋予了一个组名。它的格式如下：</p>
+<blockquote>
+<p>组名 GROUP 段名[,段名……]</p>
+</blockquote>
+<p>其中，段名与段名之间用逗号隔开，段名也可由表达式 “SEG 变量” 或者表达式 “SEG 标号” 代替。</p>
+<p>例6：段组演示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-4a.asm</span><br><span class="line">;功能：演示段组的使用</span><br><span class="line">Dsls2 group data1,data2</span><br><span class="line">assume cs:code,ds:Dsls2</span><br><span class="line"></span><br><span class="line">data1 segment</span><br><span class="line">var1 db ?</span><br><span class="line">data1 ends</span><br><span class="line"></span><br><span class="line">data2 segment</span><br><span class="line">var2 db ?</span><br><span class="line">data2 ends</span><br><span class="line"></span><br><span class="line">code segment para public</span><br><span class="line">start:</span><br><span class="line">    mov ax,Dsls2</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov bl,var1</span><br><span class="line">    ;..........</span><br><span class="line">    mov var2,bl</span><br><span class="line">    ;..........</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p>组名表示组，也代表组的起始地址。组名的使用和段名使用类似。段组名也可以使用在 ASSUME 语句中，表示使用某个段寄存器与某个段组相对应。<br>在定义段组后，段组内各段所定义的所有标号和变量除与定义它们的段起始点相关外还与组的起始地址相关。如果在 ASSUME 伪指令中使段寄存器与组内某个段对应，那么有关标号或变量就相对于改段的起始点计算。所以在使用段组后，程序员要谨慎地使用 ASSUME 伪指令，并保证具体置入段寄存器的值与之相适应。</p>
+<p>例7：如下程序说明了如何把变量作为组的成员访问和把变量仅作为段内的成员访问。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-5.asm</span><br><span class="line">;功能：略</span><br><span class="line">dgroup group cseg,dseg</span><br><span class="line">assume cs:cseg,ds:dgroup</span><br><span class="line"></span><br><span class="line">cseg segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,dgroup</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov bl,var1     ;作为组内成员访问</span><br><span class="line">    mov var2,bl</span><br><span class="line">    ;</span><br><span class="line">    assume ds:dseg  ;使DS与段DSEG对应</span><br><span class="line">    mov ax,dseg</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov bh,var1</span><br><span class="line">    mov var2,bh</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">cseg ends</span><br><span class="line"></span><br><span class="line">dseg segment    ;数据段</span><br><span class="line">var1 db &#x27;A&#x27;</span><br><span class="line">var2 db &#x27;B&#x27;</span><br><span class="line">dseg ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p>如果要用运算符 OFFSET 得到在段组内某个段中定义的标号或变量相对于段起始点的偏移，那么必须在标号或变量前再加上组名。例如：</p>
+<blockquote>
+<p>MOV DX,OFFSET DGROUP VAR1</p>
+</blockquote>
+<p>否则，只能得到相对于所在段起始点的偏移。</p>
+<h1 id="段的简化定义"><a href="#段的简化定义" class="headerlink" title="段的简化定义"></a>段的简化定义</h1><p>完整的段定义使得程序员可以完全控制段，但较为复杂。新版汇编语言提供了段的简化定义方法，从而使得程序员能方便地定义段。</p>
+<h2 id="存储模型说明伪指令"><a href="#存储模型说明伪指令" class="headerlink" title="存储模型说明伪指令"></a>存储模型说明伪指令</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/197836820-1c9bf462-4dc8-4e83-9705-18017ee45707.png"
+                      alt="12"
+                ></p>
+<h2 id="简化地段定义伪指令"><a href="#简化地段定义伪指令" class="headerlink" title="简化地段定义伪指令"></a>简化地段定义伪指令</h2><h3 id="简化地段定义伪指令-1"><a href="#简化地段定义伪指令-1" class="headerlink" title="简化地段定义伪指令"></a>简化地段定义伪指令</h3><p>简化地段定义伪指令均以 “点号” 引导。</p>
+<p>（1） 定义代码段伪指令</p>
+<blockquote>
+<p>.code</p>
+</blockquote>
+<p>例1：写一个使系统喇叭发出 “嘟” 的程序。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-6.asm</span><br><span class="line">;功能：略</span><br><span class="line"></span><br><span class="line">.model small    ;采用小模型</span><br><span class="line">.code           ;说明代码段开始</span><br><span class="line">start:</span><br><span class="line">    mov dl,7</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">    end start   ;结束代码段</span><br></pre></td></tr></table></figure>
+
+<p>（2）定义堆栈段的伪指令</p>
+<blockquote>
+<p>.stack [大小]</p>
+</blockquote>
+<p>[大小] 表示字节大小，默认是 1024 字节。</p>
+<p>（3）定义数据段伪指令</p>
+<blockquote>
+<p>.data</p>
+</blockquote>
+<p>例2：利用简化段定义指令改写 T8-1a.asm</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-1b.asm</span><br><span class="line">;功能：略</span><br><span class="line">    .model small</span><br><span class="line">    .stack 1024</span><br><span class="line">    .data</span><br><span class="line">mess db &#x27;HELLO&#x27;,0dh,0ah,&#x27;$&#x27;</span><br><span class="line">    .code</span><br><span class="line">start:</span><br><span class="line">    mov ax,dgroup</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov dx,offset mess</span><br><span class="line">    mov ah,9</span><br><span class="line">    int 21h</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+<p>在一个源程序模块中可以定义多个由伪指令 .data 开始的数据段，如同一个源程序中定义多个同名的数据段。<br>此外，还有伪指令 .data? 和 .const ，它们分别表示未初始化数据段和常量数据段。写纯粹的汇编程序时一般不使用这两条伪指令，因为 .data 中可以定义未初始化数据和常量数据。<br>宏汇编程序会自动把 .data、.const、.data?、.stack集合成一个段组。为了使这些段相互独立可以使用伪指令 .fardata 来实现。</p>
+<p>（4）定义远程（独立）数据段的伪指令</p>
+<blockquote>
+<p>fardata [名字]</p>
+</blockquote>
+<p>“名字”时可选的，如果使用，则成就为该数据段的段名。</p>
+<p>此外，还有伪指令 .fardata? 用于说明未初始化的独立数据段。在编写纯粹汇编程序时，无需使用 .fardata 伪指令，因为 .fardata 也可以定义未初始化数据。</p>
+<h3 id="缺省段名"><a href="#缺省段名" class="headerlink" title="缺省段名"></a>缺省段名</h3><p>在使用简化定义伪指令说明各段后，程序员一般不需要这些段的段名和它们的定位类型、组合类型等。但如果想把简化的段定义伪指令与标准的段定义伪指令混合使用，那么就需要直到以下内容。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/198054106-38559570-473d-4f96-8a99-cc11b24f0e6d.png"
+                      alt="13"
+                ></p>
+<h2 id="存储模型说明伪指令的隐含动作"><a href="#存储模型说明伪指令的隐含动作" class="headerlink" title="存储模型说明伪指令的隐含动作"></a>存储模型说明伪指令的隐含动作</h2><h3 id="隐含的段组和段设定"><a href="#隐含的段组和段设定" class="headerlink" title="隐含的段组和段设定"></a>隐含的段组和段设定</h3><p>存储模型说明伪指令 .module 除了说明程序采用的存储模型外，还起着相当于如下的作用：</p>
+<blockquote>
+<p>dgroup group data,const,bbs,stack<br>assume cs:_text,ds:dgroup,ss:dgroup</p>
+</blockquote>
+<p>由于 .module 的上述隐含动作，所以在使用伪指令 .module 后，可以直接引用段组 dgroup。而且大多数情况下也可以不使用伪指令 ASSUME。<br>但是少数情况下，程序仍需要安排 assume 语句来指示段寄存器与段的对应关系。我们可以使用如下方式来指示段寄存器与段的对应关系：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/198059840-b2a8bd3f-b6c8-4f82-8a8b-d3d877dbc5be.png"
+                      alt="14"
+                ></p>
+<h3 id="有关的预定义符"><a href="#有关的预定义符" class="headerlink" title="有关的预定义符"></a>有关的预定义符</h3><p>在上述程序片段中使用的符号 @code 等是汇编程序提供的若干预定义符。它们类似于用伪指令 EQU 所定义的符号。与简化的段定义伪指令相关的一些预定义符号有：</p>
+<ol>
+<li>符号 @code 代表代码段的段名</li>
+<li>符号 @data 表示由 .data 和 .stack 段等集合而成段组的组名</li>
+<li>符号 @fardata 表示独立数据段的段名</li>
+</ol>
+<h1 id="模块间的通信"><a href="#模块间的通信" class="headerlink" title="模块间的通信"></a>模块间的通信</h1><p>一个程序的若干模块在功能上是有联系的，不仅程序的运行次序可能要从一个模块转到另一个模块，而且程序处理数据和变量也会涉及不同的模块。以下介绍这方面的使用。</p>
+<h2 id="伪指令-PUBLIC-和伪指令-EXTRN"><a href="#伪指令-PUBLIC-和伪指令-EXTRN" class="headerlink" title="伪指令 PUBLIC 和伪指令 EXTRN"></a>伪指令 PUBLIC 和伪指令 EXTRN</h2><p>由于各模块被单独汇编，所以，如果模块A要访问其他模块的过程或变量，那么模块A必须告诉汇编程序这个符号名（标识符）在别的模块中，而别的模块也要告知汇编程序，这个模块是提供给其他模块使用的。<br>伪指令 EXTRN 和伪指令 PUBLIC 就是分别用于通知汇编程序上述信息。</p>
+<h3 id="伪指令-PUBLIC"><a href="#伪指令-PUBLIC" class="headerlink" title="伪指令 PUBLIC"></a>伪指令 PUBLIC</h3><p>伪指令 PUBLIC 用于声明在当前模块内定义的魔偶写标识符是公共标识符。它的一般格式如下：</p>
+<blockquote>
+<p>PUBLIC 标识符 [,标识符…]</p>
+</blockquote>
+<p>一条 PUBLIC 语句可声明多个这样的标识符，标识符之间用逗号隔开。一个源程序可以有多个 PUBLIC 语句。数据变量名和程序标号（包括过程名）均可声明为标识符。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/198072456-68af0bcb-4cbc-41b9-abc3-e285bcf9c294.png"
+                      alt="15"
+                ></p>
+<h3 id="伪指令-EXTRN"><a href="#伪指令-EXTRN" class="headerlink" title="伪指令 EXTRN"></a>伪指令 EXTRN</h3><p>伪指令 EXTRN 用于声明当前模块使用的哪些标志是在其他模块中定义的。它的一般格式如下：</p>
+<blockquote>
+<p>EXTRN 标识符:类型 [,标识符:类型,…]</p>
+</blockquote>
+<p>上述语句中位于助记符 EXTRN 后的每一项 “标识符:类型” 声明一个在其他模块内定义的标识符。标识符和类型之间用冒号隔开。类型可以是NEAR、FAR、BYTE、WORD、DWORD等标识符类型属性。<br>一条 EXTRN 语句可声明多个这样的标识符，每项之间用逗号分隔。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/198083772-493106a6-1047-4412-8bd6-3617984a0dbc.png"
+                      alt="16"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/198083848-61d0464d-caea-4bae-8721-42e03108790d.png"
+                      alt="17"
+                ></p>
+<h3 id="声明一致性"><a href="#声明一致性" class="headerlink" title="声明一致性"></a>声明一致性</h3><p>各模块内的 PUBLIC 语句和 EXTRN 语句必须相互呼应，相互一致。而且所指明的类型也必须一致。否则 link 时出现错误。</p>
+<h2 id="模块间的转移"><a href="#模块间的转移" class="headerlink" title="模块间的转移"></a>模块间的转移</h2><p>模块间的转移是指从一个模块的某个代码段转移到另一个模块的某个代码段。这种转移通常是以过程调用及返回形式出现。<br>若两个模块涉及转移的代码段在连接后不能组合为一个代码段，那么发生在这两个代码段之间的转移必须是段间转移，所以模块间的转移就称为远调用或远转移。<br>由于近调用或近转移的效率比原调用或远转移的效率高，所以程序员一般喜欢近调用或近转移。但是并非任何时候都能这样，因为分布在不同源程序模块中的代码段在连接时能被组合为一个段是有条件的，它们的段名及其类别必须相同，而且段组合类型也应为 PUBLIC。在实际编程时，不同的模块往往由不同的人员完成，所以很难做到段同名。为了避免考虑不同模块中的代码是否能组合成一个段，反而常常采用远调用或远转移。</p>
+<p>例3：演示模块的转移</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-7.asm</span><br><span class="line">;功能：演示模块间的转移</span><br><span class="line"></span><br><span class="line">assume cs:cseg</span><br><span class="line">    extrn sub1:far</span><br><span class="line">cseg segment para public &#x27;code&#x27;</span><br><span class="line">start:</span><br><span class="line">    call far ptr sub1</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">cseg ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-7ma.asm</span><br><span class="line">;功能：作为T8-7的模块</span><br><span class="line"></span><br><span class="line">assume cs:text</span><br><span class="line">    public sub1</span><br><span class="line">    extrn sub2:near</span><br><span class="line">text segment para public &#x27;code&#x27;</span><br><span class="line">sub1 proc far</span><br><span class="line">    mov dl,&#x27;*&#x27;</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    call sub2</span><br><span class="line">    ret</span><br><span class="line">sub1 endp</span><br><span class="line">text ends</span><br><span class="line">    end</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-7mb.asm</span><br><span class="line">;功能：作为T8-7的一个模块</span><br><span class="line">assume cs:text</span><br><span class="line">    public sub2</span><br><span class="line">text segment para public &#x27;code&#x27;</span><br><span class="line">sub2 proc near</span><br><span class="line">    mov dl,&#x27;+&#x27;</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    ret</span><br><span class="line">sub2 endp</span><br><span class="line">text ends</span><br><span class="line">    end</span><br></pre></td></tr></table></figure>
+
+<p>由于模块 T8-7.asm 和 T8-7ma.asm 两个代码段不同名，所以连接时不能组合成一个短，因此过程 SUB2 被定义为远过程；由于 T8-7ma.asm 和 T8-7mb.asm 中的两个代码段的段名和段类别同名，且组合类型时 PUBLIC，所以，在连接时它们能被组合成一个段。再由于，只有过程 SUB1 调用过程 SUB2，即只有段内调用，因此过程 SUB2 才被定义为近过程，再模块中也相应地声明为 NEAR 类型。</p>
+<p>采用简化的段定义可避免考虑段名是否相同，把有关问题留给汇编程序解决。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-7A.asm</span><br><span class="line">;功能：简化段定义改写 T8-7.asm</span><br><span class="line">    extrn sub1:far</span><br><span class="line">    .model small</span><br><span class="line"></span><br><span class="line">    .code</span><br><span class="line">start:</span><br><span class="line">    call far ptr sub1</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-7Ama.asm</span><br><span class="line">;功能：</span><br><span class="line"></span><br><span class="line">    public sub1</span><br><span class="line">    extrn sub2:near</span><br><span class="line">    .model small</span><br><span class="line">    .code</span><br><span class="line">sub1 proc</span><br><span class="line">    mov dl,&#x27;*&#x27;</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    call sub2</span><br><span class="line">    ret</span><br><span class="line">sub1 endp</span><br><span class="line">    end</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-7Amb.asm</span><br><span class="line">;功能：</span><br><span class="line"></span><br><span class="line">    public sub2</span><br><span class="line">    .model small</span><br><span class="line">    .code</span><br><span class="line">sub2 proc near</span><br><span class="line">    mov dl,&#x27;+&#x27;</span><br><span class="line">    mov ah,2</span><br><span class="line">    int 21h</span><br><span class="line">    ret</span><br><span class="line">sub2 endp</span><br><span class="line">    end</span><br></pre></td></tr></table></figure>
+
+<p>由于三个模块均是 small 模型，所以连接后的代码在一个段内，因此 SUB1 和 SUB2 均被作为近过程对待。</p>
+<h2 id="模块间的信息传递"><a href="#模块间的信息传递" class="headerlink" title="模块间的信息传递"></a>模块间的信息传递</h2><p>模块间的信息传递主要表现为模块间过程调用时的参数传递。当有少量参数传递时一般使用寄存器传递，当有大量的参数传递时通常会利用堆栈来传参。<br>如果要利用约定的存储单元传递参数，情形稍微复杂些，需要把它们声明为公共标识符。</p>
+<p>例5：写一个显示 DOS 版本号的程序。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-8.asm</span><br><span class="line">;功能：演示模块间利用寄存器和约定存储单元传递信息</span><br><span class="line">assume cs:cseg,ds:dseg</span><br><span class="line"></span><br><span class="line">dseg segment public &#x27;DATA&#x27;</span><br><span class="line">MESS db &#x27;DOS Version is &#x27;</span><br><span class="line">MESS1 db ?</span><br><span class="line">      db &#x27;.&#x27;</span><br><span class="line">MESS2 DB 2 dup(?)</span><br><span class="line">      db 0dh,0ah,&#x27;$&#x27;</span><br><span class="line">VERM db 0</span><br><span class="line">VERN db 0</span><br><span class="line">dseg ends</span><br><span class="line"></span><br><span class="line">;声明 VERM和VERN是公共标识符</span><br><span class="line">public verm,vern</span><br><span class="line">;声明 GETVER 和 TODASC 在其他模块定义</span><br><span class="line">extrn getver:FAR,todasc:FAR</span><br><span class="line"></span><br><span class="line">cseg segment public &#x27;code&#x27;</span><br><span class="line">start:</span><br><span class="line">    mov ax,dseg</span><br><span class="line">    mov ds,ax</span><br><span class="line">    ;</span><br><span class="line">    call getver ;获取 DOS 版本号</span><br><span class="line">    ;</span><br><span class="line">    mov al,verm</span><br><span class="line">    mov bx,length MESS1     ;返回mess1重复操作符dup前的count值</span><br><span class="line">    mov si,offset MESS1</span><br><span class="line">    call todasc             ;把主版本号转换成可显形式</span><br><span class="line">    mov al,vern</span><br><span class="line">    mov bx,length MESS2</span><br><span class="line">    call todasc             ;把次版本号转换成可显形式</span><br><span class="line">    mov dx,offset MESS</span><br><span class="line">    mov ah,9</span><br><span class="line">    int 21h</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">cseg ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-8ma.asm</span><br><span class="line">;功能：作为程序T8-8的模块</span><br><span class="line">assume cs:func</span><br><span class="line">    ;声明GETVER和TODASC为公共标识符</span><br><span class="line">    public getver,todasc</span><br><span class="line">    ;声明VERM和VERN在其他模块定义</span><br><span class="line">    extrn verm:byte,vern:byte</span><br><span class="line">    ;</span><br><span class="line">func segment public &#x27;code&#x27;  ;定义代码段</span><br><span class="line">;子程序名：getver</span><br><span class="line">;功能：获取DOS版本号</span><br><span class="line">;入口参数：无</span><br><span class="line">;出口参数：在其他模块的VERM单元中存放主板号</span><br><span class="line">;在其他模块的VERN单元中存放次版本号</span><br><span class="line">;说明远过程</span><br><span class="line">getver proc far</span><br><span class="line">    mov ah,30h</span><br><span class="line">    int 21h</span><br><span class="line">    mov verm,al    ;al=主版本号</span><br><span class="line">    mov vern,ah    ;ah=次版本号</span><br><span class="line">    ret</span><br><span class="line">getver endp</span><br><span class="line"></span><br><span class="line">;</span><br><span class="line">;子程序名：todasc</span><br><span class="line">;功能：把一个8位的二进制数转换成相应十进制数的ASCII码串</span><br><span class="line">;入口参数：AL=欲转换成的二进制数，BX=十进制数的最少位数</span><br><span class="line">;DS:SI=存放ASCII码串的缓冲区首地址</span><br><span class="line">;出口参数,ASCII码串在相应的缓冲区中</span><br><span class="line">todasc proc far</span><br><span class="line">    mov cl,10</span><br><span class="line">todasc1:</span><br><span class="line">    xor ah,ah</span><br><span class="line">    div cl</span><br><span class="line">    add ah,30h</span><br><span class="line">    mov [si+bx-1],ah</span><br><span class="line">    dec bx</span><br><span class="line">    jnz todasc1</span><br><span class="line">    ret</span><br><span class="line">todasc endp</span><br><span class="line">func ends</span><br><span class="line">    end</span><br></pre></td></tr></table></figure>
+<p>正确设置数据段或附加段寄存器是模块正确传递信息的保证。在访问定义在其他模块的变量前，必须保证已设置好相应的段寄存器。如有必要还可以动态地改变段寄存器的内容。<br>模块间传递信息的另一种方法是利用段覆盖，这个方法只适用于模块间的信息传递。<br>具体方法是：在两个模块中都定义一个同名同类别的数据段，规定段组合类型是 COMMON；把要传递的数据（变量）安排在这两个数据段的相同位置上。由于这两个在不同模块中的数据段同名同类别，且使用组合类型 COMMON，所以连接时它们就发生重叠。</p>
+<p>例6：写一个显示当前系统日期的程序。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">;为了简单化，显示的日期只含月和日。主模块有一个代码段和一个数据段，子模块也有一个代码啊段和一个数据段</span><br><span class="line">;程序名：T8-9.asm</span><br><span class="line">;功能：演示利用段覆盖方法在模块间传递信息</span><br><span class="line">assume cs:cseg,ds:dseg</span><br><span class="line">    extrn getdate:far   ;声明getdata在其他模块定义</span><br><span class="line">;</span><br><span class="line">dseg segment common     ;定义一个具有common类型的数据段</span><br><span class="line">mess db &#x27;Current data is&#x27;</span><br><span class="line">mess1 db 2 dup(?)</span><br><span class="line">      db &#x27;_&#x27;</span><br><span class="line">mess2 db 2 dup(?)</span><br><span class="line">      db 0dh,0ah,24h</span><br><span class="line">dseg ends</span><br><span class="line"></span><br><span class="line">cseg segment public</span><br><span class="line">start:</span><br><span class="line">    mov ax,dseg</span><br><span class="line">    mov ds,ax</span><br><span class="line">    call getdate    ;调用GETDATA取日期</span><br><span class="line">    mov dx,offset mess</span><br><span class="line">    mov ah,9</span><br><span class="line">    int 21h</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">cseg ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">;模块名：T8-9ma.asm</span><br><span class="line">;功能：作为T8-9的一部分</span><br><span class="line"></span><br><span class="line">public getdate  ;声明getdata作为公共标识符</span><br><span class="line">;</span><br><span class="line">dseg segment common     ;定义一个具有common类型的数据段</span><br><span class="line">    mess db &#x27;Currect date is:&#x27;</span><br><span class="line">    mess1 db 2 dup(?)</span><br><span class="line">          db &#x27;_&#x27;</span><br><span class="line">    mess2 db 2 dup(?)</span><br><span class="line">          db 0dh,0ah,24h    ;这部分数据与模块T8-9中完全相同</span><br><span class="line">    year dw ?</span><br><span class="line">    month db ?</span><br><span class="line">    day db ?</span><br><span class="line">dseg ends</span><br><span class="line"></span><br><span class="line">cseg segment byte public    ;定义代码段</span><br><span class="line">    assume cs:cseg,ds:dseg</span><br><span class="line">;子程序名：getdate</span><br><span class="line">;功能：取得当前日期并把月日转换成相应的十进制数ASCII码串</span><br><span class="line">;入口参数：无</span><br><span class="line">;出口参数：ASCII码串填入约定缓冲区</span><br><span class="line">;说明：远过程</span><br><span class="line"></span><br><span class="line">getdate proc far</span><br><span class="line">    mov ah,2ah</span><br><span class="line">    int 21h</span><br><span class="line">    mov year,cx</span><br><span class="line">    mov month,dh</span><br><span class="line">    mov day,dl</span><br><span class="line">    mov al,month</span><br><span class="line">    mov bx,length mess1 ;把月数转换成十进制数ASCII码串</span><br><span class="line">    mov si,offset mess1</span><br><span class="line">    call todasc</span><br><span class="line">    mov al,day</span><br><span class="line">    mov bx,length mess2 ;把日数转换成十进制数ASCII码串</span><br><span class="line">    mov si,offset mess2</span><br><span class="line">    call todasc</span><br><span class="line">    ret</span><br><span class="line">getdate endp</span><br><span class="line"></span><br><span class="line">;子程序名：todasc</span><br><span class="line">;功能：把一个8位的二进制数转换成相应十进制数的ASCII码串</span><br><span class="line">;入口参数：AL=欲转换成的二进制数，BX=十进制数的最少位数</span><br><span class="line">;DS:SI=存放ASCII码串的缓冲区首地址</span><br><span class="line">;出口参数,ASCII码串在相应的缓冲区中</span><br><span class="line">todasc proc near</span><br><span class="line">    mov cl,10</span><br><span class="line">todasc1:</span><br><span class="line">    xor ah,ah</span><br><span class="line">    div cl</span><br><span class="line">    add ah,30h</span><br><span class="line">    mov [si+bx-1],ah</span><br><span class="line">    dec bx</span><br><span class="line">    jnz todasc1</span><br><span class="line">    ret</span><br><span class="line">todasc endp</span><br><span class="line">cseg ends</span><br><span class="line">    end</span><br></pre></td></tr></table></figure>
+<p>模块 T8-9ma.asm 中的数据段比 T8-9.asm 中的数据段多了若干变量，在段覆盖时，以最长的段为段的实际长度。但必须注意，要传递的数据变量必须安排在相同的位置。由于模块 T8-9ma.asm 中含有要访问的数据段，所以过程 GETDATE 能够随便地访问呢想要访问地对象。</p>
+<h1 id="子程序库"><a href="#子程序库" class="headerlink" title="子程序库"></a>子程序库</h1><p>子程序库是子程序模块的集合。库文件中存放着子程序的名称。，子程序的目标代码，以及连接过程所必须的重定位信息。当目标文件与库文件连接时，LINK 程序只把目标文件所需的子程序从库中找出来，并嵌入到最终的可执行程序中去，而不是把库内的全部子程序统统嵌入到可执行程序。</p>
+<h2 id="建立子程序库"><a href="#建立子程序库" class="headerlink" title="建立子程序库"></a>建立子程序库</h2><p>为了给调用者提供方便，库中的子程序应该提供统一的调用方法，所以需要遵循如下约定：<br>（1）参数传递方式保持统一。<br>（2）过程类型保持相同，要么都是远过程，要么都是近过程。请特别注意，如果过程类型选择 NEAR，那么必须保证连接时调用者所在段能与子程序所在段组合成一个段，为此，调用者所在的段名和类别应该与子程序所在段的段名和类别相同，且组合类型同为 PUBLIC。<br>（3）采用一致的寄存器保护措施和可能需要的堆栈平衡措施。<br>（4）子程序名称规范。</p>
+<p>建立子程序库的一般步骤如下：<br>（1）确定库所含子程序的范围，即库准备包含哪些子程序。<br>（2）确定参数传递方法<br>（3）确定子程序类型，还确定子程序所在段的段名、定位类型、组合类型和类别。<br>（4）确定寄存器保护措施等其他内容<br>（5）利用专门的库管理工具程序，把经过调试的子程序目标模块逐一加入到库中。</p>
+<p>例1：编写一个把二进制数转换为对应十进制数 ASCII 码串的子程序，并把它添加到 BDHL.LIB 的库中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8L1.asm</span><br><span class="line">;功能：略</span><br><span class="line">    public bdascs   ;声明bdascs为公共表示符</span><br><span class="line">    .model small</span><br><span class="line">    .code</span><br><span class="line">;子程序名：bdascs</span><br><span class="line">;功能：略</span><br><span class="line">;入口参数：AX=欲转换的二进制数</span><br><span class="line">;    DS:DX=缓冲区首地址</span><br><span class="line">;出口参数：略</span><br><span class="line">;说明：(1) 远过程</span><br><span class="line">;      (2) 缓冲区至少长5个字节</span><br><span class="line">bdascs proc far</span><br><span class="line">    push si</span><br><span class="line">    mov si,dx</span><br><span class="line">    mov cx,5</span><br><span class="line">    mov bx,10</span><br><span class="line">@@1:</span><br><span class="line">    xor dx,dx</span><br><span class="line">    div bx</span><br><span class="line">    add dl,30h</span><br><span class="line">    mov [si+4],dl</span><br><span class="line">    dec si</span><br><span class="line">    loop @@1</span><br><span class="line">    pop si</span><br><span class="line">    ret</span><br><span class="line">bdascs endp</span><br><span class="line">    end</span><br></pre></td></tr></table></figure>
+
+<p>利用如下命令汇编目标模块</p>
+<blockquote>
+<p>masm T8L1<br>link BDHL.LIB+T8L1</p>
+</blockquote>
+<p>例2：编写一个把二进制数转换为对应十六进制数 ASCII 码串的子程序，并添加到名为 BDHL.LIB 的库中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8L2.asm</span><br><span class="line">;功能：略</span><br><span class="line">public BHASCS   ;声明BHASCS是公共标识符</span><br><span class="line">    .model small</span><br><span class="line">    .code       ;代码段开始</span><br><span class="line">    ;先定义一个内部使用的过程（i主程序说明信息等）</span><br><span class="line">HTOASC proc near</span><br><span class="line">    and al,0fh</span><br><span class="line">    add al,90h</span><br><span class="line">    daa</span><br><span class="line">    adc al,40h</span><br><span class="line">    daa</span><br><span class="line">    ret</span><br><span class="line">HTOASC endp</span><br><span class="line">;</span><br><span class="line">;子程序名：BHASCS</span><br><span class="line">;功能：略</span><br><span class="line">;入口参数：AX=欲转换的二进制数</span><br><span class="line">;   DS:DX=缓冲区首地址</span><br><span class="line">;出口参数：略</span><br><span class="line">;说明：(1)远过程</span><br><span class="line">;      (2)缓冲区至少长4个字节</span><br><span class="line">BHASCS proc far</span><br><span class="line">    push di</span><br><span class="line">    push es</span><br><span class="line">    cld</span><br><span class="line">    push DS</span><br><span class="line">    pop es</span><br><span class="line">    mov di,dx</span><br><span class="line">    mov cx,404h</span><br><span class="line">@@1:</span><br><span class="line">    rol ax,cl</span><br><span class="line">    mov dx,ax</span><br><span class="line">    call HTOASC</span><br><span class="line">    STOSB</span><br><span class="line">    mov ax,dx</span><br><span class="line">    dec ch</span><br><span class="line">    jnz @@1</span><br><span class="line">    pop es</span><br><span class="line">    pop di</span><br><span class="line">    ret</span><br><span class="line">BHASCS endp</span><br><span class="line">    end</span><br></pre></td></tr></table></figure>
+
+<p>汇编目标模块</p>
+<blockquote>
+<p>masm T8L2<br>link BDHL.LIB+T8L2</p>
+</blockquote>
+<p>例3：写一个显示 16H 号中断向量的程序。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-10.asm</span><br><span class="line">;功能：略</span><br><span class="line">vector = 16h</span><br><span class="line">    .model small</span><br><span class="line">    .stack 1024</span><br><span class="line">    .data</span><br><span class="line">MESS label byte</span><br><span class="line">MESS1 db 4 dup(0)</span><br><span class="line">    DB &#x27;:&#x27;</span><br><span class="line">MESS2 DB 4 dup(0)</span><br><span class="line">      db 0dh,0ah,24h</span><br><span class="line">      .code</span><br><span class="line">      extrn BHASCS:far  ;类型为far，但认为在相同段内</span><br><span class="line">start:mov ax,@data</span><br><span class="line">      mov ds,ax     ;设置数据段寄存器</span><br><span class="line">      mov ah,35h</span><br><span class="line">      mov al,vector</span><br><span class="line">      int 21h       ;返回中断向量于 ES:BX 中</span><br><span class="line">      push BX       ;保存中断向量中的偏移部分</span><br><span class="line">      mov ax,ES     ;先转换中断向量的段值部分</span><br><span class="line">      mov dx,offset MESS1</span><br><span class="line">      call far ptr BHASCS   ;转换</span><br><span class="line">      pop ax                ;中断向量的偏移部分送AX</span><br><span class="line">      mov DX,OFFSET MESS2</span><br><span class="line">      call far ptr BHASCS</span><br><span class="line">      mov dx,offset MESS</span><br><span class="line">      mov ah,9              ;显示中断向量表</span><br><span class="line">      int 21h</span><br><span class="line">      mov ax,4c00h</span><br><span class="line">      int 21h</span><br><span class="line">      end start</span><br></pre></td></tr></table></figure>
+
+<p>汇编目标模块</p>
+<blockquote>
+<p>masm T8-10<br>link T8-10+BDHL.LIB</p>
+</blockquote>
+<p>例4：写一个显示系统常规内存量的程序。<br>系统常规内存量放在内存单元 40:13H 的字单元中，以 KB 为单位。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">;程序名：T8-11.asm</span><br><span class="line">;功能：略</span><br><span class="line">extrn BDASCS:far    ;认为BDASCS不在相同段内</span><br><span class="line">sseg segment stack &#x27;STACK&#x27;  ;定义堆栈段</span><br><span class="line">    db 400h dup(0)</span><br><span class="line">sseg ends</span><br><span class="line"></span><br><span class="line">;</span><br><span class="line">cseg segment public     ;数据代码合为一段</span><br><span class="line">MESS db &#x27;Total = &#x27;</span><br><span class="line">MESS1 db 5 dup(0)</span><br><span class="line">      db &#x27;KB&#x27;,0dh,0ah,24h</span><br><span class="line">      assume cs:cseg,ds:cseg  ;段寄存器使用设定</span><br><span class="line">start:push cs</span><br><span class="line">      pop ds</span><br><span class="line">      mov ax,40h</span><br><span class="line">      mov es,ax</span><br><span class="line">      mov ax,es:[13h]   ;取常规内存量</span><br><span class="line">      mov dx,offset MESS1</span><br><span class="line">      call BDASCS</span><br><span class="line">      mov dx,offset MESS</span><br><span class="line">      mov ah,9</span><br><span class="line">      int 21h</span><br><span class="line">      mov ax,4c00h</span><br><span class="line">      int 21h</span><br><span class="line">cseg ends</span><br><span class="line">    end start</span><br></pre></td></tr></table></figure>
+
+<p>汇编目标模块</p>
+<blockquote>
+<p>masm T8-11<br>link T8-11+BDHL.LIB</p>
+</blockquote>
+<blockquote>
+<p><strong>至此8086汇编学习结束，后续学习 80386 汇编的同时，8086汇编中各章节练习题也会慢慢补上。</strong></p>
+</blockquote>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：8086汇编-模块化程序设计</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2022-10-23 18:53:00</li>
+        <li>
+            本文链接：https://9unkk.github.io/2022/10/23/8086-hui-bian-mo-kuai-hua-cheng-xu-she-ji-ji-zhu/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2022/11/03/80386-hui-bian-hui-bian-yu-yan-ji-chu/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">80386汇编-汇编语言基础</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2022/10/18/8086-hui-bian-gao-ji-hui-bian-yu-yan-ji-zhu/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">8086汇编-高级汇编语言技术</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%AE%B5%E7%9A%84%E5%AE%8C%E6%95%B4%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">段的完整定义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E7%9A%84%E6%AE%B5%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">完整的段定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E6%A0%BC%E5%BC%8F%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.1.</span> <span class="nav-text">一般格式定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%BD%8D%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.1.2.</span> <span class="nav-text">定位类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84%E5%90%88%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.1.3.</span> <span class="nav-text">组合类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E5%88%AB"><span class="nav-number">1.1.4.</span> <span class="nav-text">类别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%A0%86%E6%A0%88%E7%9A%84%E8%AF%B4%E6%98%8E"><span class="nav-number">1.2.</span> <span class="nav-text">关于堆栈的说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AE%B5%E7%BB%84%E7%9A%84%E8%AF%B4%E6%98%8E%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">段组的说明和使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%AE%B5%E7%9A%84%E7%AE%80%E5%8C%96%E5%AE%9A%E4%B9%89"><span class="nav-number">2.</span> <span class="nav-text">段的简化定义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B%E8%AF%B4%E6%98%8E%E4%BC%AA%E6%8C%87%E4%BB%A4"><span class="nav-number">2.1.</span> <span class="nav-text">存储模型说明伪指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8C%96%E5%9C%B0%E6%AE%B5%E5%AE%9A%E4%B9%89%E4%BC%AA%E6%8C%87%E4%BB%A4"><span class="nav-number">2.2.</span> <span class="nav-text">简化地段定义伪指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8C%96%E5%9C%B0%E6%AE%B5%E5%AE%9A%E4%B9%89%E4%BC%AA%E6%8C%87%E4%BB%A4-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">简化地段定义伪指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%9C%81%E6%AE%B5%E5%90%8D"><span class="nav-number">2.2.2.</span> <span class="nav-text">缺省段名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B%E8%AF%B4%E6%98%8E%E4%BC%AA%E6%8C%87%E4%BB%A4%E7%9A%84%E9%9A%90%E5%90%AB%E5%8A%A8%E4%BD%9C"><span class="nav-number">2.3.</span> <span class="nav-text">存储模型说明伪指令的隐含动作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%90%E5%90%AB%E7%9A%84%E6%AE%B5%E7%BB%84%E5%92%8C%E6%AE%B5%E8%AE%BE%E5%AE%9A"><span class="nav-number">2.3.1.</span> <span class="nav-text">隐含的段组和段设定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E5%85%B3%E7%9A%84%E9%A2%84%E5%AE%9A%E4%B9%89%E7%AC%A6"><span class="nav-number">2.3.2.</span> <span class="nav-text">有关的预定义符</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1"><span class="nav-number">3.</span> <span class="nav-text">模块间的通信</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%AA%E6%8C%87%E4%BB%A4-PUBLIC-%E5%92%8C%E4%BC%AA%E6%8C%87%E4%BB%A4-EXTRN"><span class="nav-number">3.1.</span> <span class="nav-text">伪指令 PUBLIC 和伪指令 EXTRN</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%AA%E6%8C%87%E4%BB%A4-PUBLIC"><span class="nav-number">3.1.1.</span> <span class="nav-text">伪指令 PUBLIC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%AA%E6%8C%87%E4%BB%A4-EXTRN"><span class="nav-number">3.1.2.</span> <span class="nav-text">伪指令 EXTRN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-number">3.1.3.</span> <span class="nav-text">声明一致性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E9%97%B4%E7%9A%84%E8%BD%AC%E7%A7%BB"><span class="nav-number">3.2.</span> <span class="nav-text">模块间的转移</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E9%97%B4%E7%9A%84%E4%BF%A1%E6%81%AF%E4%BC%A0%E9%80%92"><span class="nav-number">3.3.</span> <span class="nav-text">模块间的信息传递</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%90%E7%A8%8B%E5%BA%8F%E5%BA%93"><span class="nav-number">4.</span> <span class="nav-text">子程序库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E5%AD%90%E7%A8%8B%E5%BA%8F%E5%BA%93"><span class="nav-number">4.1.</span> <span class="nav-text">建立子程序库</span></a></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

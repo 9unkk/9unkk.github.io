@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            80386汇编-基本概念 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">80386汇编-基本概念</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2022-10-09 21:53:00</span>
+        <span class="mobile">2022-10-09 21:53</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>8.3k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>29 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>80386 汇编的学习参考自 《Intel汇编语言程序设计（第五版）》，这本书中涉及到很多的概念但是都不深入，适合新手入门 80386 汇编。</p>
+<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><ul>
+<li>学习环境：MASM6.14.8444汇编器</li>
+<li>硬件环境：32位或64位机器</li>
+<li>操作系统：win7或win10</li>
+<li>工具软件：masm32</li>
+<li>16位实地址模式程序：可在MS-ODS或MS-Windows控制台窗口下运行。</li>
+<li>32位保护模式程序：所有Windows操作系统运行，更易于编写和理解，越来越像高级语言</li>
+<li>汇编语言与机器语言之间的关系：机器语言是一种数字语言，只有计算机的处理器（CPU）才能理解它。IA-32兼容处理器能够理解一种通用的机器语言。汇编语言由使用短助记符的语句构成，如ADD、MOV、SUB、CALL等。汇编语言与机器语言之间是一一对应的关系：一条汇编语言指令对应一条机器语言。</li>
+</ul>
+<h2 id="高级语言与汇编语言之间的关系"><a href="#高级语言与汇编语言之间的关系" class="headerlink" title="高级语言与汇编语言之间的关系"></a>高级语言与汇编语言之间的关系</h2><ul>
+<li><p>C++和Java等高级语言与汇编语言和机器语言之间是一对多的关系。简单来说就是一条高级语言可扩展为多条汇编语言。<br>例如：下面的C++语句执行两次算数运算并将结果赋给一个变量，假设其中的X和Y都是整数：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194808618-f70bff8d-6d38-4994-a56a-584a7dbefe85.png"
+                      alt="1"
+                ></p>
+</li>
+<li><p>可移植性<br>高级语言与汇编语言之间的一个重要的区别就是可移植性。例如，C++程序几乎能够在任何计算机上编译并运行，除非它引用了谋个擦欧总系统特有的库函数。Java语言一个最重要的特征就是编译好的Java程序几乎能够在任何计算机系统上运行。汇编语言是不可移植的，这是因为汇编语言总是为特定系列的处理器设计的。当今有多种广泛使用的不同的汇编语言，每种都基于特定系列的处理器。</p>
+</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/194809734-98a19c5c-873a-40e3-8556-a25d6bb05d24.png"
+                      alt="2"
+                ></p>
+<h1 id="虚拟机的概念"><a href="#虚拟机的概念" class="headerlink" title="虚拟机的概念"></a>虚拟机的概念</h1><h2 id="计算机程序的执行"><a href="#计算机程序的执行" class="headerlink" title="计算机程序的执行"></a>计算机程序的执行</h2><p>计算机能够执行机器语言写（0和1）的程序，这种语言的每条指令都简单到能够用相对较少的电路单元即可执行。这里把机器语言简称为L0。<br>程序员使用 L0 编程非常困难，因为要考虑非常底层、非常细微的地方，并且 L0 由纯粹的数字构成，如果能够构造一种更加易用的新语言 L1，那么程序就可以用 L1 来编写了。有这两种方法就可以达到这个目的。</p>
+<ul>
+<li>解释方式：当执行用 L1 语言编写的程序时，使用以 L0 语言编写的解释程序对 L1 程序的每一条指令解码并执行，这样 L1 程序马上就可以执行，但是每条指令在执行前都必须解码。</li>
+<li>翻译方式：用特别设计编写的 L0 程序将整个 L1 源程序翻译成 L0 程序，生成的 L0 程序就可以直接在计算机硬件上执行了。</li>
+</ul>
+<p>虚拟机：如下图所示，虚拟机 VM1 能够执行用 L1 语言写的指令，虚拟机 VM0 能够执行用 L0 语言书写的指令。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/198318860-e2150d31-ace8-4a82-93dd-04192c8e5cf0.png"
+                      alt="3"
+                ></p>
+<p>每台虚拟机都可以由硬件或软件构成。人们可以为虚拟机 VM1 编写程序，如果虚拟机 VM1 能够实现在真实的计算机硬件，程序就可以直接在硬件上执行了。初次之外，为 VM1 编写的程序也可以通过解释或翻译的方法在虚拟机 VM0 上执行。<br>机器 VM1 和 VM0 基本上应该是相同的，否则翻译和解释的过程将过于耗时。如果 VM1 支持的语言对于编写应用程序的程序员仍不够友好，那么就可以设计另外一个更容易理解的虚拟机 VM2。此过程可以不断重复，直到设计出一种虚拟机 VMn，它支持的语言功能强大并且易于使用。<br>JAVA 语言就是计语虚拟机的概念设计的，JAV 语言编写的程序由 JAVA 编译器翻译成 JAVA 字节码，后者是一种底层语言，可以由 JAVA 虚拟机（JVM）来快速执行。由于在许多不同的计算机上都实现了 JVM，使得 JAVA 程序相对而言是与系统无关的。</p>
+<h2 id="具体的实现方法"><a href="#具体的实现方法" class="headerlink" title="具体的实现方法"></a>具体的实现方法</h2><p>现在让我们把上述的概念与实际的计算机及语言来联系起来。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/198324787-ed4e6cb0-4aa4-49d8-a38f-5214ff7ef38b.png"
+                      alt="4"
+                ></p>
+<ol>
+<li><p>逻辑电路（第 0 层）<br>上图中的第0层代表 VM0，第一层代表 VM1，一次类推。计算机底层的数字逻辑电路表示虚拟机的第 0 层。</p>
+</li>
+<li><p>微结构（第 1 层）<br>计算机芯片制造商通常不允许用户编写微指令，特殊的微结构指令通常是商业秘密。像从内存中取数字并加1这样的基本操作可能需要3~4条微指令。</p>
+</li>
+<li><p>指令集（第 2 层）<br>计算机芯片制造商设计了一套固化在处理器内部的指令集，用于执行如移动、加法和乘法等基本操作，这套指令集称为常规机器语言。每条机器语言指令将分解成几条微指令执行。</p>
+</li>
+<li><p>操作系统（第 3 层）<br>随着计算机的发展，人们设计了其他能使程序员更加高产的虚拟机。第 3 层的虚拟机能够理解用户发出的诸如加载并执行程序、显示目录之类的交互命令，这就是众所周知的计算机操作系统。操作系统软件被分已成机器码在第 2 层上运行。</p>
+</li>
+<li><p>汇编语言（第 4 层）<br>在操作系统层次之上的程序设计语言提供了能够实际用来开发大型如那件的翻译层。汇编语言属于第 4层，它使用 ADD，SUB 和 MOV 等很容易翻译成指令集体系结构层（第2层）的短助记符，其他的一些汇编语句（如中断嗲用），则由操作系统（第3层）直接执行汇编语言程序在执行前一般要全部翻译（汇编）成机器语言。</p>
+</li>
+</ol>
+<blockquote>
+<p>汇编语言强大的原因就是，它可以使用操作系统函数来控制系统。同时它还可以选择绕过操作系统，直接执行指令集，控制计算机的运行。因此汇编指令和指令集是一一对应的关系，汇编指令也被称为指令（指令集）助记符。</p>
+</blockquote>
+<ol start="6">
+<li>高级语言（第5层）<br>第 5 层是诸如 C++，C#，Visual Basic 和 Java 之类的高级语言，这些语言有功能强大的语句，每条语句通常翻译成多条汇编语句。在内部，编译器把第 5 层的程序翻译成第 4 层的程序代码，后者由编译器汇编成机器语言。</li>
+</ol>
+<blockquote>
+<p>本章后续内容忽略，这些内容在之前的 8086汇编 中已经学习过。</p>
+</blockquote>
+<h1 id="IA-32-处理器体系结构的基本概念"><a href="#IA-32-处理器体系结构的基本概念" class="headerlink" title="IA-32 处理器体系结构的基本概念"></a>IA-32 处理器体系结构的基本概念</h1><p>这一章主要学习了解IA-32 处理器体系结构的各种基础的概念和知识。</p>
+<h2 id="微机的基本结构"><a href="#微机的基本结构" class="headerlink" title="微机的基本结构"></a>微机的基本结构</h2><p>中央处理器（CPU，Central Processor Unit）是进行所有计算和逻辑操作的地方，它包含了有限的寄存器存储单元、一个高频时钟（colck）、一个控制单元（CU，Control Unit）和一个算数逻辑单元（ALU，Arithmetic Logic Unit）。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/198349564-ffb0b3da-1113-4c79-8fff-f94d0d4cf85e.png"
+                      alt="5"
+                ></p>
+<ul>
+<li>时钟：时钟是用来计算周期的，用于协调 CPU 的内部操作和其他系统部件之间的工作，同时相当于计时器。</li>
+<li>控制单元（CU）：协调执行机器指令时各个步骤的次序。</li>
+<li>算数逻辑单元（ALU）：执行加法和减法等算数运算，以及 AND，OR和 NOT 等逻辑运算。</li>
+</ul>
+<p>CPU 通过插入主板插槽的引脚同计算机的其余部分相连接，大部分引脚与数据的地方。内存存储单元接收 CPU 的数据请求，从随机访问存储器（RAM）中取出数据送至 CPU，或把数据从 CPU 送到存储器中。<br>总线（bus）是一组用于在计算机各部分之间传送数据的并行线。计算机的系统总线一般是由三组独立的总线构成：数据总线、控制总线、地址总线。</p>
+<ul>
+<li>数据总线在CPU和内存之间传送指令和数据</li>
+<li>控制总线使用二进制信号同步连接到系统总线上的外设</li>
+<li>地址总线定位指令和数据的位置</li>
+</ul>
+<p>时钟：涉及 CPU 和系统总线的每个操作都由一个内部时钟同步，这个时钟以固定的频率产生脉冲。机器指令使用的最基本的时间单位称为机器周期或时钟周期，也就是一个完整的时钟脉冲所需的时间。在下图中，一个脉冲表示两个下降沿之间（信号从0变成1）的时间间隔：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/198824136-8dc11587-71b8-40d8-be6c-f8605db8e453.png"
+                      alt="6"
+                ></p>
+<p>时钟周期的持续时间是时钟频率的倒数，时钟频率用每秒振荡的次数来计量。例如，对于每秒振荡 10 亿次（1GHz）的时钟，其时钟周期的持续时间为1s的10亿分之一（1ns）。<br>机器指令的执行至少需要一个时钟周期，有些指令的执行甚至需要超过 50 个时钟周期（如 8088处理器上的乘法指令）。由于 CPU、系统总线和存储电路之间速度的差异，访问内存的指令通常需要称为等待状态（wait state）的空时钟周期。</p>
+<h2 id="指令执行周期"><a href="#指令执行周期" class="headerlink" title="指令执行周期"></a>指令执行周期</h2><p>单条机器指令的执行可以被分解成一系列的独立操作，这些操作构成指令执行的一个周期。程序在开始执行前必须首先装入内存，指令指针（IP寄存器）包含要执行的下一条指令的地址，指令队列中存放着若干条将要执行的指令。机器指令的执行需要三个基本步骤：取智指令、解码和执行。在指令使用了内存操作数的时，还需要两个额外的步骤：取操作数和存储输出操作数。个步骤的描述如下：</p>
+<ul>
+<li>取指令：控制单元从指令队列中取得指令并递增指令指针（IP）的值，指令指针也程序程序计数器。</li>
+<li>解码：控制单元对指令进行解码以确定该指针执行什么操作。控制单元把输入操作数传递给算数逻辑单元（ALU），并向算数逻辑单元发送信号指明要执行的操作。</li>
+<li>取操作数：如果指令使用的输入操作数在内存中，控制单元就通过读操作获取操作数并将其复制到寄存器中，这些内部寄存器对用户程序是不可见的。</li>
+<li>执行：算数逻辑单元执行指令，以有名称的寄存器和内部寄存器作为操作数，将运算输出结果送至有名称的寄存器和（或）内存中，然后更新状态标志位。</li>
+<li>存储输出操作数：如果输出操作数在存储器中，控制单元通过写操作把数据存储到内存中。</li>
+</ul>
+<p>这一系列步骤可用如下伪码表示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">循环开始</span><br><span class="line">    取下一条指令</span><br><span class="line">    IP递增</span><br><span class="line">    源地址如果使用内存操作数，则从内存读取</span><br><span class="line">    执行指令</span><br><span class="line">    目的地址如果使用内存操作数，则写入内存</span><br><span class="line">继续循环</span><br></pre></td></tr></table></figure>
+
+<p>如下图所示，这是一个奔腾处理器的基本结构<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/198825537-26df9d62-9f2e-463f-a915-22ac3cb007ed.png"
+                      alt="7"
+                ></p>
+<h3 id="多级流水线"><a href="#多级流水线" class="headerlink" title="多级流水线"></a>多级流水线</h3><p>指令执行周期中的每一步至少占用一个系统时间滴答（也称为一个周期），但这并不意味着处理器在开始执行下一条指令之前必须等待所有步骤完成，处理器可以并行执行其他步骤，这就是流水线（pipelining）技术。Intel 486处理器拥有 6 级流水线，这 6 级流水线以及它们执行的步骤如下所示：</p>
+<ol>
+<li>总线接口单元（BIU，Bus Interface Unit）：访问存储器并提供输入输出。</li>
+<li>代码预取单元（Code Prefetch Unit）：从 BIU 接收机器指令并将其插入到称为指令队列的存储区域。</li>
+<li>指令解码单元（Instruction Decode Unit）：对预取队列中的机器指令进行解码，将它们翻译成微代码。</li>
+<li>执行单元（Execution Unit）：执行指令解码单元产生的微代码。</li>
+<li>分段部件（Segment Unit）：把逻辑地址转换为线性地址并进行保护检查。</li>
+<li>分页部件（Paging Unit）：把线性地址转换为物理地址，进行页保护检查并保留一个最近访问页的列表。</li>
+</ol>
+<p>例1：假设一个未使用流水线处理器，处理器内的每个执行阶段都需要一个时钟周期，要执行一条指令需要6个时钟周期。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/199042840-78a5d970-93de-4648-b66d-e6cfff2a64a9.png"
+                      alt="8"
+                ></p>
+<p>如上图所示：未使用流水线的处理器，执行 2 条指令 I-1 和 I-2 一共需要 12 时钟周期。换句话说，一个有 K 个执行阶段的处理器，执行 n 条指令需要（n*k）个时钟周期。</p>
+<p>例2：假设一个使用流水线的处理器。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/199046746-c3a88911-ce58-4e6d-9037-cf80fdc09b20.png"
+                      alt="9"
+                ></p>
+<p>如上图所示：第一条指令 I-1 执行 S1 后，第二条指令 I-2 可以在第二个时钟周期进入 S1 阶段，于此同时，第一条指令已经进入 S2 阶段，这允许了指令的交迭执行。当以这样的方法执行两条指令总哦给你需要7个时钟周期。当流水线满负荷时，所有 6 个阶段一直处于被使用的状态。一般对于 k 级的处理器来说，处理 n 条指令需要 k+(n-1) 个周期。</p>
+<h3 id="超标量体系结构"><a href="#超标量体系结构" class="headerlink" title="超标量体系结构"></a>超标量体系结构</h3><p>超标量（superscalar）或多核处理器有两条以上的执行流水线，使得两条指令能够同时执行，为了理解超标量处理器的优势，但如果 S4 阶段只需要单个指令周期，这将会产生一种瓶颈效应。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/199231397-4f31d73c-de4c-42b5-bb57-0b4259c00a09.png"
+                      alt="10"
+                ></p>
+<p>在图中，直到 I-1 完成 S4 阶段时 I-2 指令才能进入，因此 I-2 在进入 S4 阶段之前必须等待一个时钟周期。当更多的指令进入流水线时，就会浪费更多的时间周期。通常对于 k 级（一个阶段需要两个周期）流水线，处理 n 条指令需要 k+2n-1 个时钟周期。</p>
+<p>超标量处理器允许多条指令可同时处于执行阶段。对于 n 条流水线的情况，n 条指令可以在同一时钟时钟周期内并发执行。Intel 奔腾处理器有两条流水线。对于 n 条流水线，它是 IA-32 系列中的第一个超标量处理器。奔腾 Pro 是第一个使用三条流水线的处理器。</p>
+<p>假设 S4 阶段需要两个周期，如下图显示了两条 6 级流水线执行指令的情况：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/199243068-35219fc9-91c5-4fa2-8289-3764f25887e6.png"
+                      alt="11"
+                ></p>
+<p>奇数编号的指令进入 u 流水线，偶数编号的指令进入 v 流水线，这就消除了对时钟周期的浪费。因此在 k+n 个周期内可以执行 n 条指令，这里 k 代表流水线的级数。</p>
+<blockquote>
+<p>简单来说：一条流水线叫做串行处理，多条流水线叫做并行处理。多条流水线又称为超标量流水线，如 拥有6条流水线的处理器，称为 “6级超标量流水线处理器”。</p>
+</blockquote>
+<h2 id="内存的读取"><a href="#内存的读取" class="headerlink" title="内存的读取"></a>内存的读取</h2><p>程序的吞吐量通常依赖于内存的访问速度。例如，CPU 的时钟频率可能是 “几GHZ”，然而通过系统总线的内存访问确是以 33MHZ 较慢速率进行的，这迫使 CPU 在开始执行指令前要等待至少一个时钟周期，直到操作数从内存中取出为止。这些浪费的时钟周期称为等待状态（wait state）。</p>
+<p>从内存中读取指令或数据需要若干个步骤，这是由 CPU 的内部时钟控制的。如下图所示：处理器时钟信号以固定的时间间隔上升和下降，在图中，时钟周期开始于时钟信号由高变低的时候，俗称下降沿，它代表了在状态之间进行转换所需要花费的时间。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/199266328-08e72c36-0b02-4010-9832-17516a047433.png"
+                      alt="12"
+                ></p>
+<p>下面是读取内存时的每个时钟的每一个时钟周期发生事情的简述：</p>
+<ul>
+<li><p>周期1：内存操作数的地址位被放到地址总线（ADDR）上。</p>
+</li>
+<li><p>周期2：读取线（RD）设为低（0），以通知存储器要读取一个值。</p>
+</li>
+<li><p>周期3：CPU 等待一个周期，给存储器一些时间以做出响应。在这个时钟周期内，内存控制器把数据放在数据总线（DATA）上。</p>
+</li>
+<li><p>周期4：读取线（RD）变为1，通知 CPU 在数据总线（DATA）上读取数据。</p>
+</li>
+</ul>
+<p>缓存（cache memory）：由于常规内存与 CPU 相比非常慢，因此计算机使用高速缓存存放最近使用的指令和数据。程序第一次读取某块数据时，在缓存中将同时保留有一份副本。程序再次读取同样的数据时，首先在缓存内查找，如果缓存命中就表明数据已经在缓冲区中，未命中就表明数据在缓存中，必须从常规内存中读取。</p>
+<p>通常，缓存对于改善内存访问速度效果明显，特别时在缓存较大时。IA-32 处理器有两种类型的缓存：一级缓存和二级缓存。与二级缓存相比，一级缓存比较小，但速度快，不过也比较昂贵。二级缓存过去一直是处理器外的独立存储，现在已经集成到处理器芯片内部。</p>
+<h2 id="程序是如何运行的"><a href="#程序是如何运行的" class="headerlink" title="程序是如何运行的"></a>程序是如何运行的</h2><h3 id="加载和执行程序"><a href="#加载和执行程序" class="headerlink" title="加载和执行程序"></a>加载和执行程序</h3><p>下面的步骤按顺序描述了当用户在命令行提示符下运行一个程序时发生的事情：</p>
+<ul>
+<li><p>操作系统（OS）在当前磁盘目录中查找程序文件名，如果未找到的话，就在预先定义的目录列表（称为路径）中查找，如果操作系统还是找不到文件名，则显示一条错误信息。</p>
+</li>
+<li><p>如果找到了程序文件名，操作系统获取磁盘上程序文件的基本信息，包括文本的大小以及在磁盘驱动器上的物理位置。</p>
+</li>
+<li><p>操作系统确定下一个可用内存块的地址，把程序文件装入内存，然后将程序的大小和位置等信息登记在一张表中（有时称为描述符表）。另外，操作系统或许还要调正程序内的指针值以便让它们指向正确的地址。</p>
+</li>
+<li><p>操作系统执行一条分支转移指令，使 CPU 从进程的第一条机器指令开始执行。程序一旦开始运行，就称为一个进程。操作系统给进程分配一个表示数字（进程ID），用于在进程的运行期间对其进行跟踪。</p>
+</li>
+<li><p>这时进程自己已经开始运行，操作系统的任务是跟踪进程的执行并响应进程对系统资源的请求。举例来说，系统资源包括内存，磁盘文件和输入输出设备等。</p>
+</li>
+<li><p>进程终结时，其句柄被删除，进程使用的内存也被释放以便其他程序使用。</p>
+</li>
+</ul>
+<h3 id="多任务"><a href="#多任务" class="headerlink" title="多任务"></a>多任务</h3><p>多任务操作系统能够同时运行多个任务，一个任务可以是一个程序（进程）或一个执行线程。一个进程拥有自己的内存并且可能包含多个线程。一个进程内的所有线程共享进程的内存空间。</p>
+<p>例如，游戏程序分别使用独立的线程同时控制多个图形对象；web浏览器分别使用独立的线程同时加载图像并响应用户的输入。</p>
+<p>大多数现代操作系统同时执行与硬件交互、用户界面显示、后台文件处理等多个任务。由于 CPU 实际上一次只能执行一条指令，因此称为调度程序（scheduler）的操作系统部件为每个任务分配一小部分 CPU 时间（称为时间片）。在一个时间片内，CPU 执行一系列指令，在时间片结束的时候停止执行。</p>
+<p>通过快速的任务切换，操作系统给人以处理器同时运行多个任务的假象。操作系统使用的一种调度模型，称其为循环调度（round-robin scheduling）。如下图所示有9个活跃的任务，随便假设调度应用程序为每个任务分配 100ms，任务切换花费 8 ms，那么所有任务执行完一轮需要 972ms [(9<em>100)+(9</em>8)]。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201294041-5c4cc987-7154-4f25-9c60-8ceee646f6fe.png"
+                      alt="5"
+                ></p>
+<p>多任务操作系统运行在支持任务切换（task switching）的处理器上。对于每个任务，处理器在切换到另一个任务之前保存当前任务的状态。任务状态包含处理器、寄存器、程序计数器、状态标志以及任务所使用的内存内容。多任务的操作系统通常为任务分配不同的优先级，并据此为任务分配相对较大或较小的时间片。抢占式多任务操作系统（如 Windows XP 或 Linux）允许高优先级的任务打断低优先级的任务，以使系统更加稳定。假设一个应用程序陷入了循环死锁，停止了对输入进行响应，键盘处理程序（一个高优先级的操作系统任务）能够响应用户的 Ctrl+Alt+Del 命令并终止有问题的应用程序。</p>
+<h1 id="IA-32-处理器体系结构"><a href="#IA-32-处理器体系结构" class="headerlink" title="IA-32 处理器体系结构"></a>IA-32 处理器体系结构</h1><p>如前所述，IA-32是指始于 Intel 386 直到奔腾4的系列处理器，在 IA-32的发展过程中，Intel 处理器的内部体系结构已经做了无数的改进，如流水线、超标量、分支预测以及超线程等。不过就编程而言，可见的变化只有用于多媒体处理器以及用于图形计算的指令集扩展。</p>
+<h2 id="操作模式"><a href="#操作模式" class="headerlink" title="操作模式"></a>操作模式</h2><p>IA-32 处理器有三种基本的操作模式：保护模式、实地址模式和系统管理模式。另外一种是虚拟8086模式，是保护模式的一个特例。</p>
+<ul>
+<li><p>保护模式（Protected Mode）：保护模式是处理器的基本模式，在保护模式下，所有指令和特性都是可用的，程序被赋予了独立的内存区域（称为段），处理器阻止程序访问已分配段之外的其他内存。</p>
+</li>
+<li><p>虚拟8086模式（Virtual-8086 Mode）：在保护模式下，处理器可以在安全的多任务环境中执行实地址模式的软件。</p>
+</li>
+<li><p>实地址模式（Real-address Mode）：实地址模式实现了 Intel 8086 处理程序涉及环境以及其他一些新的特性，如切换到其他两种模式的能力等。</p>
+</li>
+<li><p>系统管理模式（SMM，System Management Mode）：系统管理模式为操作系统提供了用以实现电源管理和系统安全等功能的机制。这些功能通常由哪些想自定义特定的系统启动过程的计算机制造商实现的。</p>
+</li>
+</ul>
+<h2 id="基本执行环境"><a href="#基本执行环境" class="headerlink" title="基本执行环境"></a>基本执行环境</h2><h3 id="地址空间"><a href="#地址空间" class="headerlink" title="地址空间"></a>地址空间</h3><p>在保护模式下，IA-32 处理器可访问高达 4GB 的内存，这是 32 位系统的寻址上限。实地址模式只能访问 1MB 的内存。如果处理器处于保护模式并在虚拟 8086 模式下运行多个程序，每个进程都能够访问独立的 1Mbabane 内存区域。</p>
+<h3 id="基本寄存器"><a href="#基本寄存器" class="headerlink" title="基本寄存器"></a>基本寄存器</h3><p>32位操作系统基本寄存器有：8个通用寄存器，6个段寄存器，一个标志寄存器（EFLAGS）和一个指针寄存器（EIP）。这里寄存器的名称都在原16位寄存器前加了一个字母 ‘E’</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201294395-3865582e-afd1-4020-95e9-b256c58be590.png"
+                      alt="6"
+                ></p>
+<blockquote>
+<p>这里基本寄存器就不过多介绍，学修过 8086 汇编的都已经很熟悉了。</p>
+</blockquote>
+<h3 id="系统寄存器"><a href="#系统寄存器" class="headerlink" title="系统寄存器"></a>系统寄存器</h3><p>IA-32 处理器有若干个重要的系统寄存器。MS-Window 仅允许运行在最高特权级（特权0）上的程序访问这些寄存器。操作系统内核就是这样的程序。这些寄存器如下：</p>
+<ul>
+<li>中断描述符表寄存器（IDTR，Interrupt Descriptor Table Register）：保存中断描述符表的地址，中断描述符表提供了一种方式用于处理中断。</li>
+<li>全局描述符表寄存器（GDTR，Global Descriptor Table Register）：保存全局描述符表的地址，全局描述符表包含了任务状态段和具部描述符表的指针（索引）。</li>
+<li>局部描述符表寄存器（LDTR，Local Descriptor Table Register）：保存当前正在运行的程序的代码段、数据段和堆栈的指针。</li>
+<li>任务寄存器（Task Register）：保存当前执行任务的任务状态段（TSS,task state segment）的地址</li>
+<li>调试寄存器（Debug Register）：用于在调试程序时设置断点等。</li>
+<li>控制寄存器（Control Register）CR0，CR2，CR3：包含用于控制系统级操作（如任务切换、分页、允许缓存等）的状态标志和数据域。</li>
+<li>模型专用寄存器（Model-Specific Registers）：用于性能监控和机器体系结构检查等系统级操作。对于不同的 IA-32 处理器，可用的模型专用寄存器和使用方法都有可能不同。</li>
+</ul>
+<h3 id="浮点单元"><a href="#浮点单元" class="headerlink" title="浮点单元"></a>浮点单元</h3><p>IA-32 浮点单元（FPU）执行高速浮点算数运算。过去浮点单元需要一块独立的协处理器芯片，但从 Intel 486 以后，FPU 被集成到了主处理器芯片中。<br>FPU 内有 8 个浮点数据寄存器，名为 ST(0)，ST(1)，ST(2)，ST(3)，ST(4)，ST(5)，ST(6) 和 ST(7)，其余的控制和指针寄存器如下图所示：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201294626-d552233b-434f-4f4c-971c-5ad2688789d4.png"
+                      alt="7"
+                ></p>
+<h3 id="其他寄存器"><a href="#其他寄存器" class="headerlink" title="其他寄存器"></a>其他寄存器</h3><p>奔腾系列处理器中还有用于高级多媒体程序设计的寄存器：</p>
+<ul>
+<li>MMX 指令集使用的 8 个 64 位寄存器。</li>
+<li>单指令、多数据操作（SIMD,single-instruction,multiple-data）使用的 8 个 128 位 XMM 寄存器。</li>
+</ul>
+<h1 id="IA-32内存管理"><a href="#IA-32内存管理" class="headerlink" title="IA-32内存管理"></a>IA-32内存管理</h1><ul>
+<li><p>实地址模式下<br>处理器只能寻址 1MB 的内存空间，地址是从十六机制数的 00000~FFFFF 处理器一次只能运行一个程序，但可以随时中断程序的执行以便处理来自外围设备的请求。应用程序能够读取和修改 RAM的任何区域，能够读取 ROM 的任何区域但不能修改。MS-DOS 操作系统运行于实地址模式下，Windows 95&#x2F;98 可以启动或切换该模式。</p>
+</li>
+<li><p>保护模式下<br>处理器可同时运行多个程序，并为每个进程分配 4GB 的内存。可以为每个程序分配数据自己的保留内存区域，一个程序不能访问其他程序的代码和数据。MS-Windows 和 Linux 都运行于保护模式下。</p>
+</li>
+<li><p>虚拟 8086 模式下<br>实际上是处理器在保护模式下创建了一个有 1MB 地址空间的虚拟机，虚拟机对运行于实地址模式下的 80x86 计算机进行模拟。例如，在 Windows NT 和 Windows 2000 下，打开一个命令行窗口时就创建了一个 8086 虚拟机。打开多个命令行窗口，就可以同时运行很多这样的窗口，它们之间的行为不会相互影响。有一些直接访问计算机硬件的 MS-DOS 程序不能在 Windows NT 和 Windows 2000 的虚拟 8086 模式下运行。</p>
+</li>
+</ul>
+<blockquote>
+<p>这里就不再重复看实地址模式</p>
+</blockquote>
+<h1 id="保护模式"><a href="#保护模式" class="headerlink" title="保护模式"></a>保护模式</h1><p>保护模式是一个更强大的处理器模式。当处理器运行于保护模式下时，每一个程序可以寻址 4GB 的内存，地址范围是从十六进制数的 0~FFFFFFFF。Microsoft 汇编器中的平坦（flat）内存模式适用于保护模式编程。平坦内存模式非常易于使用，因为只需要使用一个 32 位整数就可以存放任何指令和变量的地址。处理器在后台进行地地址地计算和转换，所有这一切对应用程序员都是透明的。段寄存器（CS，DS，SS，ES，FS 和 GS）指向段描述符表，操作系统使用段描述符表定位程序使用的段的位置。一个典型的保护模式程序有三个段：代码段、数据段和堆栈段，使用CS，DS和SS三个段地址：</p>
+<ul>
+<li>CS 包含描述符表中的代码段描述符。</li>
+<li>DS 包含描述符表中的数据段描述符</li>
+<li>SS 包含描述符表中的堆栈段描述符</li>
+</ul>
+<h2 id="平坦分段模式"><a href="#平坦分段模式" class="headerlink" title="平坦分段模式"></a>平坦分段模式</h2><p>在平坦分段模式下，所有段都被映射到计算机的 32 位物理地址空间中。一个程序至少需要两个段：代码段和数据段。每一个段都由一个段描述符定义，段描述符通常是一个存放在全局描述符表（GDT，Global Descriptor Table）中的一个 64 位的值。如下图所示：一个基地址域指向内存中第一个可用地址（00000000）的段描述符，段界限域可用于表示系统中物理内存的数量，在当前的图中，段界限是 0040。访问类型域包含了规定段如何使用的数据位。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201295215-5712710b-90ce-4400-8f2c-dc13231b33f5.png"
+                      alt="8"
+                ></p>
+<h2 id="多段模式"><a href="#多段模式" class="headerlink" title="多段模式"></a>多段模式</h2><p>在多段模式（multi-Segment model）下，每个任务或程序都有自己的段描述符表，称为局部描述符表（LDT，Local Descriptor Table）。每个描述符都可以指向一个与其他所有进程使用的段都不同的段，并且每个段都位于独立的地址空间中。LDT的每一个表项（段描述符）都指向内存中的一个不同的段，每个段描述符都制定了段的大小，例如从 3000 开始的段的大小是十六进制 2000，其计算过程为（十六进制数值）0002*1000，而从 8000 开始的段大小为十六进制数值 A000。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201295320-080d9380-b32e-4480-b19f-340441127147.png"
+                      alt="9"
+                ></p>
+<h2 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h2><p>IA-32 处理器支持一种称为分页（paping）的特性，允许一个段被分割称称为（page）的 4096 字节的内存块。分页机制允许同时运行的程序使用的总内存远大于计算机的物理内存。操作系统映射所有页的集合称为虚拟内存（vitual memory）。操作系统通常包含一个名为虚拟内存管理器的实用程序。</p>
+<p>分页机制解决了一个一直困扰着软硬件设计者的难题：程序在运行前必须装入内存，但内存是非常昂贵的，用户总是想要在内存中装入大量的程序并随意进行切换。另一方面，磁盘存储是廉价而海量的，不过访问磁盘要比访问主存储器慢得多。分页机制（通过使用后备磁盘存储）会使人产生内存几乎是无限大的错觉。然而一个程序越依赖于分页机制，其运行也就可能越慢。</p>
+<p>当任务运行时，如果程序的一部分当前未被使用，那么这部分可以保留在磁盘上。任务的一部分可能已经被换页（交换）到磁盘上了，任务的其他部分，如当前活跃的执行代码用到的页，可以保留在内存中。当处理器开始执行已经被交换出主存的代码时，将产生一个页错误（page fault），这将导致包含有所需代码级数据的页被重新载入内存。</p>
+<p>如果在内存少的计算机中运行多个大型的程序，查看进程时会发现，一个程序切换到另一个程序时会有明显的延迟，这是因为操作系统必须将每个程序交换出的部分从磁盘传输到主存。当安装更多内存时，计算机会运行得更快，因为大型应用程序和文件可完全存放在内存中，这就减少了换页的数量。</p>
+<blockquote>
+<p>最后一节 “IA-32 微机的构成” 跳过，有兴趣的可以自己看看。</p>
+</blockquote>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：80386汇编-基本概念</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2022-10-09 21:53:00</li>
+        <li>
+            本文链接：https://9unkk.github.io/2022/10/09/80386-hui-bian-ji-ben-gai-nian/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2022/10/18/8086-hui-bian-gao-ji-hui-bian-yu-yan-ji-zhu/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">8086汇编-高级汇编语言技术</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2022/10/09/8086-hui-bian-jian-dan-ying-yong-cheng-xu-de-she-ji/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">8086汇编-简单应用程序的设计</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">2.1.</span> <span class="nav-text">高级语言与汇编语言之间的关系</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">3.</span> <span class="nav-text">虚拟机的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%89%A7%E8%A1%8C"><span class="nav-number">3.1.</span> <span class="nav-text">计算机程序的执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">具体的实现方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IA-32-%E5%A4%84%E7%90%86%E5%99%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">4.</span> <span class="nav-text">IA-32 处理器体系结构的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E6%9C%BA%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84"><span class="nav-number">4.1.</span> <span class="nav-text">微机的基本结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%91%A8%E6%9C%9F"><span class="nav-number">4.2.</span> <span class="nav-text">指令执行周期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E7%BA%A7%E6%B5%81%E6%B0%B4%E7%BA%BF"><span class="nav-number">4.2.1.</span> <span class="nav-text">多级流水线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B6%85%E6%A0%87%E9%87%8F%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-number">4.2.2.</span> <span class="nav-text">超标量体系结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%9A%84%E8%AF%BB%E5%8F%96"><span class="nav-number">4.3.</span> <span class="nav-text">内存的读取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%90%E8%A1%8C%E7%9A%84"><span class="nav-number">4.4.</span> <span class="nav-text">程序是如何运行的</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E5%92%8C%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F"><span class="nav-number">4.4.1.</span> <span class="nav-text">加载和执行程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E4%BB%BB%E5%8A%A1"><span class="nav-number">4.4.2.</span> <span class="nav-text">多任务</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IA-32-%E5%A4%84%E7%90%86%E5%99%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-number">5.</span> <span class="nav-text">IA-32 处理器体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.1.</span> <span class="nav-text">操作模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%89%A7%E8%A1%8C%E7%8E%AF%E5%A2%83"><span class="nav-number">5.2.</span> <span class="nav-text">基本执行环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="nav-number">5.2.1.</span> <span class="nav-text">地址空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">5.2.2.</span> <span class="nav-text">基本寄存器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">5.2.3.</span> <span class="nav-text">系统寄存器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E5%8D%95%E5%85%83"><span class="nav-number">5.2.4.</span> <span class="nav-text">浮点单元</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">5.2.5.</span> <span class="nav-text">其他寄存器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IA-32%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">6.</span> <span class="nav-text">IA-32内存管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F"><span class="nav-number">7.</span> <span class="nav-text">保护模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E5%9D%A6%E5%88%86%E6%AE%B5%E6%A8%A1%E5%BC%8F"><span class="nav-number">7.1.</span> <span class="nav-text">平坦分段模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E6%AE%B5%E6%A8%A1%E5%BC%8F"><span class="nav-number">7.2.</span> <span class="nav-text">多段模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E9%A1%B5"><span class="nav-number">7.3.</span> <span class="nav-text">分页</span></a></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            CTF逆向分析 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">CTF逆向分析</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2021-04-21 15:26:28</span>
+        <span class="mobile">2021-04-21 15:26</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E9%80%86%E5%90%91/">逆向</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/CTF/">CTF</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>4.7k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>23 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="ctfshow-逆向签到题re1-linux"><a href="#ctfshow-逆向签到题re1-linux" class="headerlink" title="ctfshow-逆向签到题re1(linux)"></a>ctfshow-逆向签到题re1(linux)</h1><p>linux 可执行文件在内存中运行时，如下几个段：</p>
+<table>
+<thead>
+<tr>
+<th align="center">内存段</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">BSS段</td>
+<td align="center">存储未初始化的全局变量或者是默认初始化为0的全局变量</td>
+</tr>
+<tr>
+<td align="center">data段</td>
+<td align="center">用于存储初始化的全局变量，初始化为 0 的全局变量处于编译优化的策略还是被保存在BSS段中</td>
+</tr>
+<tr>
+<td align="center">.rodata</td>
+<td align="center">该段也叫常量区，用于存放常量数据,ro(Read Only)只读，注意：不是所有的常量都是放在常量数据段中</td>
+</tr>
+<tr>
+<td align="center">text段</td>
+<td align="center">用于存放程序代码</td>
+</tr>
+<tr>
+<td align="center">stack段</td>
+<td align="center">栈段，用于存储参数变量及局部变量</td>
+</tr>
+<tr>
+<td align="center">heap段</td>
+<td align="center">堆，由用户申请和释放内存空间</td>
+</tr>
+</tbody></table>
+<ol>
+<li>查看文件类型</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">root@kali:/opt/C/CTF<span class="comment"># rabin2 -I re1</span></span><br><span class="line"><span class="built_in">arch</span>     x86</span><br><span class="line">baddr    0x0</span><br><span class="line">binsz    6585</span><br><span class="line">bintype  elf        <span class="comment">#elf文件</span></span><br><span class="line">bits     64         <span class="comment">#64位</span></span><br><span class="line">canary   <span class="literal">true</span>       <span class="comment">#开启了 canary 栈溢出保护机制</span></span><br><span class="line">class    ELF64</span><br><span class="line">compiler GCC: (Ubuntu 7.4.0-1ubuntu1~18.04.1) 7.4.0</span><br><span class="line">crypto   <span class="literal">false</span></span><br><span class="line">endian   little</span><br><span class="line">havecode <span class="literal">true</span></span><br><span class="line">intrp    /lib64/ld-linux-x86-64.so.2</span><br><span class="line">laddr    0x0</span><br><span class="line">lang     c          <span class="comment">#编写语言：C</span></span><br><span class="line">linenum  <span class="literal">true</span></span><br><span class="line">lsyms    <span class="literal">true</span></span><br><span class="line">machine  AMD x86-64 architecture</span><br><span class="line">maxopsz  16</span><br><span class="line">minopsz  1</span><br><span class="line">nx       <span class="literal">true</span></span><br><span class="line">os       linux</span><br><span class="line">pcalign  0</span><br><span class="line">pic      <span class="literal">true</span></span><br><span class="line">relocs   <span class="literal">true</span></span><br><span class="line">relro    full</span><br><span class="line">rpath    NONE</span><br><span class="line">sanitiz  <span class="literal">false</span></span><br><span class="line">static   <span class="literal">false</span></span><br><span class="line">stripped <span class="literal">false</span></span><br><span class="line">subsys   linux</span><br><span class="line">va       <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>执行程序判断大体架构</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@kali:/opt/C/CTF<span class="comment"># ./re1</span></span><br><span class="line">plz input the key:</span><br><span class="line">jflsdfs</span><br><span class="line">key error</span><br><span class="line"></span><br><span class="line">1、打印字符串：<span class="string">&quot;plz input the key:&quot;</span></span><br><span class="line">2、获取用户输入</span><br><span class="line">3、通过判断输出信息：错误<span class="string">&quot;key error&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>查看 .rodata段的常量</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@kali:/opt/C/CTF# rabin2 -z re1 </span><br><span class="line">[Strings]</span><br><span class="line">Num Paddr      Vaddr      Len Size Section  Type  String</span><br><span class="line"><span class="number">000</span> <span class="number">0x00000884</span> <span class="number">0x00000884</span>  <span class="number">16</span>  <span class="number">17</span> (.rodata) ascii flag&#123;<span class="number">7u</span>jm8ikhy6&#125;</span><br><span class="line"><span class="number">001</span> <span class="number">0x00000895</span> <span class="number">0x00000895</span>  <span class="number">18</span>  <span class="number">19</span> (.rodata) ascii plz input the key:</span><br><span class="line"><span class="number">002</span> <span class="number">0x000008ab</span> <span class="number">0x000008ab</span>   <span class="number">9</span>  <span class="number">10</span> (.rodata) ascii key error</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>获得 flag{7ujm8ikhy6}</li>
+</ol>
+<blockquote>
+<p>注：签到题一般就是把 flag 放在常量区。</p>
+</blockquote>
+<h2 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a>静态分析</h2><ol>
+<li>使用 r2 的 <code>-A</code> 选项分析代码，并进入程序入口点</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">root@kali:/opt/C/CTF# r2 -A re1</span><br><span class="line">[Cannot analyze at <span class="number">0x00000650</span>g with sym. and <span class="title function_">entry0</span> <span class="params">(aa)</span></span><br><span class="line">[x] Analyze all flags starting with sym. and <span class="title function_">entry0</span> <span class="params">(aa)</span></span><br><span class="line">[Cannot analyze at 0x00000650ac)</span><br><span class="line">[x] Analyze function <span class="title function_">calls</span> <span class="params">(aac)</span></span><br><span class="line">[x] Analyze len bytes of instructions <span class="keyword">for</span> <span class="title function_">references</span> <span class="params">(aar)</span></span><br><span class="line">[x] Check <span class="keyword">for</span> objc references</span><br><span class="line">[x] Check <span class="keyword">for</span> vtables</span><br><span class="line">[x] Type matching analysis <span class="keyword">for</span> all <span class="title function_">functions</span> <span class="params">(aaft)</span></span><br><span class="line">[x] Propagate <span class="keyword">noreturn</span> information</span><br><span class="line">[x] Use -AA or aaaa to perform additional experimental analysis.</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>查看 main 反汇编</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">0x00000660</span>]&gt; pdf @ sym.main</span><br><span class="line">/ (fcn) main <span class="number">146</span></span><br><span class="line">|   <span class="type">int</span> <span class="title function_">main</span> <span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv, <span class="type">char</span> **envp)</span>;</span><br><span class="line">|           ; var <span class="type">char</span> *s1 @ rbp<span class="number">-0x78</span></span><br><span class="line">|           ; var <span class="type">char</span> *s2 @ rbp<span class="number">-0x70</span></span><br><span class="line">|           ; var <span class="type">int32_t</span> canary @ rbp<span class="number">-0x8</span></span><br><span class="line">|           ; DATA XREF from entry0 @ <span class="number">0x67d</span></span><br><span class="line">|           <span class="number">0x0000076a</span>      <span class="number">55</span>             push rbp</span><br><span class="line">|           <span class="number">0x0000076b</span>      <span class="number">4889e5</span>         mov rbp, rsp</span><br><span class="line">|           <span class="number">0x0000076e</span>      <span class="number">4883</span>c480       add rsp, <span class="number">-0x80</span></span><br><span class="line">|           <span class="number">0x00000772</span>      <span class="number">64488b</span>042528.  mov rax, qword fs:[<span class="number">0x28</span>]</span><br><span class="line">|           <span class="number">0x0000077b</span>      <span class="number">488945f</span>8       mov qword [canary], rax</span><br><span class="line">|           <span class="number">0x0000077f</span>      <span class="number">31</span>c0           xor eax, eax</span><br><span class="line">|           <span class="number">0x00000781</span>      <span class="number">488</span>d05fc0000.  lea rax, qword str.flag_7ujm8ikhy6 ; <span class="number">0x884</span> ; <span class="string">&quot;flag&#123;7ujm8ikhy6&#125;&quot;</span></span><br><span class="line">|           <span class="number">0x00000788</span>      <span class="number">48894588</span>       mov qword [s1], rax</span><br><span class="line">|           <span class="number">0x0000078c</span>      <span class="number">488</span>d3d020100.  lea rdi, qword str.plz_input_the_key: ; <span class="number">0x895</span> ; <span class="string">&quot;plz input the key:&quot;</span> ; <span class="type">const</span> <span class="type">char</span> *s</span><br><span class="line">|           <span class="number">0x00000793</span>      e878feffff     call sym.imp.<span class="built_in">puts</span>           ; <span class="type">int</span> <span class="title function_">puts</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *s)</span></span><br><span class="line">|           0x00000798      488d4590       lea rax, qword [s2]</span><br><span class="line">|           0x0000079c      4889c6         mov rsi, rax</span><br><span class="line">|           0x0000079f      488d3d020100.  lea rdi, qword [0x000008a8] ; <span class="string">&quot;%s&quot;</span> ; <span class="type">const</span> <span class="type">char</span> *format</span><br><span class="line">|           <span class="number">0x000007a6</span>      b800000000     mov eax, <span class="number">0</span></span><br><span class="line">|           <span class="number">0x000007ab</span>      e890feffff     call sym.imp.__isoc99_scanf ; <span class="type">int</span> <span class="title function_">scanf</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *format)</span></span><br><span class="line">|           0x000007b0      488d5590       lea rdx, qword [s2]</span><br><span class="line">|           0x000007b4      488b4588       mov rax, qword [s1]</span><br><span class="line">|           0x000007b8      4889d6         mov rsi, rdx                ; <span class="type">const</span> <span class="type">char</span> *s2</span><br><span class="line">|           <span class="number">0x000007bb</span>      <span class="number">4889</span>c7         mov rdi, rax                ; <span class="type">const</span> <span class="type">char</span> *s1</span><br><span class="line">|           <span class="number">0x000007be</span>      e86dfeffff     call sym.imp.<span class="built_in">strcmp</span>         ; <span class="type">int</span> <span class="title function_">strcmp</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *s1, <span class="type">const</span> <span class="type">char</span> *s2)</span></span><br><span class="line">|           0x000007c3      85c0           test eax, eax</span><br><span class="line">|       ,=&lt; <span class="number">0x000007c5</span>      <span class="number">750</span>e           jne <span class="number">0x7d5</span></span><br><span class="line">|       |   <span class="number">0x000007c7</span>      <span class="number">488b</span>4588       mov rax, qword [s1]</span><br><span class="line">|       |   <span class="number">0x000007cb</span>      <span class="number">4889</span>c7         mov rdi, rax                ; <span class="type">const</span> <span class="type">char</span> *s</span><br><span class="line">|       |   <span class="number">0x000007ce</span>      e83dfeffff     call sym.imp.<span class="built_in">puts</span>           ; <span class="type">int</span> <span class="title function_">puts</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *s)</span></span><br><span class="line">|      ,==&lt; <span class="number">0x000007d3</span>      eb0c           jmp <span class="number">0x7e1</span></span><br><span class="line">|      ||   ; CODE XREF from main @ <span class="number">0x7c5</span></span><br><span class="line">|      |`-&gt; <span class="number">0x000007d5</span>      <span class="number">488</span>d3dcf0000.  lea rdi, qword str.key_error ; <span class="number">0x8ab</span> ; <span class="string">&quot;key error&quot;</span> ; <span class="type">const</span> <span class="type">char</span> *s</span><br><span class="line">|      |    <span class="number">0x000007dc</span>      e82ffeffff     call sym.imp.<span class="built_in">puts</span>           ; <span class="type">int</span> <span class="title function_">puts</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *s)</span></span><br><span class="line">|      |    ; CODE XREF from main @ <span class="number">0x7d3</span></span><br><span class="line">|      `--&gt; <span class="number">0x000007e1</span>      b800000000     mov eax, <span class="number">0</span></span><br><span class="line">|           <span class="number">0x000007e6</span>      <span class="number">488b</span>4df8       mov rcx, qword [canary]</span><br><span class="line">|           <span class="number">0x000007ea</span>      <span class="number">6448330</span>c2528.  xor rcx, qword fs:[<span class="number">0x28</span>]</span><br><span class="line">|       ,=&lt; <span class="number">0x000007f3</span>      <span class="number">7405</span>           je <span class="number">0x7fa</span></span><br><span class="line">|       |   <span class="number">0x000007f5</span>      e826feffff     call sym.imp.__stack_chk_fail ; <span class="type">void</span> __stack_chk_fail(<span class="type">void</span>)</span><br><span class="line">|       |   ; CODE XREF from main @ <span class="number">0x7f3</span></span><br><span class="line">|       `-&gt; <span class="number">0x000007fa</span>      c9             leave</span><br><span class="line">\           <span class="number">0x000007fb</span>      c3             ret</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>pdf表示p(打印)d(反汇编)f(函数), @表示取地址, sym.main为函数符号。</p>
+</blockquote>
+<h3 id="开辟栈空间"><a href="#开辟栈空间" class="headerlink" title="开辟栈空间"></a>开辟栈空间</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">|           <span class="number">0x0000076a</span>      <span class="number">55</span>             push rbp             |保存栈底</span><br><span class="line">|           <span class="number">0x0000076b</span>      <span class="number">4889e5</span>         mov rbp, rsp         |提升栈底</span><br><span class="line">|           <span class="number">0x0000076e</span>      <span class="number">4883</span>c480       add rsp, <span class="number">-0x80</span>       |提升栈顶</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置-canary"><a href="#设置-canary" class="headerlink" title="设置 canary"></a>设置 canary</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">|           <span class="number">0x00000772</span>      <span class="number">64488b</span>042528.  mov rax, qword fs:[<span class="number">0x28</span>]     |</span><br><span class="line">|           <span class="number">0x0000077b</span>      <span class="number">488945f</span>8       mov qword [canary], rax      |开启 canary 机制</span><br></pre></td></tr></table></figure>
+<h3 id="局部变量"><a href="#局部变量" class="headerlink" title="局部变量"></a>局部变量</h3><ol>
+<li>[rbp-0x8]</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">|           <span class="number">0x00000772</span>      <span class="number">64488b</span>042528.  mov rax, qword fs:[<span class="number">0x28</span>]</span><br><span class="line">|           <span class="number">0x0000077b</span>      <span class="number">488945f</span>8       mov qword [canary], rax</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>[rbp-0x08] 是开启 canary 机制后，生成的随机验证码。程序自动分析后，定义为 canary</p>
+</blockquote>
+<ol start="2">
+<li>[rbp-0x78]</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">|           <span class="number">0x0000077f</span>      <span class="number">31</span>c0           xor eax, eax</span><br><span class="line">|           <span class="number">0x00000781</span>      <span class="number">488</span>d05fc0000.  lea rax, qword str.flag_7ujm8ikhy6 ; <span class="number">0x884</span> ; <span class="string">&quot;flag&#123;7ujm8ikhy6&#125;&quot;</span></span><br><span class="line">|           <span class="number">0x00000788</span>      <span class="number">48894588</span>       mov qword [s1], rax</span><br></pre></td></tr></table></figure>
+<p>把 flag 存到了 [rbp-0x78] 中。</p>
+<blockquote>
+<p>这里 r2 对程序自动分析，将 [rbp-0x78] 定义为 s1</p>
+</blockquote>
+<ol start="3">
+<li>[rbp-0x70]</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">|           <span class="number">0x00000798</span>      <span class="number">488</span>d4590       lea rax, qword [s2]</span><br><span class="line">|           <span class="number">0x0000079c</span>      <span class="number">4889</span>c6         mov rsi, rax</span><br><span class="line">|           <span class="number">0x0000079f</span>      <span class="number">488</span>d3d020100.  lea rdi, qword [<span class="number">0x000008a8</span>] ; <span class="string">&quot;%s&quot;</span> ; <span class="type">const</span> <span class="type">char</span> *format</span><br><span class="line">|           <span class="number">0x000007a6</span>      b800000000     mov eax, <span class="number">0</span></span><br><span class="line">|           <span class="number">0x000007ab</span>      e890feffff     call sym.imp.__isoc99_scanf ; <span class="type">int</span> <span class="title function_">scanf</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *format)</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>[rbp-0x70] 是输入字符串。程序自动分析后，定义为 s2</p>
+</blockquote>
+<ol start="4">
+<li>观察程序功能用到了哪些局部变量</li>
+</ol>
+<p>从后面的程序来看，只用到了[rbp-0x70] 和 [rbp-0x78] 这两个局部变量。我们分别重命名为 input 和 flag</p>
+<h3 id="分析程序功能"><a href="#分析程序功能" class="headerlink" title="分析程序功能"></a>分析程序功能</h3><ol>
+<li>内置函数分析</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">|           <span class="number">0x0000078c</span>      <span class="number">488</span>d3d020100.  lea rdi, qword str.plz_input_the_key:</span><br><span class="line">|           <span class="number">0x00000793</span>      e878feffff     call sym.imp.<span class="built_in">puts</span>           ; <span class="built_in">puts</span>(<span class="string">&quot;plz input the key:&quot;</span>)</span><br><span class="line">|           <span class="number">0x00000798</span>      <span class="number">488</span>d4590       lea rax, qword [s2]</span><br><span class="line">|           <span class="number">0x0000079c</span>      <span class="number">4889</span>c6         mov rsi, rax</span><br><span class="line">|           <span class="number">0x0000079f</span>      <span class="number">488</span>d3d020100.  lea rdi, qword [<span class="number">0x000008a8</span>] ; </span><br><span class="line">|           <span class="number">0x000007a6</span>      b800000000     mov eax, <span class="number">0</span></span><br><span class="line">|           <span class="number">0x000007ab</span>      e890feffff     call sym.imp.__isoc99_scanf ; <span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,input)</span><br><span class="line">|           <span class="number">0x000007b0</span>      <span class="number">488</span>d5590       lea rdx, qword [s2]</span><br><span class="line">|           <span class="number">0x000007b4</span>      <span class="number">488b</span>4588       mov rax, qword [s1]</span><br><span class="line">|           <span class="number">0x000007b8</span>      <span class="number">4889</span>d6         mov rsi, rdx                ;</span><br><span class="line">|           <span class="number">0x000007bb</span>      <span class="number">4889</span>c7         mov rdi, rax                ;</span><br><span class="line">|           <span class="number">0x000007be</span>      e86dfeffff     call sym.imp.<span class="built_in">strcmp</span>         ; <span class="type">int</span> <span class="title function_">strcmp</span><span class="params">(flag,input)</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>JCC 判断分析</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">|           <span class="number">0x000007c3</span>      <span class="number">85</span>c0           test eax, eax</span><br><span class="line">|       ,=&lt; <span class="number">0x000007c5</span>      <span class="number">750</span>e           jne <span class="number">0x7d5</span></span><br><span class="line">|       |   <span class="number">0x000007c7</span>      <span class="number">488b</span>4588       mov rax, qword [s1]</span><br><span class="line">|       |   <span class="number">0x000007cb</span>      <span class="number">4889</span>c7         mov rdi, rax                ; </span><br><span class="line">|       |   <span class="number">0x000007ce</span>      e83dfeffff     call sym.imp.<span class="built_in">puts</span>           ; <span class="type">int</span> <span class="title function_">puts</span><span class="params">(flag)</span></span><br><span class="line">|      ,==&lt; <span class="number">0x000007d3</span>      eb0c           jmp <span class="number">0x7e1</span></span><br><span class="line">|      ||   ; CODE XREF from main @ <span class="number">0x7c5</span></span><br><span class="line">|      |`-&gt; <span class="number">0x000007d5</span>      <span class="number">488</span>d3dcf0000.  lea rdi, qword str.key_error ;</span><br><span class="line">|      |    <span class="number">0x000007dc</span>      e82ffeffff     call sym.imp.<span class="built_in">puts</span>           ; <span class="type">int</span> <span class="title function_">puts</span><span class="params">(<span class="string">&quot;key error&quot;</span>)</span></span><br></pre></td></tr></table></figure>
+<p>从这题结构来看，这是一个 if…else 语句。test eax,eax 是将返回值只作为判断条件。</p>
+<p>代码分析</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="built_in">strcmp</span>(flag,input) == <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">puts</span>(flag);    </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;key error&quot;</span>);    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="main-函数结尾部分"><a href="#main-函数结尾部分" class="headerlink" title="main 函数结尾部分"></a>main 函数结尾部分</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">|      `--&gt; <span class="number">0x000007e1</span>      b800000000     mov eax, <span class="number">0</span></span><br><span class="line">|           <span class="number">0x000007e6</span>      <span class="number">488b</span>4df8       mov rcx, qword [canary]</span><br><span class="line">|           <span class="number">0x000007ea</span>      <span class="number">6448330</span>c2528.  xor rcx, qword fs:[<span class="number">0x28</span>]</span><br><span class="line">|       ,=&lt; <span class="number">0x000007f3</span>      <span class="number">7405</span>           je <span class="number">0x7fa</span></span><br><span class="line">|       |   <span class="number">0x000007f5</span>      e826feffff     call sym.imp.__stack_chk_fail ; <span class="type">void</span> __stack_chk_fail(<span class="type">void</span>)</span><br><span class="line">|       |   ; CODE XREF from main @ <span class="number">0x7f3</span></span><br><span class="line">|       `-&gt; <span class="number">0x000007fa</span>      c9             leave</span><br><span class="line">\           <span class="number">0x000007fb</span>      c3             ret</span><br></pre></td></tr></table></figure>
+
+<h3 id="代码还原"><a href="#代码还原" class="headerlink" title="代码还原"></a>代码还原</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">char</span> flag[]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="built_in">strcpy</span>(flag,<span class="string">&quot;flag&#123;7ujm8ikhy6&#125;&quot;</span>);</span><br><span class="line">    <span class="type">char</span> input[<span class="number">20</span>];</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,input);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">strcmp</span>(flag,input) == <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">puts</span>(flag);    </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;key error&quot;</span>);    </span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="知识补充"><a href="#知识补充" class="headerlink" title="知识补充"></a>知识补充</h3><ol>
+<li>Canary 机制</li>
+</ol>
+<p>Canary 机制是一种栈溢出保护机制，栈溢出保护是一种缓冲区溢出攻击环节手段（只是环节机制，不能彻底阻止）。当弃用栈保护后，函数开始执行的时候会先往栈底插入 cookie 信息，当函数真正返回的时候会验证 cookie 信息是否合法（栈帧销毁前测试该值是否被改变），如果不合法就停止程序运行（栈溢出发生）。</p>
+<p>gcc 相关参数及意义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-fstack-protector           启用保护，不过只为局部变量中含有数组的函数插入保护</span><br><span class="line">-fstack-protector-all       启用保护，为所有函数插入保护</span><br><span class="line">-fstack-protector-strong</span><br><span class="line">-fstack-protector-explicit  只对有明确 stack_protect attribute 的函数开启保护</span><br><span class="line">-fno-<span class="built_in">stack</span>-protector        禁用保护</span><br></pre></td></tr></table></figure>
+
+<p>Canary 机制插入结构</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//函数头部添加</span></span><br><span class="line">mov    rax,QWORD PTR fs:<span class="number">0x28</span></span><br><span class="line">mov    QWORD PTR [rbp<span class="number">-0x8</span>],rax</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//结尾部分添加</span></span><br><span class="line">mov    rax,QWORD PTR [rbp<span class="number">-0x8</span>]</span><br><span class="line">sub    rax,QWORD PTR fs:<span class="number">0x28</span>    </span><br><span class="line">je     <span class="number">0x1161</span> &lt;test+<span class="number">44</span>&gt;</span><br><span class="line">call   <span class="number">0x1030</span> &lt;__stack_chk_fail@plt&gt; </span><br></pre></td></tr></table></figure>
+<h1 id="攻防世界-insanity-linux"><a href="#攻防世界-insanity-linux" class="headerlink" title="攻防世界-insanity(linux)"></a>攻防世界-insanity(linux)</h1><ol>
+<li>查看文件类型</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">root@kali:/opt/C/CTF<span class="comment"># rabin2 -I insanity </span></span><br><span class="line"><span class="built_in">arch</span>     x86</span><br><span class="line">baddr    0x8048000</span><br><span class="line">binsz    5915</span><br><span class="line">bintype  elf            <span class="comment">#elf文件</span></span><br><span class="line">bits     32             <span class="comment">#32位</span></span><br><span class="line">canary   <span class="literal">false</span>          <span class="comment">#未开启 canary 机制</span></span><br><span class="line">class    ELF32</span><br><span class="line">compiler GCC: (Debian 4.7.2-5) 4.7.2/GCC: (Debian 4.4.7-2) 4.4.7</span><br><span class="line">crypto   <span class="literal">false</span></span><br><span class="line">endian   little</span><br><span class="line">havecode <span class="literal">true</span></span><br><span class="line">intrp    /lib/ld-linux.so.2</span><br><span class="line">laddr    0x0</span><br><span class="line">lang     c              <span class="comment">#编写语言：C</span></span><br><span class="line">linenum  <span class="literal">true</span></span><br><span class="line">lsyms    <span class="literal">true</span></span><br><span class="line">machine  Intel 80386</span><br><span class="line">maxopsz  16</span><br><span class="line">minopsz  1</span><br><span class="line">nx       <span class="literal">true</span></span><br><span class="line">os       linux</span><br><span class="line">pcalign  0</span><br><span class="line">pic      <span class="literal">false</span></span><br><span class="line">relocs   <span class="literal">true</span></span><br><span class="line">relro    no</span><br><span class="line">rpath    NONE</span><br><span class="line">sanitiz  <span class="literal">false</span></span><br><span class="line">static   <span class="literal">false</span></span><br><span class="line">stripped <span class="literal">false</span></span><br><span class="line">subsys   linux</span><br><span class="line">va       <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>执行程序判断程序架构</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@kali:/opt/C/CTF<span class="comment"># ./insanity </span></span><br><span class="line">Reticulating splines, please <span class="built_in">wait</span>..</span><br><span class="line">Your ability to hack is about as good as my ability to have free will.</span><br><span class="line"></span><br><span class="line">1、 打印字符串：<span class="string">&quot;Reticulating splines, please wait..&quot;</span></span><br><span class="line">2、 等待了几秒</span><br><span class="line">3、 打印字符串：<span class="string">&quot;Your ability to hack is about as good as my ability to have free will.&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>查看常量</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">root@kali:/opt/C/CTF<span class="comment"># rabin2 -z insanity</span></span><br><span class="line">[Strings]</span><br><span class="line">Num Paddr      Vaddr      Len Size Section  Type  String</span><br><span class="line">000 0x000005d0 0x080485d0  35  36 (.rodata) ascii Reticulating splines, please <span class="built_in">wait</span>..</span><br><span class="line">001 0x000005f4 0x080485f4  63  64 (.rodata) ascii If you<span class="string">&#x27;re pretending to suck, you just passed that Turing test.</span></span><br><span class="line"><span class="string">002 0x00000634 0x08048634  69  70 (.rodata) ascii There aren&#x27;</span>t enough bits <span class="keyword">in</span> my memory to represent how hard you fail.</span><br><span class="line">003 0x0000067c 0x0804867c  70  71 (.rodata) ascii Your ability to hack is about as good as my ability to have free will.</span><br><span class="line">004 0x000006c4 0x080486c4  77  78 (.rodata) ascii Have you considered becoming a vacuum cleaner? You<span class="string">&#x27;re pretty good at sucking.</span></span><br><span class="line"><span class="string">005 0x00000714 0x08048714  69  70 (.rodata) ascii I&#x27;</span>ve got a good feeling about this one..... <span class="built_in">wait</span> no. Maybe next time.</span><br><span class="line">006 0x0000075c 0x0804875c  41  42 (.rodata) ascii Knock knock..\nWho<span class="string">&#x27;s there?\nUDP.\nUDP who?\n</span></span><br><span class="line"><span class="string">007 0x00000788 0x08048788  20  21 (.rodata) ascii 9447&#123;This_is_a_flag&#125;</span></span><br><span class="line"><span class="string">008 0x0000079d 0x0804879d  27  28 (.rodata) ascii Congrats, you hacked me!\n$ </span></span><br><span class="line"><span class="string">009 0x000007b9 0x080487b9  28  29 (.rodata) ascii rm -rf / : Permission denied</span></span><br><span class="line"><span class="string">010 0x000007d6 0x080487d6  29  30 (.rodata) ascii #define YOU &quot;massive failure&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>获取 flag：9447{This_is_a_flag}</li>
+</ol>
+<h2 id="静态分析-1"><a href="#静态分析-1" class="headerlink" title="静态分析"></a>静态分析</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">root@kali:/opt/C/CTF# r2 -A insanity </span><br><span class="line">[x] Analyze all flags starting with sym. and <span class="title function_">entry0</span> <span class="params">(aa)</span></span><br><span class="line">[x] Analyze function <span class="title function_">calls</span> <span class="params">(aac)</span></span><br><span class="line">[x] Analyze len bytes of instructions <span class="keyword">for</span> <span class="title function_">references</span> <span class="params">(aar)</span></span><br><span class="line">[x] Check <span class="keyword">for</span> objc references</span><br><span class="line">[x] Check <span class="keyword">for</span> vtables</span><br><span class="line">[x] Type matching analysis <span class="keyword">for</span> all <span class="title function_">functions</span> <span class="params">(aaft)</span></span><br><span class="line">[x] Propagate <span class="keyword">noreturn</span> information</span><br><span class="line">[x] Use -AA or aaaa to perform additional experimental analysis.</span><br><span class="line">[0x08048450]&gt; pdf @ sym.main</span><br><span class="line">            ;-- section..text:</span><br><span class="line">            ;-- .text:</span><br><span class="line">/ (fcn) main <span class="number">96</span></span><br><span class="line">|   <span class="type">int</span> <span class="title function_">main</span> <span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv, <span class="type">char</span> **envp)</span>;</span><br><span class="line">|           ; DATA XREF from entry0 @ <span class="number">0x8048467</span></span><br><span class="line">|           <span class="number">0x080483f0</span>      <span class="number">55</span>             push ebp                    ; [<span class="number">14</span>] -r-x section size <span class="number">448</span> named .text</span><br><span class="line">|           <span class="number">0x080483f1</span>      <span class="number">89e5</span>           mov ebp, esp</span><br><span class="line">|           <span class="number">0x080483f3</span>      <span class="number">83e4</span>f0         and esp, <span class="number">0xfffffff0</span></span><br><span class="line">|           <span class="number">0x080483f6</span>      <span class="number">83</span>ec10         sub esp, <span class="number">0x10</span></span><br><span class="line">|           <span class="number">0x080483f9</span>      c70424d08504.  mov dword [esp], str.Reticulating_splines__please_wait.. ; [<span class="number">0x80485d0</span>:<span class="number">4</span>]=<span class="number">0x69746552</span> ; <span class="string">&quot;Reticulating splines, please wait..&quot;</span> ; <span class="type">const</span> <span class="type">char</span> *s</span><br><span class="line">|           <span class="number">0x08048400</span>      e89bffffff     call sym.imp.<span class="built_in">puts</span>           ; <span class="type">int</span> <span class="title function_">puts</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *s)</span></span><br><span class="line">|           0x08048405      c70424050000.  mov dword [esp], 5          ; <span class="type">int</span> s</span><br><span class="line">|           <span class="number">0x0804840c</span>      e87fffffff     call sym.imp.sleep          ; <span class="type">int</span> <span class="title function_">sleep</span><span class="params">(<span class="type">int</span> s)</span></span><br><span class="line">|           0x08048411      c70424000000.  mov dword [esp], 0          ; <span class="type">time_t</span> *timer</span><br><span class="line">|           <span class="number">0x08048418</span>      e863ffffff     call sym.imp.time           ; <span class="type">time_t</span> <span class="title function_">time</span><span class="params">(<span class="type">time_t</span> *timer)</span></span><br><span class="line">|           0x0804841d      890424         mov dword [esp], eax        ; <span class="type">int</span> seed</span><br><span class="line">|           <span class="number">0x08048420</span>      e89bffffff     call sym.imp.srand          ; <span class="type">void</span> <span class="title function_">srand</span><span class="params">(<span class="type">int</span> seed)</span></span><br><span class="line">|           0x08048425      e8b6ffffff     call sym.imp.rand           ; <span class="type">int</span> <span class="title function_">rand</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">|           0x0804842a      bacdcccccc     mov edx, 0xcccccccd</span><br><span class="line">|           0x0804842f      89c1           mov ecx, eax                ;</span><br><span class="line">|           <span class="number">0x08048431</span>      f7e2           mul edx                     ;eax*edx</span><br><span class="line">|           <span class="number">0x08048433</span>      c1ea03         shr edx, <span class="number">3</span>                  ;edx 逻辑右移 <span class="number">3</span> 位(edx=ecx/<span class="number">10</span>)</span><br><span class="line">|           <span class="number">0x08048436</span>      <span class="number">8</span>d0492         lea eax, dword [edx + edx*<span class="number">4</span>];eax = edx*<span class="number">5</span></span><br><span class="line">|           <span class="number">0x08048439</span>      <span class="number">01</span>c0           add eax, eax                ;eax=edx*<span class="number">10</span></span><br><span class="line">|           <span class="number">0x0804843b</span>      <span class="number">29</span>c1           sub ecx, eax                ;ecx=ecx-eax</span><br><span class="line">|           <span class="number">0x0804843d</span>      <span class="number">8b</span>048dc09904.  mov eax, dword [ecx*<span class="number">4</span> + obj.strs];</span><br><span class="line">|           <span class="number">0x08048444</span>      <span class="number">890424</span>         mov dword [esp], eax        ; <span class="type">const</span> <span class="type">char</span> *s</span><br><span class="line">|           <span class="number">0x08048447</span>      e854ffffff     call sym.imp.<span class="built_in">puts</span>           ; <span class="type">int</span> <span class="title function_">puts</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *s)</span></span><br><span class="line">|           0x0804844c      31c0           xor eax, eax</span><br><span class="line">|           0x0804844e      c9             leave</span><br><span class="line">\           0x0804844f      c3             ret</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这段程序如何执行的还没看懂，暂时就放一放不分析了。</p>
+</blockquote>
+<h3 id="知识点补充"><a href="#知识点补充" class="headerlink" title="知识点补充"></a>知识点补充</h3><ol>
+<li>取余算法的优化</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mov edx, <span class="number">0xcccccccd</span></span><br><span class="line">mov ecx, eax                ;ecx == <span class="number">0xcccccccd</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//edx=ecx/10</span></span><br><span class="line">mul edx                     ;eax*edx</span><br><span class="line">shr edx, <span class="number">3</span>                  ;edx 逻辑右移 <span class="number">3</span> 位</span><br><span class="line"></span><br><span class="line"><span class="comment">//(ecx/10)*10：这里存的是整数，并没有 除以10 之后的小数</span></span><br><span class="line">lea eax, dword [edx + edx*<span class="number">4</span>];eax = edx*<span class="number">5</span></span><br><span class="line">add eax, eax                ;eax=edx*<span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//ecx-(ecx/10)*10 == 余数</span></span><br><span class="line">sub ecx, eax                ;ecx=ecx-eax</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">101/10=10</span><br><span class="line">10*10=100</span><br><span class="line">101-100=1</span><br></pre></td></tr></table></figure>
+
+<h1 id="攻防世界-python-trade"><a href="#攻防世界-python-trade" class="headerlink" title="攻防世界-python-trade"></a>攻防世界-python-trade</h1><p>对于 pyc 文件的反汇编成源码，可以使用 pip 模块 “uncompyle6” 进行反汇编</p>
+<ol>
+<li>反汇编成源码，并分析程序</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">root@kali:/opt/C/CTF<span class="comment"># uncompyle6 py1.pyc </span></span><br><span class="line"><span class="comment"># uncompyle6 version 3.7.4</span></span><br><span class="line"><span class="comment"># Python bytecode 2.7 (62211)</span></span><br><span class="line"><span class="comment"># Decompiled from: Python 3.8.5 (default, Aug  2 2020, 15:09:07) </span></span><br><span class="line"><span class="comment"># [GCC 10.2.0]</span></span><br><span class="line"><span class="comment"># Embedded file name: 1.py</span></span><br><span class="line"><span class="comment"># Compiled at: 2017-06-03 10:20:43</span></span><br><span class="line">import base64</span><br><span class="line"></span><br><span class="line">def encode(message):        <span class="comment">#定义函数：encode 函数；参数：message</span></span><br><span class="line">    s = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> message:       <span class="comment">#使用 for 循环，将参数加密。python 的 for 循环默认遍历参数</span></span><br><span class="line">        x = ord(i) ^ 32     <span class="comment">#ord(i)：将 i 转换成十进制，然后与 32 异或</span></span><br><span class="line">        x = x + 16          <span class="comment">#x+16</span></span><br><span class="line">        s += chr(x)         <span class="comment">#将 x 转换成字符</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">return</span> base64.b64encode(s)      <span class="comment">#将 message 参数使用 base64 编码加密</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">correct = <span class="string">&#x27;XlNkVmtUI1MgXWBZXCFeKY+AaXNt&#x27;</span></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;Input flag:&#x27;</span></span><br><span class="line">flag = raw_input()</span><br><span class="line"><span class="keyword">if</span> encode(flag) == correct:             <span class="comment">#encode(flag) == XlNkVmtUI1MgXWBZXCFeKY+AaXNt</span></span><br><span class="line">    <span class="built_in">print</span> <span class="string">&#x27;correct&#x27;</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&#x27;wrong&#x27;</span></span><br><span class="line"><span class="comment">#okay decompiling py1.pyc</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>通过逆算法，计算出 flag</li>
+</ol>
+<p>逆算法</p>
+<ul>
+<li>base64 解码成 flag1</li>
+<li>flag2&#x3D;(ord(flag)-16) ^ 32：将字符串转换成十进制，并进行逆向运算</li>
+<li>flag3 &#x3D; str(flag2)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1</span> <span class="comment">#!/usr/bin/python</span></span><br><span class="line"> <span class="number">2</span> <span class="keyword">import</span> base64</span><br><span class="line"> <span class="number">3</span> </span><br><span class="line"> <span class="number">4</span> flag = <span class="string">&#x27;XlNkVmtUI1MgXWBZXCFeKY+AaXNt&#x27;</span></span><br><span class="line"> <span class="number">5</span> flag1 = base64.b64decode(flag)</span><br><span class="line"> <span class="number">6</span> flag2 = <span class="string">&#x27;&#x27;</span></span><br><span class="line"> <span class="number">7</span> <span class="keyword">for</span> i <span class="keyword">in</span> flag1:</span><br><span class="line"> <span class="number">8</span>     flag2 += <span class="built_in">chr</span>((<span class="built_in">ord</span>(i)-<span class="number">16</span>)^<span class="number">32</span>)</span><br><span class="line"> <span class="number">9</span> </span><br><span class="line"><span class="number">10</span> <span class="built_in">print</span> (flag2)</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>执行程序，获得flag</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@kali:/opt/C/CTF<span class="comment"># ./flag.py   </span></span><br><span class="line">nctf&#123;d3c0mpil1n9_PyC&#125;</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>获得 flag：nctf{d3c0mpil1n9_PyC}</li>
+</ol>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h1 id="攻防世界-re1-windows"><a href="#攻防世界-re1-windows" class="headerlink" title="攻防世界-re1(windows)"></a>攻防世界-re1(windows)</h1><ol>
+<li>PEID 查看文件信息</li>
+</ol>
+<p>这是一个 32 位的程序，没有壳</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/04/18/iAmodj5eHLUsZlE.jpg"
+                      alt="1.jpg"
+                ></p>
+<ol start="2">
+<li>执行程序，分析程序的功能</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/04/18/twJPeqApWk2oFbR.jpg"
+                      alt="9.jpg"
+                ></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">打印 &quot;欢迎来到DUTCTF呦&quot;</span><br><span class="line">打印 &quot;这是一道很可爱很简单的逆向题呦&quot;</span><br><span class="line">打印 &quot;输入flag吧:&quot;</span><br><span class="line">获取用户输入：&quot;fucker&quot;</span><br><span class="line">打印 &quot;flag不太对呦，再试试呗，加油呦&quot;</span><br><span class="line">system(&quot;pause&quot;) &quot;请按任意键继续. . .&quot;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>使用 x64dbg 加载程序到主模块</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/04/18/oc2Y9ZukjSPtCvf.jpg"
+                      alt="2.jpg"
+                ></p>
+<blockquote>
+<p>注：主模块的入口点 EntryPoint 是 main 函数执行前的一些初始化的操作，并不是 main 函数的入口点。</p>
+</blockquote>
+<ol start="4">
+<li>查找 main 函数入口点</li>
+</ol>
+<p>右键–&gt;搜索–&gt;当前模块–&gt;跨模块调用，来查找程序使用了哪些 windows API</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/04/18/oHGA5mhETzuqkdY.jpg"
+                      alt="3.jpg"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/04/18/LhZxutH9TVBc5Di.jpg"
+                      alt="4.jpg"
+                ></p>
+<p>搜索 GetCommandLine 函数</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/04/18/b2OThEuPViLXNKA.jpg"
+                      alt="5.jpg"
+                ></p>
+<p>双击 GetCommandLine 函数，定位到反汇编窗口</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/04/18/8qbCulXrKLeHTFD.jpg"
+                      alt="6.jpg"
+                ></p>
+<p>查找调用了 3 个参数的函数，该函数很有可能就是 main 函数</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/04/18/y6kXPaWU1msIjzQ.jpg"
+                      alt="7.jpg"
+                ></p>
+<p>左击该函数，然后按 Enter，进入函数入口点</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2021/04/18/FxLSqHTeymuiBg2.jpg"
+                      alt="8.jpg"
+                ></p>
+<p>如上图所示，已经定位到了 main 函数。从 main 函数开头就已经看到了 flag。不过还是要静态分析，提升自己的分析能力。</p>
+<blockquote>
+<p>win32 程序大多是以 push 指令来传递参数的</p>
+</blockquote>
+<h2 id="程序静态分析"><a href="#程序静态分析" class="headerlink" title="程序静态分析"></a>程序静态分析</h2><h3 id="开辟栈空间-1"><a href="#开辟栈空间-1" class="headerlink" title="开辟栈空间"></a>开辟栈空间</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00641000</span> &lt;re1.sub_641000&gt;                 | <span class="number">55</span>                    | push ebp                                              |保存栈底</span><br><span class="line"><span class="number">00641001</span>                                  | <span class="number">8B</span>EC                  | mov ebp,esp                                           |提升栈底</span><br><span class="line"><span class="number">00641003</span>                                  | <span class="number">83</span>EC <span class="number">44</span>               | sub esp,<span class="number">44</span>                                            |提升栈顶</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置-security-cookie"><a href="#设置-security-cookie" class="headerlink" title="设置 security_cookie"></a>设置 security_cookie</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00641006</span>                                  | A1 <span class="number">00506500</span>           | mov eax,dword ptr ds:[<span class="number">655000</span>]                         |</span><br><span class="line"><span class="number">0064100B</span>                                  | <span class="number">33</span>C5                  | xor eax,ebp                                           |</span><br><span class="line"><span class="number">0064100</span>D                                  | <span class="number">8945</span> FC               | mov dword ptr ss:[ebp<span class="number">-4</span>],eax                          |___security_cookie</span><br></pre></td></tr></table></figure>
+
+<h3 id="分析局部变量"><a href="#分析局部变量" class="headerlink" title="分析局部变量"></a>分析局部变量</h3><p>局部变量常以：[ebp-xxx] 的形式出现</p>
+<ol>
+<li>[ebp-44]</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[ebp<span class="number">-44</span>]=<span class="string">&quot;DUTCTF&#123;We1c0met0&quot;</span>     <span class="comment">//xmm0 = 128 bit = 16(128/8) 字节，所以这里只存储了 16 个字符串。</span></span><br><span class="line"></span><br><span class="line">movdqu xmm0,xmmword ptr ds:[<span class="number">653E34</span>]                   | <span class="string">&quot;DUTCTF&#123;We1c0met0DUTCTF&#125;&quot;</span></span><br><span class="line">movdqu xmmword ptr ss:[ebp<span class="number">-44</span>],xmm0                   | <span class="string">&quot;DUTCTF&#123;We1c0met0&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//注：movdqu 属于 SSE2 指令集。</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>[ebp-2C]</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[ebp<span class="number">-2</span>C] = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">xor eax,eax                                           |</span><br><span class="line">mov dword ptr ss:[ebp<span class="number">-2</span>C],eax</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>[ebp-34]</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[ebp<span class="number">-44</span>]+[ebp<span class="number">-34</span>] = <span class="string">&quot;DUTCTF&#123;We1c0met0DUTCTF&#125;&quot;</span></span><br><span class="line"></span><br><span class="line">movq xmm0,qword ptr ds:[<span class="number">653E44</span>]                       | <span class="string">&quot;DUTCTF&#125;&#125;&quot;</span></span><br><span class="line">movq qword ptr ss:[ebp<span class="number">-34</span>],xmm0                       | <span class="string">&quot;DUTCTF&#125;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>[ebp-28]</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[ebp<span class="number">-28</span>] = <span class="number">0</span></span><br><span class="line">mov word ptr ss:[ebp<span class="number">-28</span>],ax</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>[ebp-24]</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">这是 <span class="built_in">scanf</span> 函数反汇编特征，所以这里 [ebp<span class="number">-24</span>] 是我们输入的 flag</span><br><span class="line"></span><br><span class="line">lea eax,dword ptr ss:[ebp<span class="number">-24</span>]                         |</span><br><span class="line">push eax                                              | Arg2</span><br><span class="line">push re1<span class="number">.653E8</span>C                                       | Arg1 = <span class="string">&quot;%s&quot;</span>==<span class="string">L&quot;猥&quot;</span></span><br><span class="line">call &lt;re1.sub_6410D1&gt;                                 | sub_8410D1</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>观察程序功能用到了哪些局部变量</li>
+</ol>
+<p>从后面的程序中，只看到了 [ebp-44](包括 [ebp-34]) 和 [ebp-24] 这两各个局部变量。其他的都没用到，那么我们把 [ebp-44] 和 [ebp-34] 定义为局部变量：flag、input</p>
+<p>至此局部边变量已经分析结束。这里把汇编代码的顺序改了一下，方便看懂。我们分析局部变量的时候，不需要太过关注这些汇编指令的顺序。我们只需要知道这个局部变量存的值是什么，它在哪里被到了，分析它到底是个什么东西。</p>
+<h3 id="分析程序功能-1"><a href="#分析程序功能-1" class="headerlink" title="分析程序功能"></a>分析程序功能</h3><ol>
+<li>内置函数</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">push re1<span class="number">.653E4</span>C                                       | Arg1 = <span class="string">&quot;欢迎来到DUTCTF呦\n&quot;</span></span><br><span class="line">call &lt;re1.sub_64127B&gt;                                 | <span class="built_in">printf</span>(<span class="string">&quot;欢迎来到DUTCTF呦\n&quot;</span>),调用上面的 push 参数</span><br><span class="line"></span><br><span class="line">push re1<span class="number">.653E60</span>                                       | Arg1 = <span class="string">&quot;这是一道很可爱很简单的逆向题呦\n&quot;</span></span><br><span class="line">call &lt;re1.sub_64127B&gt;                                 | <span class="built_in">printf</span>(<span class="string">&quot;这是一道很可爱很简单的逆向题呦\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">push re1<span class="number">.653E80</span>                                       | Arg1 = <span class="string">&quot;输入flag吧:&quot;</span></span><br><span class="line">call &lt;re1.sub_64127B&gt;                                 | <span class="built_in">printf</span>(<span class="string">&quot;输入flag吧:&quot;</span>)</span><br><span class="line"></span><br><span class="line">lea eax,dword ptr ss:[ebp<span class="number">-24</span>]                         |</span><br><span class="line">push eax                                              | Arg2</span><br><span class="line">push re1<span class="number">.653E8</span>C                                       | Arg1 = <span class="string">&quot;%s&quot;</span>==<span class="string">L&quot;猥&quot;</span></span><br><span class="line">call &lt;re1.sub_6410D1&gt;                                 | <span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,input)</span><br><span class="line">add esp,<span class="number">14</span>                                            | 堆栈平衡</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>循环代码分析</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00641062</span>                                  | <span class="number">8</span>D45 DC               | lea eax,dword ptr ss:[ebp<span class="number">-24</span>]                         | 获取 input 的内存地址</span><br><span class="line"><span class="number">00641065</span>                                  | <span class="number">8</span>D4D BC               | lea ecx,dword ptr ss:[ebp<span class="number">-44</span>]                         | 获取 flag 的内存地址</span><br><span class="line"><span class="number">00641068</span>                                  | <span class="number">8</span>A11                  | mov dl,byte ptr ds:[ecx]                              |</span><br><span class="line"><span class="number">0064106</span>A                                  | <span class="number">3</span>A10                  | cmp dl,byte ptr ds:[eax]                              | 判断 flag 和 input 是否相等</span><br><span class="line"><span class="number">0064106</span>C                                  | <span class="number">75</span> <span class="number">1</span>A                 | jne re1<span class="number">.641088</span>                                        | 不相等就跳到 <span class="number">641088</span></span><br><span class="line"><span class="number">0064106</span>E                                  | <span class="number">84</span>D2                  | test dl,dl                                            | test 指令用得是 and 运算，即 flag and input 。如果等于<span class="number">0</span>，就说明我的输入为 <span class="number">0</span>，或是循环结束为 <span class="number">0</span> 。</span><br><span class="line"><span class="number">00641070</span>                                  | <span class="number">74</span> <span class="number">12</span>                 | je re1<span class="number">.641084</span>                                         | 如果等于 <span class="number">0</span> 就跳出循环</span><br><span class="line"><span class="number">00641072</span>                                  | <span class="number">8</span>A51 <span class="number">01</span>               | mov dl,byte ptr ds:[ecx+<span class="number">1</span>]                            |</span><br><span class="line"><span class="number">00641075</span>                                  | <span class="number">3</span>A50 <span class="number">01</span>               | cmp dl,byte ptr ds:[eax+<span class="number">1</span>]                            | 继续循环比较</span><br><span class="line"><span class="number">00641078</span>                                  | <span class="number">75</span> <span class="number">0</span>E                 | jne re1<span class="number">.641088</span>                                        | 如果等于 <span class="number">0</span> 就跳到 <span class="number">641088</span></span><br><span class="line"><span class="number">0064107</span>A                                  | <span class="number">83</span>C1 <span class="number">02</span>               | add ecx,<span class="number">2</span>                                             |</span><br><span class="line"><span class="number">0064107</span>D                                  | <span class="number">83</span>C0 <span class="number">02</span>               | add eax,<span class="number">2</span>                                             | 内存地址+<span class="number">2</span></span><br><span class="line"><span class="number">00641080</span>                                  | <span class="number">84</span>D2                  | test dl,dl                                            | 再次测试循环是否结束</span><br><span class="line"><span class="number">00641082</span>                                  | <span class="number">75</span> E4                 | jne re1<span class="number">.641068</span>                                        | 不等于 <span class="number">0</span> ，就跳到 <span class="number">641068</span> 继续比较字符串</span><br><span class="line"></span><br><span class="line"><span class="number">00641084</span>                                  | <span class="number">33</span>C0                  | xor eax,eax                                           | 字符串比较结束，返回 <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="number">00641088</span>                                  | <span class="number">1B</span>C0                  | sbb eax,eax                                           |</span><br><span class="line"><span class="number">0064108</span>A                                  | <span class="number">83</span>C8 <span class="number">01</span>               | or eax,<span class="number">1</span>                                              | 返回 <span class="number">-1</span></span><br></pre></td></tr></table></figure>
+
+<p>这段分析完成：这段代码就是将两个字符串进行比较，并返回值 0 , -1 。这段代码既然是比较字符串的代码，所以我们可以用 strcmp 进行代替。这段代码就分析为：strcmp(flag,input)</p>
+<ol start="3">
+<li>JCC 比较分析</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00641086</span>                                  | EB <span class="number">05</span>                 | jmp re1<span class="number">.64108</span>D                                        | 字符串相等</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这里的结构是  if..else 结构 </span></span><br><span class="line"></span><br><span class="line"><span class="number">0064108</span>D                                  | <span class="number">85</span>C0                  | test eax,eax                                          | and 运算之前的返回值，判断返回值是不是等于 <span class="number">0</span></span><br><span class="line"><span class="number">0064108F</span>                                  | <span class="number">75</span> <span class="number">07</span>                 | jne re1<span class="number">.641098</span>                                        | 不等于就报错，等于就打印 flag_get</span><br><span class="line"><span class="number">00641091</span>                                  | <span class="number">68</span> <span class="number">903E6500</span>           | push re1<span class="number">.653E90</span>                                       | <span class="number">653E90</span>:<span class="string">&quot;flag get√\n&quot;</span></span><br><span class="line"><span class="number">00641096</span>                                  | EB <span class="number">05</span>                 | jmp re1<span class="number">.64109</span>D                                        |</span><br><span class="line"><span class="number">00641098</span>                                  | <span class="number">68</span> <span class="number">9</span>C3E6500           | push re1<span class="number">.653E9</span>C                                       | Arg1 = <span class="string">&quot;flag不太对呦，再试试呗，加油呦\n&quot;</span></span><br><span class="line"><span class="number">0064109</span>D                                  | E8 D9010000           | call &lt;re1.sub_64127B&gt;                                 | sub_84127B</span><br><span class="line"><span class="number">006410</span>A2                                  | <span class="number">83</span>C4 <span class="number">04</span>               | add esp,<span class="number">4</span>                                             |</span><br><span class="line"></span><br><span class="line"><span class="number">006410</span>A5                                  | <span class="number">68</span> BC3E6500           | push re1<span class="number">.653</span>EBC                                       | Arg1 = <span class="string">&quot;pause&quot;</span>==<span class="string">L&quot;慰獵e&quot;</span></span><br><span class="line"><span class="number">006410</span>AA                                  | E8 C2000000           | call &lt;re1.sub_641171&gt;                                 | system(pause)</span><br></pre></td></tr></table></figure>
+
+<p>这段分析完成：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="built_in">strcmp</span>(flag,input) == <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;flag get√\n&quot;</span>)；    </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;flag不太对呦，再试试呗，加油呦\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="main-函数结尾部分分析"><a href="#main-函数结尾部分分析" class="headerlink" title="main 函数结尾部分分析"></a>main 函数结尾部分分析</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">006410</span>AF                                  | <span class="number">8B</span>4D FC               | mov ecx,dword ptr ss:[ebp<span class="number">-4</span>]                          |</span><br><span class="line"><span class="number">006410B</span>2                                  | <span class="number">83</span>C4 <span class="number">04</span>               | add esp,<span class="number">4</span>                                             |</span><br><span class="line"><span class="number">006410B</span>5                                  | <span class="number">33</span>CD                  | xor ecx,ebp                                           |</span><br><span class="line"><span class="number">006410B</span>7                                  | <span class="number">33</span>C0                  | xor eax,eax                                           |</span><br><span class="line"><span class="number">006410B</span>9                                  | E8 <span class="number">04000000</span>           | call &lt;re1.sub_6410C2&gt;                                 |__security_check_cookie：cookie 检测</span><br><span class="line"></span><br><span class="line"><span class="number">006410B</span>E                                  | <span class="number">8B</span>E5                  | mov esp,ebp                                           |降低栈顶</span><br><span class="line"><span class="number">006410</span>C0                                  | <span class="number">5</span>D                    | pop ebp                                               |降低栈底</span><br><span class="line"><span class="number">006410</span>C1                                  | C3                    | ret                                                   |函数返回</span><br></pre></td></tr></table></figure>
+
+<h3 id="代码还原-1"><a href="#代码还原-1" class="headerlink" title="代码还原"></a>代码还原</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span> flag[]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">	<span class="built_in">strcpy</span>(flag,<span class="string">&quot;DUTCTF&#123;We1c0met0DUTCTF&#125;&quot;</span>);</span><br><span class="line">	<span class="type">char</span> input[<span class="number">23</span>];</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;欢迎来到DUTCTF呦\n&quot;</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;这是一道很可爱很简单的逆向题呦\n&quot;</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;输入flag吧:&quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,input);</span><br><span class="line">	</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">strcmp</span>(input,flag) == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;flag get√\n&quot;</span>);  </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;flag不太对呦，再试试呗，加油呦\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">	system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="知识点补充-1"><a href="#知识点补充-1" class="headerlink" title="知识点补充"></a>知识点补充</h3><ol>
+<li>if…else 结构</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cmp</span><br><span class="line">JCC（跳转到程序<span class="number">2</span>）  <span class="comment">//JCC与源码相反</span></span><br><span class="line"><span class="comment">//程序1</span></span><br><span class="line">jmp                <span class="comment">//跳转到程序结束的位置</span></span><br><span class="line"><span class="comment">//程序2</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>___security_cookie：广义上来讲是栈的保护机制，加上 &#x2F;GS 编译选项，编译器就会自动添加如下代码：</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//程序头部添加</span></span><br><span class="line">mov eax,dword ptr ds:[<span class="number">655000</span>]       <span class="comment">//先获取随机值：cookie</span></span><br><span class="line">xor eax,ebp                         <span class="comment">//再进行异或，加密 cookie</span></span><br><span class="line">mov dword ptr ss:[ebp<span class="number">-4</span>],eax        <span class="comment">//最后将 cookie 存储到 [ebp-4] 中</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//程序尾部添加</span></span><br><span class="line">mov ecx,dword ptr ss:[ebp<span class="number">-4</span>]        <span class="comment">//获取加密后的 cookie</span></span><br><span class="line">add esp,<span class="number">4</span>                           <span class="comment">//堆栈平衡，将 esp 还原</span></span><br><span class="line">xor ecx,ebp                         <span class="comment">//再次异或，获取原始 cookie</span></span><br><span class="line">xor eax,eax</span><br><span class="line">call &lt;re1.sub_6410C2&gt;               <span class="comment">//检测 cookie 值</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>我们通过学习 C&#x2F;C++ 反汇编是为了提高逆向的效率，当我们看到没见到的架构类型就需要手动分析。然后把分析出来的汇编总结出来，当以后看到与之类似的汇编的时候，就能够快速分析出这块汇编是干什么的。然后用功能类似的函数来代替，并还原成源码。</p>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/wdxin1322/article/details/40512071?utm_medium=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromMachineLearnPai2~default-1.control&dist_request_id=&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromMachineLearnPai2~default-1.control" >Linux段管理，BSS段，data段，.rodata段，text段<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="http://demon.tw/copy-paste/___security_cookie.html" >___security_cookie<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://cloud6.net/so/c/2717324" >c –x86解码汇编函数<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/helloworlddm/article/details/106744838" >Canary机制及绕过策略<i class="fas fa-external-link-alt"></i></a></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：CTF逆向分析</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2021-04-21 15:26:28</li>
+        <li>
+            本文链接：https://9unkk.github.io/2021/04/21/ctf-ni-xiang-fen-xi/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E9%80%86%E5%90%91/">#逆向</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/CTF/">#CTF</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2022/02/10/shu-de-qi-yuan-yu-fa-zhan/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">数的起源与发展</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/04/01/c-hui-bian-ji-chu-if-yu-ju/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">C&amp;汇编基础-if语句</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ctfshow-%E9%80%86%E5%90%91%E7%AD%BE%E5%88%B0%E9%A2%98re1-linux"><span class="nav-number">1.</span> <span class="nav-text">ctfshow-逆向签到题re1(linux)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90"><span class="nav-number">1.1.</span> <span class="nav-text">静态分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E8%BE%9F%E6%A0%88%E7%A9%BA%E9%97%B4"><span class="nav-number">1.1.1.</span> <span class="nav-text">开辟栈空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE-canary"><span class="nav-number">1.1.2.</span> <span class="nav-text">设置 canary</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F"><span class="nav-number">1.1.3.</span> <span class="nav-text">局部变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E7%A8%8B%E5%BA%8F%E5%8A%9F%E8%83%BD"><span class="nav-number">1.1.4.</span> <span class="nav-text">分析程序功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#main-%E5%87%BD%E6%95%B0%E7%BB%93%E5%B0%BE%E9%83%A8%E5%88%86"><span class="nav-number">1.1.5.</span> <span class="nav-text">main 函数结尾部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E8%BF%98%E5%8E%9F"><span class="nav-number">1.1.6.</span> <span class="nav-text">代码还原</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E8%A1%A5%E5%85%85"><span class="nav-number">1.1.7.</span> <span class="nav-text">知识补充</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-insanity-linux"><span class="nav-number">2.</span> <span class="nav-text">攻防世界-insanity(linux)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90-1"><span class="nav-number">2.1.</span> <span class="nav-text">静态分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A1%A5%E5%85%85"><span class="nav-number">2.1.1.</span> <span class="nav-text">知识点补充</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-python-trade"><span class="nav-number">3.</span> <span class="nav-text">攻防世界-python-trade</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">3.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-re1-windows"><span class="nav-number">4.</span> <span class="nav-text">攻防世界-re1(windows)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90"><span class="nav-number">4.1.</span> <span class="nav-text">程序静态分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E8%BE%9F%E6%A0%88%E7%A9%BA%E9%97%B4-1"><span class="nav-number">4.1.1.</span> <span class="nav-text">开辟栈空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE-security-cookie"><span class="nav-number">4.1.2.</span> <span class="nav-text">设置 security_cookie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F"><span class="nav-number">4.1.3.</span> <span class="nav-text">分析局部变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E7%A8%8B%E5%BA%8F%E5%8A%9F%E8%83%BD-1"><span class="nav-number">4.1.4.</span> <span class="nav-text">分析程序功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#main-%E5%87%BD%E6%95%B0%E7%BB%93%E5%B0%BE%E9%83%A8%E5%88%86%E5%88%86%E6%9E%90"><span class="nav-number">4.1.5.</span> <span class="nav-text">main 函数结尾部分分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E8%BF%98%E5%8E%9F-1"><span class="nav-number">4.1.6.</span> <span class="nav-text">代码还原</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A1%A5%E5%85%85-1"><span class="nav-number">4.1.7.</span> <span class="nav-text">知识点补充</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.1.8.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">5.</span> <span class="nav-text">reference</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

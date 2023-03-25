@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            upload-labs通关笔记 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">upload-labs通关笔记</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2020-01-15 13:48:17</span>
+        <span class="mobile">2020-01-15 13:48</span>
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/Web-Security/">Web Security</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E9%9D%B6%E6%9C%BA/">靶机</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>2.3k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>8 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h2 id="什么是文件上传漏洞？"><a href="#什么是文件上传漏洞？" class="headerlink" title="什么是文件上传漏洞？"></a>什么是文件上传漏洞？</h2><hr>
+<p>文件上传漏洞是指由于程序员在对用户文件上传部分的控制不足或者处理缺陷，而导致的用户可以越过其本身权限向服务器上上传可执行的动态脚本文件。这里上传的文件可以是木马，病毒，恶意脚本或者 WebShell 等。这种攻击方式是最为直接和有效的，“文件上传”本身没有问题，有问题的是文件上传后，服务器怎么处理、解释文件。如果服务器的处理逻辑做的不够安全，则会导致严重的后果。</p>
+<h2 id="Pass-01"><a href="#Pass-01" class="headerlink" title="Pass-01"></a>Pass-01</h2><p>第一关是在客户端使用 js 对上传的图片进行检查，简单来说就是只要骗过我自己的浏览器就可以上传文件。</p>
+<hr>
+<h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><p>表单中的 onsubmit 事件，会调用 js 函数来检查上传文件的扩展名。第一个方法就是把 onsubmit 事件删除。</p>
+<hr>
+<ol>
+<li><strong>检查 from 表单的属性和触发的事件</strong></li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">enctype</span>=<span class="string">&quot;multipart/form-data&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span> <span class="attr">onsubmit</span>=<span class="string">&quot;return checkFile()&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/02/8AR4GDrsPghZyVN.png"
+                      alt="Pass01-1.png"
+                ></p>
+<p>onsubmit 表示表单提交时验证的事件，它是在表单中的确认按钮被点击时出发的，一般是 js 函数。</p>
+<ol start="2">
+<li><strong>删除 <code>onsubmit</code> 事件，并尝试上传 php 文件</strong></li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/02/MUYgtmuGSqaHzZO.png"
+                      alt="Pass01-2.png"
+                ></p>
+<p>注：从上图可以看到 php 文件已经上传成功</p>
+<h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><p>既然是调用 js 进行验证的，我把 js 禁用掉不就行了</p>
+<hr>
+<ol>
+<li><strong>禁止网站使用 js 脚本</strong></li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/07/hwVMFj7YRDuqg9Q.png"
+                      alt="Pass01-3.png"
+                ></p>
+<ol start="2">
+<li><strong>刷新网站，上传文件</strong></li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/07/jqFABxa3LliYrgN.png"
+                      alt="Pass01-4.png"
+                ></p>
+<h3 id="方法三"><a href="#方法三" class="headerlink" title="方法三"></a>方法三</h3><p>将文件后缀改为 png，然后再使用 burpsuite 抓包将后缀改为 php</p>
+<hr>
+<ol>
+<li><strong>抓包修改后缀</strong></li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/07/QJd1ezYgEZCnAK4.png"
+                      alt="Pass01-5.png"
+                ></p>
+<ol start="2">
+<li><strong>上传成功</strong></li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/07/BNwWiEzXDRFkPHe.png"
+                      alt="Pass01-6.png"
+                ></p>
+<h2 id="Pass02"><a href="#Pass02" class="headerlink" title="Pass02"></a>Pass02</h2><p>第二关是服务端对数据包的 MIME 进行检查，简单来说就是检查 HTTP 头的 Content-Type 字段。</p>
+<hr>
+<ol>
+<li>选择好要上传的 webshell</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/26/wJx2NKV9tWrmDzQ.png"
+                      alt="Pass02-2.png"
+                ></p>
+<ol start="2">
+<li>设置好 burpsuite 和 firefox</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/26/IW7FdDQ8mC4J2Mp.png"
+                      alt="Pass02-3.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/26/SwRk1t4XAnfYgar.png"
+                      alt="Pass02-4.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/26/czQfE6FKlJ1YARG.png"
+                      alt="Pass02-5.png"
+                ></p>
+<ol start="3">
+<li>点击 “上传”，可以看到抓的数据包</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/26/8DLHIFwKUxlzkjp.png"
+                      alt="Pass02-6.png"
+                ></p>
+<ol start="4">
+<li>将 “Content-Type” 改为 “image&#x2F;png”</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/26/JVDlty9aXrh7mSQ.png"
+                      alt="Pass02-7.png"
+                ></p>
+<ol start="5">
+<li>点击 “forward” 提交修改后数据包</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/26/q5ebfsFRdYQySnG.png"
+                      alt="Pass02-8.png"
+                ></p>
+<ol start="6">
+<li>关闭 “Intercept is off”</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/26/JDxiGZSQFWmNavb.png"
+                      alt="Pass02-9.png"
+                ></p>
+<ol start="7">
+<li>最后可以看到 webshell 上传成功</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/26/PTsA7yBX6urocmQ.png"
+                      alt="Pass02-10.png"
+                ></p>
+<h2 id="Pass03"><a href="#Pass03" class="headerlink" title="Pass03"></a>Pass03</h2><p>第三关不允许上传.asp,.aspx,.php,.jsp后缀文件，但是可以上传其他任意后缀。</p>
+<hr>
+<h3 id="方法一-1"><a href="#方法一-1" class="headerlink" title="方法一"></a>方法一</h3><p>修改文件后缀，即可上传文件。例如：<code>.php .phtml .phps .php5 .pht</code></p>
+<p>前提是 apache 的 httpd.conf 中有如下配置代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这行配置表示：将以 .php .phtml .phps .php5 .pht 为后缀的文件，会被当作正常的 php 文件去解析。如果没有这行配置，你上传的 webshell 是没有用的。</span></span><br><span class="line">AddType application/x-httpd-php .php .phtml .phps .php5 .pht</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/08/8sv52jpXiDnATb7.png"
+                      alt="Pass03-1.png"
+                ></p>
+<h3 id="方法二-1"><a href="#方法二-1" class="headerlink" title="方法二"></a>方法二</h3><p>上传 .htaccess 文件。</p>
+<hr>
+<h4 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h4><ul>
+<li><p>说明：.htaccess文件是Apache服务器的一个配置文件，负责相关目录下的网页配置。</p>
+</li>
+<li><p>作用：通过 htaccess 文件，可以帮我们实现：网页 301 重定向、自定义 404 错误页面、改变文件扩展名、允许&#x2F;阻止特定的用户或者目录的访问、禁止目录列表、配置默认文档等功能。</p>
+</li>
+</ul>
+<ol>
+<li><strong>在 http.conf 中开启 mod_rewrite 模块；在 &#x2F;var&#x2F;www&#x2F;html 目录下开启 AllowOverride；指定 .htaccess 文件</strong></li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 开启 mod_rewrite 模块。作用：mod_rewrite 提供了基于正则表达式规则动态修改传入的请求的 URL 的方法。</span></span><br><span class="line">LoadModule rewrite_module modules/mod_rewrite.so</span><br><span class="line"></span><br><span class="line"><span class="comment"># AllowOverride 从字面上解释是允许覆盖的意思，即 Apache 允许另一配置文件覆盖现有配置文件。</span></span><br><span class="line">&lt;Directory <span class="string">&quot;/var/www/html&quot;</span>&gt;</span><br><span class="line">AllowOverride All</span><br><span class="line">&lt;/Directory&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在文件末尾添加，指定 .htaccess 文件</span></span><br><span class="line">AccessFileName web.htaccess</span><br></pre></td></tr></table></figure>
+
+
+<ol start="2">
+<li><strong>编写 .htaccess 文件</strong></li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;FilesMatch <span class="string">&quot;webshell.png&quot;</span>&gt;</span><br><span class="line">  SetHandler application/x-httpd-php</span><br><span class="line">&lt;/FilesMatch&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>成功上传文件，效果如下图所示：</strong></li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/08/VrP3edmC2TMvJ5p.png"
+                      alt="Pass03-2.png"
+                ></p>
+<h3 id="方法三-1"><a href="#方法三-1" class="headerlink" title="方法三"></a>方法三</h3><p>抓包修改文件名</p>
+<ol>
+<li>将 webshell.php 改为 webshell.png</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/27/MlOEw3jDqymZIHL.png"
+                      alt="Pass03-3.png"
+                ></p>
+<ol start="2">
+<li>可以看到 webshell 上传成功</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/27/eFcPws4GSQBNEdk.png"
+                      alt="Pass03-4.png"
+                ></p>
+<h2 id="Pass04"><a href="#Pass04" class="headerlink" title="Pass04"></a>Pass04</h2><p>过滤了各种罕见后缀,但是没有过滤 .htaccess。</p>
+<hr>
+<h3 id="方法一-2"><a href="#方法一-2" class="headerlink" title="方法一"></a>方法一</h3><p>用 pass-03 的 .htaccess 方法即可，这里就不重复写了。</p>
+<h3 id="方法二-2"><a href="#方法二-2" class="headerlink" title="方法二"></a>方法二</h3><p>同 Pass-03 抓包修改文件名</p>
+<ol>
+<li><strong>将 webshell.php 改为 webshell.png</strong></li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/30/a7Nd1nMijBIvols.png"
+                      alt="Pass04-1.png"
+                ></p>
+<ol start="2">
+<li><strong>可以看到 webshell 上传成功</strong></li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/30/PqcoGJ4M3rSpxvh.png"
+                      alt="Pass04-2.png"
+                ></p>
+<h2 id="Pass05"><a href="#Pass05" class="headerlink" title="Pass05"></a>Pass05</h2><p>过滤了 .php|.php5|.php4|.php3|.htaccess 等各种罕见后缀后缀文件!</p>
+<hr>
+<h3 id="方法一-3"><a href="#方法一-3" class="headerlink" title="方法一"></a>方法一</h3><p>对比 Pass04 和 Pass05 的源码，可以发现 Pass05 没有对上传的文件进行大小写转换。因此可以通过修改后缀大小写来绕过。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/09/sgdLiqQFE2UpXMm.png"
+                      alt="Pass05-1.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/09/ufRQTrNXiJ8Mg3c.png"
+                      alt="Pass05-2.png"
+                ></p>
+<p>注：此方法只有在 windows 服务器中用，因为 windows 会忽略大小写。在 linux 中需要特殊配置才可使用。</p>
+<h3 id="方法二-3"><a href="#方法二-3" class="headerlink" title="方法二"></a>方法二</h3><p>抓包修改文件名</p>
+<ol>
+<li><strong>将 webshell.php 改为 webshell.png</strong></li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/30/GcpzrVakNOsAPbF.png"
+                      alt="Pass05-3.png"
+                ></p>
+<ol start="2">
+<li><strong>可以看到 webshell 上传成功</strong></li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/30/hd5eXWqcfMrA1TI.png"
+                      alt="Pass05-4.png"
+                ></p>
+<h2 id="Pass06"><a href="#Pass06" class="headerlink" title="Pass06"></a>Pass06</h2><p>过滤了 .php|.php5|.php4|.php3|.htaccess 等各种罕见后缀后缀文件!</p>
+<hr>
+<h3 id="方法一-4"><a href="#方法一-4" class="headerlink" title="方法一"></a>方法一</h3><p>对比 Pass04 和 Pass06 的源码，可以发现 Pass06 没有对上传的文件结尾去空格。因此可以在文件末尾添加空格来绕过<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/09/dnNiqFDIvMWeRXO.png"
+                      alt="Pass06-1.png"
+                ></p>
+<p>抓包修改文件名，在文件名后添加空格</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/09/8j3KSaTrtOZoWcB.png"
+                      alt="Pass06-2.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/09/tqcDP86HAdLv19k.png"
+                      alt="Pass06-3.png"
+                ></p>
+<h3 id="方法二-4"><a href="#方法二-4" class="headerlink" title="方法二"></a>方法二</h3><p>抓包修改文件名</p>
+<ol>
+<li>将 webshell.php 改为 webshell.png</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/30/D5xmj91p4dLyvwF.png"
+                      alt="Pass06-4.png"
+                ></p>
+<ol start="2">
+<li>可以看到 webshell 上传成功</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2019/12/30/YFLgZ5cWwksoGSh.png"
+                      alt="Pass06-5.png"
+                ></p>
+<h2 id="Pass07"><a href="#Pass07" class="headerlink" title="Pass07"></a>Pass07</h2><p>过滤了 .php|.php5|.php4|.php3|.htaccess 等各种罕见后缀后缀文件!</p>
+<hr>
+<p>对比源码发现少了删除文件末尾的点的函数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$file_name</span> = deldot(<span class="variable">$file_name</span>);//删除文件名末尾的点</span><br></pre></td></tr></table></figure>
+
+<p>没有对后缀名进行去’.’处理，利用windows特性，会自动去掉后缀名中最后的’.’，上传后文件名后缀的点会被去除，所以可在抓包在后缀名后加’.’绕过</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/10/7ysWLR8Np6huYBP.png"
+                      alt="Pass07-1.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/10/wN2W3YHm5LzEA1k.png"
+                      alt="Pass07-2.png"
+                ></p>
+<h2 id="Pass08"><a href="#Pass08" class="headerlink" title="Pass08"></a>Pass08</h2><p>过滤了 .php|.php5|.php4|.php3|.htaccess 等各种罕见后缀后缀文件!</p>
+<hr>
+<p>对比源码发现缺少了去除字符串的函数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$file_ext</span> = str_ireplace(‘::<span class="variable">$DATA</span>’, ‘’, <span class="variable">$file_ext</span>);//去除字符串::<span class="variable">$DATA</span></span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/10/R5idgO3C1BzVtrP.png"
+                      alt="Pass08-1.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/10/ydBC7loJOmf98sA.png"
+                      alt="Pass08-2.png"
+                ></p>
+<p>NTFS文件系统包括对备用数据流的支持。这不是众所周知的功能，主要包括提供与Macintosh文件系统中的文件的兼容性。备用数据流允许文件包含多个数据流。每个文件至少有一个数据流。在Windows中，此默认数据流称为：$ DATA。上传.php::$DATA绕过。(仅限windows)</p>
+<h2 id="Pass09"><a href="#Pass09" class="headerlink" title="Pass09"></a>Pass09</h2><p>过滤了 .php|.php5|.php4|.php3|.htaccess 等各种罕见后缀后缀文件!</p>
+<hr>
+<p>从源码中可以看到,deldot函数删除文件名末尾的点,最后的trim函数首尾去空格,就没有了对点的处理了,所以姿势就是在文件名后面加点空格点’. .’</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/10/p6I2wM98WTEnONl.png"
+                      alt="Pass09-1.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/10/YTsVh3GfS9v2uW6.png"
+                      alt="Pass09-2.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/10/lC2QJpbTNH83kPE.png"
+                      alt="Pass09-3.png"
+                ></p>
+<h2 id="Pass10"><a href="#Pass10" class="headerlink" title="Pass10"></a>Pass10</h2><p>过滤了 .php|.php5|.php4|.php3|.htaccess 等各种罕见后缀后缀文件!</p>
+<hr>
+<p>看一下源码的 str_ireplace 函数可以知道,它把符合黑名单的后缀去掉了,因此可以想一些比较奇怪的后缀,使经过这个函数之后变成我们需要的后缀。是从左往右去掉后缀，因此可以把后缀名构建为.pphphp</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/10/gy8SFrKx93BIQoH.png"
+                      alt="Pass10-1.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/10/fQ6pSybLHRAFc1g.png"
+                      alt="Pass10-2.png"
+                ></p>
+<h2 id="Pass11"><a href="#Pass11" class="headerlink" title="Pass11"></a>Pass11</h2><p>过滤了 .php|.php5|.php4|.php3|.htaccess 等各种罕见后缀后缀文件!</p>
+<hr>
+<p>关键的代码在于这里的’save_path’是一个可控的变量，但是后面还拼接上一个后缀名，也需要绕过</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$img_path</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;save_path&#x27;</span>].<span class="string">&quot;/&quot;</span>.rand(10, 99).<span class="built_in">date</span>(<span class="string">&quot;YmdHis&quot;</span>).<span class="string">&quot;.&quot;</span>.<span class="variable">$file_ext</span>;</span><br></pre></td></tr></table></figure>
+<p>这个时候可以使用%00截断，但这东西有点过气了，因为需要两个条件</p>
+<ul>
+<li>php 版本小于 5.3.4</li>
+<li>php 的 magic_quotes_gpc 为 OFF 状态</li>
+</ul>
+<p>如果要完成这一个题目就必须要实现上面的两个条件，但是现在都PHP7了，这东西也就很少见了，满足上面的条件的时候php就是把它当成结束符，后面的数据直接忽略，这也导致了很多的问题，文件包含也可以利用这一点</p>
+<p>所以如果要绕过，我们可以这样去实现，另save_path等于下面的值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">../upload/1.php%00</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/10/1YFpaiXj5DZOUvc.png"
+                      alt="Pass11-1.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/10/YauvKZqN8wL3XI4.png"
+                      alt="Pass11-2.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/10/QwB6NaSUOr29Kq7.png"
+                      alt="Pass11-3.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/10/skyimfLxtG13ToB.png"
+                      alt="Pass11-4.png"
+                ></p>
+<h2 id="Pass12"><a href="#Pass12" class="headerlink" title="Pass12"></a>Pass12</h2><p>过滤了 .php|.php5|.php4|.php3|.htaccess 等各种罕见后缀后缀文件!</p>
+<hr>
+<p>本关和 11 关一样，只是这一关是用 POST 方式上传文件。POST 方式不会像 get 一样自动 url 解码，所以需要手动将 %00 右键 url decode</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/10/nyd6rwux1DP4SOv.png"
+                      alt="Pass12-1.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/10/Wrc8JoXxGU5p6jb.png"
+                      alt="Pass12-2.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/10/5gBNuCJywLZEA68.png"
+                      alt="Pass12-3.png"
+                ></p>
+<h2 id="Pass13"><a href="#Pass13" class="headerlink" title="Pass13"></a>Pass13</h2><p>过滤了 .php|.php5|.php4|.php3|.htaccess 等各种罕见后缀后缀文件!</p>
+<hr>
+<p>这一关要求上传图片马，但是图片马是无法直接执行的。这里用到了文件包含漏洞，文件包含漏洞简单说就是，在这个include.php中需要引用其他应用程序，php中应用程序文件是.php也就是说，他本来想引用一个php文件，但是漏洞就是，他不会识别什么是php文件，只要是他引用的，他都当php来解析，所以如果他引用的是jpg，但是jpg中有图片马，那么他就相当于引用了图片马，同样的道理还会有zip马等等</p>
+<h3 id="图片马制作"><a href="#图片马制作" class="headerlink" title="图片马制作"></a>图片马制作</h3><p>在 cmd 下使用 copy 命令将 doge.jpg 和 webshell.php 合并成 1.jpg</p>
+<p><code>copy doge.jpg/b + webshell.php/a 1.jpg</code></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/11/6okpW3d5FqBzgKt.png"
+                      alt="Pass13-1.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/11/ZHKUncGmCfXQVFx.png"
+                      alt="Pass13-2.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/11/DUpVoNPKh7uqYre.png"
+                      alt="Pass13-3.png"
+                ></p>
+<p>注：最好使用 十几KB 的小图片来做图片马</p>
+<h2 id="Pass14"><a href="#Pass14" class="headerlink" title="Pass14"></a>Pass14</h2><p>过滤了 .php|.php5|.php4|.php3|.htaccess 等各种罕见后缀后缀文件!</p>
+<hr>
+<p>这一关同 Pass13 ,这一关就是对图片的大小和后缀做了检查。上传的jpg 变成了 jepg</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.loli.net/2020/01/11/ZRbr7lxNS3HM9pB.png"
+                      alt="Pass14-1.png"
+                ></p>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><hr>
+<p><a class="link"   target="_blank" rel="noopener" href="https://www.jianshu.com/p/5ebba0482980" >文件上传漏洞 学习笔记<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/u011377996/article/details/86776198" >upload-labs刷关记录<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://xz.aliyun.com/t/4029#toc-0" >Upload-labs 20关通关笔记<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://github.com/No-Github/1earn/blob/master/1earn/%E5%AE%89%E5%85%A8/%E5%AE%9E%E9%AA%8C/upload-labs%E9%80%9A%E5%85%B3%E7%AC%94%E8%AE%B0.md" >upload-labs 通关笔记<i class="fas fa-external-link-alt"></i></a></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：upload-labs通关笔记</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2020-01-15 13:48:17</li>
+        <li>
+            本文链接：https://9unkk.github.io/2020/01/15/upload-labs-tong-guan-bi-ji/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E9%9D%B6%E6%9C%BA/">#靶机</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2020/01/18/hydra-bi-ji/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">Hydra笔记</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2020/01/09/cve-2019-12735-fu-xian/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">CVE-2019-12735复现</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">什么是文件上传漏洞？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pass-01"><span class="nav-number">2.</span> <span class="nav-text">Pass-01</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80"><span class="nav-number">2.1.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C"><span class="nav-number">2.2.</span> <span class="nav-text">方法二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%89"><span class="nav-number">2.3.</span> <span class="nav-text">方法三</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pass02"><span class="nav-number">3.</span> <span class="nav-text">Pass02</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pass03"><span class="nav-number">4.</span> <span class="nav-text">Pass03</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80-1"><span class="nav-number">4.1.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C-1"><span class="nav-number">4.2.</span> <span class="nav-text">方法二</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">4.2.1.</span> <span class="nav-text">基础知识</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%89-1"><span class="nav-number">4.3.</span> <span class="nav-text">方法三</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pass04"><span class="nav-number">5.</span> <span class="nav-text">Pass04</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80-2"><span class="nav-number">5.1.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C-2"><span class="nav-number">5.2.</span> <span class="nav-text">方法二</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pass05"><span class="nav-number">6.</span> <span class="nav-text">Pass05</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80-3"><span class="nav-number">6.1.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C-3"><span class="nav-number">6.2.</span> <span class="nav-text">方法二</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pass06"><span class="nav-number">7.</span> <span class="nav-text">Pass06</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80-4"><span class="nav-number">7.1.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C-4"><span class="nav-number">7.2.</span> <span class="nav-text">方法二</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pass07"><span class="nav-number">8.</span> <span class="nav-text">Pass07</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pass08"><span class="nav-number">9.</span> <span class="nav-text">Pass08</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pass09"><span class="nav-number">10.</span> <span class="nav-text">Pass09</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pass10"><span class="nav-number">11.</span> <span class="nav-text">Pass10</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pass11"><span class="nav-number">12.</span> <span class="nav-text">Pass11</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pass12"><span class="nav-number">13.</span> <span class="nav-text">Pass12</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pass13"><span class="nav-number">14.</span> <span class="nav-text">Pass13</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E7%89%87%E9%A9%AC%E5%88%B6%E4%BD%9C"><span class="nav-number">14.1.</span> <span class="nav-text">图片马制作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pass14"><span class="nav-number">15.</span> <span class="nav-text">Pass14</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-number">16.</span> <span class="nav-text">reference</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

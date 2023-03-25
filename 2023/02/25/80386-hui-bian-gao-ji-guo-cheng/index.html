@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            80386汇编-高级过程 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">80386汇编-高级过程</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2023-02-25 23:25:00</span>
+        <span class="mobile">2023-02-25 23:25</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>7.2k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>29 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="堆栈框架"><a href="#堆栈框架" class="headerlink" title="堆栈框架"></a>堆栈框架</h1><p>堆栈框架也称为活动记录，它是为传递的参数、子程序的返回地址、局部变量和保存的寄存器保留的堆栈空间。堆栈框架是按以下的步骤创建的：</p>
+<ul>
+<li>如果有传递的参数，则压入堆栈</li>
+<li>子程序被调用，子程序的返回地址压入堆栈</li>
+<li>子程序开始执行时，EBP 被压入堆栈</li>
+<li>EBP 设为 ESP 的值，从这时开始，EBP 就会被作为寻址所有子程序参数的基地址指针使用</li>
+<li>如果有局部变量，ESP减去一个数值，以便再堆栈上为局部变啊零保留空间</li>
+<li>如果任何寄存器需要保存，则压入堆栈</li>
+</ul>
+<p>堆栈框架的结构受程序的内存模式以及参数传递约定影响。</p>
+<h2 id="堆栈参数"><a href="#堆栈参数" class="headerlink" title="堆栈参数"></a>堆栈参数</h2><p>我们通常使用的传递参数的方式有3种：寄存器传参、使用约定存储单元传参（全局变量）、堆栈传参。另外还有一种 call 后区传参，这个不经常使用。<br>各个传参方式的优缺点：</p>
+<ul>
+<li>寄存器传参：传参方便且速度快；但寄存器较少，传参数量有限。</li>
+<li>约定的存储单元传参：传参数量没有限制；传参速度慢，且不能保证代码的可用性，在产生中断的时候，全局变量有可能被改动</li>
+<li>堆栈传参：传参数量没有限制，不会被改动；传参速度慢</li>
+</ul>
+<p>在8086计算机中堆栈传参就是申请一个堆栈段，也可以是DOS系统默认分配的一个64KB的堆栈空间。但是在 80386 计算机中堆栈的分配就变得复杂一些，它主要涉及到计算机的内存管理。</p>
+<p>我们写程序至少有一个代码段，除了代码段还有数据段和堆栈段。到了386计算机体系里面，计算机增加了如下几个区域：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/222658006-968d742a-db44-4fd4-a088-f0306af5de1f.png"
+                      alt="1"
+                ></p>
+<blockquote>
+<p>我们在 8086 写的 .data 段，就是全局数据区。堆区是由程序员自定义的一块私有的内存区域，而栈区是一块公用的内存区域。上面划分的区块是人为划分的，这样划分就是为了让我们更容易理解。</p>
+</blockquote>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/223983260-ead0b376-74ea-4b3b-a223-9ec4b3ea89b4.png"
+                      alt="2"
+                ></p>
+<p>在进行子程序调用时，通常在堆栈上压入两类参数：</p>
+<ul>
+<li>值参数（变量和常量值）</li>
+<li>引用参数（变量的地址）</li>
+</ul>
+<p><strong>传递值：</strong> 通过在堆栈上压入变量值的一份副本的方式传递参数，就称为传递值或简称传值。如下子程序传递两个 32 位整数：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226303577-d848c8ec-1119-4fbc-8303-21040dc3d497.png"
+                      alt="4"
+                ></p>
+<p>下面是在 CALL 指令执行之前的堆栈示意图：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226302638-f94b76c8-a454-4f89-ab2c-44a162532c0f.png"
+                      alt="3"
+                ></p>
+<p><strong>传递引用：</strong> 传递引用的参数是一个对象的地址，如下子程序 swap：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226306691-cca8e5b7-bdac-480a-b109-6511eb5f0370.png"
+                      alt="5"
+                ></p>
+<p>下面是调用 Swap 钱堆栈的示意图：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226307625-c6b3f134-cdce-462a-96b5-f45191c14a0a.png"
+                      alt="6"
+                ></p>
+<p><strong>传递数组：</strong> 在传递数组时高级语言堆栈参数用的是传递引用，通过传递值的方式传递大量数据完全不切实际，同时还会降低程序的执行速度并减少宝贵的堆栈空间。传递数组的方式如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226374119-8ae1add1-0b00-4f19-9f51-6e1a59dddc45.png"
+                      alt="7"
+                ></p>
+<h3 id="堆栈参数的访问（C-x2F-C-）"><a href="#堆栈参数的访问（C-x2F-C-）" class="headerlink" title="堆栈参数的访问（C&#x2F;C++）"></a>堆栈参数的访问（C&#x2F;C++）</h3><p>在调用函数时，c&#x2F;c++ 程序使用标准的方法初始化访问参数：</p>
+<ul>
+<li>第一步：push ebp（保存 EBP 寄存器）；mov ebp,esp（将 EBP 指向栈顶）</li>
+<li>第二步：push xxx；push xxx（……），保存多个寄存器值（这一步根据需求来，不是必要操作）</li>
+<li>第三步：写入程序代码</li>
+<li>第四步：pop xxx；pop xxx（与第二步操作相对应）</li>
+<li>第五步：pop ebp（还原 ebp）</li>
+<li>第六步：ret xxx（函数返回）</li>
+</ul>
+<p>以上面的 AddTwo 函数为例，其堆栈框架如下图所示：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226384208-a65766fd-25d8-4ad0-9d1c-00376faa5c4c.png"
+                      alt="8"
+                ></p>
+<p><strong>访问堆栈参数：</strong> C&#x2F;C++ 函数使用相对基址寻址方式访问堆栈参数，EBP 用作基址寄存器，偏移部分是一个常量。函数一般通过 EAX返回一个 32 位的值<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226385010-859c81a0-47c4-4f6a-acfe-4a51dd34ed47.png"
+                      alt="9"
+                ></p>
+<h3 id="堆栈清理（堆栈平衡）"><a href="#堆栈清理（堆栈平衡）" class="headerlink" title="堆栈清理（堆栈平衡）"></a>堆栈清理（堆栈平衡）</h3><p>如下图所示，Example 函数破坏了堆栈：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226386787-684dd17f-bc5e-4cfa-95c9-a19c88cc3924.png"
+                      alt="10"
+                ></p>
+<p>如下图所示函数返回前使用 <code>esp+(4*参数个数)</code> 使堆栈平衡，恢复正常。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226386992-33f4116b-9a47-472a-9d63-67035ed66801.png"
+                      alt="11"
+                ></p>
+<p><strong>STDCALL 调用约定：</strong> 处理堆栈清理问题的另一种方法是使用 STDCALL 调用约定，可以在 AddTwo 过程中的 RET 指令后提供一个参数以修复 ESP 的值。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226388735-fe0c030b-1f90-44a0-adea-06009a0fe4ec.png"
+                      alt="12"
+                ></p>
+<blockquote>
+<p>在8086汇编学习中写过代码，应该也熟悉另一种方法（在 ret 指令前使用 “mov esp,ebp” ）恢复 ESP 的值。</p>
+</blockquote>
+<h3 id="通过堆栈传递-8-位和-16-位的参数"><a href="#通过堆栈传递-8-位和-16-位的参数" class="headerlink" title="通过堆栈传递 8 位和 16 位的参数"></a>通过堆栈传递 8 位和 16 位的参数</h3><p>在保护模式下传递堆栈参数时，最好使用 32 位的操作数，虽然可以在堆栈压入 16 位的操作数，但这样会使得 ESP 无法对齐在双字边界上，由此可能会导致发生页错误故障，程序的性能也可能会降低。因此在传递 8 位或 16 位堆栈参数时，应把它扩展到 32 位再压栈。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226419050-15233eb4-d934-408c-84ba-ca8757175a6c.png"
+                      alt="13"
+                ></p>
+<p>PUSH 指令自动把字符扩展到 32 位：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">push &#x27;x&#x27;</span><br><span class="line">call Uppercase</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226421345-1b5352f9-cf86-4ed1-a621-33f413462075.png"
+                      alt="14"
+                ></p>
+<p>PUSH 指令不允许 8 位的操作数：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226424369-b9efea23-7b83-48d4-9806-4fd9812cf3d6.png"
+                      alt="15"
+                ></p>
+<p>可使用 MOVZX 指令把字符值扩展至 EAX：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226424781-d32ca58c-f742-4341-bea4-ee2e5b2292d2.png"
+                      alt="16"
+                ></p>
+<p><strong>16位参数的例子：</strong> 假设要向前面给出的 AddTwo 过程传递两个 16 位的整数，由于该过程期望接收 32 位参数，因此下面的代码将导致程序执行错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">word1 WORD 1234h</span><br><span class="line">word2 WORD 4111h</span><br><span class="line"></span><br><span class="line">main PROC</span><br><span class="line">    push word1</span><br><span class="line">    push word2</span><br><span class="line">    call AddTwo</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226621344-082d2e59-0a2e-433b-b1cc-15c90b0df655.png"
+                      alt="17"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226622072-fb46e28f-9bf8-4af2-a816-2a284685badc.png"
+                      alt="18"
+                ></p>
+<p>在16位参数入栈之前使用 movzx 指令进行零扩展，存入正确的参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">word1 WORD 1234h</span><br><span class="line">word2 WORD 4111h</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    movzx eax,word1</span><br><span class="line">    push eax</span><br><span class="line">    movzx eax,word2</span><br><span class="line">    push eax</span><br><span class="line">    call AddTwo</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>过程的调用者必须确保传递的参数和过程期望的参数相一致。就堆栈参数而言，其大小和顺序都是非常重要的。</p>
+</blockquote>
+<h3 id="传递长整数参数"><a href="#传递长整数参数" class="headerlink" title="传递长整数参数"></a>传递长整数参数</h3><p>在使用堆栈过程传递长整数参数时，可以先把高位字压栈，然后再把低位字压栈，这样实际上是以小端存储把长整数压栈。下面的 WriteHex64 过程通过堆栈接收一个 64 位的整数并以十六进制显示：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226641859-dbd57320-25f8-430b-84ae-dcf96cb1f40b.png"
+                      alt="19"
+                ></p>
+<p>下面的例子在调用 WriteHex64 之前，首先把 longVal 的高半部分压栈，然后再把低半部分压栈：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">longVal DQ 1234567800ABCDEFh</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    push DWORD PTR longVal+4</span><br><span class="line">    push DWORD PTR longVal</span><br><span class="line">    call WriteHex64</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p>下图展示了 WriteHex 过程在 EBP 压栈后的堆栈框架。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226647037-117f6d4b-3ba2-4df4-bd02-334d259e38b9.png"
+                      alt="20"
+                ></p>
+<h3 id="保存和恢复寄存器"><a href="#保存和恢复寄存器" class="headerlink" title="保存和恢复寄存器"></a>保存和恢复寄存器</h3><p>子过程通常在修改寄存器之前保存其原来的值，以便在过程返回之前进行恢复。理想情况下，要保存的寄存器应在 EBP 设为 ESP 的值后、为局部变量保留空间之前压栈，这有助于避免改变堆栈参数的相对偏移。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226650521-3a34ab68-c65a-4aae-b445-e68503a52852.png"
+                      alt="21"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226650718-c5370c7d-b884-424c-a844-26ca7318425b.png"
+                      alt="22"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226650868-0bcbc8f1-ddce-419e-b5e3-6fbd3d9fd7e5.png"
+                      alt="23"
+                ></p>
+<blockquote>
+<p>书中的堆栈图是倒过来画的。</p>
+</blockquote>
+<h3 id="USES操作符对堆栈的影响"><a href="#USES操作符对堆栈的影响" class="headerlink" title="USES操作符对堆栈的影响"></a>USES操作符对堆栈的影响</h3><p>USES 操作符后写需要保存恢复的寄存器列表，对于列表中的每个寄存器，MASM 自动生成合适的 PUSH 和 POP 指令。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226655980-7bb4d4b7-094b-4f36-8fc6-1742376030a4.png"
+                      alt="24"
+                ></p>
+<blockquote>
+<p>注：函数存储返回值的寄存器不要跟在 USES 操作符后，这样会导致返回值错误。</p>
+</blockquote>
+<h2 id="局部变量"><a href="#局部变量" class="headerlink" title="局部变量"></a>局部变量</h2><p>在高级语言程序中，在单个过程中创建、使用和效汇的变量称为局部变量。局部变量与过程之外声明的全局变量相比有明显的优点：</p>
+<ul>
+<li>只有在局部变量所在过程之内的语句才能够看到和修改局部变量。这个特点有助于避免程序源码中多处修改一个变量导致的bug。</li>
+<li>局部变量使用的存储空间在过程结束后立即释放</li>
+<li>一个过程内的局部变量的名字可以和其他过程内的局部变量同名，不会发生名字冲突。这个特性对于大程序是非常有用的。在大程序中，变量名相同的可能性还是比较大的。</li>
+<li>对递归过程以及可能由多个线程同时执行的过程而言，局部变量是必须的。</li>
+</ul>
+<p>局部变量在运行时栈上创建的。在内存中其位置通常在基址指针（EBP）之下，尽管在汇编时不能给定默认值，但可以在运行时初始化。在汇编语言中创建局部变量时，可以使用和 C&#x2F;C++ 类似的技术。</p>
+<p>例如：如下C++函数声明局部变量X和Y：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">MySub</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> X = <span class="number">10</span>;</span><br><span class="line">    <span class="type">int</span> y = <span class="number">20</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>MySub 反汇编代码如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226861680-7392d88e-c5cb-4f52-a2ad-35459233a60c.png"
+                      alt="25"
+                ></p>
+<p><strong>局部变量符号：</strong> 为使代码更加易读，可以给每个变量的引用地址都定义一个符号并在代码中使用这些符号：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">X_local EQU DWORD PTR [ebp-4]</span><br><span class="line">Y_Local EQU DWORD PTR [ebp-8]</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    call MySub</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line"></span><br><span class="line">MySub PROC</span><br><span class="line">    push ebp</span><br><span class="line">    mov ebp,esp</span><br><span class="line">    sub esp,8</span><br><span class="line">    mov X_local,10</span><br><span class="line">    mov Y_Local,20</span><br><span class="line">    mov esp,ebp</span><br><span class="line">    pop ebp</span><br><span class="line">    ret</span><br><span class="line">MySub ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226926586-22efbf0f-8e58-4bef-9e7f-323b181cc2cd.png"
+                      alt="26"
+                ></p>
+<h3 id="访问引用参数"><a href="#访问引用参数" class="headerlink" title="访问引用参数"></a>访问引用参数</h3><p>子过程通常使用相对基址寻址方式访问引用参数，这是由于每个引用参数都是一个指针，实际上引用参数是要被装入到寄存器中作为间接操作数使用的。</p>
+<p>例子：下面的 ArrayFill 过程，使用 16 位随机整数序列填充一个数组。该过程接收两个参数：第一个参数是数组的偏移，第二个参数是指示数组长度的整数。第一个参数是通过传递引用方式来传递，第二个参数是通过传值方式传递。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">count = 100</span><br><span class="line">array WORD count DUP(?)</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    push OFFSET array</span><br><span class="line">    push count</span><br><span class="line">    call ArrayFill</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line"></span><br><span class="line">ArrayFill PROC</span><br><span class="line">    push ebp</span><br><span class="line">    mov ebp,esp</span><br><span class="line">    pushad</span><br><span class="line">    mov esi,[ebp+12]</span><br><span class="line">    mov ecx,[ebp+8]</span><br><span class="line">    cmp ecx,0</span><br><span class="line">    je L2</span><br><span class="line">L1:</span><br><span class="line">    mov ecx,1000h</span><br><span class="line">    call RandomRange</span><br><span class="line">    mov [esi],ax</span><br><span class="line">    add esi,TYPE WORD</span><br><span class="line">    loop L1</span><br><span class="line">L2:</span><br><span class="line">    popad</span><br><span class="line">    pop ebp</span><br><span class="line">    ret 8</span><br><span class="line">ArrayFill ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h3 id="LEA-指令"><a href="#LEA-指令" class="headerlink" title="LEA 指令"></a>LEA 指令</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226932403-8a13ae51-a7dc-45f6-9732-23dfb0f2f09b.png"
+                      alt="27"
+                ></p>
+<blockquote>
+<p>LEA 指令之前经常用的，这里就不再重复写了。</p>
+</blockquote>
+<h2 id="ENTER-和-LEAVE-指令"><a href="#ENTER-和-LEAVE-指令" class="headerlink" title="ENTER 和 LEAVE 指令"></a>ENTER 和 LEAVE 指令</h2><h3 id="ENTER-指令"><a href="#ENTER-指令" class="headerlink" title="ENTER 指令"></a>ENTER 指令</h3><p>ENTER 指令自动为被调用过程创建堆栈框架，它为局部变量保留堆栈空间并在堆栈上保存 EBP，该指令执行以下三个动作：</p>
+<ul>
+<li>在堆栈上压入EBP（push ebp）</li>
+<li>把 EBP 设为堆栈框架的基址针（mov ebp,esp）</li>
+<li>为局部变量保留空间（sub esp,numbytes）</li>
+</ul>
+<p>ENTER 指令有两个操作数：第一个操作数是一个常量，用于指定要为局部变量保留出多少堆栈空间（numbytes）；第二个操作数指定过程的嵌套层次（nestinglevel）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ENTER numbytes,nestinglevel</span><br></pre></td></tr></table></figure>
+
+<p>两个操作数都是立即数。numbytes 总是向上取整为4的倍数，以使 ESP 按双子边界地址对齐。nestinglevel 决定了从调用过程复制到当前堆栈框架中的堆栈框架指针的数目。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    call MySub</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line"></span><br><span class="line">MySub PROC</span><br><span class="line">    ;ENTER 0,0</span><br><span class="line">    ;ENTER 8,0</span><br><span class="line">    ENTER 8,1</span><br><span class="line">    mov DWORD PTR [ebp-4],10</span><br><span class="line">    mov DWORD PTR[ebp-8],20</span><br><span class="line">    ret</span><br><span class="line">MySub ENDP</span><br><span class="line"></span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p>经过多次尝试 ENTER 伪指令操作规则如下：</p>
+<ul>
+<li>第一个参数 numbytes：当值为0，执行操作（push ebp；mov ebp,esp）；当值为X，执行操作（push ebp；mov ebp,esp；sub esp,X）</li>
+<li>第二个参数 nestinglevel：当值为0，不做任何操作；当值为X，执行操作（push ebp；mov ebp,esp；sub esp,8；sub esp,(X*指针宽度)）</li>
+</ul>
+<h3 id="LEAVE-指令"><a href="#LEAVE-指令" class="headerlink" title="LEAVE 指令"></a>LEAVE 指令</h3><p>LEAVE 指令释放一个过程的堆栈框架。LEAVE 指令执行与前面 ENTER 指令相反的操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    call MySub</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line"></span><br><span class="line">MySub PROC</span><br><span class="line">    ENTER 8,1</span><br><span class="line">    mov DWORD PTR [ebp-4],10</span><br><span class="line">    mov DWORD PTR[ebp-8],20</span><br><span class="line">    LEAVE</span><br><span class="line">    ret</span><br><span class="line">MySub ENDP</span><br><span class="line"></span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="LOCAL-伪指令"><a href="#LOCAL-伪指令" class="headerlink" title="LOCAL 伪指令"></a>LOCAL 伪指令</h2><p>LOCAL 伪指令在过程内声明一个或多个命名局部变量，并同时赋予变量相应的尺寸属性。语句必须紧接在 PROC 伪指令所在行之后，格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LOCAL 变量列表</span><br></pre></td></tr></table></figure>
+<p>其中变量列表是一系列的变量定义，中间以逗号分隔，列表可能会占用多行。每个变量定义的格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">标号：类型</span><br></pre></td></tr></table></figure>
+<p>标号可以是任何有效的标识符，类型既可以是标准类型（WORD、DWORD等），也可以是用户自定义的类型。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226957110-a7169dae-7d58-43ce-9bf8-941f8dc65a8e.png"
+                      alt="28"
+                ></p>
+<h3 id="MASM-生成的代码"><a href="#MASM-生成的代码" class="headerlink" title="MASM 生成的代码"></a>MASM 生成的代码</h3><p>通过查看汇编代码，可以看在使用LOCAL伪指令时 MASM 生成相应的代码如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    call Example1</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line"></span><br><span class="line">Example1 PROC</span><br><span class="line">    LOCAL temp:DWORD</span><br><span class="line">    mov eax,temp</span><br><span class="line">    ret</span><br><span class="line">Example1 ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/226963372-00a8d548-bd67-43ca-b792-e317a24df9f9.png"
+                      alt="29"
+                ></p>
+<h3 id="非双字局部变量"><a href="#非双字局部变量" class="headerlink" title="非双字局部变量"></a>非双字局部变量</h3><p>在声明不同尺寸大小的局部变量时，LOCAL 伪指令根据变量大小的不同，为其分配空间的方法也是不一样的：对于 8 位变量，在第一个可用的字节处为其分配空间；对于 16 位变量，在第一个可用的偶数地址处为其分配空间；对于 32 位变量，在第一个可用双字对齐边界地址处为其分配空间。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    call Example1</span><br><span class="line">    call Example2</span><br><span class="line">    call Example3</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">Example1 PROC</span><br><span class="line">    LOCAL temp:BYTE,SwapFlag:BYTE</span><br><span class="line">    movzx eax,temp</span><br><span class="line">    movzx ebx,SwapFlag</span><br><span class="line">    ret</span><br><span class="line">Example1 ENDP</span><br><span class="line"></span><br><span class="line">Example2 PROC</span><br><span class="line">    LOCAL temp:WORD,SwapFlag:BYTE</span><br><span class="line">    movzx eax,temp</span><br><span class="line">     movzx ebx,SwapFlag</span><br><span class="line">    ret</span><br><span class="line">Example2 ENDP</span><br><span class="line"></span><br><span class="line">Example3 PROC</span><br><span class="line">    LOCAL temp:DWORD,SwapFlag:BYTE</span><br><span class="line">    mov eax,temp</span><br><span class="line">     movzx ebx,SwapFlag</span><br><span class="line">    ret</span><br><span class="line">Example3 ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227085424-89f1ad0f-8846-4f34-8417-4bd115d5e5ee.png"
+                      alt="30"
+                ></p>
+<blockquote>
+<p>不管你定义的局部变量有多大，ESP&#x3D;ESP-（4*局部变量数目），这个是为了保证字节对齐。</p>
+</blockquote>
+<p><strong>保留额外的堆栈空间：</strong> 如若准备创建大于几百字节的局部数组变量，一定要保留足骨的堆栈空间，这可以通过 .STACK 伪指令来完成。</p>
+<h2 id="过程-WriteStackFrame"><a href="#过程-WriteStackFrame" class="headerlink" title="过程 WriteStackFrame"></a>过程 WriteStackFrame</h2><p>在 Irvine 链接库中有一个过程 WriteStackFrame 能够显示当前过程的堆栈框架的内容：过程的堆栈参数、返回地址、局部变量以及保存的寄存器。下面是过程的原型声明：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227096814-855316fd-5ffa-485f-9a4f-1e2ac5148752.png"
+                      alt="31"
+                ></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">aProc PROC USES eax ebx,</span><br><span class="line">    x:DWORD,y:DWORD</span><br><span class="line">    LOCAL a:DWORD,b:DWORD</span><br><span class="line">    PARAMS = 2</span><br><span class="line">    LOCALS = 2</span><br><span class="line">    SAVED_REGS = 2</span><br><span class="line">    mov a,0AAAAh</span><br><span class="line">    mov b,0BBBBBh</span><br><span class="line">    INVOKE WriteStackFrame,PARAMS,LOCALS,SAVED_REGS</span><br><span class="line">    LEAVE</span><br><span class="line">    ret</span><br><span class="line">aProc ENDP</span><br><span class="line"></span><br><span class="line">main PROC</span><br><span class="line">    mov eax,0EAEAEAEAh</span><br><span class="line">    mov ebx,0BEBEBEBEh</span><br><span class="line">    INVOKE aProc,1111h,2222h</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227103533-8f8dab1b-2eef-4cc4-944c-1c8dee3d716e.png"
+                      alt="32"
+                ></p>
+<blockquote>
+<p>INVOKE 伪指令调用的函数，必须写在 main 函数之前。call 调用的函数，可写在 main 函数之前或之后。</p>
+</blockquote>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227103673-2b9df214-713b-479f-a0cf-3369d5ea0e7b.png"
+                      alt="33"
+                ></p>
+<h1 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h1><p>递归子程序是直接或间接调用自身的子程序。</p>
+<p><strong>无尽循环递归：</strong>最显而易见的递归类型就是对自身进行调用。下面的程序 Endless 过程不断重复调用自己，永远不会停止。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：Endless.asm</span><br><span class="line">;功能：递归函数 Endless，不断重复调用自身，永远不会停止。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-3-23</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">.data</span><br><span class="line">endlessStr BYTE &quot;This recursion never stops&quot;,0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    call Endless</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line"></span><br><span class="line">Endless PROC</span><br><span class="line">    mov edx,OFFSET endlessStr</span><br><span class="line">    call WriteString</span><br><span class="line">    call Endless</span><br><span class="line">    ret</span><br><span class="line">Endless ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+<h2 id="递归求和"><a href="#递归求和" class="headerlink" title="递归求和"></a>递归求和</h2><p>有实际意义的递归过程总会包含一个终止条件，只要终止条件为真，程序就会执行所有挂起的ret指令，堆栈就被展开了。下面创建一个 CalcSum 递归过程计算从1到 n 的和，n 是通过 ECX 传递的输入参数，过程 CalSum 在 EAX 中返回和。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：CSum.asm</span><br><span class="line">;功能：使用递归求和</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-3-23</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mov eax,0</span><br><span class="line">    mov ecx,5</span><br><span class="line">    call CalcSum</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line"></span><br><span class="line">CalcSum PROC</span><br><span class="line">    add eax,ecx</span><br><span class="line">    dec ecx</span><br><span class="line">    jz L2</span><br><span class="line">    call CalcSum</span><br><span class="line">L2:</span><br><span class="line">    ret</span><br><span class="line">CalcSum ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="计算阶乘"><a href="#计算阶乘" class="headerlink" title="计算阶乘"></a>计算阶乘</h2><p>递归通常通过堆栈参数存储临时数据，在递归展开时，在堆栈上保存的数据可能很有用。下面的例子计算整数n的阶乘。<br>第一次调用 factorial 函数时，参数n是起始数字，下面是 C&#x2F;C++&#x2F;Java的语法格式编写的代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> function <span class="title">factorial</span><span class="params">(<span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n==<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> n * <span class="built_in">factorial</span>(n<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>例子程序：下面的汇编语言程序中包含了一个名为 Factorial 的过程，Factorial 使用递归计算阶乘。我们通过堆栈向 Factorial 过程传递整数 n，最后在 EAX 中返回阶乘值。因为使用的是 32 位寄存器存放阶乘，因此可容纳的最大阶乘值是 12!</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：Fat.asm</span><br><span class="line">;功能：使用递归计算阶乘</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-3-23</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    push 12         ;n-1</span><br><span class="line">    mov eax,[esp]   ;初始化eax</span><br><span class="line">    call Factorial</span><br><span class="line">    call WriteDec</span><br><span class="line">    call Crlf</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line"></span><br><span class="line">Factorial PROC</span><br><span class="line">    ENTER 0,0</span><br><span class="line">    cmp DWORD PTR [ebp+8],1</span><br><span class="line">    jz L1</span><br><span class="line">    sub DWORD PTR [ebp+8],1</span><br><span class="line">    mul DWORD PTR [ebp+8]</span><br><span class="line">    push [ebp+8]</span><br><span class="line">    call Factorial</span><br><span class="line">L1:</span><br><span class="line">    LEAVE</span><br><span class="line">    ret</span><br><span class="line">Factorial ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>书中的写法是加了一个函数 ReturnFact 来获取 n</p>
+</blockquote>
+<h1 id="MODEL伪指令"><a href="#MODEL伪指令" class="headerlink" title=".MODEL伪指令"></a>.MODEL伪指令</h1><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227160038-bbfaafec-d442-4893-b318-5eb54affa922.png"
+                      alt="34"
+                ></p>
+<blockquote>
+<p>之前8086汇编中学过，在80386中段的简化定义，多了一个调用约定。其他内容稍微了解一下就行。</p>
+</blockquote>
+<h1 id="语言选项关键字"><a href="#语言选项关键字" class="headerlink" title="语言选项关键字"></a>语言选项关键字</h1><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227162645-1bf80b79-f4f4-439f-952f-81cb9456d315.png"
+                      alt="35"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227163060-a1432d1b-ce04-41ba-9a37-86300ebca899.png"
+                      alt="36"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227163178-ac29b750-922e-46c8-9e9a-fd7c17e57b71.png"
+                      alt="37"
+                ></p>
+<blockquote>
+<p>这里有关调用约定的内容稍微看一下就行。</p>
+</blockquote>
+<h1 id="INVOKE-伪指令"><a href="#INVOKE-伪指令" class="headerlink" title="INVOKE 伪指令"></a>INVOKE 伪指令</h1><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227167476-5605312d-d365-463c-baea-698d1e8f173a.png"
+                      alt="38"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227167626-4c037437-cb83-422d-8b53-2b0338c15ce9.png"
+                      alt="39"
+                ></p>
+<blockquote>
+<p>INVOKE 伪指令可以理解为 call 指令的高级语言。INVOKE伪指令使用的是 STDCALL 调用约定。</p>
+</blockquote>
+<h2 id="ADDR操作符"><a href="#ADDR操作符" class="headerlink" title="ADDR操作符"></a>ADDR操作符</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227168833-395e30c8-6d9b-41e3-9798-e09923060559.png"
+                      alt="40"
+                ></p>
+<h2 id="PROC伪指令"><a href="#PROC伪指令" class="headerlink" title="PROC伪指令"></a>PROC伪指令</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227412692-a3446bbf-8320-43dc-a9d2-fc34125d7bd1.png"
+                      alt="41"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227412856-de57209e-ad37-4bbf-b318-41577921697f.png"
+                      alt="42"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227413014-b490169e-fced-430e-b15c-322cf5fb0b4d.png"
+                      alt="43"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227413539-4250fe57-3c28-4633-be65-7c6624073171.png"
+                      alt="44"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227413803-62a59841-8357-49dc-81d0-ff13829e6840.png"
+                      alt="45"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227414302-b8cc82f7-3020-4071-aec4-92cfc030f5dc.png"
+                      alt="46"
+                ></p>
+<h2 id="PROTO-伪指令"><a href="#PROTO-伪指令" class="headerlink" title="PROTO 伪指令"></a>PROTO 伪指令</h2><p>PROTO伪指令为一个已存在的过程创建一个原型。原型声明了过程的名字和参数列表，它允许在定义过程之前就调用该过程并验证调用时传递的参数的类型和数目是否相匹配。<br>MASM 要求 INVOKE 调用的过程要有合适的原型声明:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line"></span><br><span class="line">aProc PROTO,</span><br><span class="line">    x:DWORD,y:DWORD</span><br><span class="line"></span><br><span class="line">main PROC</span><br><span class="line">    mov eax,0EAEAEAEAh</span><br><span class="line">    mov ebx,0BEBEBEBEh</span><br><span class="line">    INVOKE aProc,1111h,2222h</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line"></span><br><span class="line">aProc PROC USES eax ebx,</span><br><span class="line">    x:DWORD,y:DWORD</span><br><span class="line">    LOCAL a:DWORD,b:DWORD</span><br><span class="line">    PARAMS = 2</span><br><span class="line">    LOCALS = 2</span><br><span class="line">    SAVED_REGS = 2</span><br><span class="line">    mov a,0AAAAh</span><br><span class="line">    mov b,0BBBBBh</span><br><span class="line">    INVOKE WriteStackFrame,PARAMS,LOCALS,SAVED_REGS</span><br><span class="line">    LEAVE</span><br><span class="line">    ret</span><br><span class="line">aProc ENDP</span><br><span class="line"></span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227421561-5044435b-d663-4491-9aee-7dfa449c3a8a.png"
+                      alt="47"
+                ></p>
+<h3 id="汇编时的参数检查"><a href="#汇编时的参数检查" class="headerlink" title="汇编时的参数检查"></a>汇编时的参数检查</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227443252-671f5d5d-444b-4b36-8556-9b44b3d0854a.png"
+                      alt="48"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227443397-2cd90c68-5af7-40bf-870e-2fc26d91c3cc.png"
+                      alt="49"
+                ></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：ArraySum.asm</span><br><span class="line">;功能：使用 PROC 声明堆栈参数、INVOKE 伪指令修改array.asm</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-3-24</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">array DWORD 10000h,20000h,30000h,40000h,50000h</span><br><span class="line">theSum DWORD ?</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">ArraySum PROTO,</span><br><span class="line">    ptrArray:PTR DWORD,</span><br><span class="line">    szArray:DWORD</span><br><span class="line"></span><br><span class="line">main PROC</span><br><span class="line">    INVOKE ArraySum,ADDR array,LENGTHOF array</span><br><span class="line">    MOV theSum,eax</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">;------------------------------</span><br><span class="line">ArraySum PROC USES esi ecx,</span><br><span class="line">    ptrArray:PTR DWORD,</span><br><span class="line">    szArray:DWORD</span><br><span class="line">;Calculates the sum of an array of 32-bit integers</span><br><span class="line">;Recevies: ESI = the array offset</span><br><span class="line">;          ECX = number of elements in the array</span><br><span class="line">;Returns:  EAX = sum of the array elements</span><br><span class="line">;------------------------------</span><br><span class="line">    mov esi,ptrArray</span><br><span class="line">    mov ecx,szArray</span><br><span class="line">    MOV eax,0</span><br><span class="line">L1:</span><br><span class="line">    ADD eax,[esi]</span><br><span class="line">    ADD esi,TYPE DWORD</span><br><span class="line">    LOOP L1</span><br><span class="line">    RET</span><br><span class="line">ArraySum ENDP </span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="参数分类"><a href="#参数分类" class="headerlink" title="参数分类"></a>参数分类</h2><p>过程的参数通常依据调用程序和被调用过程之间的数据传输方向进行分类。</p>
+<ul>
+<li>输入参数：输入参数是调用程序向被调用过程传递的数据，这时并不期望被调用过程修改对应的变量。即使这样做了，修改也仅局限于过程自身之内。</li>
+<li>输出参数：输出参数是通过向过程传递一个变量的指针而创建的。过程使用变量的地址定位变量并为变量赋值。</li>
+<li>输入输出参数：输入输出参数与输出参数基本等同，只有一点不同：被调用的过程期望参数引用的变量包含某些数据，过程也同时期望通过变量的指针修改变量。</li>
+</ul>
+<h2 id="例子：交换两个整数"><a href="#例子：交换两个整数" class="headerlink" title="例子：交换两个整数"></a>例子：交换两个整数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：Swap.asm</span><br><span class="line">;功能：Swap函数交换两个整数</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-2-23</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">Swap PROTO,</span><br><span class="line">    PValX:PTR DWORD,</span><br><span class="line">    pValY:PTR DWORD</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">Array DWORD 10000h,20000h</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    ;显示数组交换数据前的值</span><br><span class="line">    mov esi,OFFSET Array</span><br><span class="line">    mov ecx,2</span><br><span class="line">    mov ebx,TYPE Array</span><br><span class="line">    call DumpMem</span><br><span class="line">    </span><br><span class="line">    INVOKE Swap,ADDR Array,ADDR [Array+4]</span><br><span class="line"></span><br><span class="line">    ;显示交换数据后的结果</span><br><span class="line">    call DumpMem</span><br><span class="line">    exit</span><br><span class="line">main ENDP   </span><br><span class="line"></span><br><span class="line">;--------------------------------</span><br><span class="line">Swap PROC USES eax esi edi,</span><br><span class="line">    PValX:PTR DWORD,</span><br><span class="line">    pValY:PTR DWORD</span><br><span class="line">;功能：交换两个32位整数的值</span><br><span class="line">;返回值：无</span><br><span class="line">;--------------------------------</span><br><span class="line">    mov esi,PValX</span><br><span class="line">    mov edi,pValY</span><br><span class="line">    mov eax,[esi]</span><br><span class="line">    xchg eax,[edi]</span><br><span class="line">    mov [esi],eax</span><br><span class="line">Swap ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="调用问题疑难提示"><a href="#调用问题疑难提示" class="headerlink" title="调用问题疑难提示"></a>调用问题疑难提示</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227470644-e74ac12e-b5c9-4547-8c4f-d1f7e4e07615.png"
+                      alt="50"
+                ></p>
+<h1 id="创建多模块程序"><a href="#创建多模块程序" class="headerlink" title="创建多模块程序"></a>创建多模块程序</h1><p>非常大的源码文件难于管理并且汇编起来也很慢。我们可以把一个文件分成多个包含文件，但是对任何源文件的修改仍然要汇编所有文件。另一种方法是吧程序拆分成多个模块。每个模块单独汇编，对一个模块源码的修改直选哦重新汇编那个模块即可，连接器可以相当迅速地把所有汇编模块（OBJ文件）链接成一个可执行文件。链接多个目标代码模块要比汇编同样数量的源码文件快得多。</p>
+<p>创建多个模块程序时有两种常用的方法：第一种方法是似乎用传统的EXTERN 伪指令，在不同的 80x86 汇编器之间移植可能会有些问题。第二种方法是使用 MASM 的高级 INVOKE 和 PROTO 伪指令，这些伪指令简化了调用并隐藏了一些底层细节。</p>
+<h2 id="过程名的隐藏和导出"><a href="#过程名的隐藏和导出" class="headerlink" title="过程名的隐藏和导出"></a>过程名的隐藏和导出</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227486286-0380b1f5-2742-4c75-96fb-a15b0aea7e55.png"
+                      alt="51"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227486551-82ed42a3-d3fe-4bc5-86a2-fc387a75930d.png"
+                      alt="52"
+                ></p>
+<h2 id="调用外部过程"><a href="#调用外部过程" class="headerlink" title="调用外部过程"></a>调用外部过程</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227487641-a50a7415-3aed-4e2c-8cf3-c73324319d87.png"
+                      alt="53"
+                ></p>
+<h2 id="跨模块的边界使用变量和符号"><a href="#跨模块的边界使用变量和符号" class="headerlink" title="跨模块的边界使用变量和符号"></a>跨模块的边界使用变量和符号</h2><p>变量和符号默认对于其所在的模块而言是私有的。。可以使用 PUBLIC 伪指令导出特地给的名字，案例如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PUBLIC count,SYM1</span><br><span class="line">SYM1 = 10</span><br><span class="line">.data</span><br><span class="line">count DWORD 0</span><br></pre></td></tr></table></figure>
+
+<p><strong>访问外部变量和符号</strong><br>可以使用 EXTERN  伪指令访问外部模块定义的符号和变量：<br><code>EXTERN name:type</code></p>
+<p>对于符号而言（以 EQU 和 “&#x3D;” 定义的），type 应该是 ABS；对于变量而言。type 应该是数据定义的属性，如 BYTE、WORD、DWORD、SDWORD 以及 PTR。下面是一些例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXTERN one:WORD,two:SDWORD,three:PTR BYTE,four:ABS</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用包含 EXTERNDEF 伪指令包含文件</strong><br>MASM 伪指令 EXTERNDEF 可代替 PUBLIC 和 EXTERN，该伪指令可放在一个文本文件中，使用 INCLUDE 伪指令包含进每个程序模块块中。例如定义 vars.inc 文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">;vars.inc</span><br><span class="line">EXTERNDEF count:DWORD,SYM1:ABS</span><br></pre></td></tr></table></figure>
+<p>之后再创建文件 sub1.asm，该文件包含count 和 SYM1 的定义。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：sub1.asm</span><br><span class="line">;功能：演示包含 EXTERNDEF 伪指令的文件</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-2-25</span><br><span class="line">;----------------------------</span><br><span class="line">;INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.386</span><br><span class="line">.model flat,STDCALL</span><br><span class="line"></span><br><span class="line">INCLUDE     kernel32.inc</span><br><span class="line">INCLUDELIB  kernel32.lib</span><br><span class="line">INCLUDELIB  masm32.lib</span><br><span class="line">INCLUDE     vars.inc</span><br><span class="line"></span><br><span class="line">SYM1=10</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">count DWORD 0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mov eax,count</span><br><span class="line">    mov count,2000h</span><br><span class="line">    mov ebx,count</span><br><span class="line">    mov ecx,SYM1</span><br><span class="line">    invoke ExitProcess,0</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>编译时 MAKEFILE 文件 “LINK_FLAG” 变量改为 “LINK_FLAG &#x3D; &#x2F;subsystem:console kernel32.lib user32.lib”</p>
+</blockquote>
+<h2 id="例子-ArraySum-程序"><a href="#例子-ArraySum-程序" class="headerlink" title="例子 ArraySum 程序"></a>例子 ArraySum 程序</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227702067-c24254aa-12e8-4344-9d74-268d000b90c9.png"
+                      alt="54"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227702088-def00b04-49f9-4543-805a-78ab97459989.png"
+                      alt="55"
+                ></p>
+<h2 id="使用-EXTERN-创建模块"><a href="#使用-EXTERN-创建模块" class="headerlink" title="使用 EXTERN 创建模块"></a>使用 EXTERN 创建模块</h2><p>这一节使用 EXTERN 伪指令引用单独模块改写第 5 章的 Array.asm。<br>PromptForIntegers：模块 _Prompt.asm 包含了 PromptForIntegers 过程中的源码。该过程提示用户输入三个整数，调用 ReadInt 读取输入，然后插入到数组中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：_prompt.asm</span><br><span class="line">;功能：提示用户输入三个整数，调用 ReadInt 读取输入，然后插入到数组中。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-2-25</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">PromptForIntegers PROC</span><br><span class="line">;功能：提示用户输入三个整数，调用 ReadInt 读取输入，然后插入到数组中。</span><br><span class="line">;入口参数：</span><br><span class="line">;    ptrPrompt:PTR byte       ;输入的字符串</span><br><span class="line">;    ptrArray:PTR DWORD       ;数组指针</span><br><span class="line">;    arraySize:DWORD          ;数组大小</span><br><span class="line">;返回值：无</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">arraySize EQU [ebp+16]</span><br><span class="line">ptrArray  EQU [ebp+12]</span><br><span class="line">ptrPrompt EQU [ebp+8]</span><br><span class="line"></span><br><span class="line">    ENTER 0,0</span><br><span class="line">    pushad</span><br><span class="line"></span><br><span class="line">    mov ecx,arraySize</span><br><span class="line">    cmp ecx,0</span><br><span class="line">    jle L2</span><br><span class="line">    mov edx,ptrPrompt</span><br><span class="line">    mov esi,ptrArray</span><br><span class="line">L1:</span><br><span class="line">    call WriteString</span><br><span class="line">    call ReadInt</span><br><span class="line">    call Crlf</span><br><span class="line">    mov [esi],eax</span><br><span class="line">    add esi,4</span><br><span class="line">    loop L1</span><br><span class="line">L2:</span><br><span class="line">    popad</span><br><span class="line">    leave</span><br><span class="line">    ret 12</span><br><span class="line">PromptForIntegers ENDP</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+
+<p>ArraySum：模块 _arraysum.asm 包含了 ArraySum 过程的，该过程计算数组元素的和并在 EAX 中返回：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：_arraysum.asm</span><br><span class="line">;功能：计算数组元素的和并在 EAX 中返回。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-2-25</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">ArraySum PROC</span><br><span class="line">;功能：计算数组元素的和并在 EAX 中返回。</span><br><span class="line">;入口参数：</span><br><span class="line">;    ptrArray       ;数组指针</span><br><span class="line">;    araySize       ;数组大小</span><br><span class="line">;返回值：EAX = sum</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">ptrArray  EQU [ebp+8]</span><br><span class="line">arraySize EQU [ebp+12]</span><br><span class="line"></span><br><span class="line">    ENTER 0,0</span><br><span class="line">    push ecx</span><br><span class="line">    push esi</span><br><span class="line"></span><br><span class="line">    mov eax,0</span><br><span class="line">    mov esi,ptrArray</span><br><span class="line">    mov ecx,arraySize</span><br><span class="line">    cmp ecx,0</span><br><span class="line">    jle L2</span><br><span class="line">L1:</span><br><span class="line">    add eax,[esi]</span><br><span class="line">    add esi,4</span><br><span class="line">    loop L1</span><br><span class="line">L2:</span><br><span class="line">    pop esi</span><br><span class="line">    pop ecx</span><br><span class="line">    leave</span><br><span class="line">    ret 8</span><br><span class="line">ArraySum ENDP</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+
+<p>DisplayNum：模块 _display.asm 包含了 DisplaySum 过程，该过程显示一个标号，后跟数组之和：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：_display.asm</span><br><span class="line">;功能：显示一个标号，后跟数组之和。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-2-25</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">DisplaySum PROC</span><br><span class="line">;功能：显示一个标号，后跟数组之和。</span><br><span class="line">;入口参数：</span><br><span class="line">;    ptrPrompt       ;字符串偏移</span><br><span class="line">;    thesum          ;数组总和（DWORD）</span><br><span class="line">;返回值：无</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">thesum     EQU [ebp+12]</span><br><span class="line">ptrPrompt  EQU [ebp+8]</span><br><span class="line"></span><br><span class="line">    ENTER 0,0</span><br><span class="line">    push eax</span><br><span class="line">    push edx</span><br><span class="line"></span><br><span class="line">    mov edx,ptrPrompt</span><br><span class="line">    call WriteString</span><br><span class="line">    mov eax,thesum</span><br><span class="line">    call WriteInt</span><br><span class="line">    call Crlf</span><br><span class="line"></span><br><span class="line">    pop edx</span><br><span class="line">    pop eax</span><br><span class="line">    leave</span><br><span class="line">    ret 8</span><br><span class="line">DisplaySum ENDP</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+
+<p>启动模块：模块 Sum_main.asm 包含了 main 过程，该模块包含了三个外部过程的 EXTERN 声明。为使源码更加刻度，使用 EQU 伪指令重新定义了过程名字：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：Sum_main.asm</span><br><span class="line">;功能：多模块调用示例，用户输入多个整数到数组中，之后再计算数组总和并显示出来。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-2-25</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">EXTERN PromptForIntegers@0:PROC</span><br><span class="line">EXTERN ArraySum@0:PROC,DisplaySum@0:PROC</span><br><span class="line"></span><br><span class="line">;将调用的扩展模块用标号替换</span><br><span class="line">ArraySum EQU ArraySum@0</span><br><span class="line">PromptForIntegers EQU PromptForIntegers@0</span><br><span class="line">DisplaySum EQU DisplaySum@0</span><br><span class="line"></span><br><span class="line">;设置数组的大小</span><br><span class="line">Count = 3</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">prompt1 BYTE &quot;Enter a signed integer: &quot;,0</span><br><span class="line">prompt2 BYTE &quot;This sum of the integers is: &quot;,0</span><br><span class="line">array DWORD Count DUP(?)</span><br><span class="line">sum DWORD ?</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    call Clrscr</span><br><span class="line"></span><br><span class="line">;PromptForIntegers(addr prompt1,addr array,Count)</span><br><span class="line">    push Count</span><br><span class="line">    push OFFSET array</span><br><span class="line">    push OFFSET prompt1</span><br><span class="line">    call PromptForIntegers</span><br><span class="line"></span><br><span class="line">;sum = ArraySum(Addr array,Count)</span><br><span class="line">    push Count</span><br><span class="line">    push OFFSET array</span><br><span class="line">    call ArraySum</span><br><span class="line">    mov sum,eax</span><br><span class="line"></span><br><span class="line">;DisplaySum(addr prompt2,sum)</span><br><span class="line">    push sum</span><br><span class="line">    push OFFSET prompt2</span><br><span class="line">    call DisplaySum</span><br><span class="line">    call Crlf</span><br><span class="line">    Exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><ol>
+<li><p>编译 asm 文件<br>ml &#x2F;c &#x2F;coff _prompt.asm _arraysum.asm _display.asm</p>
+</li>
+<li><p>修改 MakeFile 文件如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">EXE = Sum_main.exe		#指定输出文件</span><br><span class="line">OBJS = Sum_main.obj	_arrysum.obj _display.obj _prompt.obj	#需要的目标文件</span><br><span class="line"></span><br><span class="line">LINK_FLAG = /subsystem:console irvine32.lib kernel32.lib user32.lib	#连接选项</span><br><span class="line">ML_FLAG = /c /coff		#编译选项</span><br><span class="line"></span><br><span class="line">$(EXE): $(OBJS) $(RES)</span><br><span class="line">	Link $(LINK_FLAG) $(OBJS)</span><br><span class="line"></span><br><span class="line">.asm.obj:</span><br><span class="line">	ml $(ML_FLAG) $&lt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行文件<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227709920-782b90e9-fa0c-4986-83b9-b66513844034.png"
+                      alt="56"
+                ></p>
+</li>
+</ol>
+<h2 id="使用-INVOKE-和-PROTO-创建模块"><a href="#使用-INVOKE-和-PROTO-创建模块" class="headerlink" title="使用 INVOKE 和 PROTO 创建模块"></a>使用 INVOKE 和 PROTO 创建模块</h2><p>多模块程序可以使用 MASM 的高级伪指令 INVOKE，PROTO华人扩展 PROC 伪指令创建。与使用 CALL 和 EXTERN 的传统方法相比，其主要有点在于能够匹配 INVOKE 伪指令中传递的参数列表和PROC伪指令声明的参数列表并检查是否一致。</p>
+<p>创建 ArrraySum程序的第一步是创建一个包含了每个外部过程的 PROTO 伪指令声明的包含文件，每个模块都可以包含到该文件，这还不会影响代码尺寸和程序运行时间。如果某个模块没有调用特定的过程，那么对应的 PROTO 伪指令就会被汇编器忽略。<br>下面是 sum.inc 包含文件的内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">;（sum.inc）</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">PromptForIntegers PROTO,</span><br><span class="line">    ptrPrompt:PTR BYTE,</span><br><span class="line">    ptrArray:PTR DWORD,</span><br><span class="line">    arraySize:DWORD</span><br><span class="line"></span><br><span class="line">ArraySum PROTO,</span><br><span class="line">    ptrArray:PTR DWORD,</span><br><span class="line">    arraySize:DWORD</span><br><span class="line"></span><br><span class="line">DisplaySum PROTO,</span><br><span class="line">    ptrPrompt:PTR BYTE,</span><br><span class="line">    thesum:DWORD</span><br></pre></td></tr></table></figure>
+
+<p><strong>_prompt 模块：</strong>文件 _prompt.asm 使用 PROC 伪指令声明 PromptForIntegers 所需的参数，该文件还用 INCLUDE 把 sum.inc 复制到该文件中来：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：_prompt.asm</span><br><span class="line">;功能：提示用户输入三个整数，调用 ReadInt 读取输入，然后插入到数组中。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-2-25</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE sum.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">PromptForIntegers PROC,</span><br><span class="line">    ptrPrompt:PTR BYTE,</span><br><span class="line">    ptrArray:PTR DWORD,</span><br><span class="line">    arraySize:DWORD</span><br><span class="line">    </span><br><span class="line">;功能：提示用户输入三个整数，调用 ReadInt 读取输入，然后插入到数组中。</span><br><span class="line">;入口参数：</span><br><span class="line">;    ptrPrompt:PTR byte       ;输入的字符串</span><br><span class="line">;    ptrArray:PTR DWORD       ;数组指针</span><br><span class="line">;    arraySize:DWORD          ;数组大小</span><br><span class="line">;返回值：无</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    pushad</span><br><span class="line"></span><br><span class="line">    mov ecx,arraySize</span><br><span class="line">    cmp ecx,0</span><br><span class="line">    jle L2</span><br><span class="line">    mov edx,ptrPrompt</span><br><span class="line">    mov esi,ptrArray</span><br><span class="line">L1:</span><br><span class="line">    call WriteString</span><br><span class="line">    call ReadInt</span><br><span class="line">    call Crlf</span><br><span class="line">    mov [esi],eax</span><br><span class="line">    add esi,4</span><br><span class="line">    loop L1</span><br><span class="line">L2:</span><br><span class="line">    popad</span><br><span class="line">    ret</span><br><span class="line">PromptForIntegers ENDP</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>和之前的版本相比这里少了 enter 0,0 和leave 伪指令，ret 指令后也没有常量。这是因为 MASM 遇到声明了参数的 PROC 伪指令时会生成这些指令。</p>
+</blockquote>
+<p><strong>_arraysum.asm 模块：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：_arraysum.asm</span><br><span class="line">;功能：计算数组元素的和并在 EAX 中返回。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-2-25</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE sum.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">ArraySum PROC,</span><br><span class="line">    ptrArray:PTR DWORD,</span><br><span class="line">    arraySize:DWORD</span><br><span class="line">;功能：计算数组元素的和并在 EAX 中返回。</span><br><span class="line">;入口参数：</span><br><span class="line">;    ptrArray       ;数组指针</span><br><span class="line">;    araySize       ;数组大小</span><br><span class="line">;返回值：EAX = sum</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line"></span><br><span class="line">    push ecx</span><br><span class="line">    push esi</span><br><span class="line"></span><br><span class="line">    mov eax,0</span><br><span class="line">    mov esi,ptrArray</span><br><span class="line">    mov ecx,arraySize</span><br><span class="line">    cmp ecx,0</span><br><span class="line">    jle L2</span><br><span class="line">L1:</span><br><span class="line">    add eax,[esi]</span><br><span class="line">    add esi,4</span><br><span class="line">    loop L1</span><br><span class="line">L2:</span><br><span class="line">    pop esi</span><br><span class="line">    pop ecx</span><br><span class="line">    ret</span><br><span class="line">ArraySum ENDP</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+
+<p><strong>Display模块：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：_display.asm</span><br><span class="line">;功能：显示一个标号，后跟数组之和。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-2-25</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE sum.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">DisplaySum PROC,</span><br><span class="line">    ptrPrompt:PTR BYTE,</span><br><span class="line">    thesum:DWORD</span><br><span class="line">;功能：显示一个标号，后跟数组之和。</span><br><span class="line">;入口参数：</span><br><span class="line">;    ptrPrompt       ;字符串偏移</span><br><span class="line">;    thesum          ;数组总和（DWORD）</span><br><span class="line">;返回值：无</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line"></span><br><span class="line">    push eax</span><br><span class="line">    push edx</span><br><span class="line"></span><br><span class="line">    mov edx,ptrPrompt</span><br><span class="line">    call WriteString</span><br><span class="line">    mov eax,thesum</span><br><span class="line">    call WriteInt</span><br><span class="line">    call Crlf</span><br><span class="line"></span><br><span class="line">    pop edx</span><br><span class="line">    pop eax</span><br><span class="line">    ret</span><br><span class="line">DisplaySum ENDP</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+
+<p><strong>Sum_main.asm模块：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：Sum_main.asm</span><br><span class="line">;功能：多模块调用示例，用户输入多个整数到数组中，之后再计算数组总和并显示出来。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-2-25</span><br><span class="line">;----------------------------</span><br><span class="line">;INCLUDE Irvine32.inc</span><br><span class="line">INCLUDE sum.inc</span><br><span class="line"></span><br><span class="line">;设置数组的大小</span><br><span class="line">Count = 3</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">prompt1 BYTE &quot;Enter a signed integer: &quot;,0</span><br><span class="line">prompt2 BYTE &quot;This sum of the integers is: &quot;,0</span><br><span class="line">array DWORD Count DUP(?)</span><br><span class="line">sum DWORD ?</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    call Clrscr</span><br><span class="line"></span><br><span class="line">;PromptForIntegers(addr prompt1,addr array,Count)</span><br><span class="line">    INVOKE PromptForIntegers,ADDR prompt1,ADDR array,Count</span><br><span class="line"></span><br><span class="line">;sum = ArraySum(Addr array,Count)</span><br><span class="line">    INVOKE ArraySum,ADDR array,Count</span><br><span class="line">    mov sum,eax</span><br><span class="line"></span><br><span class="line">;DisplaySum(addr prompt2,sum)</span><br><span class="line">    INVOKE DisplaySum,ADDR prompt2,sum</span><br><span class="line">    call Crlf</span><br><span class="line">    Exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>PROTO 和 PROC 定义的局部变量顺序也要一样的，同时需要注意 sum_main.asm 中函数参数的调用顺序，要与 PROTO 声明的局部变量顺序是对应的。</p>
+</blockquote>
+<p><strong>小结：</strong>前面第一种方法使用传统的 EXTERN 伪指令的方式；第二种方法是使用高级伪指令 INVOKE，PROTO和PROC。这些伪指令简化了很多细节，还专门针对 Windows API函数调用进行了优化。</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：80386汇编-高级过程</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2023-02-25 23:25:00</li>
+        <li>
+            本文链接：https://9unkk.github.io/2023/02/25/80386-hui-bian-gao-ji-guo-cheng/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2023/01/31/80386-hui-bian-zheng-shu-suan-shu-zhi-ling/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">80386汇编-整数算数指令</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A0%86%E6%A0%88%E6%A1%86%E6%9E%B6"><span class="nav-number">1.</span> <span class="nav-text">堆栈框架</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A0%86%E6%A0%88%E5%8F%82%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">堆栈参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86%E6%A0%88%E5%8F%82%E6%95%B0%E7%9A%84%E8%AE%BF%E9%97%AE%EF%BC%88C-x2F-C-%EF%BC%89"><span class="nav-number">1.1.1.</span> <span class="nav-text">堆栈参数的访问（C&#x2F;C++）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86%E6%A0%88%E6%B8%85%E7%90%86%EF%BC%88%E5%A0%86%E6%A0%88%E5%B9%B3%E8%A1%A1%EF%BC%89"><span class="nav-number">1.1.2.</span> <span class="nav-text">堆栈清理（堆栈平衡）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E5%A0%86%E6%A0%88%E4%BC%A0%E9%80%92-8-%E4%BD%8D%E5%92%8C-16-%E4%BD%8D%E7%9A%84%E5%8F%82%E6%95%B0"><span class="nav-number">1.1.3.</span> <span class="nav-text">通过堆栈传递 8 位和 16 位的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E9%80%92%E9%95%BF%E6%95%B4%E6%95%B0%E5%8F%82%E6%95%B0"><span class="nav-number">1.1.4.</span> <span class="nav-text">传递长整数参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%9D%E5%AD%98%E5%92%8C%E6%81%A2%E5%A4%8D%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">1.1.5.</span> <span class="nav-text">保存和恢复寄存器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#USES%E6%93%8D%E4%BD%9C%E7%AC%A6%E5%AF%B9%E5%A0%86%E6%A0%88%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">1.1.6.</span> <span class="nav-text">USES操作符对堆栈的影响</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F"><span class="nav-number">1.2.</span> <span class="nav-text">局部变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E5%BC%95%E7%94%A8%E5%8F%82%E6%95%B0"><span class="nav-number">1.2.1.</span> <span class="nav-text">访问引用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LEA-%E6%8C%87%E4%BB%A4"><span class="nav-number">1.2.2.</span> <span class="nav-text">LEA 指令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ENTER-%E5%92%8C-LEAVE-%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.</span> <span class="nav-text">ENTER 和 LEAVE 指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ENTER-%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.1.</span> <span class="nav-text">ENTER 指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LEAVE-%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.2.</span> <span class="nav-text">LEAVE 指令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LOCAL-%E4%BC%AA%E6%8C%87%E4%BB%A4"><span class="nav-number">1.4.</span> <span class="nav-text">LOCAL 伪指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MASM-%E7%94%9F%E6%88%90%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="nav-number">1.4.1.</span> <span class="nav-text">MASM 生成的代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E5%8F%8C%E5%AD%97%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F"><span class="nav-number">1.4.2.</span> <span class="nav-text">非双字局部变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B-WriteStackFrame"><span class="nav-number">1.5.</span> <span class="nav-text">过程 WriteStackFrame</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%92%E5%BD%92"><span class="nav-number">2.</span> <span class="nav-text">递归</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%92%E5%BD%92%E6%B1%82%E5%92%8C"><span class="nav-number">2.1.</span> <span class="nav-text">递归求和</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E9%98%B6%E4%B9%98"><span class="nav-number">2.2.</span> <span class="nav-text">计算阶乘</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MODEL%E4%BC%AA%E6%8C%87%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">.MODEL伪指令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E9%80%89%E9%A1%B9%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">4.</span> <span class="nav-text">语言选项关键字</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#INVOKE-%E4%BC%AA%E6%8C%87%E4%BB%A4"><span class="nav-number">5.</span> <span class="nav-text">INVOKE 伪指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ADDR%E6%93%8D%E4%BD%9C%E7%AC%A6"><span class="nav-number">5.1.</span> <span class="nav-text">ADDR操作符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PROC%E4%BC%AA%E6%8C%87%E4%BB%A4"><span class="nav-number">5.2.</span> <span class="nav-text">PROC伪指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PROTO-%E4%BC%AA%E6%8C%87%E4%BB%A4"><span class="nav-number">5.3.</span> <span class="nav-text">PROTO 伪指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B1%87%E7%BC%96%E6%97%B6%E7%9A%84%E5%8F%82%E6%95%B0%E6%A3%80%E6%9F%A5"><span class="nav-number">5.3.1.</span> <span class="nav-text">汇编时的参数检查</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E5%88%86%E7%B1%BB"><span class="nav-number">5.4.</span> <span class="nav-text">参数分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9A%E4%BA%A4%E6%8D%A2%E4%B8%A4%E4%B8%AA%E6%95%B4%E6%95%B0"><span class="nav-number">5.5.</span> <span class="nav-text">例子：交换两个整数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E9%97%AE%E9%A2%98%E7%96%91%E9%9A%BE%E6%8F%90%E7%A4%BA"><span class="nav-number">5.6.</span> <span class="nav-text">调用问题疑难提示</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%A4%9A%E6%A8%A1%E5%9D%97%E7%A8%8B%E5%BA%8F"><span class="nav-number">6.</span> <span class="nav-text">创建多模块程序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B%E5%90%8D%E7%9A%84%E9%9A%90%E8%97%8F%E5%92%8C%E5%AF%BC%E5%87%BA"><span class="nav-number">6.1.</span> <span class="nav-text">过程名的隐藏和导出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E5%A4%96%E9%83%A8%E8%BF%87%E7%A8%8B"><span class="nav-number">6.2.</span> <span class="nav-text">调用外部过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%A8%E6%A8%A1%E5%9D%97%E7%9A%84%E8%BE%B9%E7%95%8C%E4%BD%BF%E7%94%A8%E5%8F%98%E9%87%8F%E5%92%8C%E7%AC%A6%E5%8F%B7"><span class="nav-number">6.3.</span> <span class="nav-text">跨模块的边界使用变量和符号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90-ArraySum-%E7%A8%8B%E5%BA%8F"><span class="nav-number">6.4.</span> <span class="nav-text">例子 ArraySum 程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-EXTERN-%E5%88%9B%E5%BB%BA%E6%A8%A1%E5%9D%97"><span class="nav-number">6.5.</span> <span class="nav-text">使用 EXTERN 创建模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91"><span class="nav-number">6.6.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-INVOKE-%E5%92%8C-PROTO-%E5%88%9B%E5%BB%BA%E6%A8%A1%E5%9D%97"><span class="nav-number">6.7.</span> <span class="nav-text">使用 INVOKE 和 PROTO 创建模块</span></a></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

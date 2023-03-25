@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            80386汇编-数据传送、寻址和算数运算 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">80386汇编-数据传送、寻址和算数运算</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2022-11-08 23:53:00</span>
+        <span class="mobile">2022-11-08 23:53</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>3k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>12 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="数据传送、寻址和算数运算"><a href="#数据传送、寻址和算数运算" class="headerlink" title="数据传送、寻址和算数运算"></a>数据传送、寻址和算数运算</h1><p>与 8086汇编重复且用法上没有变化的指令这里就不过多介绍。</p>
+<h2 id="操作数类型"><a href="#操作数类型" class="headerlink" title="操作数类型"></a>操作数类型</h2><p>操作数类型有：立即操作数（immediate）、寄存器操作数（register）和内存操作数（memory）。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/200367429-9cfee4ba-8c38-4cd0-b1dc-bde21f2139dd.png"
+                      alt="1"
+                ></p>
+<h2 id="整数的零-x2F-符号扩展"><a href="#整数的零-x2F-符号扩展" class="headerlink" title="整数的零&#x2F;符号扩展"></a>整数的零&#x2F;符号扩展</h2><ul>
+<li>MOVZX 指令将源操作数的内容复制的目的操作数中，并将该值零扩展至 16 位或 32位。</li>
+<li>MOVSX 指令将源操作数的内容复制到目的操作数中，并将该值符号位扩展至 16 位或 32 位。</li>
+</ul>
+<blockquote>
+<p>MOVZX 和 MOVSX 常用在除法指令前</p>
+</blockquote>
+<h2 id="LAHF-和-SAHF-指令"><a href="#LAHF-和-SAHF-指令" class="headerlink" title="LAHF 和 SAHF 指令"></a>LAHF 和 SAHF 指令</h2><p>与 8086汇编中的指令一样，这里复习一下</p>
+<ul>
+<li>LAHF 指令将 EFLAGS 寄存器的低字节复制到 AH 寄存器</li>
+<li>SAHF 指令复制 AH 寄存器的值到 EFLAGS 寄存器的低字节<blockquote>
+<p>这两个指令主要用于修改标志寄存器，或判断标志寄存器中哪个位为 1</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><p>例1：演示数据传送指令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：Moves.asm</span><br><span class="line">;功能：演示整数的零/符号扩展指令</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2022-11-8</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">num1 db 21</span><br><span class="line">num2 dw 1234</span><br><span class="line">num3 db -1</span><br><span class="line">num4 dw -1234</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">;MOVZX 零扩展演示</span><br><span class="line">MOV eax,0ffffffffh</span><br><span class="line">MOVZX ax,num1</span><br><span class="line">;</span><br><span class="line">MOVZX eax,num2</span><br><span class="line"></span><br><span class="line">;MOVSX 符号位扩展演示</span><br><span class="line">MOV eax,12345678h</span><br><span class="line">MOVSX ax,num3</span><br><span class="line">;</span><br><span class="line">MOVSX eax,num4</span><br><span class="line"></span><br><span class="line">;内存到内存交换</span><br><span class="line">MOV ax,num2</span><br><span class="line">XCHG ax,num4</span><br><span class="line">MOV num2,ax</span><br><span class="line"></span><br><span class="line">;偏移寻址</span><br><span class="line">MOV al,num1</span><br><span class="line">MOV al,[num1+1]</span><br><span class="line">MOV al,[num1+4/1]</span><br><span class="line">MOV al,[num1+1*4]</span><br><span class="line">MOV al,[num1+TYPE num4]</span><br><span class="line"></span><br><span class="line">exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在 win32 汇编中寻址方式可以使用 “*” 和 “&#x2F;“，对内存地址对进行乘法和除法运算。</p>
+</blockquote>
+<h2 id="加法和减法指令"><a href="#加法和减法指令" class="headerlink" title="加法和减法指令"></a>加法和减法指令</h2><h3 id="INC和DEC指令"><a href="#INC和DEC指令" class="headerlink" title="INC和DEC指令"></a>INC和DEC指令</h3><p>INC 和 DEC 指令从操作数中加1 或 减1，指令格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INC reg/mem</span><br><span class="line">DEC reg/mem</span><br></pre></td></tr></table></figure>
+
+<h3 id="NEG指令"><a href="#NEG指令" class="headerlink" title="NEG指令"></a>NEG指令</h3><p>NEG 指令通过将数字转换为对应的补码而求得其相反数，指令格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NEG reg</span><br><span class="line">NEG mem</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在 win32 汇编中，INC、DEC、NEG 指令可对内存操作数进行操作。</p>
+</blockquote>
+<h3 id="案例：（AddSub3）"><a href="#案例：（AddSub3）" class="headerlink" title="案例：（AddSub3）"></a>案例：（AddSub3）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：AddSub3.asm</span><br><span class="line">;功能：演示整数的零/符号扩展指令</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2022-11-9</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">Rval SDWORD ?</span><br><span class="line">Xval SDWORD 26</span><br><span class="line">Yval SDWORD 30</span><br><span class="line">Zval SDWORD 40</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">;MOVZX 零扩展演示</span><br><span class="line">MOV ax,1000h</span><br><span class="line">INC ax</span><br><span class="line">DEC ax</span><br><span class="line"></span><br><span class="line">;对内存操作数进行加、减、取反</span><br><span class="line">INC Rval</span><br><span class="line">NEG Rval</span><br><span class="line">DEC Rval</span><br><span class="line"></span><br><span class="line">;表达式：Rval = -Xval+(Yval-Zval)</span><br><span class="line">MOV eax,Xval</span><br><span class="line">NEG eax</span><br><span class="line">MOV ebx,Yval</span><br><span class="line">SUB ebx,Zval</span><br><span class="line">ADD eax,ebx</span><br><span class="line">MOV Rval,eax</span><br><span class="line"></span><br><span class="line">;零标志位的例子</span><br><span class="line">MOV cx,1</span><br><span class="line">SUB cx,1</span><br><span class="line">MOV ax,0ffffh</span><br><span class="line">INC ax</span><br><span class="line"></span><br><span class="line">;符号标志位的例子</span><br><span class="line">MOV cx,0</span><br><span class="line">SUB cx,1</span><br><span class="line">MOV ax,7fffh</span><br><span class="line">ADD ax,2</span><br><span class="line"></span><br><span class="line">;进位标志位的例子</span><br><span class="line">MOV al,0ffh</span><br><span class="line">ADD al,1</span><br><span class="line">;溢出标志位的例子</span><br><span class="line">MOV al,+127</span><br><span class="line">ADD al,1</span><br><span class="line">MOV al,-128</span><br><span class="line">SUB al,1</span><br><span class="line"></span><br><span class="line">exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>除 INC 和 DEC 指令外，其他加减指令都影响进位标志位。</p>
+</blockquote>
+<h2 id="和数据操作相关的伪指令"><a href="#和数据操作相关的伪指令" class="headerlink" title="和数据操作相关的伪指令"></a>和数据操作相关的伪指令</h2><table>
+<thead>
+<tr>
+<th align="center">指令</th>
+<th align="left">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">OFFSET</td>
+<td align="left">返回偏移地址</td>
+</tr>
+<tr>
+<td align="center">PTR</td>
+<td align="left">允许改变变量的默认大小</td>
+</tr>
+<tr>
+<td align="center">TYPE</td>
+<td align="left">返回变量类型的大小</td>
+</tr>
+<tr>
+<td align="center">LENGTHOF</td>
+<td align="left">返回数组内元素的数目</td>
+</tr>
+<tr>
+<td align="center">SIZEOF</td>
+<td align="left">返回数组初始化时占用的字节数</td>
+</tr>
+<tr>
+<td align="center">LABEL</td>
+<td align="left">对同一变量重新定义不同大小的方法</td>
+</tr>
+<tr>
+<td align="center">ALIGN</td>
+<td align="left">将变量的位置按字节、字、双字或段边界对齐</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>这里 8086 汇编中都已经学过，如果忘了再看一遍回顾一下。</p>
+</blockquote>
+<h2 id="间接寻址"><a href="#间接寻址" class="headerlink" title="间接寻址"></a>间接寻址</h2><blockquote>
+<p>这里主要把 win32汇编中需要编写代码不一样的地方看一下。</p>
+</blockquote>
+<ol>
+<li>通用保护故障：在保护模式下，如果有效程序指向数据段以外的区域，CPU 就有可能会产生通用保护故障（GP，General Protection Fault）。即使指令不修改内存，这种情况也有可能会发生。例如，如果 ESI 未初始化，下面的指令就有可能产生通用保护故障：</li>
+</ol>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV ax,[esi]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>因此在 win32 汇编中，使用间接寻址之前一定要对变址寄存器初始化。</p>
+</blockquote>
+<ol start="2">
+<li>PTR：与间接操作数的联合使用。有时候在一条指令的上下文中，操作数大小并不明确，在编译时编译器就会报错。如：</li>
+</ol>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INC [esi]</span><br></pre></td></tr></table></figure>
+
+<p>正确格式应写为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INC BYTE PTR [esi]</span><br></pre></td></tr></table></figure>
+
+<p>案例：32位整数相加</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：T4-3.asm</span><br><span class="line">;功能：32位整数相加</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2022-11-10</span><br><span class="line">;----------------------------</span><br><span class="line">.386</span><br><span class="line">.model flat,stdcall</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">arrayD DWORD 10000h,20000h,30000h</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    MOV esi,OFFSET arrayD</span><br><span class="line">    MOV eax,[esi]</span><br><span class="line">    ADD esi,4</span><br><span class="line">    ADD eax,[esi]</span><br><span class="line">    ADD esi,4</span><br><span class="line">    ADD eax,[esi]</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h3 id="变址操作数的比例因子"><a href="#变址操作数的比例因子" class="headerlink" title="变址操作数的比例因子"></a>变址操作数的比例因子</h3><p>使用变址操作数时，在计算机偏移地址时必须考虑每个数组元素的大小。Intel CPU 的设计者们想让编译器编写者在处理数组操作时更加轻松，因此他们提供了一种使用比例因子（scale factor）计算偏移地址的寻址方式。比例因子通常是数组每个元素的大小。<br>例如：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201142943-3c7a6cd2-5fc8-450c-b84c-853acfe5ce64.png"
+                      alt="2"
+                ></p>
+<h2 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h2><p>包含其他变量地址的变量称为指针变量（pointer variable）或指针（pointer），操纵数组和数据结构的指针是非常有用，使用指针进行动态内存分配成为可能。基于 Intel 的程序使用两种基本类型的指针：NEAR 和 FAR，它们的尺寸受当前处理器模式的影响，如下表所示：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201145019-35259452-e0c7-4e48-bb35-19ca99fbb033.png"
+                      alt="3"
+                ></p>
+<h3 id="TYPEDEF-操作符"><a href="#TYPEDEF-操作符" class="headerlink" title="TYPEDEF 操作符"></a>TYPEDEF 操作符</h3><p>TYPEDEF 操作符允许创建用户自定义的类型，在定义变量时，用户自定义类型与内建类型完全相同。TYPEDEF 非常适合创建指针变量。<br>例如：创建一个指向字节的指针 PBYTE。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PBYTE TYPEDEF PTR BYTE</span><br></pre></td></tr></table></figure>
+
+<p>该定义通常写在数据段前，之后就可以使用 PBYTE 来定义变量。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.data</span><br><span class="line">arrayB BYTE 10h,20h,30h,40h</span><br><span class="line">ptr1 PBYTE ?        ;未初始化</span><br><span class="line">ptr2 PBYTE arrayB   ;指向数组</span><br></pre></td></tr></table></figure>
+
+<p>案例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：pointers.asm</span><br><span class="line">;功能：使用 TYPEDEF 创建三种指针类型（PBYTE，PWORD和PDWORD）</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2022-11-11</span><br><span class="line">;----------------------------</span><br><span class="line">TITLE Pointers</span><br><span class="line"></span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">;创建用户自定义类型</span><br><span class="line">PBYTE TYPEDEF PTR BYTE      ;字节指针</span><br><span class="line">PWORD TYPEDEF PTR WORD      ;字指针</span><br><span class="line">PDWORD TYPEDEF PTR DWORD    ;双字指针</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">arrayB BYTE 10h,20h,30h</span><br><span class="line">arrayW WORD 1,2,3</span><br><span class="line">arrayD DWORD 4,5,6</span><br><span class="line"></span><br><span class="line">;创建指针变量</span><br><span class="line">ptr1 PBYTE  arrayB</span><br><span class="line">ptr2 PWORD  arrayW</span><br><span class="line">ptr3 PDWORD arrayD</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">;使用指针变量访问数据</span><br><span class="line">    MOV esi,ptr1</span><br><span class="line">    MOV al,[esi]</span><br><span class="line">    MOV esi,ptr2</span><br><span class="line">    MOV ax,[esi]</span><br><span class="line">    MOV esi,ptr3</span><br><span class="line">    MOV eax,[esi]</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="JMP和LOOP指令"><a href="#JMP和LOOP指令" class="headerlink" title="JMP和LOOP指令"></a>JMP和LOOP指令</h2><h3 id="整数数组求和"><a href="#整数数组求和" class="headerlink" title="整数数组求和"></a>整数数组求和</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：SumArray.asm</span><br><span class="line">;功能：整数数组求和</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2022-11-11</span><br><span class="line">;----------------------------</span><br><span class="line">TITLE Summing an Array</span><br><span class="line"></span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">intarray WORD 100h,200h,300h,400h</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    XOR esi,esi</span><br><span class="line">    XOR eax,eax</span><br><span class="line">    MOV ecx,4</span><br><span class="line">SumArray1:</span><br><span class="line">    ADD ax,intarray[TYPE intarray*esi]</span><br><span class="line">    ADC ax,0</span><br><span class="line">    INC esi</span><br><span class="line">    loop SumArray1</span><br><span class="line">    ;</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h3 id="复制字符串"><a href="#复制字符串" class="headerlink" title="复制字符串"></a>复制字符串</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：CopyStr.asm</span><br><span class="line">;功能：复制字符串</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2022-11-11</span><br><span class="line">;----------------------------</span><br><span class="line">TITLE Copying a String</span><br><span class="line"></span><br><span class="line">.386</span><br><span class="line">.model flat,stdcall</span><br><span class="line">option casemap:none</span><br><span class="line"></span><br><span class="line">include    kernel32.inc</span><br><span class="line">includelib kernel32.lib</span><br><span class="line">include     masm32.inc</span><br><span class="line">includelib masm32.lib</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">source BYTE &quot;This is the source string&quot;,0</span><br><span class="line">target BYTE SIZEOF source DUP(0),0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    XOR esi,esi</span><br><span class="line">    XOR edi,edi</span><br><span class="line">    MOV ecx,SIZEOF source</span><br><span class="line">    ;</span><br><span class="line">CopyStr1:</span><br><span class="line">    MOV al,source[esi]</span><br><span class="line">    XCHG al,target[edi]</span><br><span class="line">    inc edi</span><br><span class="line">    inc esi</span><br><span class="line">    LOOP CopyStr1</span><br><span class="line">    ;</span><br><span class="line">    INVOKE StdOut,offset target</span><br><span class="line">    INVOKE ExitProcess,0</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h1 id="编程练习"><a href="#编程练习" class="headerlink" title="编程练习"></a>编程练习</h1><ol>
+<li><p>写一个使用加法和减法指令来设置和清除进位标志的程序，在每条指令后插入 call DumpRegs 语句亿显示寄存器和标志的值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：lx-1.asm</span><br><span class="line">;功能：写一个使用加法和减法指令来设置和清除进位标志的程序，在每条指令后插入 call DumpRegs 语句亿显示寄存器和标志的值。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2022-11-11</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE  Irvine32.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    ;CF 置1</span><br><span class="line">    MOV ax,0ffffh</span><br><span class="line">    ADD ax,1</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    ;CF 置0</span><br><span class="line">    MOV ax,0</span><br><span class="line">    ADD AX,1</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>写一个小程序，说明 INC 和 DEC 指令不影响进位标志。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：lx4-2.asm</span><br><span class="line">;功能：写一个小程序，说明 INC 和 DEC 指令不影响进位标志。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2022-11-11</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">num1 db 0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    XOR esi,esi</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    INC esi</span><br><span class="line">    INC num1</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    DEC esi</span><br><span class="line">    DEC num1</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    MOV ax,0fffh</span><br><span class="line">    INC ax</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    DEC ax</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>INC和DEC指令执行的结果影响标志 ZF、SF、OF、PF 和 AF，但不影响 CF。</p>
+</blockquote>
+</li>
+<li><p>写一个使用加法和减法指令来设置和清除零标志和符号标志的程序，在每条加法和减法指令后插入 call DumpRegs语句，以显示寄存器和标志。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：lx4-3.asm</span><br><span class="line">;功能：写一个使用加法和减法指令来设置和清除零标志和符号标志的程序</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2022-11-12</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    MOV ax,10</span><br><span class="line">    ;ZF:零标志位。相关指令执行后结果为零那么ZF=1,结果非零则ZF=0 </span><br><span class="line">    ADD ax,5</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    SUB ax,15</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    ;SF:符号标志位。相关指令执行后结果为负那么SF=1,结果非负数则SF=0</span><br><span class="line">    MOV ax,1</span><br><span class="line">    SUB ax,2</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    ADD ax,3</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>写一个使用加法和减法指令设置和清除溢出标志的程序，在每条加法和减法指令后插入 call DumpRegs 语句，以显示寄存器和标志。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：lx4-4.asm</span><br><span class="line">;功能：写一个使用加法和减法指令设置和清除溢出标志的程序</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2022-11-12</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    ;ax寄存器对半分，正数：0~32767，负数：-1~-32768</span><br><span class="line">    XOR eax,eax</span><br><span class="line">    ;32767+2=-32769，正1+正1=负，结果不符合计算规则，OF=1</span><br><span class="line">    MOV ax,32767</span><br><span class="line">    ADD ax,2</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    ;-32769+1=-32768，负1+正1=负（负1&gt;正1），结果符合计算规则，OF=0</span><br><span class="line">    ADD ax,1</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    ;-32768+3=32767，负1+正1=正（负1&gt;正1），结果不符合计算规则，OF=1</span><br><span class="line">    SUB ax,3</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>直接偏移寻址<br>在寄存器中插入如下变量：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201471642-8c82c3a3-1e26-4d1b-b310-2a91bcdf5ede.png"
+                      alt="4"
+                ></p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：lx4-5.asm</span><br><span class="line">;功能：写一个分别将数据段变量的值，分别传送到EAX,EBX,ECX 和 EDX 寄存器中。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2022-11-12</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">Uarray WORD 1000h,2000h,3000h,4000h</span><br><span class="line">Sarray SWORD -1,-2,-3,-4</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    MOVZX eax,WORD PTR Uarray</span><br><span class="line">    MOVZX ebx,WORD PTR Uarray+TYPE Uarray</span><br><span class="line">    MOVZX ecx,WORD PTR Uarray+TYPE Uarray*2</span><br><span class="line">    MOVZX edx,WORD PTR Uarray+TYPE Uarray*3</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    MOVSX eax,SWORD PTR Sarray</span><br><span class="line">    MOVSX ebx,SWORD PTR Sarray[TYPE Sarray]</span><br><span class="line">    MOVSX ecx,SWORD PTR Sarray[TYPE Uarray*2]</span><br><span class="line">    MOVSX edx,SWORD PTR Sarray[TYPE Uarray*3]</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li><p>写一个程序，使用循环来计算斐波那契数列的前 12 个值。在循环中把计算得到的数字送到 EAX 寄存器并调用 call DumpRegs 语句进行显示。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：lx4-6.asm</span><br><span class="line">;功能：写一个程序，使用循环来计算斐波那契数列的前 12 个值。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2022-11-12</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">F db 1</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    XOR eax,eax</span><br><span class="line">    XOR eax,eax</span><br><span class="line">    MOV ecx,12</span><br><span class="line">    XOR esi,esi</span><br><span class="line">    LEA ebx,F</span><br><span class="line">    MOV al,1</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">loop1:</span><br><span class="line">    INC ebx</span><br><span class="line">    MOV al,[ebx-1]</span><br><span class="line">    MOV dl,[ebx-2]</span><br><span class="line">    ADD al,dl</span><br><span class="line">    MOV [ebx],al</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    LOOP loop1</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>写一个程序实现算数表达式：EAX &#x3D; -val2 + 7 - val3 + val1<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201472071-48285597-030b-4584-92a0-250d5738045b.png"
+                      alt="5"
+                ></p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：lx4-7.asm</span><br><span class="line">;功能：写一个程序实现算数表达式：EAX = -val2 + 7 - val3 + val1</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2022-11-12</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">val1 SDWORD 8</span><br><span class="line">val2 SDWORD -15</span><br><span class="line">val3 SDWORD 20</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    MOV eax,val2    ;eax=FFFF FFF1h</span><br><span class="line">    NOT eax         ;eax=0000 000Eh</span><br><span class="line">    INC eax         ;eax=0000 000Fh</span><br><span class="line">    ADD eax,7       ;eax=0000 0016h</span><br><span class="line">    SUB eax,val3    ;eax=0000 0002h</span><br><span class="line">    ADD eax,val1    ;eax=0000 000Ah</span><br><span class="line">    CALL DumpRegs</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>写一个程序，使用 LOOP 指令和间接寻址方式把源字符串逆向复制到目的字符串变量中。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/201473010-937dd342-fd2b-4d72-8841-5a1915e3eda6.png"
+                      alt="6"
+                ><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：lx4-8.asm</span><br><span class="line">;功能：写一个程序，使用 LOOP 指令和间接寻址方式把源字符串逆向复制到目的字符串变量中。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2022-11-12</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">source BYTE &quot;This is the source string&quot;,0</span><br><span class="line">target BYTE SIZEOF source DUP(&#x27;#&#x27;)</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    MOV ecx,SIZEOF source</span><br><span class="line">    DEC ecx          ;SIZEOF 把末尾的 0 也算进去了。</span><br><span class="line">    ;DEC ecx         </span><br><span class="line">    LEA esi,source</span><br><span class="line">    ADD esi,ecx</span><br><span class="line">    DEC esi         ;字符串偏移是从0开始算的，所以再减1</span><br><span class="line">    LEA edi,target</span><br><span class="line">loop1:</span><br><span class="line">    MOV al,BYTE PTR [esi]</span><br><span class="line">    MOV BYTE PTR [edi],al</span><br><span class="line">    DEC esi</span><br><span class="line">    INC edi</span><br><span class="line">    LOOP loop1</span><br><span class="line">    MOV esi,OFFSET target</span><br><span class="line">    MOV ebx,1</span><br><span class="line">    MOV ecx,SIZEOF target-1     ;SIZEOF 把末尾的 0 也算进去了。</span><br><span class="line">    CALL DumpMem</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：80386汇编-数据传送、寻址和算数运算</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2022-11-08 23:53:00</li>
+        <li>
+            本文链接：https://9unkk.github.io/2022/11/08/80386-hui-bian-shu-ju-chu-li/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2022/11/13/80386-hui-bian-guo-cheng/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">80386汇编-过程</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2022/11/03/80386-hui-bian-hui-bian-yu-yan-ji-chu/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">80386汇编-汇编语言基础</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E3%80%81%E5%AF%BB%E5%9D%80%E5%92%8C%E7%AE%97%E6%95%B0%E8%BF%90%E7%AE%97"><span class="nav-number">1.</span> <span class="nav-text">数据传送、寻址和算数运算</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E6%95%B0%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.1.</span> <span class="nav-text">操作数类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E6%95%B0%E7%9A%84%E9%9B%B6-x2F-%E7%AC%A6%E5%8F%B7%E6%89%A9%E5%B1%95"><span class="nav-number">1.2.</span> <span class="nav-text">整数的零&#x2F;符号扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LAHF-%E5%92%8C-SAHF-%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.</span> <span class="nav-text">LAHF 和 SAHF 指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B"><span class="nav-number">1.3.1.</span> <span class="nav-text">案例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E6%B3%95%E5%92%8C%E5%87%8F%E6%B3%95%E6%8C%87%E4%BB%A4"><span class="nav-number">1.4.</span> <span class="nav-text">加法和减法指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#INC%E5%92%8CDEC%E6%8C%87%E4%BB%A4"><span class="nav-number">1.4.1.</span> <span class="nav-text">INC和DEC指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NEG%E6%8C%87%E4%BB%A4"><span class="nav-number">1.4.2.</span> <span class="nav-text">NEG指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%EF%BC%9A%EF%BC%88AddSub3%EF%BC%89"><span class="nav-number">1.4.3.</span> <span class="nav-text">案例：（AddSub3）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%92%8C%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C%E7%9B%B8%E5%85%B3%E7%9A%84%E4%BC%AA%E6%8C%87%E4%BB%A4"><span class="nav-number">1.5.</span> <span class="nav-text">和数据操作相关的伪指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%B4%E6%8E%A5%E5%AF%BB%E5%9D%80"><span class="nav-number">1.6.</span> <span class="nav-text">间接寻址</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E5%9D%80%E6%93%8D%E4%BD%9C%E6%95%B0%E7%9A%84%E6%AF%94%E4%BE%8B%E5%9B%A0%E5%AD%90"><span class="nav-number">1.6.1.</span> <span class="nav-text">变址操作数的比例因子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E9%92%88"><span class="nav-number">1.7.</span> <span class="nav-text">指针</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TYPEDEF-%E6%93%8D%E4%BD%9C%E7%AC%A6"><span class="nav-number">1.7.1.</span> <span class="nav-text">TYPEDEF 操作符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JMP%E5%92%8CLOOP%E6%8C%87%E4%BB%A4"><span class="nav-number">1.8.</span> <span class="nav-text">JMP和LOOP指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E6%95%B0%E6%95%B0%E7%BB%84%E6%B1%82%E5%92%8C"><span class="nav-number">1.8.1.</span> <span class="nav-text">整数数组求和</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">1.8.2.</span> <span class="nav-text">复制字符串</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E7%BB%83%E4%B9%A0"><span class="nav-number">2.</span> <span class="nav-text">编程练习</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

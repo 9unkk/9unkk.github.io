@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            80386汇编-条件处理 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">80386汇编-条件处理</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2022-12-02 23:53:00</span>
+        <span class="mobile">2022-12-02 23:53</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>7.3k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>30 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>允许进行决策的程序设计语言使用一种称为条件分支的技术能够在运行时改变控制流程。高级语言中的 IF 语句、SWITCH 语句或条件循环语句都有内建的特定的分支逻辑。汇编语言也提供了逻辑所需的工具。通过本章学习，我们将看到高级的条件分支语句是如何翻译成底层的实现代码的。</p>
+<blockquote>
+<p>处理硬件设备的程序必须能够操控数据中的单个数据位，应该能够测试、清除和设置单个数据位。数据加密和压缩也依赖于位操作。</p>
+</blockquote>
+<p>本章试图解答的一些问题：</p>
+<ul>
+<li>如何使用第1章中介绍的布尔运算（AND，OR和NOT）？</li>
+<li>在汇编语言中如何写一条IF语句？</li>
+<li>编译器是如何将嵌套的 IF 语句翻译成机器语言的？</li>
+<li>如何设置和清除二进制数字中的单个位？</li>
+<li>如何对数据进行简单的二进制加密？</li>
+<li>在布尔表达式中的有符号数和无符号数有什么区别？</li>
+<li>什么是无线状态机？</li>
+<li>GOTO语句真是有害的吗？</li>
+</ul>
+<h1 id="布尔和比较指令"><a href="#布尔和比较指令" class="headerlink" title="布尔和比较指令"></a>布尔和比较指令</h1><p>IA-32指令集中包含 AND，OR，XOR，NOT，TEST和BTop指令，实现了字节、字和双字的布尔运算。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205315883-c9e314dc-4392-4ee0-bf16-8e934ff99bbc.png"
+                      alt="1"
+                ></p>
+<h2 id="CPU-的状态标志"><a href="#CPU-的状态标志" class="headerlink" title="CPU 的状态标志"></a>CPU 的状态标志</h2><p>简单回顾一下布尔指令影响的标志位：</p>
+<ul>
+<li>零标志操作的结果等于 0 时置位。</li>
+<li>进位标志在指令执行产生的结果（视为无符号整数）对目的操作数而言（或太小）而无法容纳时的置位。</li>
+<li>符号标志是目的操作数最高位的一份副本，如果目的操作数为负数则设置该标志，如果是正数则清零（0是整数）</li>
+<li>溢出标志在指令产生的有符号结果，无效时置位</li>
+<li>在指令目的操作数的低字节中，为1的数据位的数量是偶数时设置奇偶标志。</li>
+</ul>
+<h2 id="AND-指令"><a href="#AND-指令" class="headerlink" title="AND 指令"></a>AND 指令</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205331090-cef31aa5-2414-4867-80c6-c2a566648193.png"
+                      alt="2"
+                ><br>应用案例：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205331826-1f58bb2a-92d2-4904-a960-0a23f476d4af.png"
+                      alt="3"
+                ></p>
+<h2 id="OR-指令"><a href="#OR-指令" class="headerlink" title="OR 指令"></a>OR 指令</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205334254-97d5dbe1-29fb-48f1-803d-599ae88260dd.png"
+                      alt="4"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205334473-3506b32e-d181-47b6-89dc-501cfc74e23c.png"
+                      alt="5"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205335183-45306381-ad9e-4f48-a11f-cb41f064be26.png"
+                      alt="6"
+                ></p>
+<h2 id="XOR-指令"><a href="#XOR-指令" class="headerlink" title="XOR 指令"></a>XOR 指令</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205335881-38b789ad-769a-43a6-8690-914d3832b41b.png"
+                      alt="7"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205425128-14c0dac4-ca0a-4543-be18-d7597ef1cd27.png"
+                      alt="8"
+                ></p>
+<h2 id="NOT-指令"><a href="#NOT-指令" class="headerlink" title="NOT 指令"></a>NOT 指令</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205425429-dc9720f3-369e-49cf-8f7c-0fa0a500dbc0.png"
+                      alt="9"
+                ></p>
+<h2 id="TEST-指令"><a href="#TEST-指令" class="headerlink" title="TEST 指令"></a>TEST 指令</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205425490-6ed2582c-206a-424d-b909-b484af3d973a.png"
+                      alt="10"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205425507-3f528ad3-a36f-4387-8ff7-a12acb72a71d.png"
+                      alt="11"
+                ></p>
+<h2 id="CMP-指令"><a href="#CMP-指令" class="headerlink" title="CMP 指令"></a>CMP 指令</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205425624-159232ca-6fc0-4e2c-9ae5-b9c7ba03d59d.png"
+                      alt="12"
+                ></p>
+<h2 id="设置而和清除标志位"><a href="#设置而和清除标志位" class="headerlink" title="设置而和清除标志位"></a>设置而和清除标志位</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205425682-9e945a25-b0db-4922-95b6-fc525e2c23ad.png"
+                      alt="13"
+                ></p>
+<h1 id="条件跳转"><a href="#条件跳转" class="headerlink" title="条件跳转"></a>条件跳转</h1><h2 id="条件结构"><a href="#条件结构" class="headerlink" title="条件结构"></a>条件结构</h2><p>执行条件语句包括两步骤：<br>1、使用CMP、AND、SUB之类的指令修改 CPU 标志。<br>2、使用体哦阿健跳转指令测试标志值并导致向新地址的分支转移。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205426332-af912dc0-1493-477f-a888-cc9b0b1d3616.png"
+                      alt="14"
+                ></p>
+<h2 id="条件跳转（Jcond）指令"><a href="#条件跳转（Jcond）指令" class="headerlink" title="条件跳转（Jcond）指令"></a>条件跳转（Jcond）指令</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205426739-670ff4b5-537a-4eb1-86d1-faa06d2dd5e1.png"
+                      alt="15"
+                ></p>
+<h2 id="条件跳转指令的类型"><a href="#条件跳转指令的类型" class="headerlink" title="条件跳转指令的类型"></a>条件跳转指令的类型</h2><p>条件跳转指令可分为以下4类：</p>
+<ul>
+<li>基于特定的标志值的</li>
+<li>根据两个操作数是否相等，或根据（E）CX的值的。</li>
+<li>基于无符号操作数的比较结果的。</li>
+<li>基于有符号操作数的比较结果的。</li>
+</ul>
+<h3 id="基于特定-CPU-标志值：零标志、进位标志、溢出标志、就标志和符号标志的跳转指令。"><a href="#基于特定-CPU-标志值：零标志、进位标志、溢出标志、就标志和符号标志的跳转指令。" class="headerlink" title="基于特定 CPU 标志值：零标志、进位标志、溢出标志、就标志和符号标志的跳转指令。"></a>基于特定 CPU 标志值：零标志、进位标志、溢出标志、就标志和符号标志的跳转指令。</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205504798-d24750e9-b63b-471a-9ae0-42786e9651e0.png"
+                      alt="16"
+                ></p>
+<h3 id="基于恒等性比较的跳转指令"><a href="#基于恒等性比较的跳转指令" class="headerlink" title="基于恒等性比较的跳转指令"></a>基于恒等性比较的跳转指令</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205504886-af175332-39db-4b85-8a85-e58b6d3c0557.png"
+                      alt="17"
+                ></p>
+<h3 id="基于无符号数比较的跳转指令"><a href="#基于无符号数比较的跳转指令" class="headerlink" title="基于无符号数比较的跳转指令"></a>基于无符号数比较的跳转指令</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205504944-0891f141-a42d-4d80-8632-3b69d92212d4.png"
+                      alt="18"
+                ></p>
+<h3 id="基于有符号数比较的跳转指令"><a href="#基于有符号数比较的跳转指令" class="headerlink" title="基于有符号数比较的跳转指令"></a>基于有符号数比较的跳转指令</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205504992-eab880f2-9664-46a7-94ad-92279823b356.png"
+                      alt="19"
+                ></p>
+<h3 id="条件跳转指令范围"><a href="#条件跳转指令范围" class="headerlink" title="条件跳转指令范围"></a>条件跳转指令范围</h3><p>在 16 位实模式下，条件跳转使用单个有符号字节（相对偏移地址）定位跳转的目标地址，目标地址被限制在 -128~+127 个字节的范围内。</p>
+<p>如下图所示，JZ指令的硬编码是 74 03，相对偏移是 03。紧跟 JZ 之后的指令的地址是 0002，因此 CPU 把 0002 和偏移 03 相加，得到偏移 0005<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205639930-66a97fb3-c340-4847-a9ee-3249d7bce5ea.png"
+                      alt="20"
+                ></p>
+<p>下面的例子演示了向后跳转（负数偏移），跳转指令之后指令的偏移地址是 0005，因此 0005 要和 0FBh（-5）相加，得到偏移地址 0000<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205641209-ed2fb39b-d5ef-47a6-afa6-f71dd713fd2f.png"
+                      alt="21"
+                ></p>
+<ul>
+<li>16位模式下的长跳转：<br>16 位模式程序中的跳转目标地址如果超出了 -128~+127 的范围就会报错：”relative jump out of range”。<br>解决方法：先用 “有条件（JCC）跳转指令” 跳转到 无条件（jmp）跳转指令，最后再由 “无条件跳转指令” 跳到 “目标地址”。逆向过程中会经常遇到这种写法。</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205645983-af9d5f7a-12c6-4cc2-9f4e-2a15d333e907.png"
+                      alt="22"
+                ></p>
+<ul>
+<li>32位模式下的跳转<br>如果跳转的目标地址距离当前地址超出了 -128~+127个字节 的范围，MASM 就会为跳转指令生成 32 为的有符号相对偏移地址。如下所示，标号 L2 距离当前的地址是 130 个字节，因此跳转指令的地址域是 32 为的：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">;--------------------------------</span><br><span class="line">;程序名：JCC.asm</span><br><span class="line">;功能：演示32位 JCC 跳转指令。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2022-12-5</span><br><span class="line">;--------------------------------</span><br><span class="line">INCLUDE  Irvine32.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    jz L1</span><br><span class="line">    jz L2</span><br><span class="line">    nop</span><br><span class="line">    nop</span><br><span class="line">    nop</span><br><span class="line">L1:</span><br><span class="line">    db 127 DUP (0)</span><br><span class="line">L2:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205658204-3d62287d-ca41-4f63-8173-15884e9b9567.png"
+                      alt="23"
+                ></p>
+<blockquote>
+<p>使用 32 位偏移地址的跳转指令的操作码为两个字节长，操作码为 0F84h</p>
+</blockquote>
+<h2 id="条件跳转的应用"><a href="#条件跳转的应用" class="headerlink" title="条件跳转的应用"></a>条件跳转的应用</h2><h3 id="测试状态位"><a href="#测试状态位" class="headerlink" title="测试状态位"></a>测试状态位</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205667092-285f58b3-d958-48e0-955f-482817d3a883.png"
+                      alt="24"
+                ></p>
+<h3 id="取三个数中的最小值"><a href="#取三个数中的最小值" class="headerlink" title="取三个数中的最小值"></a>取三个数中的最小值</h3><p>下面的指令比较 V1，V2 和 V3 三个无符号变量的值，并把其中最小者送入 AX 寄存器：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205673742-e091e166-cc79-4e5b-8261-0642c7c161e6.png"
+                      alt="25"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205673895-6dedeaf9-d3e0-4858-b45c-ec993cbe6e59.png"
+                      alt="26"
+                ></p>
+<h3 id="数组查找"><a href="#数组查找" class="headerlink" title="数组查找"></a>数组查找</h3><p>ArrayScan.asm 程序查找 16 位整数数组中的第一个非零值，如果找到一个匹配项就显示该值，否则显示一条该值无法找到的信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">;-----------------------------------------------------------</span><br><span class="line">;程序名：ArrayScan.asm</span><br><span class="line">;功能：查找 16 位整数数组中的第一个非零值，如果找到一个匹配项就显示该值，否则显示一条该值无法找到的信息。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2022-12-5</span><br><span class="line">;-----------------------------------------------------------</span><br><span class="line"></span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">;intArray SWORD 0,0,0,0,1,20,35,-12,66,4,0</span><br><span class="line">intArray SWORD 0,0,0,0</span><br><span class="line">noneMsg BYTE &quot;A non-zero value was not found&quot;,0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    MOV ebx,OFFSET intArray</span><br><span class="line">    MOV ecx,LENGTHOF intArray</span><br><span class="line">L1:</span><br><span class="line">    CMP WORD PTR [ebx],0</span><br><span class="line">    JNZ found</span><br><span class="line">    ADD ebx,2</span><br><span class="line">    LOOP L1</span><br><span class="line">    jmp notFound</span><br><span class="line">found:</span><br><span class="line">    MOVSX eax,WORD PTR [ebx]</span><br><span class="line">    CALL WriteInt</span><br><span class="line">    JMP quit</span><br><span class="line">notFound:</span><br><span class="line">    MOV edx,OFFSET noneMsg</span><br><span class="line">    CALL WriteString</span><br><span class="line">quit:</span><br><span class="line">    CALL Crlf</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h3 id="字符串加密"><a href="#字符串加密" class="headerlink" title="字符串加密"></a>字符串加密</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">;-----------------------------------------------------------</span><br><span class="line">;程序名：Encrypt.asm</span><br><span class="line">;功能：使用 XOR 指令对字符串加密</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2022-12-6</span><br><span class="line">;-----------------------------------------------------------</span><br><span class="line">TITLE Encryption Program</span><br><span class="line"></span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">KEY = 239</span><br><span class="line">BUFMAX = 128</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">sPrompt BYTE &quot;Enter the plain text: &quot;,0</span><br><span class="line">sEncrypt BYTE &quot;Cipher text: &quot;,0</span><br><span class="line">sDecrypt BYTE &quot;Decrypted: &quot;,0</span><br><span class="line">buffer BYTE BUFMAX+1 DUP(0)</span><br><span class="line">bufSize DWORD ?</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    CALL InputTheString     ;输入明文</span><br><span class="line">    CALL TranslateBuffer    ;加密缓冲区</span><br><span class="line">    MOV edx,OFFSET sEncrypt ;显示加密信息</span><br><span class="line">    CALL DisplayMessage</span><br><span class="line">    CALL TranslateBuffer    ;解密缓冲区</span><br><span class="line">    MOV edx,OFFSET sDecrypt ;显示解密信息</span><br><span class="line">    CALL DisplayMessage</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line"></span><br><span class="line">;------------------------------</span><br><span class="line">InputTheString PROC</span><br><span class="line">;提示用户输入字符串</span><br><span class="line">;入口参数：无</span><br><span class="line">;出口参数：无</span><br><span class="line">;------------------------------</span><br><span class="line">    PUSHAD</span><br><span class="line">    MOV edx,OFFSET sPrompt  ;显示提示信息</span><br><span class="line">    CALL WriteString</span><br><span class="line">    MOV ecx,BUFMAX</span><br><span class="line">    MOV edx,OFFSET buffer   ;指向缓冲区</span><br><span class="line">    CALL ReadString         ;输入字符串</span><br><span class="line">    MOV bufSize,eax         ;保存字符串长度</span><br><span class="line">    CALL Crlf</span><br><span class="line">    POPAD</span><br><span class="line">    RET</span><br><span class="line">InputTheString ENDP</span><br><span class="line"></span><br><span class="line">;--------------------------------</span><br><span class="line">DisplayMessage PROC</span><br><span class="line">;显示加解密字符串</span><br><span class="line">;入口参数：EDX = 字符串首地址</span><br><span class="line">;出口参数：无</span><br><span class="line">;--------------------------------</span><br><span class="line">    PUSHAD</span><br><span class="line">    CALL WriteString</span><br><span class="line">    MOV edx,OFFSET buffer</span><br><span class="line">    CALL WriteString</span><br><span class="line">    CALL Crlf</span><br><span class="line">    CALL Crlf</span><br><span class="line">    POPAD</span><br><span class="line">    RET</span><br><span class="line">DisplayMessage ENDP</span><br><span class="line"></span><br><span class="line">;-----------------------------------</span><br><span class="line">TranslateBuffer PROC</span><br><span class="line">;通过对每个字符串进行异或来加密字符串</span><br><span class="line">;入口参数：无</span><br><span class="line">;出口参数：无</span><br><span class="line">;-----------------------------------</span><br><span class="line">    PUSHAD</span><br><span class="line">    MOV ecx,bufSize</span><br><span class="line">    MOV esi,0</span><br><span class="line">L1:</span><br><span class="line">    XOR buffer[esi],KEY</span><br><span class="line">    INC esi</span><br><span class="line">    LOOP  L1</span><br><span class="line">    POPAD</span><br><span class="line">    RET</span><br><span class="line">TranslateBuffer ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h3 id="位测试指令"><a href="#位测试指令" class="headerlink" title="位测试指令"></a>位测试指令</h3><p>BT、BTC、BTR和BTS指令统称为位测试指令，这些指令很重要，因为它们可以在单条原子指令内可执行多个步骤。位测试指令对多线程程序非常有用，对多线程程序而言，在不被其他线程中断的危险的情况下对重要标志位进行测试、清除、设置或求反是非常重要的。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205952630-949ad77e-8f32-49c3-a543-2cb9adc801ef.png"
+                      alt="27"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205954625-6ef36e86-2698-4a34-a20d-13287d24717d.png"
+                      alt="28"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205954766-408729cb-54ee-43c1-ad89-905055100e7f.png"
+                      alt="29"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205954922-efc3035d-8ce3-4a2c-b5fe-959b7bfca064.png"
+                      alt="30"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/205955021-8807f348-ba3b-42be-bb8e-c0e10886c791.png"
+                      alt="31"
+                ></p>
+<h1 id="条件循环指令"><a href="#条件循环指令" class="headerlink" title="条件循环指令"></a>条件循环指令</h1><h2 id="LOOPZ-和-LOOPE-指令"><a href="#LOOPZ-和-LOOPE-指令" class="headerlink" title="LOOPZ 和 LOOPE 指令"></a>LOOPZ 和 LOOPE 指令</h2><p>LOOPZ 指令（为零则循环）允许在零标志置位并且 ECX 中的无符号值大于 0 时循环，目标标号距 LOOPZ 后下一条指令的距离应该在 -128~+127 字节范围内，指令格式是：</p>
+<blockquote>
+<p>LOOPZ 目的地址</p>
+</blockquote>
+<p>LOOPE 指令（相等则循环）与 LOOPZ 指令是等价的，因为二者的操作码是相同的。LOOPZ 和 LOOPE 指令的执行逻辑如下：</p>
+<blockquote>
+<p>ECX &#x3D; ECX-1<br>如果 ECX &gt; 0 并且 ZF &#x3D; 1，跳转到目的地址</p>
+</blockquote>
+<p><strong>注意：</strong> 运行于实地址模式下的程序使用 CX 作为 LOOPZ 指令的默认循环器，如果想强制使用 ECX 作为循环计数器，应使用 LOOPZD 指令。只有 Loopz 比较特殊，其他条件循环指令都是用 ecx 作为计数器。</p>
+<h2 id="LOOPNZ-和-LOOPNE-指令"><a href="#LOOPNZ-和-LOOPNE-指令" class="headerlink" title="LOOPNZ 和 LOOPNE 指令"></a>LOOPNZ 和 LOOPNE 指令</h2><p>LOOPNZ 指令（不为零则循环），它在 ECX 中的无符号值大于 0 并且零标志复位的状态下进行循环，指令个格式如下：</p>
+<blockquote>
+<p>LOOPNZ 目的地址</p>
+</blockquote>
+<p>LOOPNE 指令（不相等则循环）与 LOOPNZ 指令是等价的，因为二者的机器码相同。LOOPNZ 和 LOOPNE 指令的执行逻辑如下：</p>
+<blockquote>
+<p>ECX&#x3D;ECX-1<br>如果 ECX &gt; 0 并且 ZF &#x3D; 0，跳转到目的地址</p>
+</blockquote>
+<p><strong>注意：</strong> 这里的执行逻辑，书中写错了。</p>
+<h1 id="条件结构-1"><a href="#条件结构-1" class="headerlink" title="条件结构"></a>条件结构</h1><h2 id="IF-块结构语句"><a href="#IF-块结构语句" class="headerlink" title="IF 块结构语句"></a>IF 块结构语句</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if(表达式)</span><br><span class="line">    语句序列1</span><br><span class="line">else</span><br><span class="line">    语句序列2</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/206218246-4a575430-4349-439f-8c45-90b01a5d317d.png"
+                      alt="32"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/206219308-72fdb905-c03b-4c20-8d38-296e27c2af49.png"
+                      alt="33"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/206220045-03fcbbf9-6791-4885-a28e-096ef6d001c0.png"
+                      alt="34"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/206220235-7126952f-0751-4001-9d7c-716398a92ef4.png"
+                      alt="35"
+                ></p>
+<h2 id="复合表达式"><a href="#复合表达式" class="headerlink" title="复合表达式"></a>复合表达式</h2><h3 id="逻辑-AND-运算符"><a href="#逻辑-AND-运算符" class="headerlink" title="逻辑 AND 运算符"></a>逻辑 AND 运算符</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (al&gt;bl) AND (bl&gt;cl)</span><br><span class="line">&#123;</span><br><span class="line">    x=<span class="number">1</span>    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>短路求值：下面的汇编代码是一种短路求值的直接实现，如果第一个表达式为假，则第二个表达式无需计算。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">    cmp al,bl</span><br><span class="line">    ja L1</span><br><span class="line">    jmp next</span><br><span class="line">L1:</span><br><span class="line">    cmp bl,cl</span><br><span class="line">    ja L2</span><br><span class="line">    jmp next</span><br><span class="line">L2:</span><br><span class="line">    mov x,1</span><br><span class="line">next:</span><br></pre></td></tr></table></figure>
+
+<p>使用 jbe 代替 ja 优化代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">    cmp al,bl</span><br><span class="line">    jbe next</span><br><span class="line">    cmp bl,cl</span><br><span class="line">    jbe stop</span><br><span class="line">    mov x,1</span><br><span class="line">next:</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>可以发现，把判断反过来写能优化代码。这也就是汇编与C语言的判断都是相反的原因。</p>
+</blockquote>
+<h3 id="逻辑-OR-运算符"><a href="#逻辑-OR-运算符" class="headerlink" title="逻辑 OR 运算符"></a>逻辑 OR 运算符</h3><p>当符合表达式中的多个表达式使用逻辑OR运算符连接的时候，只要任何一个表达式为真则复合表达式为真。以下伪代码为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if(al&gt;bl) OR (bl&gt;cl)</span><br><span class="line">    X = 1</span><br></pre></td></tr></table></figure>
+<p>汇编语言实现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    cmp al,bl</span><br><span class="line">    ja L1</span><br><span class="line">    cmp bl,cl</span><br><span class="line">    jbe next</span><br><span class="line">L1:</span><br><span class="line">    mov X,1</span><br><span class="line">next:</span><br></pre></td></tr></table></figure>
+
+<h2 id="WHILE-循环"><a href="#WHILE-循环" class="headerlink" title="WHILE 循环"></a>WHILE 循环</h2><p>WHILE 结构在执行一块指令前，首先测试谈条件，只要条件为真，就重复执行语句块。下面的循环是用 C++ 写的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (val1 &lt; val2)</span><br><span class="line">&#123;</span><br><span class="line">    val1++;</span><br><span class="line">    val2--;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>汇编语言实现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">    mov eax,val1</span><br><span class="line">@@while:</span><br><span class="line">    cmp eax,val2</span><br><span class="line">    jb next</span><br><span class="line">    jmp endwhile</span><br><span class="line">next:</span><br><span class="line">    inc eax</span><br><span class="line">    dec val2</span><br><span class="line">    jmp @@while</span><br><span class="line">endwhile:</span><br><span class="line">    mov val1,eax</span><br></pre></td></tr></table></figure>
+
+<p>使用 jge 代替 jb</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">    mov eax,val1</span><br><span class="line">@@while:</span><br><span class="line">    cmp eax,val2</span><br><span class="line">    jge endwhile</span><br><span class="line">next:</span><br><span class="line">    inc eax</span><br><span class="line">    dec val2</span><br><span class="line">    jmp @@while</span><br><span class="line">endwhile:</span><br><span class="line">    mov val1,eax</span><br></pre></td></tr></table></figure>
+
+<p>案例：嵌套循环中的 IF 语句<br>高级语言经常使用表达式嵌套的控制结构。下面的 C++ 例子中，IF语句被嵌套在一个 WHILE 循环中。代码的功能是计算数组中大于变量 sample 所有数组元素之和。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="built_in">array</span>[]=&#123;<span class="number">10</span>,<span class="number">60</span>,<span class="number">20</span>,<span class="number">33</span>,<span class="number">72</span>,<span class="number">89</span>,<span class="number">45</span>,<span class="number">65</span>,<span class="number">72</span>,<span class="number">18</span>&#125;;</span><br><span class="line"><span class="type">int</span> sample = <span class="number">50</span>;</span><br><span class="line"><span class="type">int</span> ArraySize  = <span class="keyword">sizeof</span> <span class="built_in">array</span> / <span class="keyword">sizeof</span> sample;</span><br><span class="line"><span class="type">int</span> index = <span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(index &lt; ArraySize)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">array</span>[index] &gt; sample)</span><br><span class="line">    &#123;</span><br><span class="line">        sum += <span class="built_in">array</span>[index];</span><br><span class="line">    &#125;</span><br><span class="line">    index++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>汇编代码：根据流程图生成汇编代码的最简单的方法就是分别为每个图形实现代码。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/210325628-10ce0403-222a-4861-8bbf-6195531eafac.png"
+                      alt="36"
+                ></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">;-----------------------------------------------------------</span><br><span class="line">;程序名：Flowchart.asm</span><br><span class="line">;功能：计算数组中大于变量 sample 所有数组元素之和。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-1-3</span><br><span class="line">;-----------------------------------------------------------</span><br><span class="line"></span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">sample = 50</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">array dd 10,60,20,33,72,89,45,65,72,18</span><br><span class="line">ArraySize dd ($-array)/TYPE array</span><br><span class="line">index dd 0</span><br><span class="line">sum dd 0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mov esi,index</span><br><span class="line">    mov eax,sum</span><br><span class="line">@@while:</span><br><span class="line">    cmp esi,ArraySize</span><br><span class="line">    jge endwhile</span><br><span class="line">    cmp array[esi*4],sample</span><br><span class="line">    jbe next</span><br><span class="line">    add eax,array[esi*4]</span><br><span class="line">next:</span><br><span class="line">    inc esi</span><br><span class="line">    jmp @@while</span><br><span class="line">endwhile:</span><br><span class="line">    mov index,esi</span><br><span class="line">    mov sum,eax</span><br><span class="line">    call Dumpregs</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="以表格驱动的分支选择"><a href="#以表格驱动的分支选择" class="headerlink" title="以表格驱动的分支选择"></a>以表格驱动的分支选择</h2><p>这个就是我们在 8086 汇编中学习过的查表法。表格驱动的分支选择是使用表格查找法来替代多路选择结构的一种方法。要使用该方法，必须创建一个包含查找值和过程偏移的表格，程序使用循环来搜索该表格，当需要大量的比较时，这种方法是最方便的。</p>
+<p>案例：在下面的例子程序中，用户键盘输入一个字符，程序使用一个循环将该字符同表中的每个项相比较，对于找到的匹配项，调用相应的子程序，打印不同的字符串。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">;-----------------------------------------------------------</span><br><span class="line">;程序名：ProcTble.asm</span><br><span class="line">;功能：定义一个存储子程序地址的表格，用户键盘输入一个字符，程序使用一个循环将该字符同表中的每个项相比较，</span><br><span class="line">;对于找到的匹配项，调用相应的子程序，打印不同的字符串。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-1-3</span><br><span class="line">;-----------------------------------------------------------</span><br><span class="line"></span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">CaseTable BYTE &#x27;A&#x27;</span><br><span class="line">          DWORD Process_A</span><br><span class="line">          BYTE &#x27;B&#x27;</span><br><span class="line">          DWORD Process_B</span><br><span class="line">          BYTE &#x27;C&#x27;</span><br><span class="line">          DWORD Process_C</span><br><span class="line">          BYTE &#x27;D&#x27;</span><br><span class="line">          DWORD Process_D</span><br><span class="line">EntrySize = TYPE CaseTable</span><br><span class="line">NumberOfEntries = ($ - CaseTable)/EntrySize</span><br><span class="line">prompt BYTE &quot;Press capotal A,B,C,or D: &quot;,0</span><br><span class="line">msgA BYTE &quot;Process_A&quot;,0</span><br><span class="line">msgB BYTE &quot;Process_B&quot;,0</span><br><span class="line">msgC BYTE &quot;Process_C&quot;,0</span><br><span class="line">msgD BYTE &quot;Process_D&quot;,0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mov edx,OFFSET prompt</span><br><span class="line">    call Writestring</span><br><span class="line">    call ReadChar</span><br><span class="line">    mov ebx,OFFSET CaseTable</span><br><span class="line">    mov ecx,NumberOfEntries</span><br><span class="line">L1:</span><br><span class="line">    cmp al,[ebx]</span><br><span class="line">    jne L2</span><br><span class="line">    call NEAR PTR [ebx+1]</span><br><span class="line">    call Writestring</span><br><span class="line">    call crlf</span><br><span class="line">    jmp L3</span><br><span class="line">L2:</span><br><span class="line">    add ebx,EntrySize</span><br><span class="line">    loop L1</span><br><span class="line">L3:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line"></span><br><span class="line">Process_A PROC</span><br><span class="line">    mov edx,OFFSET msgA</span><br><span class="line">    ret</span><br><span class="line">Process_A ENDP</span><br><span class="line"></span><br><span class="line">Process_B PROC</span><br><span class="line">    mov edx,OFFSET msgB</span><br><span class="line">    ret</span><br><span class="line">Process_B ENDP</span><br><span class="line"></span><br><span class="line">Process_C PROC</span><br><span class="line">    mov edx,OFFSET msgC</span><br><span class="line">    ret</span><br><span class="line">Process_C ENDP</span><br><span class="line"></span><br><span class="line">Process_D PROC</span><br><span class="line">    mov edx,OFFSET msgD</span><br><span class="line">    ret</span><br><span class="line">Process_D ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="应用：有限状态机"><a href="#应用：有限状态机" class="headerlink" title="应用：有限状态机"></a>应用：有限状态机</h2><p>有限状态机（FSM）是依据输入改变事物的当前状态的机器或程序。有限状态机类似于流程图，主要用于分析事物的状态切换，让程序更加简洁易懂，方便后续添加其他功能。在计算机中，有限状态机被应用于建模应用行为，硬件电路系统设置，软件工程，编译器，网络协议和计算与语言的研究。</p>
+<p>状态机中有几个术语：state(状态) 、transition(转移) 、action(动作) 、transition condition(转移条件) </p>
+<ul>
+<li>state(状态) ：将一个系统的功能进行分离，可以得到很多种状态，当然这些状态是有限的。例如：门禁闸机可以划分为开启状态、关闭状态；电扇可以划分为开、关、一档、二档、三档等状态。</li>
+<li>transition(转移) ：一个状态接收一个输入执行了某些动作到达了另外一个状态的过程。transition(转移)就是在定义状态机的转移流程。</li>
+<li>transition condition(转移条件) ：也叫做Event(事件)，在某一状态下，只有达到了transition condition(转移条件)，才会按照状态机的转移流程转移到下一状态，并执行相应的动作。</li>
+<li>action(动作)：在状态机的运转过程中会有很多种动作。如：进入动作(entry action)[在进入状态时进行]、退出动作(exit action)[在退出状态时进行]、转移动作[在进行特定转移时进行]。</li>
+</ul>
+<p>例1：</p>
+<p>如下图，就定义了一个只有opened 和closed两种状态的状态机。当系统处于opened状态，在收到输入“关闭事件”，达到了状态机转移条件，系统就转移到了closed状态，并执行相应的动作，此例有一个进入动作(entry action)，进入closed状态，会执行close door动作。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic1.zhimg.com/80/v2-b2bace7548bf970ac0b8f06ec788d2b4_720w.webp?source=1940ef5c"
+                     
+                ></p>
+<p>例2：</p>
+<p>如下图是玩家用 “上方向键”和”下方向键” 控制游戏角色的状态机。其中分别由 “站立”、”下蹲”、”跳跃”、”下斩”四种状态。玩家可以输入相应的方向键控制游戏角色的动作。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/80/v2-eab479ab46086f4e3045face92d982bd_720w.webp"
+                     
+                ></p>
+<h3 id="输入字符串的验证"><a href="#输入字符串的验证" class="headerlink" title="输入字符串的验证"></a>输入字符串的验证</h3><p>读取输入流的程序必须执行一定的错误检查步骤以验证输入。例如，程序设计语言的编译器可使用有限状态机扫描源程序，并把单词和符号转换成关键字、算数运算符和标识符等记号。</p>
+<p>使用有限状态机检查输入字符串的有效性时，通常逐个读取字符。有限状态机使用下面的方法检测非法输入，如果出现下面任意一种情况，就可以认为是检测到了非法输入：</p>
+<ul>
+<li>下一个输入字符与从当前状态出发的任何一种转换都不能匹配。</li>
+<li>输入已经结束，而当前状态不是终结状态。</li>
+</ul>
+<p>字符串的例子：依据下面两条规则检查输入字符串的有效性：</p>
+<ul>
+<li>字符串必须以字母 x 开始，以字母 z 结束。</li>
+<li>在第一个和最后一个字符之间，可以有 0 个或多个字符，但字符必须在范围 {‘a’…’y’}之内。</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/211713137-ba6cc88c-a54c-4d59-94a4-249d2c85d57d.png"
+                      alt="37"
+                ></p>
+<h3 id="有符号整数验证"><a href="#有符号整数验证" class="headerlink" title="有符号整数验证"></a>有符号整数验证</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/211718930-0adc9d89-2a02-41ca-bcca-549149ae9897.png"
+                      alt="38"
+                ></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">;-----------------------------------------------------------</span><br><span class="line">;程序名：Finite.asm</span><br><span class="line">;功能：分析有符号整数的有限状态机。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-1-11</span><br><span class="line">;-----------------------------------------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">ENTER_KEY = 13</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">InvalidInputMsg BYTE &quot;Invalid input&quot;,13,10,0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    call Clrscr</span><br><span class="line"></span><br><span class="line">StateA:</span><br><span class="line">    call Getnext    ;读取下一个字符传送到AL</span><br><span class="line">    cmp al,&#x27;+&#x27;      ;判断第一个字符是否为 &#x27;+&#x27;号 或 &#x27;-&#x27;号</span><br><span class="line">    je StateB       ;如果是，转换到状态B</span><br><span class="line">    cmp al,&#x27;-&#x27;</span><br><span class="line">    je StateB</span><br><span class="line">    call IsDigit    ;如果 AL 中包含一个数字，ZF = 1</span><br><span class="line">    jz StateC       ;转换到状态C</span><br><span class="line">    call crlf</span><br><span class="line">    call DisplayErrorMsg    ;如果是无效输出，打印状态报错信息</span><br><span class="line">    jmp Quit</span><br><span class="line">StateB: </span><br><span class="line">    call Getnext    ;读下一个字符传入 AL</span><br><span class="line">    call IsDigit    ;如果 AL 中包含一个数字，则 ZF=1</span><br><span class="line">    jz StateC</span><br><span class="line">    call crlf</span><br><span class="line">    call DisplayErrorMsg</span><br><span class="line">    jmp Quit</span><br><span class="line">StateC:</span><br><span class="line">    call Getnext        ;继续接收下一个字符，如果是数字则 ZF=1</span><br><span class="line">    call IsDigit        ;发现是无效输入</span><br><span class="line">    jz StateC</span><br><span class="line">    cmp al,ENTER_KEY    ;判断是否为回车键，不是就报错，是就正常退出</span><br><span class="line">    je Quit</span><br><span class="line">    call crlf</span><br><span class="line">    call DisplayErrorMsg</span><br><span class="line">    jmp Quit</span><br><span class="line">Quit:</span><br><span class="line">    call crlf</span><br><span class="line">    exit</span><br><span class="line">;------------------------------------------</span><br><span class="line">Getnext PROC</span><br><span class="line">;</span><br><span class="line">; Reads a character from standard input.</span><br><span class="line">; Receives: nothing</span><br><span class="line">; Returns:AL contains the character</span><br><span class="line">;------------------------------------------</span><br><span class="line">    call ReadChar</span><br><span class="line">    call WriteChar</span><br><span class="line">    ret</span><br><span class="line">Getnext ENDP</span><br><span class="line"></span><br><span class="line">;------------------------</span><br><span class="line">DisplayErrorMsg PROC</span><br><span class="line">; Display an error message indicating that</span><br><span class="line">; the input stream contatins illegal input</span><br><span class="line">; Receives: nothing.</span><br><span class="line">; Returns:nothing</span><br><span class="line">;------------------------</span><br><span class="line">    push edx</span><br><span class="line">    mov edx,OFFSET InvalidInputMsg</span><br><span class="line">    call Writestring</span><br><span class="line">    pop edx</span><br><span class="line">    ret</span><br><span class="line">DisplayErrorMsg ENDP</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="决策伪指令"><a href="#决策伪指令" class="headerlink" title="决策伪指令"></a>决策伪指令</h2><p>MASM 的决策伪指令（.IF,.ELSE,.ELSEIF,.ENDIF）使得在编写涉及到多路分支逻辑的代码更加容易。编译器会为这些伪指令自动生成 CMP 和 条件跳转指令，其格式与高级语言类似：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.IF 条件1</span><br><span class="line">    语句块1</span><br><span class="line">.ELSEIF 条件2</span><br><span class="line">    语句块2</span><br><span class="line">.ELSE</span><br><span class="line">    语句块3</span><br><span class="line">.ENDIF</span><br></pre></td></tr></table></figure>
+<p>其中的条件是一个布尔表达式，使用的运算符与 C++&#x2F;Java 中的布尔运算相同。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/211854184-8c439dd5-f9df-4b1c-8558-8e76da597a26.png"
+                      alt="39"
+                ></p>
+<p>案例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">eax &gt; 10000h</span><br><span class="line">val1 &lt;= 100</span><br><span class="line">val2 == eax</span><br><span class="line">val3 != ebx</span><br><span class="line"></span><br><span class="line">；复合条件</span><br><span class="line">(eax &gt; 0) &amp;&amp; (eax &gt; 10000h)</span><br><span class="line">(val1 &lt;= 100) || (val2 &lt;= 100)</span><br><span class="line">(val2 != ebx) &amp;&amp; !CARRY?</span><br></pre></td></tr></table></figure>
+
+<h3 id="有符号比较和无符号比较"><a href="#有符号比较和无符号比较" class="headerlink" title="有符号比较和无符号比较"></a>有符号比较和无符号比较</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">;-----------------------------------------------------------</span><br><span class="line">;程序名：Signum.asm</span><br><span class="line">;功能：演示使用决策伪指令，探究符号比较和无符号数比较</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-1-12</span><br><span class="line">;-----------------------------------------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">val1 DWORD 5</span><br><span class="line">val2 SDWORD -1</span><br><span class="line">result DWORD ?</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">start:</span><br><span class="line">    mov eax,6</span><br><span class="line">    ;无符号数比较</span><br><span class="line">    .IF eax &gt; val1</span><br><span class="line">        mov result,1</span><br><span class="line">    .ENDIF</span><br><span class="line">    ;有符号数比较</span><br><span class="line">    .IF eax &gt; val2</span><br><span class="line">        mov result,1</span><br><span class="line">    .ENDIF</span><br><span class="line">    ;寄存器比较</span><br><span class="line">    mov ebx,val2</span><br><span class="line">    .IF eax &gt; ebx</span><br><span class="line">        mov result,1</span><br><span class="line">    .ENDIF</span><br><span class="line">END start</span><br><span class="line">    exit</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/211867046-531cef0c-8e97-448b-b27e-fe648312af04.png"
+                      alt="40"
+                ></p>
+<blockquote>
+<p>计算机时无法判断寄存器的值是有符号数还是无符号数，所以汇编器默认是使用无符号数比较指令 JBE 来实现。</p>
+</blockquote>
+<h3 id="复合表达式-1"><a href="#复合表达式-1" class="headerlink" title="复合表达式"></a>复合表达式</h3><p>许多复杂的逻辑“或”和逻辑“与”运算符，在使用 .IF 伪指令时，逻辑 “或” 使用 “||”符号：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.IF expression1 || expression2</span><br><span class="line">    statements</span><br><span class="line">.ENDIF</span><br></pre></td></tr></table></figure>
+<p>逻辑 “与” 使用 “&amp;&amp;” 符号：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.IF expression1 &amp;&amp; expression2</span><br><span class="line">    statements</span><br><span class="line">.ENDIF</span><br></pre></td></tr></table></figure>
+
+<p>例1：设置光标位置</p>
+<p>下面的 SetCursorPosition 过程对两个输入参数 DH 和 DL 进行范围检查，其中 Y（DH） 坐标必须在 0<del>24 之间，X（DL） 坐标必须在 0</del>79 之间。如果其中的任何一个值超出范围，屏幕上将显示一条错误信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">;-----------------------------------------------------------</span><br><span class="line">;程序名：SetCur.asm</span><br><span class="line">;功能：设计 SetCursorPosition 子程序,Y(DH) 坐标在 0~24 之间，X(DL) 坐标在 0~79 之间。</span><br><span class="line">;如果查出范围，就在屏幕上显示错误信息。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-1-12</span><br><span class="line">;-----------------------------------------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">BadXCoordMsg BYTE &quot;X-Coordinate out of range!&quot;,0Dh,0Ah,0</span><br><span class="line">BadYCoordMsg BYTE &quot;Y-Coordinate out of range!&quot;,0Dh,0Ah,0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mov dh,25</span><br><span class="line">    mov dl,70</span><br><span class="line">    call SetCursorPosition</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line"></span><br><span class="line">;-----------------------------------------------------</span><br><span class="line">SetCursorPosition PROC</span><br><span class="line">;功能：设置光标位置，并检查光标所在的范围</span><br><span class="line">;入口参数：DL = X坐标，DH = Y坐标</span><br><span class="line">;返回值：无</span><br><span class="line">;-----------------------------------------------------</span><br><span class="line">.IF (DL &lt; 0) || (DL &gt; 79)</span><br><span class="line">    mov edx,OFFSET BadXCoordMsg</span><br><span class="line">    call WriteString</span><br><span class="line">    jmp quit</span><br><span class="line">.ENDIF</span><br><span class="line">.IF (DH &lt; 0) || (DH &gt; 24)</span><br><span class="line">    mov edx,OFFSET BadYCoordMsg</span><br><span class="line">    call WriteString</span><br><span class="line">    jmp quit</span><br><span class="line">.ENDIF</span><br><span class="line">    call Gotoxy</span><br><span class="line">quit:</span><br><span class="line">    ret</span><br><span class="line">SetCursorPosition ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p>例2：大学课程注册</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">;-----------------------------------------------------------</span><br><span class="line">;程序名：Regist.asm</span><br><span class="line">;功能：假设某大学生想注册一门课程，而要注册这门课程需要学生的平均成绩（0~400范围内），其次需要注册这门课程的学分。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-1-15</span><br><span class="line">;-----------------------------------------------------------</span><br><span class="line"></span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">TRUE = 1</span><br><span class="line">FALSE = 0</span><br><span class="line">gradeAverage WORD 275</span><br><span class="line">credits WORD 12</span><br><span class="line">OKToRegister BYTE ?</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">start:</span><br><span class="line">    mov OKToRegister,FALSE</span><br><span class="line">    .IF gradeAverage &gt; 350</span><br><span class="line">        mov OKToRegister,TRUE</span><br><span class="line">    .ELSEIF (gradeAverage &gt; 250) &amp;&amp; (credits &lt;= 16)</span><br><span class="line">        mov OKToRegister,TRUE</span><br><span class="line">    .ELSEIF (credits &lt;= 12)</span><br><span class="line">        mov OKToRegister,TRUE</span><br><span class="line">    .ENDIF</span><br><span class="line">    exit</span><br><span class="line">END start</span><br></pre></td></tr></table></figure>
+<h3 id="REPEAT-和-WHILE-伪指令"><a href="#REPEAT-和-WHILE-伪指令" class="headerlink" title=".REPEAT 和 .WHILE 伪指令"></a>.REPEAT 和 .WHILE 伪指令</h3><p>除使用 CMP 和条件条件转指令编写循环外，还可使用 .REPEAT 和 .WHILE 伪指令也可编写循环。.REPEAT 伪指令需要配合 .UNTIL 使用。程序首先执行 .REPEAT 到 .UNTIL 之间的循环体（条件为假时执行循环，条件为真时终止循环）。</p>
+<p>格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.REPEAT</span><br><span class="line">    语句块</span><br><span class="line">.UNTIL 测试条件</span><br></pre></td></tr></table></figure>
+
+<p>.WHILE 伪指令首先测试条件（条件为真时执行循环，条件为假时终止循环），然后再执行循环体。.WHILE 伪指令以 .ENDW 作为结束</p>
+<p>格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.WHILE 测试条件</span><br><span class="line">    语句块</span><br><span class="line">.ENDW</span><br></pre></td></tr></table></figure>
+<p>例1：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">;-----------------------------------------------------------</span><br><span class="line">;程序名：While.asm</span><br><span class="line">;功能：演示 .WHILE 和 .REPEAT 伪指令</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-1-15</span><br><span class="line">;-----------------------------------------------------------</span><br><span class="line"></span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">start:</span><br><span class="line">    ;使用 .WHILE 伪指令显示 1~10 之间的值</span><br><span class="line">    mov eax,0</span><br><span class="line">    .WHILE eax &lt; 10</span><br><span class="line">        inc eax</span><br><span class="line">        call WriteDec</span><br><span class="line">        call Crlf</span><br><span class="line">    .ENDW</span><br><span class="line"></span><br><span class="line">    ;使用伪指令 .REPEAT 伪指令显示 11~20 之间的值。</span><br><span class="line">    .REPEAT</span><br><span class="line">    inc eax</span><br><span class="line">    call WriteDec</span><br><span class="line">    call Crlf</span><br><span class="line">    .UNTIL eax == 20</span><br><span class="line">    exit</span><br><span class="line">END start</span><br></pre></td></tr></table></figure>
+
+<p>例2：<br>如下伪代码编写成汇编代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">while(op1 &lt; op2)</span><br><span class="line">&#123;</span><br><span class="line">    op1++;</span><br><span class="line">    if(op2 == op3)</span><br><span class="line">        X = 2;</span><br><span class="line">    else</span><br><span class="line">        X = 3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>汇编语言实现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">;-----------------------------------------------------------</span><br><span class="line">;程序名：While2.asm</span><br><span class="line">;功能：演示 .WHILE 和 .IF 伪指令配合使用</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-1-15</span><br><span class="line">;-----------------------------------------------------------</span><br><span class="line"></span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">test1 EQU 1</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">op1 DD 0</span><br><span class="line">op2 DD 3</span><br><span class="line">op3 DD 5</span><br><span class="line">X DD 0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">start:</span><br><span class="line">    mov eax,op1</span><br><span class="line">    mov ebx,op2</span><br><span class="line">    mov ecx,op3</span><br><span class="line"></span><br><span class="line">    ;cmp比较只能是 “寄存器与寄存器”、“变量与寄存器”之间的比较。</span><br><span class="line">    ;其他的写法都是错误的。</span><br><span class="line">    .WHILE eax &lt; op2</span><br><span class="line">        inc eax</span><br><span class="line">        .IF op2 == ecx</span><br><span class="line">            mov X,2</span><br><span class="line">        .ELSE</span><br><span class="line">            mov X,3</span><br><span class="line">        .ENDIF</span><br><span class="line">    .ENDW</span><br><span class="line">    exit</span><br><span class="line">END start</span><br></pre></td></tr></table></figure>
+
+<h1 id="编程练习"><a href="#编程练习" class="headerlink" title="编程练习"></a>编程练习</h1><ol>
+<li>使用 LOOPZ 的 ArrayScan 程序<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">;-----------------------------------------------------------</span><br><span class="line">;程序名：lx6-1.asm</span><br><span class="line">;功能：使用 LOOPZ 的 ArrayScan 程序</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-1-18</span><br><span class="line">;-----------------------------------------------------------</span><br><span class="line"></span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">;intArray SWORD 0,0,0,0,1,20,35,-12,66,4,0</span><br><span class="line">intArray SWORD 0,0,0,0</span><br><span class="line">noneMsg BYTE &quot;A non-zero value was not found&quot;,0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    MOV ebx,OFFSET intArray</span><br><span class="line">    MOV ecx,LENGTHOF intArray</span><br><span class="line">    MOV esi,0</span><br><span class="line">L1:</span><br><span class="line">    CMP WORD PTR [ebx+esi],0</span><br><span class="line">    JNZ found</span><br><span class="line">    inc esi</span><br><span class="line">    inc esi</span><br><span class="line">    LOOPZ L1</span><br><span class="line">    jmp notFound</span><br><span class="line">found:</span><br><span class="line">    MOVSX eax,WORD PTR [ebx]</span><br><span class="line">    CALL WriteInt</span><br><span class="line">    JMP quit</span><br><span class="line">notFound:</span><br><span class="line">    MOV edx,OFFSET noneMsg</span><br><span class="line">    CALL WriteString</span><br><span class="line">quit:</span><br><span class="line">    CALL Crlf</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure></li>
+<li>循环的实现<br>以汇编语言实现下面的C++代码，要求使用 .IF 和 .WHILE 伪指令。假设所有变量都是 32 位有符号整数：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">int array[] = &#123;10,60,20,33,72,89,45,65,72,18&#125;;</span><br><span class="line">int sample = 50;</span><br><span class="line">int ArraySize = sizeof array / sizeof sample;</span><br><span class="line">int index = 0;</span><br><span class="line">int sum = 0;</span><br><span class="line">while(index &lt; ArraySize)</span><br><span class="line">&#123;</span><br><span class="line">    if(array[index] &lt;= sample)</span><br><span class="line">    &#123;</span><br><span class="line">        sum += array[index];</span><br><span class="line">    &#125;</span><br><span class="line">    index++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">;-----------------------------------------------------------</span><br><span class="line">;程序名：lx6-2.asm</span><br><span class="line">;功能：用汇编实现C++代码</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2022-12-5</span><br><span class="line">;-----------------------------------------------------------</span><br><span class="line"></span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">array SDWORD 10,60,20,33,72,89,45,65,72,18</span><br><span class="line">ArraySize DD ($-array)/TYPE array</span><br><span class="line">sample EQU 50</span><br><span class="line">index SDWORD 0</span><br><span class="line">sum SDWORD 0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mov esi,index</span><br><span class="line">    mov eax,sum</span><br><span class="line">    .WHILE (esi &lt; ArraySize)</span><br><span class="line">        .IF (array[esi*4] &lt;= sample)</span><br><span class="line">            add eax,array[esi*4]</span><br><span class="line">        .ENDIF</span><br><span class="line">    inc esi</span><br><span class="line">    .ENDW</span><br><span class="line">    mov index,esi</span><br><span class="line">    mov sum,eax</span><br><span class="line">    call Dumpregs</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">end main</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>测验分数的评级（1）<br>以下表作为参考，写一个程序要求用户输入一个0~100之间的测验分数，程序应当显示对应的字母等级：</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th align="center">分数范围</th>
+<th align="center">字母等级</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">90~100</td>
+<td align="center">A</td>
+</tr>
+<tr>
+<td align="center">80~89</td>
+<td align="center">B</td>
+</tr>
+<tr>
+<td align="center">70~79</td>
+<td align="center">C</td>
+</tr>
+<tr>
+<td align="center">60~69</td>
+<td align="center">D</td>
+</tr>
+<tr>
+<td align="center">0~59</td>
+<td align="center">F</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">;-----------------------------------------------------------</span><br><span class="line">;程序名：lx6-3.asm</span><br><span class="line">;功能：写一个程序要求用户输入一个0~100之间的测验分数，程序应当显示对应的字母等级</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-1-20</span><br><span class="line">;-----------------------------------------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">msg db &#x27;请输入0~100之间的测验分数：&#x27;,0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mov edx,offset msg</span><br><span class="line">    call WriteString</span><br><span class="line">    call ReadInt</span><br><span class="line">    .IF(eax&lt;=59)</span><br><span class="line">        mov al,&#x27;F&#x27;</span><br><span class="line">        call WriteChar</span><br><span class="line">        jmp stop</span><br><span class="line">    .ELSEIF(eax&gt;=60 &amp;&amp; eax&lt;=69)</span><br><span class="line">        mov al,&#x27;D&#x27;</span><br><span class="line">        call WriteChar</span><br><span class="line">        jmp stop</span><br><span class="line">    .ELSEIF(eax&gt;=70 &amp;&amp; eax&lt;=79)</span><br><span class="line">        mov al,&#x27;C&#x27;</span><br><span class="line">        call WriteChar</span><br><span class="line">        jmp stop</span><br><span class="line">    .ELSEIF(eax&gt;=80 &amp;&amp; eax&lt;=89)</span><br><span class="line">        mov al,&#x27;B&#x27;</span><br><span class="line">        call WriteChar</span><br><span class="line">        jmp stop</span><br><span class="line">    .ELSEIF(eax&gt;=90 &amp;&amp; eax&lt;=100)</span><br><span class="line">        mov al,&#x27;A&#x27;</span><br><span class="line">        call WriteChar</span><br><span class="line">        jmp stop</span><br><span class="line">    .ENDIF</span><br><span class="line">stop:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>测验分数评级（2）<br>以上一道习题的解决方案作为起点，在程序中增加以下特性：</li>
+</ol>
+<ul>
+<li>程序在循环中运行以便可输入多个测验分数。</li>
+<li>累加输入测验分数的次数。</li>
+<li>对用户的输入执行范围检车：如果测验分数小于0或大于100 则显示一条错误信息。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">;-----------------------------------------------------------</span><br><span class="line">;程序名：lx6-4.asm</span><br><span class="line">;功能：写一个程序要求用户输入一个0~100之间的测验分数，程序应当显示对应的字母等级。</span><br><span class="line">;作者：9unk</span><br><span class="line">;优化：增加循环、分数判断报错功能。</span><br><span class="line">;编写时间：2023-1-30</span><br><span class="line">;-----------------------------------------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">msg db &#x27;请输入0~100之间的测验分数：&#x27;,0</span><br><span class="line">msgerr db &#x27;无效测验分数&#x27;,0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mov edx,offset msg</span><br><span class="line">    call WriteString</span><br><span class="line">    call ReadInt</span><br><span class="line">    .WHILE(eax&gt;=0 &amp;&amp; eax &lt;= 100)</span><br><span class="line">        .IF(eax&lt;=59)</span><br><span class="line">            mov al,&#x27;F&#x27;</span><br><span class="line">            call WriteChar</span><br><span class="line">            jmp stop</span><br><span class="line">        .ELSEIF(eax&gt;=60 &amp;&amp; eax&lt;=69)</span><br><span class="line">            mov al,&#x27;D&#x27;</span><br><span class="line">            call WriteChar</span><br><span class="line">            jmp stop</span><br><span class="line">        .ELSEIF(eax&gt;=70 &amp;&amp; eax&lt;=79)</span><br><span class="line">            mov al,&#x27;C&#x27;</span><br><span class="line">            call WriteChar</span><br><span class="line">            jmp stop</span><br><span class="line">        .ELSEIF(eax&gt;=80 &amp;&amp; eax&lt;=89)</span><br><span class="line">            mov al,&#x27;B&#x27;</span><br><span class="line">            call WriteChar</span><br><span class="line">            jmp stop</span><br><span class="line">        .ELSEIF(eax&gt;=90 &amp;&amp; eax&lt;=100)</span><br><span class="line">            mov al,&#x27;A&#x27;</span><br><span class="line">            call WriteChar</span><br><span class="line">            jmp stop</span><br><span class="line">        .ENDIF</span><br><span class="line">    .ENDW</span><br><span class="line">    mov edx,offset msgerr</span><br><span class="line">    call WriteString</span><br><span class="line">    call Crlf</span><br><span class="line">    jmp main</span><br><span class="line">stop:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>大学课程注册（1）</li>
+</ol>
+<ul>
+<li>对 credits 的值进行范围检查：不能小于 1 或大于 30，如果发现了无效数值则显示一条相应的错误信息。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">;-----------------------------------------------------------</span><br><span class="line">;程序名：lx6-5.asm</span><br><span class="line">;功能：假设某大学生想注册一门课程，而要注册这门课程需要学生的平均成绩（0~400范围内），其次需要注册这门课程的学分。</span><br><span class="line">;作者：9unk</span><br><span class="line">;优化：检测 credits 值，不能小于1，或大于30</span><br><span class="line">;编写时间：2023-1-30</span><br><span class="line">;-----------------------------------------------------------</span><br><span class="line"></span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">TRUE = 1</span><br><span class="line">FALSE = 0</span><br><span class="line">gradeAverage WORD 275</span><br><span class="line">credits WORD 32</span><br><span class="line">OKToRegister BYTE ?</span><br><span class="line">ErrMsg db &quot;Please enter credits between 1 and 30&quot;,0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">start:</span><br><span class="line">    mov OKToRegister,FALSE</span><br><span class="line">    movzx eax,credits</span><br><span class="line">    mov edx,OFFSET ErrMsg</span><br><span class="line">    call Check_Score</span><br><span class="line">    cmp eax,-1</span><br><span class="line">    jz stop</span><br><span class="line">    .IF gradeAverage &gt; 350</span><br><span class="line">        mov OKToRegister,TRUE</span><br><span class="line">    .ELSEIF (gradeAverage &gt; 250) &amp;&amp; (credits &lt;= 16)</span><br><span class="line">        mov OKToRegister,TRUE</span><br><span class="line">    .ELSEIF (credits &lt;= 12)</span><br><span class="line">        mov OKToRegister,TRUE</span><br><span class="line">    .ENDIF</span><br><span class="line">stop:</span><br><span class="line">    exit</span><br><span class="line"></span><br><span class="line">;-------------------------------------------</span><br><span class="line">Check_Score PROC</span><br><span class="line">;功能：检查 credits 值是否在范围内，</span><br><span class="line">;如果不在范围内，就报错并ret返回程序，如果在范围内就 ret 返回程序。</span><br><span class="line">;入口参数：eax=credits,edx=错误字符串的偏移地址</span><br><span class="line">;出口参数：错误：eax=-1，正常：eax=0</span><br><span class="line">;------------------------------------------</span><br><span class="line">.IF(eax&gt;=1)&amp;&amp;(eax&lt;=30)</span><br><span class="line">    mov eax,0</span><br><span class="line">.ELSE</span><br><span class="line">    call WriteString</span><br><span class="line">    mov eax,-1</span><br><span class="line">.ENDIF</span><br><span class="line">ret</span><br><span class="line">Check_Score ENDP</span><br><span class="line">END start</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="6">
+<li>大学课程注册表（2）<br>以前面的练习作为起点，写一个完成以下功能的完整程序：</li>
+</ol>
+<ul>
+<li>（1）从用户处输入 gradeAverage 和 credits，如果输入的这两个值中的任意一个为 0，则终止程序。</li>
+<li>（2）对 credits 和 gradeAverage 进行范围检查。credits 必须在 0~30 之间，后者必须在 0~400 之间，如果任何值超出范围则显示相应的错误信息。</li>
+<li>（3）决定该学生是否可以注册并显示一条合适的信息</li>
+<li>（4）重复步骤1 到 步骤 3 直到用户决定退出程序为止。</li>
+</ul>
+<ol start="7">
+<li><p>布尔计算器（1）<br>编写一个程序来实现简单的布尔计算器的功能，操作对象是 32 位整数。显示一个菜单允许用户从下表中选择：<br>（1）x AND y<br>（2）x OR y<br>（3）NOT x<br>（4）x XOR y<br>（5）Exit program<br>用户做出选择时，调用一个过程显示要执行操作的名字。</p>
+</li>
+<li><p>布尔计算器（2）<br>继续前面的练习，实现下面的过程：</p>
+</li>
+</ol>
+<ul>
+<li>AND_op：提示用户输入两个十六进制整数，对它们进行 AND 擦欧总并以十六进制数显示结果。</li>
+<li>OR_op：提示用户输入两个十六进制整数，对它们进行 OR 操作并以十六进制数显示结果。</li>
+<li>NOT_op：提示用户输入一个十六进制整数，对它进行 NOT 操作并以十六进制数显示结果。</li>
+<li>XOR_op：提示用户输入两个十六进制整数，对它们进行异或操作并以十六进制数显示结果。</li>
+</ul>
+<ol start="9">
+<li><p>加权概率<br>写一个程序从三种颜色中随机选择一种并在屏幕上以该颜色显示文本。使用循环显示 20 行文本，每行文本的颜色都是随机选择的。选择每一种颜色的概率如下：白色&#x3D;30%，蓝色&#x3D;10%，绿色&#x3D;60%</p>
+</li>
+<li><p>打印斐波那契数<br>写一个程序计算斐波那契数列{1,1,2,3,5,8,13,…}，在溢出标志位时终止。显示这些斐波那契数，每行一个。</p>
+</li>
+<li><p>消息加密<br>按下面的要求修改加密程序（Encrypt.asm）：允许用户输入一个人包含多个字符的密钥，对密钥和明文中的对应字符进行异或操作，以实现用户输入一个包含多个字符的密钥，对密钥和明文中的对应字符进行异或操作，以实现对消息进行加密和解密。如果明文比较长，请重复使用密钥。</p>
+</li>
+<li><p>加权概念<br>写一个过程接收 0~100 之间的一个整数 N，在写该过程被调用的时候，应该有 N&#x2F;100 的概率清除零标志。写一个程序要求用户输入一个 0~100 之间的概率值，调用前面的过程 30 次，每次调用时向该过程传递用户输入的概率值并在过程返回后显示零标志值。</p>
+</li>
+</ol>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a class="link"   target="_blank" rel="noopener" href="https://www.zhihu.com/question/31634405/answer/2581244793" >https://www.zhihu.com/question/31634405/answer/2581244793<i class="fas fa-external-link-alt"></i></a><br><a class="link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/22976065/" >https://zhuanlan.zhihu.com/p/22976065/<i class="fas fa-external-link-alt"></i></a></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：80386汇编-条件处理</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2022-12-02 23:53:00</li>
+        <li>
+            本文链接：https://9unkk.github.io/2022/12/02/80386-hui-bian-tiao-jian-chu-li/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2023/01/31/80386-hui-bian-zheng-shu-suan-shu-zhi-ling/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">80386汇编-整数算数指令</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2022/11/13/80386-hui-bian-zhi-ling-ji/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">80386汇编-指令集</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%83%E5%B0%94%E5%92%8C%E6%AF%94%E8%BE%83%E6%8C%87%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">布尔和比较指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU-%E7%9A%84%E7%8A%B6%E6%80%81%E6%A0%87%E5%BF%97"><span class="nav-number">2.1.</span> <span class="nav-text">CPU 的状态标志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AND-%E6%8C%87%E4%BB%A4"><span class="nav-number">2.2.</span> <span class="nav-text">AND 指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OR-%E6%8C%87%E4%BB%A4"><span class="nav-number">2.3.</span> <span class="nav-text">OR 指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XOR-%E6%8C%87%E4%BB%A4"><span class="nav-number">2.4.</span> <span class="nav-text">XOR 指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NOT-%E6%8C%87%E4%BB%A4"><span class="nav-number">2.5.</span> <span class="nav-text">NOT 指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TEST-%E6%8C%87%E4%BB%A4"><span class="nav-number">2.6.</span> <span class="nav-text">TEST 指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMP-%E6%8C%87%E4%BB%A4"><span class="nav-number">2.7.</span> <span class="nav-text">CMP 指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E8%80%8C%E5%92%8C%E6%B8%85%E9%99%A4%E6%A0%87%E5%BF%97%E4%BD%8D"><span class="nav-number">2.8.</span> <span class="nav-text">设置而和清除标志位</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E8%B7%B3%E8%BD%AC"><span class="nav-number">3.</span> <span class="nav-text">条件跳转</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="nav-number">3.1.</span> <span class="nav-text">条件结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E8%B7%B3%E8%BD%AC%EF%BC%88Jcond%EF%BC%89%E6%8C%87%E4%BB%A4"><span class="nav-number">3.2.</span> <span class="nav-text">条件跳转（Jcond）指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E8%B7%B3%E8%BD%AC%E6%8C%87%E4%BB%A4%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.3.</span> <span class="nav-text">条件跳转指令的类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%89%B9%E5%AE%9A-CPU-%E6%A0%87%E5%BF%97%E5%80%BC%EF%BC%9A%E9%9B%B6%E6%A0%87%E5%BF%97%E3%80%81%E8%BF%9B%E4%BD%8D%E6%A0%87%E5%BF%97%E3%80%81%E6%BA%A2%E5%87%BA%E6%A0%87%E5%BF%97%E3%80%81%E5%B0%B1%E6%A0%87%E5%BF%97%E5%92%8C%E7%AC%A6%E5%8F%B7%E6%A0%87%E5%BF%97%E7%9A%84%E8%B7%B3%E8%BD%AC%E6%8C%87%E4%BB%A4%E3%80%82"><span class="nav-number">3.3.1.</span> <span class="nav-text">基于特定 CPU 标志值：零标志、进位标志、溢出标志、就标志和符号标志的跳转指令。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%81%92%E7%AD%89%E6%80%A7%E6%AF%94%E8%BE%83%E7%9A%84%E8%B7%B3%E8%BD%AC%E6%8C%87%E4%BB%A4"><span class="nav-number">3.3.2.</span> <span class="nav-text">基于恒等性比较的跳转指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E6%AF%94%E8%BE%83%E7%9A%84%E8%B7%B3%E8%BD%AC%E6%8C%87%E4%BB%A4"><span class="nav-number">3.3.3.</span> <span class="nav-text">基于无符号数比较的跳转指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B0%E6%AF%94%E8%BE%83%E7%9A%84%E8%B7%B3%E8%BD%AC%E6%8C%87%E4%BB%A4"><span class="nav-number">3.3.4.</span> <span class="nav-text">基于有符号数比较的跳转指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E8%B7%B3%E8%BD%AC%E6%8C%87%E4%BB%A4%E8%8C%83%E5%9B%B4"><span class="nav-number">3.3.5.</span> <span class="nav-text">条件跳转指令范围</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E8%B7%B3%E8%BD%AC%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">3.4.</span> <span class="nav-text">条件跳转的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%8A%B6%E6%80%81%E4%BD%8D"><span class="nav-number">3.4.1.</span> <span class="nav-text">测试状态位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E4%B8%89%E4%B8%AA%E6%95%B0%E4%B8%AD%E7%9A%84%E6%9C%80%E5%B0%8F%E5%80%BC"><span class="nav-number">3.4.2.</span> <span class="nav-text">取三个数中的最小值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E6%9F%A5%E6%89%BE"><span class="nav-number">3.4.3.</span> <span class="nav-text">数组查找</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8A%A0%E5%AF%86"><span class="nav-number">3.4.4.</span> <span class="nav-text">字符串加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%8D%E6%B5%8B%E8%AF%95%E6%8C%87%E4%BB%A4"><span class="nav-number">3.4.5.</span> <span class="nav-text">位测试指令</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E5%BE%AA%E7%8E%AF%E6%8C%87%E4%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">条件循环指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#LOOPZ-%E5%92%8C-LOOPE-%E6%8C%87%E4%BB%A4"><span class="nav-number">4.1.</span> <span class="nav-text">LOOPZ 和 LOOPE 指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LOOPNZ-%E5%92%8C-LOOPNE-%E6%8C%87%E4%BB%A4"><span class="nav-number">4.2.</span> <span class="nav-text">LOOPNZ 和 LOOPNE 指令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E7%BB%93%E6%9E%84-1"><span class="nav-number">5.</span> <span class="nav-text">条件结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IF-%E5%9D%97%E7%BB%93%E6%9E%84%E8%AF%AD%E5%8F%A5"><span class="nav-number">5.1.</span> <span class="nav-text">IF 块结构语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%8D%E5%90%88%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">5.2.</span> <span class="nav-text">复合表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91-AND-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">5.2.1.</span> <span class="nav-text">逻辑 AND 运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91-OR-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">5.2.2.</span> <span class="nav-text">逻辑 OR 运算符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WHILE-%E5%BE%AA%E7%8E%AF"><span class="nav-number">5.3.</span> <span class="nav-text">WHILE 循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A5%E8%A1%A8%E6%A0%BC%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%88%86%E6%94%AF%E9%80%89%E6%8B%A9"><span class="nav-number">5.4.</span> <span class="nav-text">以表格驱动的分支选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA"><span class="nav-number">5.5.</span> <span class="nav-text">应用：有限状态机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%AA%8C%E8%AF%81"><span class="nav-number">5.5.1.</span> <span class="nav-text">输入字符串的验证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E6%95%B0%E9%AA%8C%E8%AF%81"><span class="nav-number">5.5.2.</span> <span class="nav-text">有符号整数验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%B3%E7%AD%96%E4%BC%AA%E6%8C%87%E4%BB%A4"><span class="nav-number">5.6.</span> <span class="nav-text">决策伪指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%AF%94%E8%BE%83%E5%92%8C%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%AF%94%E8%BE%83"><span class="nav-number">5.6.1.</span> <span class="nav-text">有符号比较和无符号比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E5%90%88%E8%A1%A8%E8%BE%BE%E5%BC%8F-1"><span class="nav-number">5.6.2.</span> <span class="nav-text">复合表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#REPEAT-%E5%92%8C-WHILE-%E4%BC%AA%E6%8C%87%E4%BB%A4"><span class="nav-number">5.6.3.</span> <span class="nav-text">.REPEAT 和 .WHILE 伪指令</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E7%BB%83%E4%B9%A0"><span class="nav-number">6.</span> <span class="nav-text">编程练习</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>
