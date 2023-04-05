@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            80386汇编-结构和宏 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="page-template-container">
+        
+        
+        <div class="page-template-content markdown-body">
+            
+                <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>结构（srtucture）是逻辑上相互联的一组变量的模板，结构中的单个变量称为域（field），程序的语句可以把结构作为一个实体进行访问，也可以对结构中的单个域进行访问。结构通常包含不同类型的域。联合（union）同样是把多个标识符组合在一起，不过这些标识符公用同一块内存区域。<br>结构为归集数据以及在过程间进行传递提供方便。假设一个过程的输入参数是由 20 个与磁盘驱动器相关的数据构成的，调用过程时要想正确地传递所需参数是非常困难的，相反，应该把所有的相关数据存放在一个数据结构中，然后向过程传递结构的地址，这只需使用极少的堆栈空间（一个地址），被调用过程同时还能够修改结构的内容。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229265887-517220ba-22d9-4dc0-a451-ae294347b6f0.png"
+                      alt="1"
+                ></p>
+<h2 id="定义结构"><a href="#定义结构" class="headerlink" title="定义结构"></a>定义结构</h2><p>结构使用 STRUCT 和ENDS 伪指令定义。在结构内部，使用与定义普通变量一样的格式来定义域。基本格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">名字 STRUCT</span><br><span class="line">    域的声明</span><br><span class="line">名字 ENDS</span><br></pre></td></tr></table></figure>
+
+<h3 id="域的初始化"><a href="#域的初始化" class="headerlink" title="域的初始化"></a>域的初始化</h3><p>如果结构的域有初始值，在定义结构变量时这些初始值就成了结构变量域的默认值。结构中可以使用多种类型的初始值：</p>
+<ul>
+<li>未定义：使用 “?” 表示域的额内容未定义</li>
+<li>字符串：用引号包围的字符串</li>
+<li>整数：整数常量或整数表达式</li>
+<li>数组：当域是一个数组时，可使用DUP操作符初始化数组<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229266086-df02d6aa-62dc-417f-b5d1-a725989b061f.png"
+                      alt="2"
+                ></li>
+</ul>
+<h3 id="结构中域的初始化"><a href="#结构中域的初始化" class="headerlink" title="结构中域的初始化"></a>结构中域的初始化</h3><p>为取得最佳的I&#x2F;O性能，结构的成员根据其数据类型进行对齐，否则CPU在访问结构的成员时就要花费更多的时间。例如，双字成员应该对齐在双字边界上。下表列出了Microsoft C&#x2F;C++ 编译器对不同的数据类型对齐方式是的处理。在汇编语言中，ALIGN 伪指令设置下一个域或变量的地址对齐方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALIGN datatype</span><br></pre></td></tr></table></figure>
+
+<p>在下列中，myVar 对齐在双字地址边界上：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.data</span><br><span class="line">ALIGN DWORD</span><br><span class="line">myVar DWORD ?</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229266259-731fbe14-702d-4dae-b358-ef4d125cf7ed.png"
+                      alt="3"
+                ></p>
+<p>下面定义 Employee 结构：使用 ALIGN 伪指令使得成员 Years 对齐在字边界上、成员 SalaryHistory 对齐在双字边界上，各个域的大小在注释中给出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Employee STRUCT</span><br><span class="line">    Idump BYTE &quot;000000000&quot;</span><br><span class="line">    Lastname BYTE 30 DUP(0)</span><br><span class="line">    ALIGN WORD</span><br><span class="line">    Years WORD 0</span><br><span class="line">    ALIGN DWORD</span><br><span class="line">    SalaryHistory DWORD 0,0,0,0</span><br><span class="line">Employee ENDS</span><br></pre></td></tr></table></figure>
+
+<h2 id="声明结构变量"><a href="#声明结构变量" class="headerlink" title="声明结构变量"></a>声明结构变量</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229340630-060f77e0-0523-4d39-b4e8-5c718be8cdfc.png"
+                      alt="4"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229340655-e07f6b48-7de8-44fe-9b0a-4aa6f844f85f.png"
+                      alt="5"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229340711-8792d2fc-24dc-4839-9c60-f707d61ed9b5.png"
+                      alt="6"
+                ></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">COORD STRUCT</span><br><span class="line">    X WORD ?</span><br><span class="line">    Y WORD ?</span><br><span class="line">COORD ENDS</span><br><span class="line"></span><br><span class="line">Employee STRUCT</span><br><span class="line">    Idump BYTE &quot;000000000&quot;</span><br><span class="line">    Lastname BYTE 30 DUP(0)</span><br><span class="line">    ALIGN WORD</span><br><span class="line">    Years WORD 0</span><br><span class="line">    ALIGN DWORD</span><br><span class="line">    SalaryHistory DWORD 0,0,0,0</span><br><span class="line">Employee ENDS</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">point1 COORD &lt;5,10&gt;</span><br><span class="line">point2 COORD &lt;20&gt;</span><br><span class="line">point3 COORD &lt;&gt;</span><br><span class="line">worker Employee &lt;&gt;</span><br><span class="line">;初始化，域 Idump</span><br><span class="line">person1 Employee &lt;&quot;555223333&quot;&gt;</span><br><span class="line">;初始化，域 Idump，且多余的位以 20h 填充</span><br><span class="line">person2 Employee &#123;&quot;23333&quot;&#125;</span><br><span class="line">;使用逗号跳过，域 Idump，初始化 Lastname 域</span><br><span class="line">person3 Employee &lt;,&quot;dJones&quot;&gt;</span><br><span class="line">;初始化，域 SalaryHistory，且其余值用 0 填充</span><br><span class="line">person4 Employee &lt;,,,2 DUP(20000)&gt;</span><br><span class="line">;AllPoints 的每个元素的域 X 和 域 Y都被初始化成 1</span><br><span class="line">NumPoints = 3</span><br><span class="line">AllPoints COORD NumPoints DUP(&lt;1,1&gt;)</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mov esi,OFFSET person1</span><br><span class="line">    mov eax,DWORD PTR person2.Idump</span><br><span class="line">    mov esi,OFFSET person3.Lastname</span><br><span class="line">    mov esi,OFFSET person4.SalaryHistory</span><br><span class="line">    mov esi,OFFSET AllPoints</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br></pre></td></tr></table></figure>
+
+<h2 id="引用结构变量"><a href="#引用结构变量" class="headerlink" title="引用结构变量"></a>引用结构变量</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229351905-31df85b0-4604-47f3-ba96-ce3cdb122efd.png"
+                      alt="7"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229351985-ebcf297e-81d4-47ed-a5ee-38284aacb9f4.png"
+                      alt="8"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229352073-505af66d-27c8-4c6a-9cc3-f0269b41c931.png"
+                      alt="9"
+                ></p>
+<p><strong>循环遍历数组：</strong> 可以使用循环及间接寻址、变址寻址方式呢来操作结构数组。下面的程序（AllPoints.asm）为 AllPoints 数组赋坐标值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：AllPoints.asm</span><br><span class="line">;功能：演示数据结构，循环遍历数组</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-2</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">NumPoints = 3</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">ALIGN WORD</span><br><span class="line">AllPoints COORD NumPoints DUP(&lt;0,0&gt;)</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    ;mov edi,0</span><br><span class="line">    mov ecx,NumPoints</span><br><span class="line">    mov ax,1</span><br><span class="line">L1:</span><br><span class="line">    mov AllPoints.X,ax</span><br><span class="line">    ;mov (COORD PTR AllPoints[edi]).X,ax</span><br><span class="line">    mov AllPoints.Y,ax</span><br><span class="line">    ;mov (COORD PTR AllPoints[edi]).Y,ax</span><br><span class="line">    add edi,TYPE COORD</span><br><span class="line">    inc ax</span><br><span class="line">    loop L1</span><br><span class="line"></span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p><strong>结构成员对齐与否对性能的影响</strong><br>下面使用两个版本的 Employee 结构进行简单的测试，研究对齐结构对于未对齐结构的时效性影响有多大。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：StrAli.asm</span><br><span class="line">;功能：演示结构体对齐</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-2</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">EmployeeBad STRUCT</span><br><span class="line">    Idump BYTE &quot;000000000&quot;</span><br><span class="line">    Lastname BYTE 30 DUP(0)</span><br><span class="line">    Years WORD 0</span><br><span class="line">    SalaryHistory DWORD 0,0,0,0</span><br><span class="line">EmployeeBad ENDS</span><br><span class="line"></span><br><span class="line">Employee STRUCT</span><br><span class="line">    Idump BYTE &quot;000000000&quot;</span><br><span class="line">    Lastname BYTE 30 DUP(0)</span><br><span class="line">    ALIGN WORD</span><br><span class="line">    Years WORD 0</span><br><span class="line">    ALIGN DWORD</span><br><span class="line">    SalaryHistory DWORD 0,0,0,0</span><br><span class="line">Employee ENDS</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">ALIGN DWORD</span><br><span class="line">startTime DWORD ?   ;对齐 startTime</span><br><span class="line">;emp Employee &lt;&gt;    ;使用对齐</span><br><span class="line">emp EmployeeBad &lt;&gt;  ;未对齐</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    call GetMSeconds</span><br><span class="line">    mov startTime,eax</span><br><span class="line"></span><br><span class="line">    mov ecx,0FFFFFFFFh</span><br><span class="line">L1:</span><br><span class="line">    mov emp.Years,5</span><br><span class="line">    mov emp.SalaryHistory,35000</span><br><span class="line">    loop L1</span><br><span class="line"></span><br><span class="line">    call GetMSeconds</span><br><span class="line">    sub eax,startTime</span><br><span class="line">    call WriteDec</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229361732-2adab25d-1b29-4e87-b681-574d2fabc45f.png"
+                      alt="10"
+                ></p>
+<blockquote>
+<p>在我的笔记本（i7 12代的处理器）中，未对齐的结构体访问起来更花时间。</p>
+</blockquote>
+<h2 id="例子：显示系统时间"><a href="#例子：显示系统时间" class="headerlink" title="例子：显示系统时间"></a>例子：显示系统时间</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229365563-53f39200-62e9-4327-827c-39266ccb151d.png"
+                      alt="11"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229365800-f42a87b7-5c65-49a8-b0ed-75ea19010337.png"
+                      alt="12"
+                ></p>
+<p>程序清单：下面的程序（ShowTime.asm）获取当前的系统时间并在指定的屏幕位置上显示，该程序只能在保护模式下运行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：ShowTime.asm</span><br><span class="line">;功能：获取当前的系统时间并在指定的屏幕位置上显示，该程序只能在保护模式下运行。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-3</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">sysTime SYSTEMTIME &lt;&gt;</span><br><span class="line">XYPos COORD &lt;10,5&gt;</span><br><span class="line">consoleHandle DWORD ?</span><br><span class="line">colonStr BYTE &quot;:&quot;,0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">;获取 win32 控制台标准输出句柄</span><br><span class="line">    INVOKE GetStdHandle,STD_OUTPUT_HANDLE</span><br><span class="line">    mov consoleHandle,eax</span><br><span class="line">;设置光标位置并获取系统时间</span><br><span class="line">    INVOKE SetConsoleCursorPosition,consoleHandle,XYPos</span><br><span class="line">    INVOKE GetLocalTime,ADDR sysTime</span><br><span class="line"></span><br><span class="line">;显示系统时间</span><br><span class="line"></span><br><span class="line">    movzx eax,sysTime.wHour     ;小时</span><br><span class="line">    call WriteDec</span><br><span class="line">    mov edx,OFFSET colonStr     ;&quot;:&quot;</span><br><span class="line">    call WriteString</span><br><span class="line">    movzx eax,sysTime.wMinute   ;分钟</span><br><span class="line">    call WriteDec</span><br><span class="line">    call WriteString</span><br><span class="line">    movzx eax,sysTime.wSecond     ;秒</span><br><span class="line">    call WriteDec</span><br><span class="line">    call Crlf</span><br><span class="line">    call WaitMsg</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229366792-b35664fd-5867-48b9-844a-6c9fe195f0d8.png"
+                      alt="13"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229366838-96572c66-402f-455d-8340-f30e7388d779.png"
+                      alt="14"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229366872-1b827513-58c0-49c5-b277-d31672064172.png"
+                      alt="15"
+                ></p>
+<h2 id="结构的嵌套"><a href="#结构的嵌套" class="headerlink" title="结构的嵌套"></a>结构的嵌套</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229366980-be1a6fcd-2712-4c1f-8886-f86e8ed2c2b2.png"
+                      alt="16"
+                ></p>
+<h2 id="醉汉走路"><a href="#醉汉走路" class="headerlink" title="醉汉走路"></a>醉汉走路</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：Walk.asm</span><br><span class="line">;功能：醉汉走路</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-3</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">WalkMax = 50</span><br><span class="line">StartX = 25</span><br><span class="line">StartY =25</span><br><span class="line"></span><br><span class="line">DrunkardWalk STRUCT</span><br><span class="line">    path COORD WalkMax DUP (&lt;0,0&gt;)</span><br><span class="line">    pathsUsed WORD 0</span><br><span class="line">DrunkardWalk ENDS</span><br><span class="line"></span><br><span class="line">DisplayPosition PROTO,</span><br><span class="line">    currX:WORD,</span><br><span class="line">    currY:WORD</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">aWalk DrunkardWalk &lt;&gt;</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mov esi,OFFSET aWalk</span><br><span class="line">    call TakeDrunKenWalk</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line"></span><br><span class="line">;--------------------------------</span><br><span class="line">TakeDrunKenWalk PROC</span><br><span class="line">LOCAL  currX:WORD,currY:WORD</span><br><span class="line">;功能：随机生成走的路线</span><br><span class="line">;入口参数：esi = DrunkardWalk 结构体指针</span><br><span class="line">;返回值：该结构被初始化的随机值</span><br><span class="line">;--------------------------------</span><br><span class="line">    pushad</span><br><span class="line">    mov edi,esi</span><br><span class="line">    add edi,OFFSET DrunkardWalk.path</span><br><span class="line">    mov ecx,WalkMax</span><br><span class="line">    mov currX,StartX</span><br><span class="line">    mov currY,StartY</span><br><span class="line">Again:</span><br><span class="line">    mov ax,currX</span><br><span class="line">    mov (COORD PTR [edi]).X,ax</span><br><span class="line">    mov ax,currY</span><br><span class="line">    mov (COORD PTR [edi]).Y,ax</span><br><span class="line"></span><br><span class="line">    INVOKE DisplayPosition,currX,currY</span><br><span class="line"></span><br><span class="line">    mov eax,4</span><br><span class="line">    call RandomRange</span><br><span class="line">    .IF eax == 0</span><br><span class="line">        dec currY</span><br><span class="line">    .ELSEIF eax == 1</span><br><span class="line">        inc currY</span><br><span class="line">    .ELSEIF eax == 2</span><br><span class="line">        dec currX</span><br><span class="line">    .ELSE</span><br><span class="line">        inc currX</span><br><span class="line">    .ENDIF</span><br><span class="line"></span><br><span class="line">    add edi,TYPE COORD</span><br><span class="line">    loop Again</span><br><span class="line"></span><br><span class="line">Finish:</span><br><span class="line">    mov (DrunkardWalk PTR [esi]).pathsUsed,WalkMax</span><br><span class="line">    popad</span><br><span class="line">    ret</span><br><span class="line">TakeDrunKenWalk ENDP</span><br><span class="line"></span><br><span class="line">;---------------------------------------</span><br><span class="line">DisplayPosition PROC,</span><br><span class="line">    currX:WORD,</span><br><span class="line">    currY:WORD</span><br><span class="line">;功能：显示当前坐标 X 和 Y</span><br><span class="line">;---------------------------------------</span><br><span class="line">.data</span><br><span class="line">commaStr BYTE &quot;,&quot;,0</span><br><span class="line">.code</span><br><span class="line">    pushad</span><br><span class="line">    movzx eax,currX</span><br><span class="line">    call WriteDec</span><br><span class="line">    mov edx,OFFSET commaStr</span><br><span class="line">    call WriteString</span><br><span class="line">    movzx eax,currY</span><br><span class="line">    call WriteDec</span><br><span class="line">    call Crlf</span><br><span class="line">    popad</span><br><span class="line">    ret</span><br><span class="line">DisplayPosition ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="联合的声明和使用"><a href="#联合的声明和使用" class="headerlink" title="联合的声明和使用"></a>联合的声明和使用</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229405942-68e79a41-f189-4280-b6d4-d51a5b099ec1.png"
+                      alt="17"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229406192-d5238f41-7d18-4638-828e-bd5a595a7e33.png"
+                      alt="18"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229406371-c94427a7-4f2b-4e1d-82cc-58af988cec8d.png"
+                      alt="19"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229406396-ffde7330-fb53-4352-8029-ac2ad667cf97.png"
+                      alt="20"
+                ></p>
+<h1 id="宏"><a href="#宏" class="headerlink" title="宏"></a>宏</h1><p>宏过程（macro procedure）是一个命名的汇编语句块。一旦定义之后，宏过程就可以在程序中被调用任意多次。<br><strong>声明的位置：</strong> 宏可以直接在程序的头部定义，或者也可以放在单独的文本文件中，通过 INCLUDE 伪指令把宏定义复制（插入）到源程序中。宏是在汇编器的预处理阶段展开的。在预处理阶段，预处理器读取宏的定义并扫描程序中其余的代码，在调用宏的地方插入宏代码的一份副本。汇编器在试图汇编任何调用宏的而语句前，必须首先找到宏的定义。如果程序定义了宏但没有调用，那么编译后的程序内不会包含宏的代码。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229408715-382adc51-9d91-47d6-a53a-de6fb6ca7003.png"
+                      alt="21"
+                ></p>
+<h2 id="宏的定义"><a href="#宏的定义" class="headerlink" title="宏的定义"></a>宏的定义</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229423891-ae0fc66c-ff49-4ade-adf3-9864f00a3a0a.png"
+                      alt="22"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229424081-8f27fada-b356-46f5-80ff-8b45e17f0dc8.png"
+                      alt="23"
+                ></p>
+<h2 id="宏的调用"><a href="#宏的调用" class="headerlink" title="宏的调用"></a>宏的调用</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229424686-b05d5b4d-42a3-44b2-a939-9b01638fbe12.png"
+                      alt="24"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229424784-2b6bf908-ebcf-46f5-958c-b7abd391c44d.png"
+                      alt="25"
+                ></p>
+<h2 id="宏的其他特性"><a href="#宏的其他特性" class="headerlink" title="宏的其他特性"></a>宏的其他特性</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229425703-00c6c3bd-98c1-4131-bdf4-6576450f67d9.png"
+                      alt="26"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229425804-2fde086f-d256-46da-9e3a-c90796439fb7.png"
+                      alt="27"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229426070-94e87d61-99c2-4bdf-91b1-9d229e64ec67.png"
+                      alt="28"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229426214-43912d56-da24-4f83-a039-cdb856b6ad31.png"
+                      alt="29"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229426471-77957d47-194a-4fae-aaab-9be7c3710c75.png"
+                      alt="30"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229426554-b4fe1e4e-b63c-4c16-971e-a6ac5b4a7e1a.png"
+                      alt="31"
+                ></p>
+<h2 id="本书附带的宏库"><a href="#本书附带的宏库" class="headerlink" title="本书附带的宏库"></a>本书附带的宏库</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229427119-787aa18e-29b8-45fb-96b9-2d06f2f99997.png"
+                      alt="32"
+                ></p>
+<blockquote>
+<p>这些宏的具体使用，请看书中相关章节。</p>
+</blockquote>
+<h2 id="例子程序"><a href="#例子程序" class="headerlink" title="例子程序"></a>例子程序</h2><p>下面的程序（Wraps.asm）演示书中封装的宏，本书中的宏基本在 Macros.inc 文件中定义。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：Wraps.asm</span><br><span class="line">;功能：演示调用宏</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-3</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">INCLUDE Macros.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">array DWORD 1,2,3,4,5,6,7,8</span><br><span class="line">firstName BYTE 31 DUP(?)</span><br><span class="line">lastName BYTE 31 DUP(?)</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    ;mGotoxy 0,0</span><br><span class="line">    call Crlf   ;将光标定位到下一行的开始位置</span><br><span class="line">    mWrite &lt;&quot;Sample Macro Program&quot;,0Dh,0Ah&gt;</span><br><span class="line">    ;输入用户名</span><br><span class="line">    mGotoxy 0,5</span><br><span class="line">    mWrite &quot;Please enter your first name: &quot;</span><br><span class="line">    mReadString firstName</span><br><span class="line">    call Crlf</span><br><span class="line"></span><br><span class="line">    mWrite &quot;Please enter your last name: &quot;</span><br><span class="line">    mReadString lastName</span><br><span class="line">    call Crlf</span><br><span class="line"></span><br><span class="line">    ;显示用户名</span><br><span class="line">    mWrite &quot;Your name is &quot;</span><br><span class="line">    mWriteString firstName</span><br><span class="line">    mWriteSpace</span><br><span class="line">    mWriteString lastName</span><br><span class="line">    call Crlf</span><br><span class="line"></span><br><span class="line">    ;显示数组中的整数</span><br><span class="line">    mDumpMem OFFSET array,LENGTHOF array,TYPE array</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/229436848-15f6b2ef-7156-4139-b605-6759adceb2c8.png"
+                      alt="33"
+                ></p>
+
+            
+        </div>
+        <div class="page-template-comments">
+            
+        </div>
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

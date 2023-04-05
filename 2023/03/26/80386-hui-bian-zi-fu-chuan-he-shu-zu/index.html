@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            80386汇编-字符串和数组 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">80386汇编-字符串和数组</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2023-03-26 12:00:00</span>
+        <span class="mobile">2023-03-26 12:00</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>3.7k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>16 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>本章介绍处理字符串和数组技术，目标是编写高效代码。<br>本章从 Intel 指令集中优化过的基本字符串指令开始讲述，这些指令被设计用来移动、比较、装载和存储数据块的。<br>Irvine32 库中的几个字符串处理过程，其实现与标准 C 字符串库的实现非常相似。</p>
+<h1 id="基本字符串操作指令"><a href="#基本字符串操作指令" class="headerlink" title="基本字符串操作指令"></a>基本字符串操作指令</h1><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227778850-69d7c534-fb0c-4ffd-ada0-bcf74026f57b.png"
+                      alt="1"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227778904-f6c4d302-b508-4e36-921a-f50b7c3c5554.png"
+                      alt="2"
+                ></p>
+<blockquote>
+<p>具体内容参考 8086 汇编相关内容的笔记。</p>
+</blockquote>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227779209-7f343609-ff30-4ae5-99f9-6961ad9167d3.png"
+                      alt="3"
+                ></p>
+<blockquote>
+<p>在执行字符串操作指令前一定要注意方向标志位，因为字符串指令中隐含了 inc 和 dec 指令，如果操作不当会导致程序执行错误。</p>
+</blockquote>
+<h2 id="MOVSB，MOVSW-和-MOVSD"><a href="#MOVSB，MOVSW-和-MOVSD" class="headerlink" title="MOVSB，MOVSW 和 MOVSD"></a>MOVSB，MOVSW 和 MOVSD</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227781334-c5a74669-bad7-4698-b12a-3bedfe564ee8.png"
+                      alt="4"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227781370-48eff3c6-b34b-4ea1-aa7c-775695103acf.png"
+                      alt="5"
+                ></p>
+<p>例子：复制双字数组。假设要从 source 复制 20 个整数到 target 中，在复制完数据之后，ESI 和 EDI 将指向每个数组末尾的后一个位置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">source DWORD 20 DUP(0FFFFFFFFh)</span><br><span class="line">target DWORD 20 DUP(?)</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    cld</span><br><span class="line">    mov ecx,LENGTHOF source</span><br><span class="line">    mov esi,OFFSET source</span><br><span class="line">    mov edi,OFFSET target</span><br><span class="line">    rep movsd</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="CMPSB，CMPSW-和-CMPSD-指令"><a href="#CMPSB，CMPSW-和-CMPSD-指令" class="headerlink" title="CMPSB，CMPSW 和 CMPSD 指令"></a>CMPSB，CMPSW 和 CMPSD 指令</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227786166-9ddf9d7e-06ab-4ee5-903c-44b30b6641a9.png"
+                      alt="6"
+                ></p>
+<p>例子：比较双字。假设想用 CMPSD 指令比较一对双字。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">source DWORD 1234h</span><br><span class="line">target DWORD 5678h</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mov esi,OFFSET source</span><br><span class="line">    mov edi,OFFSET target</span><br><span class="line">    cmpsd</span><br><span class="line">    ja L1</span><br><span class="line">    je L2</span><br><span class="line">    jmp L3</span><br><span class="line">L1:</span><br><span class="line">    mov eax,1</span><br><span class="line">    jmp L4</span><br><span class="line">L2:</span><br><span class="line">    mov eax,0</span><br><span class="line">    jmp L4</span><br><span class="line">L3:</span><br><span class="line">    mov eax,-1</span><br><span class="line">L4:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+<p>如果向比较多个双字，就需要清除方向标志位，并把 ECX 初始化为计数器，然后在 CMPSD 指令前使用重复前缀：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227788997-9936473c-de00-4275-a546-b89b272e2dbd.png"
+                      alt="7"
+                ></p>
+<p><strong>例子：比较两个字符串</strong><br>一对字符串的比较通常是从字符串头部开始的，然后按顺序逐个字符进行比较。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：Cmpsb.asm</span><br><span class="line">;功能：使用 Cmpsb 指令比较两个字符串。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-3-27</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">.data</span><br><span class="line">source BYTE &quot;MARTIN  &quot;</span><br><span class="line">dest   BYTE &quot;MARTINEZ&quot;</span><br><span class="line">str1   BYTE &quot;Source is smaller&quot;,0dh,0ah,0</span><br><span class="line">str2   BYTE &quot;Source is not smaller&quot;,0dh,0ah,0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mov esi,OFFSET source</span><br><span class="line">    mov edi,OFFSET dest</span><br><span class="line">    mov cx,LENGTHOF Source</span><br><span class="line">    repe cmpsb</span><br><span class="line">    jb source_smaller</span><br><span class="line">    mov edx,OFFSET str2</span><br><span class="line">    jmp done</span><br><span class="line">source_smaller:</span><br><span class="line">    mov edx,OFFSET str1</span><br><span class="line">done:</span><br><span class="line">    call WriteString</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>只有在两个字符串长度相等的条件下，使用 CMPSB 指令比较两个字符串才是可行的</p>
+</blockquote>
+<h2 id="SCASB，SCASW和SCASD指令"><a href="#SCASB，SCASW和SCASD指令" class="headerlink" title="SCASB，SCASW和SCASD指令"></a>SCASB，SCASW和SCASD指令</h2><p>SCASB，SCASW 和 SCASD 指令把 AL&#x2F;AX&#x2F;EAX 中的值同由 EDI 寻址的目标内存中的字节、字或双字相比较。</p>
+<p><strong>扫描一个匹配字符：</strong> 在下例中，我们在字符换变量 alpha 中查找字母，如果找到该字母，EDI 指向匹配字符串后面的一个字符：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">alpha BYTE &quot;ABCDEFGH&quot;,0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mov edi,OFFSET alpha</span><br><span class="line">    mov al,&#x27;I&#x27;</span><br><span class="line">    mov ecx,LENGTHOF alpha</span><br><span class="line">    cld</span><br><span class="line">    repne scasb</span><br><span class="line">    jnz quit</span><br><span class="line">    dec edi</span><br><span class="line">quit:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="STOSB-STOSW-和-STOSD-指令"><a href="#STOSB-STOSW-和-STOSD-指令" class="headerlink" title="STOSB,STOSW 和 STOSD 指令"></a>STOSB,STOSW 和 STOSD 指令</h2><p>STOSB,STOSW 和 STOSD 指令把 AL&#x2F;AX&#x2F;EAX 的内容存储在 EDI 指向的内存单元中，同时 EDI 的值根据方向标志的值增加或减少。同 REP 前缀联合使用时，这组指令在需要以指定字符填充整个字符串或数组时非常有用。例如下面的代码把 String1 的每个字节初始化为 0FFH：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">count = 100</span><br><span class="line">string1 BYTE count DUP(?)</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mov al,0FFH</span><br><span class="line">    mov edi,OFFSET string1</span><br><span class="line">    mov ecx,count</span><br><span class="line">    cld</span><br><span class="line">    rep stosb</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="LODSB-LODSW-和-LODSD-指令"><a href="#LODSB-LODSW-和-LODSD-指令" class="headerlink" title="LODSB,LODSW 和 LODSD 指令"></a>LODSB,LODSW 和 LODSD 指令</h2><p>LODSB,LODSW 和 LODSD 指令从 ESI 的值根据方向标志位增加或减少。我们很少把 REP 前缀同 LODS 指令联用，因为装入到累加器的每个新值都会覆盖掉以前的值。相反，一般仅用 LODS 指令装入一个值。</p>
+<p><strong>数组乘法的例子：</strong> 下面的程序把双字数组的每一个元素都乘以一个常量，程序中使用了 LODSD 和 STOSD 指令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：Mult.asm</span><br><span class="line">;功能：把双字数组的每一个元素都乘以一个常量。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-3-27</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">.data</span><br><span class="line">array DWORD 1,2,3,4,5,6,7,8,9,10</span><br><span class="line">multiplier DWORD 10</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    cld</span><br><span class="line">    mov esi,OFFSET array</span><br><span class="line">    mov edi,esi</span><br><span class="line">    mov ecx,LENGTHOF array</span><br><span class="line">L1:</span><br><span class="line">    lodsd</span><br><span class="line">    mul multiplier</span><br><span class="line">    stosd</span><br><span class="line">    loop L1</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h1 id="精选的字符串过程"><a href="#精选的字符串过程" class="headerlink" title="精选的字符串过程"></a>精选的字符串过程</h1><p>在本节中，我们介绍 Irvine32 和 Irvine16 库中几个操作以 NULL 字符结尾的字符串简单过程。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227833088-bde89b01-b53f-42ac-9245-37377922da59.png"
+                      alt="8"
+                ></p>
+<h2 id="Str-compare-过程"><a href="#Str-compare-过程" class="headerlink" title="Str_compare 过程"></a>Str_compare 过程</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227835327-29e3a486-6920-45d5-b3b8-b081f779eb8d.png"
+                      alt="9"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227835410-cf8f10c5-488c-497f-847f-ef8cca985529.png"
+                      alt="10"
+                ></p>
+<h2 id="Str-length-过程"><a href="#Str-length-过程" class="headerlink" title="Str_length 过程"></a>Str_length 过程</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227835841-353915cf-3666-48f8-97e2-b03ad9d2287c.png"
+                      alt="11"
+                ></p>
+<h2 id="Str-copy-过程"><a href="#Str-copy-过程" class="headerlink" title="Str_copy 过程"></a>Str_copy 过程</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227836182-1855aede-802d-48b3-903d-a6bb9991f13f.png"
+                      alt="12"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227836228-36a15c77-116f-40aa-9e82-a3566a234218.png"
+                      alt="13"
+                ></p>
+<h2 id="Str-trim-过程"><a href="#Str-trim-过程" class="headerlink" title="Str_trim 过程"></a>Str_trim 过程</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227836473-6bb90024-6615-4572-a121-b7ec19986f58.png"
+                      alt="14"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227836576-547277be-2be7-4201-87de-24dd77e4d81d.png"
+                      alt="15"
+                ></p>
+<h2 id="Str-ucase-过程"><a href="#Str-ucase-过程" class="headerlink" title="Str_ucase 过程"></a>Str_ucase 过程</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227836692-1988d024-2150-40d4-9384-5ee7e95b10ae.png"
+                      alt="16"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227836742-9a8b2b05-f218-44cb-af5c-03da81d0f995.png"
+                      alt="17"
+                ></p>
+<blockquote>
+<p>上面的几个过程看看就行，这些功能在 8086 汇编中写过。如果看不懂，建议再照着上面写一遍。</p>
+</blockquote>
+<h2 id="字符串库演示程序"><a href="#字符串库演示程序" class="headerlink" title="字符串库演示程序"></a>字符串库演示程序</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：StringDemo.asm</span><br><span class="line">;功能：调用书中的库函数处理程序</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-3-27</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">.data</span><br><span class="line">string_1 BYTE &quot;abcde////&quot;,0</span><br><span class="line">string_2 BYTE &quot;ABCDE&quot;,0</span><br><span class="line">msg0     BYTE &quot;string_1 in upper case: &quot;,0</span><br><span class="line">msg1     BYTE &quot;string1 and string2 are equal&quot;,0</span><br><span class="line">msg2     BYTE &quot;string_1 is less than string_2&quot;,0</span><br><span class="line">msg3     BYTE &quot;string_1 is greater than string_2&quot;,0</span><br><span class="line">msg4     BYTE &quot;Length of string_2 is &quot;,0</span><br><span class="line">msg5     BYTE &quot;string_1 after trimming: &quot;,0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    call trim_string</span><br><span class="line">    call upper_case</span><br><span class="line">    call compare_strings</span><br><span class="line">    call print_length</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line"></span><br><span class="line">trim_string PROC</span><br><span class="line">;删除 string_1 上的字符</span><br><span class="line">    INVOKE Str_trim,ADDR string_1,&#x27;/&#x27;</span><br><span class="line">    mov edx,OFFSET msg5</span><br><span class="line">    call WriteString</span><br><span class="line">    mov edx,OFFSET string_1</span><br><span class="line">    call WriteString</span><br><span class="line">    call Crlf</span><br><span class="line"></span><br><span class="line">    ret</span><br><span class="line">trim_string ENDP</span><br><span class="line"></span><br><span class="line">upper_case PROC</span><br><span class="line">;将 String_1 转换为大写</span><br><span class="line">    mov edx,OFFSET msg0</span><br><span class="line">    call WriteString</span><br><span class="line">    INVOKE Str_ucase,ADDR string_1</span><br><span class="line">    mov edx,OFFSET String_1</span><br><span class="line">    call WriteString</span><br><span class="line">    call Crlf</span><br><span class="line"></span><br><span class="line">    ret</span><br><span class="line">upper_case ENDP</span><br><span class="line"></span><br><span class="line">compare_strings PROC</span><br><span class="line">;比较 string_1 和 string_2</span><br><span class="line">    INVOKE Str_compare,ADDR string_1,ADDR string_2</span><br><span class="line">    .IF ZERO?</span><br><span class="line">    mov edx,OFFSET msg1</span><br><span class="line">    .ELSEIF CARRY?</span><br><span class="line">    mov edx,OFFSET msg2</span><br><span class="line">    .ELSE</span><br><span class="line">    mov edx,OFFSET msg3</span><br><span class="line">    .ENDIF</span><br><span class="line"></span><br><span class="line">    call WriteString</span><br><span class="line">    call Crlf</span><br><span class="line"></span><br><span class="line">    ret</span><br><span class="line">compare_strings ENDP</span><br><span class="line"></span><br><span class="line">print_length PROC</span><br><span class="line">;显示 string_2 的长度</span><br><span class="line">    mov edx,OFFSET msg4</span><br><span class="line">    call WriteString</span><br><span class="line">    INVOKE Str_length,ADDR string_2</span><br><span class="line">    call WriteDec</span><br><span class="line">    call Crlf</span><br><span class="line"></span><br><span class="line">    ret</span><br><span class="line">print_length ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h1 id="二维数组"><a href="#二维数组" class="headerlink" title="二维数组"></a>二维数组</h1><h2 id="行和列的顺序"><a href="#行和列的顺序" class="headerlink" title="行和列的顺序"></a>行和列的顺序</h2><p>从程序员的视角来看，多维数组就一维的数组的高阶抽象。对于二维数组在内存中行列的存储，高级语言一般采用下main两种方法：行主序和列主序。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/227904560-9c4098dd-e21f-4c5b-9f16-c879e96863c3.png"
+                      alt="18"
+                ></p>
+<h2 id="基址变址操作数"><a href="#基址变址操作数" class="headerlink" title="基址变址操作数"></a>基址变址操作数</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/228117326-abca9fdf-2bfa-4b49-81c9-f6ff61464a57.png"
+                      alt="19"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/228117964-c408c802-6a1e-4456-a9e5-0a7254a66a57.png"
+                      alt="20"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/228118498-4f61bdb0-b788-4462-9745-f7ee512c061f.png"
+                      alt="21"
+                ></p>
+<blockquote>
+<p>像其他间接寻址方式一样，如果有效地址超出了程序的数据区域，就会产生通用保护异常。</p>
+</blockquote>
+<p><strong>计算一行之和</strong><br>基址变址寻址简化了许多与二维数组相关的任务，例如计算整数矩阵一行元素的和。下面的程序计算一个8位整数的矩阵中选定行的和。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：RowSum.asm</span><br><span class="line">;功能：计算选定行的和</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-3-28</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">.data</span><br><span class="line">Tables BYTE 1h ,2h ,3h,4h ,5h ,6h ,7h ,8h</span><br><span class="line">       BYTE 9h ,10h,11h,12h,13h,14h,15h,16h</span><br><span class="line">       BYTE 17h,18h,19h,20h,21h,22h,23h,24h</span><br><span class="line"></span><br><span class="line">line EQU 2</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mov eax,line-1</span><br><span class="line">    mov ebx,OFFSET Tables</span><br><span class="line">    mov ecx,8</span><br><span class="line">    call calc_row_sum</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line"></span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">calc_row_sum PROC uses ebx ecx edx esi</span><br><span class="line">;入口参数：EBX = 表的偏移，EAX = 行数，ECX = 行的大小（BYTE）</span><br><span class="line">;出口参数：EAX = 选定行的和</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">    mul ecx</span><br><span class="line">    add ebx,eax</span><br><span class="line">    mov eax,0</span><br><span class="line">    mov esi,0</span><br><span class="line">L1:</span><br><span class="line">    movzx edx,BYTE PTR[ebx+esi]</span><br><span class="line">    add eax,edx</span><br><span class="line">    inc esi</span><br><span class="line">    loop L1</span><br><span class="line"></span><br><span class="line">    ret</span><br><span class="line">calc_row_sum ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/228145617-773916c6-c527-4c58-b62a-ce71d1506ed6.png"
+                      alt="22"
+                ></p>
+<h2 id="相对基址变址操作"><a href="#相对基址变址操作" class="headerlink" title="相对基址变址操作"></a>相对基址变址操作</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/228146781-03d3bc27-aa8f-4db5-a4bd-574e6a432272.png"
+                      alt="23"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/228146869-632275a2-6e4f-410c-ad0f-fff21e470c39.png"
+                      alt="24"
+                ></p>
+<h1 id="整数数组的查找和排序"><a href="#整数数组的查找和排序" class="headerlink" title="整数数组的查找和排序"></a>整数数组的查找和排序</h1><h2 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h2><p>冒泡排序法从位置0和1开始比较每对数组的值，如果每个值的顺序不正确，就进行交换。冒泡排序适合用在小数组中，但对大数组就非常低效。冒泡排序法是一个时间复杂度O(n^2)的算法，也就是说排序时间与数组元素数目(n)之间是二次方的关系。假设排序 1000 个元素需要花费0.1s，那么当数组元素的数目增加10倍的时候，排序数组需要的时间增加到原来的 10^2 倍。下表显示了不同大小数组排序所需要的时间，其中假设 1000 个数组元素可以在 0.1s 内排序完毕。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/228159948-ff26867e-a872-40bd-8997-5546a69d84d1.png"
+                      alt="25"
+                ></p>
+<p><strong>汇编语言：</strong> 一旦理解了伪码，距离用汇编语言来实现它就快了，只需要把代码写成一个过程并加上参数和局部变量就可以了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">BubbleSort PROTO,</span><br><span class="line">    pArray:PTR DWOD,</span><br><span class="line">    Count:DWORD</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">array DWORD 1,3,6,8,4,9,0,2,5,7</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    INVOKE BubbleSort,ADDR array,LENGTHOF array</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line"></span><br><span class="line">;------------------------------------------------</span><br><span class="line">BubbleSort PROC USES eax ecx esi,</span><br><span class="line">    pArray:PTR DWOD,</span><br><span class="line">    Count:DWORD</span><br><span class="line">;32位整数数组冒泡排序</span><br><span class="line">;入口参数：数组指针，数组大小</span><br><span class="line">;出口参数：无</span><br><span class="line">;------------------------------------------------</span><br><span class="line">    mov ecx,Count</span><br><span class="line">    dec ecx</span><br><span class="line">L1:</span><br><span class="line">    push ecx</span><br><span class="line">    mov esi,pArray</span><br><span class="line">L2:</span><br><span class="line">    mov eax,[esi]</span><br><span class="line">    cmp [esi+4],eax</span><br><span class="line">    jg L3</span><br><span class="line">    xchg eax,[esi+4]</span><br><span class="line">    mov [esi],eax</span><br><span class="line">L3:</span><br><span class="line">    add esi,4</span><br><span class="line">    loop L2</span><br><span class="line">    pop ecx</span><br><span class="line">    loop L1</span><br><span class="line"></span><br><span class="line">    ret</span><br><span class="line">BubbleSort ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><p>二分查找算法在大数组中查找一个项时被证明是非常高效的，但该算法有一个重要的前提条件：数组元素必须已经按升序或降序排列。下面是该算法的6一个非正式描述，在进行查找之前，首先要求用户输入一个整数，我们称之为 searchVal：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/228276239-8adff288-54ec-4f4f-b92f-71cfee37f915.png"
+                      alt="26"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/228276595-19290e95-3dc0-48cc-92cd-2ad17f89e108.png"
+                      alt="27"
+                ></p>
+<p>下面是汇编语言实现：</p>
+<ol>
+<li><p>前期逻辑整理，并写下相应的逻辑代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line">二分查找算法的原理如下：</span><br><span class="line">        1. 设置查找区间：first = 0；last= n；当 first &gt; last，跳出循环。</span><br><span class="line">        2. 若查找区间[low, high]不存在，则查找失败；否则转步骤3</span><br><span class="line">        3. 取中间位mid = (low + high) / 2；比较 target 与 arr[mid]，有以下三种情况：</span><br><span class="line">                3.1 若 target &lt; arr[mid]，则high = mid - 1；查找在左半区间进行，转步骤2；</span><br><span class="line">                3.2 若 target &gt; arr[mid]，则low = mid + 1；查找在右半区间进行，转步骤2；</span><br><span class="line">                3.3 若 target = arr[mid]，则查找成功，返回 mid 值；</span><br><span class="line">        4. 如果找到该值，返回相应指针；如果错误，返回 -1</span><br><span class="line">局部变量定义：</span><br><span class="line">COunt（数组长度）= LENGTHOF array</span><br><span class="line">SearchVal（要查找的值）</span><br><span class="line"></span><br><span class="line">1. if(first&lt;=last)</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">    mov first,0</span><br><span class="line">    mov ebx, COunt</span><br><span class="line">    dec ebx</span><br><span class="line">    mov last,ebx</span><br><span class="line">L0:</span><br><span class="line">    mov eax,first</span><br><span class="line">    cmp eax,last</span><br><span class="line">    jg L4</span><br><span class="line"></span><br><span class="line">L4:</span><br><span class="line">    mov eax,-1</span><br><span class="line">L5:</span><br><span class="line">    ret</span><br><span class="line">;----------------------------------------------------------</span><br><span class="line"></span><br><span class="line">2. 比较判断</span><br><span class="line">;----------------------------------------------------------</span><br><span class="line">    add ebx,first</span><br><span class="line">    shr ebx,1</span><br><span class="line">    ;mov mid,ebx</span><br><span class="line">    mov eax,array[ebx*TYPE array]</span><br><span class="line">    cmp SearchVal,eax</span><br><span class="line">    jl L1</span><br><span class="line">    jg L2</span><br><span class="line">    je L3</span><br><span class="line">L1:</span><br><span class="line">    dec ebx</span><br><span class="line">    mov last,ebx</span><br><span class="line">    jmp L0</span><br><span class="line">L2:</span><br><span class="line">    inc ebx</span><br><span class="line">    mov first,ebx</span><br><span class="line">    jmp L0</span><br><span class="line">L3:</span><br><span class="line">    lea eax,array[ebx*TYPE array]</span><br><span class="line">    jmp L5</span><br><span class="line">;----------------------------------------------------------</span><br><span class="line"></span><br><span class="line">3. 整合</span><br><span class="line">;----------------------------------------------------------</span><br><span class="line">    mov first,0</span><br><span class="line">    mov ebx, COunt</span><br><span class="line">    dec ebx</span><br><span class="line">    mov last,ebx</span><br><span class="line">L0:</span><br><span class="line">    mov eax,first</span><br><span class="line">    cmp eax,last</span><br><span class="line">    jg L4</span><br><span class="line"></span><br><span class="line">    add ebx,first</span><br><span class="line">    shr ebx,1</span><br><span class="line">    ;mov mid,ebx</span><br><span class="line">    mov eax,array[ebx*TYPE array]</span><br><span class="line">    cmp SearchVal,eax</span><br><span class="line">    jl L1</span><br><span class="line">    jg L2</span><br><span class="line">    je L3</span><br><span class="line">L1:</span><br><span class="line">    dec ebx</span><br><span class="line">    mov last,ebx</span><br><span class="line">    jmp L0</span><br><span class="line">L2:</span><br><span class="line">    inc ebx</span><br><span class="line">    mov first,ebx</span><br><span class="line">    jmp L0</span><br><span class="line">L3:</span><br><span class="line">    lea eax,array[ebx*TYPE array]</span><br><span class="line">    jmp L5</span><br><span class="line"></span><br><span class="line">L4:</span><br><span class="line">    mov eax,-1</span><br><span class="line">L5:</span><br><span class="line">    ret</span><br><span class="line">;----------------------------------------------------------</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>调试验证</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">BinarySearch PROTO,</span><br><span class="line">    pArray:PTR DWORD,</span><br><span class="line">    Count:DWORD,</span><br><span class="line">    SearchVal:DWORD</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">array1 DWORD &#x27;0&#x27;,&#x27;1&#x27;,&#x27;2&#x27;,&#x27;3&#x27;,&#x27;4&#x27;,&#x27;5&#x27;,&#x27;6&#x27;,&#x27;7&#x27;,&#x27;8&#x27;,&#x27;9&#x27;</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    INVOKE BinarySearch,ADDR array1,LENGTHOF array1,&#x27;7&#x27;</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">;-----------------------------------------------</span><br><span class="line">BinarySearch PROC USES ebx edx esi edi,</span><br><span class="line">    pArray:PTR DWORD,</span><br><span class="line">    Count:DWORD,</span><br><span class="line">    SearchVal:DWORD</span><br><span class="line">LOCAL first:DWORD,</span><br><span class="line">    last:DWORD</span><br><span class="line">;功能：使用二分查找法，查找整数数组中的值。</span><br><span class="line">;入口参数：数组指针、数组大小、要查找的值</span><br><span class="line">;出口参数：如果查到该值，EAX 返回查找到该值的数组指针；反之 EAX=-1</span><br><span class="line">;-----------------------------------------------</span><br><span class="line">    mov first,0</span><br><span class="line">    mov ebx, Count</span><br><span class="line">    dec ebx</span><br><span class="line">    mov last,ebx</span><br><span class="line">L0:</span><br><span class="line">    mov eax,first</span><br><span class="line">    cmp eax,last</span><br><span class="line">    jg L4</span><br><span class="line">    add ebx,first</span><br><span class="line">    shr ebx,1</span><br><span class="line">    ;mov mid,ebx</span><br><span class="line">    mov eax,array1[ebx*TYPE array1]</span><br><span class="line">    cmp SearchVal,eax</span><br><span class="line">    jl L1</span><br><span class="line">    jg L2</span><br><span class="line">    je L3</span><br><span class="line">L1:</span><br><span class="line">    dec ebx</span><br><span class="line">    mov last,ebx</span><br><span class="line">    jmp L0</span><br><span class="line">L2:</span><br><span class="line">    inc ebx</span><br><span class="line">    mov first,ebx</span><br><span class="line">    jmp L0</span><br><span class="line">L3:</span><br><span class="line">    lea eax,array1[ebx*TYPE array1]</span><br><span class="line">    jmp L5</span><br><span class="line"></span><br><span class="line">L4:</span><br><span class="line">    mov eax,-1</span><br><span class="line">L5:</span><br><span class="line">    ret</span><br><span class="line">BinarySearch ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="测试程序"><a href="#测试程序" class="headerlink" title="测试程序"></a>测试程序</h3><p>下面写一个测试程序，再熟悉一下冒泡排序和二分查找。</p>
+<ul>
+<li>用随机整数填充数组</li>
+<li>显示数组</li>
+<li>使用冒泡排序算法对数组进行排序</li>
+<li>重新显示数组</li>
+<li>要求用户输入一个整数</li>
+<li>使用二分查找算法在数组中查找用户输入整数</li>
+<li>显示二分查找结果</li>
+</ul>
+<p>不同的过程放在单独的源代码文件中以便定位和编辑。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/228449603-b07e538a-cd96-4275-90cd-45de9a1de9dc.png"
+                      alt="28"
+                ></p>
+<p>除了 B_main 之外的所有模块都以在 Bsearch.inc 文件中声明。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">;Bsearchinc - prototypes for procedures usesd in</span><br><span class="line">;the BubbleSort / BinarySearch program.</span><br><span class="line"></span><br><span class="line">BinarySearch PROTO,</span><br><span class="line">    pArray:PTR DWORD,</span><br><span class="line">    Count:DWORD,</span><br><span class="line">    SearchVal:DWORD</span><br><span class="line"></span><br><span class="line">FillArray PROTO,</span><br><span class="line">    pArray:PTR DWORD,</span><br><span class="line">    Count:DWORD,</span><br><span class="line">    LowerRange:SDWORD,</span><br><span class="line">    UpperRange:SDWORD</span><br><span class="line"></span><br><span class="line">PrintArray  PROTO,</span><br><span class="line">    pAray:PTR DWORD,</span><br><span class="line">    Count:PTR DWORD</span><br><span class="line"></span><br><span class="line">BubbleSort PROTO,</span><br><span class="line">    pArray:PTR DWOD,</span><br><span class="line">    Count:DWORD</span><br></pre></td></tr></table></figure>
+
+<p>下面是主模块 B_main.asm 的清单：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：B_main.asm</span><br><span class="line">;功能：使用冒泡排序和二分查找，搜索用户输入的字符。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-2-29</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">INCLUDE Bsearch.inc</span><br><span class="line"></span><br><span class="line">LOWVAL = -5000</span><br><span class="line">HIGHVAL = +5000</span><br><span class="line">ARRAY_SIZE = 50</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">array DWORD ARRAY_SIZE DUP(?)</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    call Randomize</span><br><span class="line">    ;向数组中填充随机数</span><br><span class="line">    INVOKE FillArray,ADDR array,ARRAY_SIZE,LOWVAL,HIGHVAL</span><br><span class="line"></span><br><span class="line">    ;显示数组</span><br><span class="line">    INVOKE PrintArray,ADDR array,ARRAY_SIZE</span><br><span class="line">    call WaitMsg</span><br><span class="line">    call Crlf</span><br><span class="line">    call Crlf</span><br><span class="line"></span><br><span class="line">    ;数组排序</span><br><span class="line">    INVOKE Bubblesort,ADDR array,ARRAY_SIZE</span><br><span class="line">    INVOKE PrintArray,ADDR array,ARRAY_SIZE</span><br><span class="line"></span><br><span class="line">    ;查找关键字</span><br><span class="line">    call AskForSearchVal</span><br><span class="line">    INVOKE BinarySearch,ADDR array,ARRAY_SIZE,eax</span><br><span class="line">    call ShowResults</span><br><span class="line"></span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line"></span><br><span class="line">;-------------------------------------------</span><br><span class="line">AskForSearchVal PROC</span><br><span class="line">;</span><br><span class="line">;功能：提示用户输入有符号整数</span><br><span class="line">;入口参数：无</span><br><span class="line">;返回值：EAX = 用户输入的值</span><br><span class="line">;-------------------------------------------</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">prompt BYTE &quot;Enter a signed decimal integer &quot;</span><br><span class="line">       BYTE &quot;int the range of -5000 to +5000 &quot;</span><br><span class="line">       BYTE &quot;to find in the array: &quot;,0</span><br><span class="line">.code</span><br><span class="line">    call Crlf</span><br><span class="line">    mov edx,OFFSET prompt</span><br><span class="line">    call WriteString</span><br><span class="line">    call ReadInt</span><br><span class="line">    ret</span><br><span class="line">AskForSearchVal ENDP</span><br><span class="line"></span><br><span class="line">;--------------------------------------------</span><br><span class="line">ShowResults PROC</span><br><span class="line">;显示搜索字符的结果。</span><br><span class="line">;入口参数：EAX = 要删除的符号。</span><br><span class="line">;返回值：无</span><br><span class="line">;-------------------------------------------</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">msg1 BYTE &quot;The value was not found.&quot;,0</span><br><span class="line">msg2 BYTE &quot;The value was found at position &quot;,0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">    .IF eax == -1</span><br><span class="line">        mov edx,OFFSET msg1</span><br><span class="line">        call WriteString</span><br><span class="line">    .ELSE</span><br><span class="line">        mov edx,OFFSET msg2</span><br><span class="line">        call WriteString</span><br><span class="line">        call WriteHex</span><br><span class="line">    .ENDIF</span><br><span class="line">        call Crlf</span><br><span class="line">        call Crlf</span><br><span class="line">        ret</span><br><span class="line">ShowResults ENDP</span><br><span class="line"></span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p>PrintArray：下面是包含 PrintArray 过程的模块清单。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：PtrArray.asm</span><br><span class="line">;功能：输出 32 位有符号数。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-2-29</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">PrintArray  PROC USES eax ecx edx esi,</span><br><span class="line">    pAray:PTR DWORD,</span><br><span class="line">    Count:PTR DWORD</span><br><span class="line">;功能：将32位有符号十进制整数的数组写入标准输出，用逗号分隔</span><br><span class="line">;入口参数：数组指针，数组大小</span><br><span class="line">;返回值：无</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">.data</span><br><span class="line">comma BYTE &quot;, &quot;,0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">    mov esi,pAray</span><br><span class="line">    mov ecx,Count</span><br><span class="line">    cld</span><br><span class="line">L1:</span><br><span class="line">    lodsd</span><br><span class="line">    call WriteInt</span><br><span class="line">    mov edx,OFFSET comma</span><br><span class="line">    call WriteString</span><br><span class="line">    loop L1</span><br><span class="line"></span><br><span class="line">    call Crlf</span><br><span class="line">    ret</span><br><span class="line">PrintArray ENDP</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+
+<p>FillArray：下面是包含 FillArray 过程的清单。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：FillArray.asm</span><br><span class="line">;功能：使用 32 位随机有符号整数填充数组</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-2-29</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">FillArray PROC USES eax edi ecx edx,</span><br><span class="line">    pArray:PTR DWORD,</span><br><span class="line">    Count:DWORD,</span><br><span class="line">    LowerRange:SDWORD,</span><br><span class="line">    UpperRange:SDWORD</span><br><span class="line">;功能：使用 32 位随机（LowerRange~UpperRange-1之间）有符号整数填充数组</span><br><span class="line">;返回值：无</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">    mov edi,pArray</span><br><span class="line">    mov ecx,Count</span><br><span class="line">    mov edx,UpperRange</span><br><span class="line">    sub edx,LowerRange</span><br><span class="line">L1:</span><br><span class="line">    mov eax,edx</span><br><span class="line">    call RandomRange</span><br><span class="line">    add eax,LowerRange</span><br><span class="line">    stosd</span><br><span class="line">    loop L1</span><br><span class="line"></span><br><span class="line">    ret</span><br><span class="line">FillArray ENDP</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+
+<p>以下是 Bsearch.asm 模块：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：Bsearch.asm</span><br><span class="line">;功能：使用二分查找法，查找整数数组中的值。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-2-29</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">;-----------------------------------------------</span><br><span class="line">BinarySearch PROC USES ebx edx esi edi,</span><br><span class="line">    pArray:PTR DWORD,</span><br><span class="line">    Count:DWORD,</span><br><span class="line">    SearchVal:DWORD</span><br><span class="line">LOCAL first:DWORD,</span><br><span class="line">    last:DWORD</span><br><span class="line">;功能：使用二分查找法，查找整数数组中的值。</span><br><span class="line">;入口参数：数组指针、数组大小、要查找的值</span><br><span class="line">;出口参数：如果查到该值，EAX 返回查找到该值的数组指针；反之 EAX=-1</span><br><span class="line">;-----------------------------------------------</span><br><span class="line">    mov first,0</span><br><span class="line">    mov ebx, Count</span><br><span class="line">    dec ebx</span><br><span class="line">    mov last,ebx</span><br><span class="line">    mov SearchVal,eax</span><br><span class="line">    mov esi,pArray</span><br><span class="line">L0:</span><br><span class="line">    mov eax,first</span><br><span class="line">    cmp eax,last</span><br><span class="line">    jg L4</span><br><span class="line">    add ebx,first</span><br><span class="line">    shr ebx,1</span><br><span class="line">    ;mov eax,ds:pArray[ebx*4]   ;错，pArray 指向的是局部变量 pArray 的指针</span><br><span class="line">    mov eax,ds:[esi+ebx*4]</span><br><span class="line">    cmp SearchVal,eax</span><br><span class="line">    jl L1</span><br><span class="line">    jg L2</span><br><span class="line">    je L3</span><br><span class="line">L1:</span><br><span class="line">    dec ebx</span><br><span class="line">    mov last,ebx</span><br><span class="line">    jmp L0</span><br><span class="line">L2:</span><br><span class="line">    inc ebx</span><br><span class="line">    mov first,ebx</span><br><span class="line">    jmp L0</span><br><span class="line">L3:</span><br><span class="line">    ;lea eax,ds:pArray[ebx*4]   ;错，pArray 指向的是局部变量 pArray 的指针</span><br><span class="line">    lea eax,ds:[esi+ebx*4]</span><br><span class="line">    jmp L5</span><br><span class="line"></span><br><span class="line">L4:</span><br><span class="line">    mov eax,-1</span><br><span class="line">L5:</span><br><span class="line">    ret</span><br><span class="line">BinarySearch ENDP</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+
+<p>以下是 Bsort.asm 模块：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：Bsort.asm</span><br><span class="line">;功能：32位整数数组冒泡排序</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-2-29</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">;------------------------------------------------</span><br><span class="line">BubbleSort PROC USES eax ecx esi,</span><br><span class="line">    pArray:PTR DWOD,</span><br><span class="line">    Count:DWORD</span><br><span class="line">;32位整数数组冒泡排序</span><br><span class="line">;入口参数：数组指针，数组大小</span><br><span class="line">;出口参数：无</span><br><span class="line">;------------------------------------------------</span><br><span class="line">    mov ecx,Count</span><br><span class="line">    dec ecx</span><br><span class="line">L1:</span><br><span class="line">    push ecx</span><br><span class="line">    mov esi,pArray</span><br><span class="line">L2:</span><br><span class="line">    mov eax,[esi]</span><br><span class="line">    cmp [esi+4],eax</span><br><span class="line">    jg L3</span><br><span class="line">    xchg eax,[esi+4]</span><br><span class="line">    mov [esi],eax</span><br><span class="line">L3:</span><br><span class="line">    add esi,4</span><br><span class="line">    loop L2</span><br><span class="line">    pop ecx</span><br><span class="line">    loop L1</span><br><span class="line"></span><br><span class="line">    ret</span><br><span class="line">BubbleSort ENDP</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：80386汇编-字符串和数组</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2023-03-26 12:00:00</li>
+        <li>
+            本文链接：https://9unkk.github.io/2023/03/26/80386-hui-bian-zi-fu-chuan-he-shu-zu/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2023/03/07/crackme/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">CrackMe</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%93%8D%E4%BD%9C%E6%8C%87%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">基本字符串操作指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MOVSB%EF%BC%8CMOVSW-%E5%92%8C-MOVSD"><span class="nav-number">2.1.</span> <span class="nav-text">MOVSB，MOVSW 和 MOVSD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMPSB%EF%BC%8CCMPSW-%E5%92%8C-CMPSD-%E6%8C%87%E4%BB%A4"><span class="nav-number">2.2.</span> <span class="nav-text">CMPSB，CMPSW 和 CMPSD 指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SCASB%EF%BC%8CSCASW%E5%92%8CSCASD%E6%8C%87%E4%BB%A4"><span class="nav-number">2.3.</span> <span class="nav-text">SCASB，SCASW和SCASD指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STOSB-STOSW-%E5%92%8C-STOSD-%E6%8C%87%E4%BB%A4"><span class="nav-number">2.4.</span> <span class="nav-text">STOSB,STOSW 和 STOSD 指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LODSB-LODSW-%E5%92%8C-LODSD-%E6%8C%87%E4%BB%A4"><span class="nav-number">2.5.</span> <span class="nav-text">LODSB,LODSW 和 LODSD 指令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B2%BE%E9%80%89%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BF%87%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">精选的字符串过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Str-compare-%E8%BF%87%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">Str_compare 过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Str-length-%E8%BF%87%E7%A8%8B"><span class="nav-number">3.2.</span> <span class="nav-text">Str_length 过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Str-copy-%E8%BF%87%E7%A8%8B"><span class="nav-number">3.3.</span> <span class="nav-text">Str_copy 过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Str-trim-%E8%BF%87%E7%A8%8B"><span class="nav-number">3.4.</span> <span class="nav-text">Str_trim 过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Str-ucase-%E8%BF%87%E7%A8%8B"><span class="nav-number">3.5.</span> <span class="nav-text">Str_ucase 过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%BA%93%E6%BC%94%E7%A4%BA%E7%A8%8B%E5%BA%8F"><span class="nav-number">3.6.</span> <span class="nav-text">字符串库演示程序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84"><span class="nav-number">4.</span> <span class="nav-text">二维数组</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%8C%E5%92%8C%E5%88%97%E7%9A%84%E9%A1%BA%E5%BA%8F"><span class="nav-number">4.1.</span> <span class="nav-text">行和列的顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E5%9D%80%E5%8F%98%E5%9D%80%E6%93%8D%E4%BD%9C%E6%95%B0"><span class="nav-number">4.2.</span> <span class="nav-text">基址变址操作数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%AF%B9%E5%9F%BA%E5%9D%80%E5%8F%98%E5%9D%80%E6%93%8D%E4%BD%9C"><span class="nav-number">4.3.</span> <span class="nav-text">相对基址变址操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B4%E6%95%B0%E6%95%B0%E7%BB%84%E7%9A%84%E6%9F%A5%E6%89%BE%E5%92%8C%E6%8E%92%E5%BA%8F"><span class="nav-number">5.</span> <span class="nav-text">整数数组的查找和排序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F"><span class="nav-number">5.1.</span> <span class="nav-text">冒泡排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE"><span class="nav-number">5.2.</span> <span class="nav-text">二分查找</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%A8%8B%E5%BA%8F"><span class="nav-number">5.2.1.</span> <span class="nav-text">测试程序</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

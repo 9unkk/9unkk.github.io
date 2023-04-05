@@ -1,0 +1,266 @@
+# Acid burn
+## 查看程序基本信息
+![1](https://user-images.githubusercontent.com/25861639/223346153-e9b42f85-bba6-4894-993a-081e99a7cc55.png)
+
+![2](https://user-images.githubusercontent.com/25861639/223346775-5cb2a76a-a049-4974-8757-80d08d56dc8c.png)
+
+## 下载Delphi反编译工具IDR
+[IDR](https://codeload.github.com/crypto2011/IDR/zip/refs/tags/27_01_2019)
+
+[SwissArmyKnife](https://objects.githubusercontent.com/github-production-release-asset-2e65be/41132122/3bbc4300-0041-11eb-9150-46f815ce5c72?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20230307%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230307T074050Z&X-Amz-Expires=300&X-Amz-Signature=8fac668fbed0964e9f994c0acd6017b59a4933fb8f9511fd710e6de757e217e4&X-Amz-SignedHeaders=host&actor_id=25861639&key_id=0&repo_id=41132122&response-content-disposition=attachment%3B%20filename%3DRelease.9-26-2020.7z&response-content-type=application%2Foctet-stream) 是X64dbg导入".MAP"文件的插件，后续可能会用到，可以先装上。  
+
+## 分析程序
+1. 拖入程序到 IDR 进行自动分析
+![3](https://user-images.githubusercontent.com/25861639/223369898-0408f2c8-f50d-41de-9a0c-c4bac46e1da0.png)
+
+2. 选择 form 窗口
+![4](https://user-images.githubusercontent.com/25861639/223371342-aebe3eab-b514-43e8-b55b-0f9d122756cd.png)
+
+3. 双击选择我们需要逆的窗口
+![5](https://user-images.githubusercontent.com/25861639/223371705-77211552-76cc-4364-b7ab-ef3e06e535d6.png)
+
+4. 在两个button按钮下面双击查看右侧代码，找到主程序
+![6](https://user-images.githubusercontent.com/25861639/223372290-d31c4768-d7b5-4d46-bc02-7f900eb68ca9.png)
+
+5. 在 "0042F4D5" 地址处发现关键跳转
+![7](https://user-images.githubusercontent.com/25861639/223373456-dae52da8-bf38-47c1-8938-500bdd2f7ef3.png)
+
+6. 在关键跳转上面发现程序调用了 strcmp，上面两个局部变量可能就有我们破解程序的关键字符串
+![9](https://user-images.githubusercontent.com/25861639/223375596-3b50ed6c-7a3c-47d3-998f-096fb9f0b874.png)
+
+## x64dbg动态调试
+1. 使用快捷键 "Ctrl+G" 定位到关键跳转的位置，并 F2 设置断点
+![8](https://user-images.githubusercontent.com/25861639/223376262-fa1f6095-5baf-4c3b-b46a-6e93ee4bab81.png)
+
+2. F9 运行程序，其中 [ebp-10] 是输入字符串，另一个科恩那个就是关键字符串
+![10](https://user-images.githubusercontent.com/25861639/223377590-74a9316a-0b9f-4e7c-b75d-c42f0e150f2e.png)
+
+3. 新开一个程序进行验证
+![11](https://user-images.githubusercontent.com/25861639/223378745-5c6f71bb-0247-4400-b3c8-b5fc7cd4a7c2.png)
+
+## 继续分析第二个窗口
+1. 结果错误，程序可能是通过算法根据用户名来生成的硬编码
+![12](https://user-images.githubusercontent.com/25861639/223385581-adac17b1-002b-4fa7-9119-05cab92e0c26.png)
+
+2. 继续向上分析字符串处理函数
+![14](https://user-images.githubusercontent.com/25861639/223615153-db9f91a7-7ed1-4bbc-abe5-3b0027c62b9b.png)
+
+- StrCat()：拼接字符串
+- IntToStr()：整数转换成字符串
+- StrLAsg()：复制Ansi字符串
+
+>要注意：IntToStr 这一段，这里将地址 "ds:[0x00431750]" 的值转换为 "8528"。也就是说最终结果存在 "ds:[0x00431750]" 地址处。
+
+3. "8528"是关键硬编码，需要注意 "8528" 是十进制数，转换为2进制数为 "2150"
+![16](https://user-images.githubusercontent.com/25861639/223651560-fe217fb0-4680-4e78-b9a8-21173b7a40c9.png)
+![15](https://user-images.githubusercontent.com/25861639/223650017-9d478b6b-a108-445d-abc1-9a2adcb6afc6.png)
+
+>这里涉及到 "ds:[0x00431750]" 地址的操作都要记录下来。
+
+4. 分析算法
+最后再动态调试得出算法：(0x29 * username[0])*2
+
+5. 编写注册机
+``` c
+/*
+作者：9unk
+时间：2023-3-8
+功能：Serial/Name 窗口注册机
+*/
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int main() 
+{
+	int num = 0x29;
+	char username[20] = {0};
+	char result[5] = { 0 };
+	printf("请输入用户名：");
+	scanf("%s",&username);
+	num = (num * username[0])*2;
+	itoa(num,result,10);
+	printf("硬编码：CW-%s-CRACKED",result);
+	return 0;
+}
+```
+
+>再分析程序过程中，我并没有想到关注函数 IntToStr()，将 "8528" 转换为十六进制，导致我调试了了好几遍才找到关键算法。
+
+# Afkayas.1
+1. 找到关键字符串 "You Get It"，并在上面找到关键跳转。
+![18](https://user-images.githubusercontent.com/25861639/223769225-27949ff6-c5bd-438a-820c-937562c477bd.png)
+
+2. 向上查找影响 ZF 标志位的指令
+![19](https://user-images.githubusercontent.com/25861639/223769706-3087a0ed-1511-4251-9e3e-fefdee518372.png)
+
+3. 向上溯源找到可能与结果相关，且改变 ESI 值得指令
+![20](https://user-images.githubusercontent.com/25861639/223773338-6b62029f-655c-4ba5-8f68-fd8565c4f923.png)
+
+>很明显 esi 存储的是 VbaStrSmp 函数的返回值
+
+4. 在 OD 中定位到 VbaStrSmp 函数地址，设置断点，最后再运行程序看看。
+![21](https://user-images.githubusercontent.com/25861639/223775020-3e1835f0-42a1-4d93-b805-4511db88e68f.png)
+
+>此时看到 EAX 参数很有肯能是硬编码，最后通过确认发现是正确的。
+
+5. 再向上看会发现一个 "VbaStrCat" 函数，且其中有个参数 "AKA-"
+![22](https://user-images.githubusercontent.com/25861639/223775854-85f19f6d-2d05-4fcc-b9f4-f1dc1ed44cc5.png)
+
+>之前我们分析过 StrCat 函数，"AKA-" 作为其中的一个参数，而 EAX 在下面的 StrCmp 函数中作为存放结果的参数，那么 ECX 就是关键硬编码部分了。
+
+6. 继续向上找修改 ECX 的指令，并尝试调试
+![23](https://user-images.githubusercontent.com/25861639/223778169-8da21bfc-de31-421d-98ca-654c0f2342b6.png)
+![24](https://user-images.githubusercontent.com/25861639/223779582-90c0ed07-350e-4e69-a029-14b46d6dbff9.png)
+
+>在这里可以看到硬编码存储在 [ebp-0x1C] = 001B0D34 地址处。
+
+7. 继续向上找涉及 [ebp-0x1C] 的指令，并设置断点。最后在内存窗口定位到 001B0D34 地址处，当我们后续动态调试程序的时候，发现这个位置的数据改变时，就是我们调试到关键算法的位置处了。
+![25](https://user-images.githubusercontent.com/25861639/223781714-439ad92e-fe41-45ae-ba24-d2dc52e28be7.png)
+![26](https://user-images.githubusercontent.com/25861639/223782120-e259c818-ab89-4610-8f80-67400962ace6.png)
+
+8. call 跟进去之后发现全是 windows 领空，在执行 call 指令后，发现结果变了，这也就说明了 487759 是通过这个windows API 实现的，我们在这个 API 位置设置断点。
+![27](https://user-images.githubusercontent.com/25861639/223785359-4dfa836c-086d-4d3b-b820-bbf3b469cf72.png)
+
+9. 重新调试程序，到达 windows 领空的时候直接使用快捷键 "Alt+F9" 执行到用户代码。
+![28](https://user-images.githubusercontent.com/25861639/223803979-518eac46-7e61-44ea-bbb6-229ee9b53a88.png)
+
+>此时程序执行到另一个位置，下面应该就是算法部分的代码了
+
+10. 继续单步调试
+![29](https://user-images.githubusercontent.com/25861639/223804570-21f40b40-cb6b-4461-bf8d-f6a7e1683ad9.png)
+
+>这里看到涉及字符串处理函数，且存在 [ebp-0x1C]
+
+11. 继续单步调试，最后发现算法部分
+![30](https://user-images.githubusercontent.com/25861639/223805037-8e1fcb1f-c58d-49b2-8064-2d49d2199e26.png)
+
+12. 分析算法
+算法：(strlen(name) * 0x17CFB)+name[0]
+
+13. 编写注册机
+``` c
+/*
+作者：9unk
+时间：2023-3-9
+功能：Afkayas.1 注册机
+*/
+
+#define _CRT_SECURE_NO_WARNINGS
+#pragma warning(disable:4996)
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int main() 
+{
+	int len = 0;
+	int num = 0;
+	char username[20] = {0};
+	char result[7] = { 0 };
+	printf("请输入用户名：");
+	scanf("%s",&username);
+	while (username[len] != 0)
+	{
+		len++;
+	}
+	num = (len * 0x17CFB) + username[0];
+	itoa(num,result,10);
+	printf("硬编码：AKA-%s",result);
+	return 0;
+}
+```
+
+# ajj.1
+1. LDR 加载并打开程序
+![31](https://user-images.githubusercontent.com/25861639/224246309-ccdb834a-5f17-4ca3-8100-943beccadd29.png)
+
+>打开程序后发现该程序没有确认按钮，且注册成功后是在下方panel窗口显示图片。现在唯一想到的是 enter 打开触发确认机制，实现结果注册码校验。
+
+2. 双击进入注册码的窗口，并查看是否存在关键函数或字符串
+![32](https://user-images.githubusercontent.com/25861639/224247398-3bf89725-8e3b-4d2c-afb9-efa314636413.png)
+
+>这里找到一个strcmp函数
+
+3. 在该地址处进行断点，动态调试
+![33](https://user-images.githubusercontent.com/25861639/224247983-1a9766d1-e4e5-4099-a0f4-737600b7b80e.png)
+
+4. 进行验证
+![34](https://user-images.githubusercontent.com/25861639/224248390-e3d5fc83-4ad5-4483-9721-f38b613d9321.png)
+
+>一开始按 enter 键没有用，之后在窗口上乱点一通，触发了确认按钮（确认按钮就是，双击panel窗口），这里也验证码了注册码是正确的。
+
+5. 重新换另一个用户名试试，看看注册码哪里会进行改动
+![35](https://user-images.githubusercontent.com/25861639/224249149-a7a2f2fd-6f35-4ce1-bda1-2dbb4a7d6a7b.png)
+
+>比较两个注册码，发现中间打的数字不一样，注册码最后还会拼接用户名
+
+6. 查找关键算法
+看看 strcatn 函数，分析后发现这个和我们的结果好像没啥关系
+![36](https://user-images.githubusercontent.com/25861639/224251134-3a98d0d8-bd58-4424-89b7-fa71c828baae.png)
+
+继续看看有没有 9 这个数字
+![37](https://user-images.githubusercontent.com/25861639/224252605-2ca6f4dd-1657-4b42-9849-ccc5ce9a7d1f.png)
+>这里是 ASCII 码 "9"
+
+回到 LDR 窗口，向上看看有没有可疑的代码
+![38](https://user-images.githubusercontent.com/25861639/224253968-3b00ac4f-091f-4cab-adbf-adcc93f9ad0f.png)
+>这边有一个 intostr 函数，和下面的代码对应的上
+
+在 "00457C60" 地址处断点，调试看一下。为了方便操作，我这里直接复制地址，在 x64dbg 命令行用命令直接断点。
+![39](https://user-images.githubusercontent.com/25861639/224255781-362db905-e48e-4468-b076-d0443a967084.png)
+![40](https://user-images.githubusercontent.com/25861639/224256073-92de8574-140f-42ab-9cf0-07020373df42.png)
+
+这里 [ebx+2F8] 的结果是4，硬要和用户扯上关系，只有用户名长度了（此时的用户名是 test）
+![41](https://user-images.githubusercontent.com/25861639/224257141-449fddec-16f3-4df4-ba18-25a32ddd1941.png)
+
+整段代码调试下来，就画红框的几个是真正执行的代码
+![42](https://user-images.githubusercontent.com/25861639/224263436-4062ffdc-9026-46b2-9df3-06e041b23b7a.png)
+
+>在分析程序过程中要同时把常见函数（包括入口参数和出口参数）记录下来，这样能方便我们快速分析程序
+
+5. 算法
+黑头Sun Bird+[疑似用户名长度+5]+dseloffc-012-OK+[用户名]
+
+算法很简单，手动验证一下。
+
+用户名：aaaaaa
+注册码：黑头Sun Bird11dseloffc-012-OKaaaaaa
+![43](https://user-images.githubusercontent.com/25861639/224266121-bc9f4221-528a-4205-ab8f-504f38f6e0cb.png)
+
+6. 程序分析到这里就结束了，但是这个数字是从哪里来的呢？
+双击各个窗口会发现，这里一个按钮事件就是一个封装的函数
+![44](https://user-images.githubusercontent.com/25861639/224266669-9626947b-94f1-488e-a40f-71d7a514b339.png)
+
+如果上面猜测是正确的，那么用户名的长度应该是在用户名窗口得到的，我们进入用户名窗口看一下
+![45](https://user-images.githubusercontent.com/25861639/224267484-861d6383-b321-4fc2-b111-0a6df16aaee0.png)
+
+![46](https://user-images.githubusercontent.com/25861639/224268427-9ed69dcc-61f9-4be5-b7a6-8c836187f0c9.png)
+
+到这里程序都分析结束了
+
+# ajj.2
+1. 用 LDR 没法反编译程序，用 exeinfo 查看，发现程序加了 UPX 壳。
+![47](https://user-images.githubusercontent.com/25861639/224274004-2fae2821-bf35-4ea7-b982-1a0a7d6e37c2.png)
+
+2. 直接用 upx 脱壳
+![48](https://user-images.githubusercontent.com/25861639/224274610-0e1536c7-2a3a-45e3-8bd0-695502afdc38.png)
+
+3. 重新用 LDR 进行加载，发现有几个隐藏窗口
+![49](https://user-images.githubusercontent.com/25861639/224530640-3e9c5918-5c5d-4cfc-8a9e-f321fb025cba.png)
+
+>鼠标放在隐藏窗口，会发现隐藏的是 edit2、timer1、timer2
+
+4. 切换到 froms -> text 下面，查看个控件的属性
+![51](https://user-images.githubusercontent.com/25861639/224532090-aa0bb386-db49-49b2-8a1d-78aab7c1a67f.png)
+![50](https://user-images.githubusercontent.com/25861639/224532038-47e70f53-f984-4589-8fdc-dc937cc6ed35.png)
+
+>TabOrder：使用上下键来选择控件，TabOrder的值从0开始。Interval：表示计时器延迟多长时间，默认单位是毫秒。
+
+5.Edit1没有触发事件，我们真正输入注册名的窗口在 Edit2
+![52](https://user-images.githubusercontent.com/25861639/224532864-21ca76cd-d1ef-4a13-9ffd-f5ce4879514b.png) 
+
+6. 在 Edit2 处设置断点
+![53](https://user-images.githubusercontent.com/25861639/224532979-85340472-8e7e-4ec8-b7bd-5145909bb00e.png)
