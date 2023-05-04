@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            80386汇编-浮点处理器 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">80386汇编-浮点处理器</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2023-04-23 14:06:00</span>
+        <span class="mobile">2023-04-23 14:06</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>3k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>12 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>浮点处理器也称x87处理器，在 486 之前是和 386 处理器分开的。到了 486 之后就把浮点处理器集成到了 x86 中。浮点处理器的功能就是处理浮点数的运算。浮点数运算主要是了解一些浮点数指令，在逆向过程中这块内容基本不会关注，只要知道浮点数结果是多少就行。</p>
+<h1 id="浮点数二进制表示"><a href="#浮点数二进制表示" class="headerlink" title="浮点数二进制表示"></a>浮点数二进制表示</h1><p>浮点数由三部分构成：符号、尾数和指数。以数字 -123.154 为例，该校书分解成 -1.23154 x 10^2为例，其中 “-“是符号，表示该浮点数是负数，1.23154是尾数，2是指数。</p>
+<h2 id="IEEE-二进制浮点数的表示"><a href="#IEEE-二进制浮点数的表示" class="headerlink" title="IEEE 二进制浮点数的表示"></a>IEEE 二进制浮点数的表示</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234199808-3f3e5195-50b5-4937-88b0-35edc791c691.png"
+                      alt="1"
+                ></p>
+<h3 id="符号"><a href="#符号" class="headerlink" title="符号"></a>符号</h3><p>二进制浮点数的符号由一个符号位表示，如果该位为 1 表示附属，为 0 表示正数。浮点数  0 是正数。</p>
+<h3 id="尾数"><a href="#尾数" class="headerlink" title="尾数"></a>尾数</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234204371-ba86770c-9acd-42af-899e-ffe7b4164ace.png"
+                      alt="2"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234204860-f6dc5da9-4574-4e47-a08b-b0293f861bc0.png"
+                      alt="3"
+                ></p>
+<h4 id="尾数的精度"><a href="#尾数的精度" class="headerlink" title="尾数的精度"></a>尾数的精度</h4><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234223501-0ee32eff-1335-4b86-adaa-22f3bcf59aef.png"
+                      alt="4"
+                ></p>
+<h2 id="指数"><a href="#指数" class="headerlink" title="指数"></a>指数</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234223776-2c8c4f81-3cb2-4d10-92aa-e82579fe634a.png"
+                      alt="5"
+                ></p>
+<h2 id="二进制浮点数的正规化"><a href="#二进制浮点数的正规化" class="headerlink" title="二进制浮点数的正规化"></a>二进制浮点数的正规化</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234225496-892b5ea6-ac34-4bf9-b9df-469e85353f71.png"
+                      alt="6"
+                ></p>
+<h2 id="IEEE-表示法"><a href="#IEEE-表示法" class="headerlink" title="IEEE 表示法"></a>IEEE 表示法</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234226022-9e762282-0f48-4f2e-834e-74bcd209078b.png"
+                      alt="7"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234227096-ded066b7-81ac-41fb-a416-5a5633eb5128.png"
+                      alt="8"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234227248-c3264165-1e45-4078-9170-c61677aabb62.png"
+                      alt="9"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234227745-d765a7a6-beba-4504-b145-470619099fd2.png"
+                      alt="10"
+                ></p>
+<h2 id="把十进制分数转换为二进制实数"><a href="#把十进制分数转换为二进制实数" class="headerlink" title="把十进制分数转换为二进制实数"></a>把十进制分数转换为二进制实数</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234229242-9cdc3734-a4ae-4158-8536-ec60597195ed.png"
+                      alt="11"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234229483-402fde2b-ed71-4d53-a477-19b6872b0e26.png"
+                      alt="12"
+                ></p>
+<h1 id="浮点单元"><a href="#浮点单元" class="headerlink" title="浮点单元"></a>浮点单元</h1><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234247225-a16ac451-d737-4a4c-934c-925edc5dd6a0.png"
+                      alt="13"
+                ></p>
+<h2 id="浮点寄存器栈"><a href="#浮点寄存器栈" class="headerlink" title="浮点寄存器栈"></a>浮点寄存器栈</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234247960-f29cfb5f-2310-4bdb-9e24-114dcd1ebea4.png"
+                      alt="14"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234248204-6a8c46b7-68a8-4d4d-9058-8056c9c2828a.png"
+                      alt="15"
+                ></p>
+<h3 id="浮点数据寄存器"><a href="#浮点数据寄存器" class="headerlink" title="浮点数据寄存器"></a>浮点数据寄存器</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234248754-424ff6d8-048a-4e86-ac57-3c27d9e2fa96.png"
+                      alt="16"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234259066-e23f68e3-40fa-4982-89b4-2a4f153ef333.png"
+                      alt="17"
+                ></p>
+<h3 id="特殊寄存器的用途"><a href="#特殊寄存器的用途" class="headerlink" title="特殊寄存器的用途"></a>特殊寄存器的用途</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234259231-6e92a325-6ea5-4655-b70f-f1dc4648e17b.png"
+                      alt="18"
+                ></p>
+<h2 id="近似"><a href="#近似" class="headerlink" title="近似"></a>近似</h2><p>FPU 在进行浮点计算时试图产生准确的结果，步过在许多情况下这是不可能的，因为目的操作数根本就不能准确表示计算的结果。例如：假设某种存储格式只允许3个小数位，这种格式就只能存储 1.011 或 1.101，但不能存储1.0101。如果计算产生的精确结果是 +1.0111（十进制数1.4275），我们就必须通过加 .0001 或减去 .0001 向上或向下近似：<br>(a) 1.0111 —&gt; 1.100<br>(b) 1.0111 —&gt; 1.011</p>
+<p>如果精确结果是负数，那么加 -.0001 会使近似值趋向 -∞，减去 -.0001 会使近似值趋向 0 和 +∞</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234293124-a1c84406-f9e6-46a6-9ad4-5997f1101b48.png"
+                      alt="19"
+                ></p>
+<h2 id="浮点异常"><a href="#浮点异常" class="headerlink" title="浮点异常"></a>浮点异常</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234296476-56022055-e304-4070-8373-cfd7b567e8be.png"
+                      alt="20"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234296835-b6f81fdd-227e-49e9-9b23-1bef1c4b9b9c.png"
+                      alt="21"
+                ></p>
+<h2 id="浮点指令集"><a href="#浮点指令集" class="headerlink" title="浮点指令集"></a>浮点指令集</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234297167-7b0714af-5f9a-42d2-b6a2-ee750db40175.png"
+                      alt="22"
+                ></p>
+<h3 id="初始化（FINIT）"><a href="#初始化（FINIT）" class="headerlink" title="初始化（FINIT）"></a>初始化（FINIT）</h3><p>FINIT指令初始化浮点单元，把 FPU 的控制字设为 037Fh，掩盖所有的浮点异常，把近似方法设置为最接近的偶数，并把计算精度设为 64 位。一般程序的开始会调用 FINIT，使 FPU 处于一个固定的初始状态。</p>
+<h3 id="浮点数据类型"><a href="#浮点数据类型" class="headerlink" title="浮点数据类型"></a>浮点数据类型</h3><p>在定义 FPU 指令使用的数据类型时，会用到这些类型的数据。例如：在加载一个浮点变量至 FPU 堆栈时，变量可定义为 REAL4，REAL8，REAL10。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234302068-83830537-788b-4e45-b410-f96a68c4e16a.png"
+                      alt="23"
+                ></p>
+<h3 id="加载浮点值（FLD）"><a href="#加载浮点值（FLD）" class="headerlink" title="加载浮点值（FLD）"></a>加载浮点值（FLD）</h3><p>FLD（加载浮点值）指令复制一个浮点数至 FPU 的栈顶 [即ST(0)]，操作数可以是 32 位、64 位、或 80 位的内存操作数（REAL4、REAL8、REAL10）或另外浮点寄存器：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FLD m32fp</span><br><span class="line">FLD m64fp</span><br><span class="line">FLD m80fp</span><br><span class="line">FLD ST(i)</span><br></pre></td></tr></table></figure>
+<p>内存操作数类型：FLD 支持的内存操作数的类型和 MOV 是一样的。下面的一些例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：fld.asm</span><br><span class="line">;功能：演示 FLD 加载浮点值指令</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-25</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">array REAL8 10 DUP(?)</span><br><span class="line">dblOne REAL8 234.56</span><br><span class="line">dblTwo REAL8 10.1</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">fld array</span><br><span class="line">fld [array+16]</span><br><span class="line">;fld REAL8 PTR[esi]</span><br><span class="line">;fld array[esi]</span><br><span class="line">;fld array[esi*8]</span><br><span class="line">;fld array[esi*TYPE array]</span><br><span class="line">;fld REAL8 PTR[ebx+esi]</span><br><span class="line">;fld array[ebx+esi]</span><br><span class="line">;fld array[ebx+esi*TYPE array]</span><br><span class="line"></span><br><span class="line">;加载两个直接操作数至FPU堆栈</span><br><span class="line">fld dblOne</span><br><span class="line">fld dblTwo</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234308516-7fd5c83f-9c93-49e1-a3b6-9399fe05ed59.png"
+                      alt="24"
+                ></p>
+<h3 id="FILD-指令"><a href="#FILD-指令" class="headerlink" title="FILD 指令"></a>FILD 指令</h3><p>FILD 指令把 16 位、32位、64位的整数源操作数转换成双精度浮点数并把其加载到 ST(0)，源操作数的符号位保留。FILD支持的内存操作数类型（间接操作数、变址操作数、基址变址操作数等）同 MOV 指令。</p>
+<p><strong>加载常量：</strong> 下面的指令在堆栈上加载特定的常量，这些指令无操作数：</p>
+<ul>
+<li>FLD1   指令在寄存器堆栈上压入 1.0</li>
+<li>FLDL2T 指令在寄存器堆栈上压入 1b 10(即log2 10)</li>
+<li>FLDL2E 指令在寄存器堆栈上压入 1b e(即log2 e)</li>
+<li>FLDPI  指令在寄存器堆栈上压入 Π(圆周率)</li>
+<li>FLDLG2 指令在寄存器堆栈上压入 lg 2(即log10 2)</li>
+<li>FLDLN2 指令在寄存器堆栈上压入 ln 2(即log2 e)</li>
+<li>FLDZ   指令在寄存器堆栈上压入 0.0(把 +0.0 压入压入堆栈中)</li>
+</ul>
+<h3 id="存储浮点值（FST、FSTP）"><a href="#存储浮点值（FST、FSTP）" class="headerlink" title="存储浮点值（FST、FSTP）"></a>存储浮点值（FST、FSTP）</h3><p>FST 指令（存储浮点值）复制FPU的栈顶的操作数至内存中，操作数可以是 32 位、64 位或 80 位的内存操作数（REAL4、REAL8、REAL10）或另外一个浮点寄存器：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FST m32fp</span><br><span class="line">FST m64fp</span><br><span class="line">FST ST(i)</span><br></pre></td></tr></table></figure>
+
+<p>FST 不会弹出栈顶元素，下面的指令把 ST(0) 存储到内存中，如下面的例子 ST(0) 等于 10.1 并且 ST(1) 等于 234.56：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：fst.asm</span><br><span class="line">;功能：演示 FST 把 ST(0) 存储到内存中</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-26</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">dblOne REAL8 234.56</span><br><span class="line">dblTwo REAL8 10.1</span><br><span class="line">dblThree REAL8 0.0</span><br><span class="line">dblFOur REAL8 0.0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    FINIT  ;浮点单元初始化</span><br><span class="line">    ;加载两个直接操作数至FPU堆栈</span><br><span class="line">    fld dblOne</span><br><span class="line">    fld dblTwo</span><br><span class="line"></span><br><span class="line">    ;FST存储浮点值</span><br><span class="line">    fst dblThree</span><br><span class="line">    fst dblFOur</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p><strong>FSTP：</strong> 复制 ST(0) 至内存并弹出 ST(0)，如下面的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：fst.asm</span><br><span class="line">;功能：演示 FSTP 把 ST(0) 存储到内存中,并弹出ST(0)</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-26</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">dblOne REAL8 234.56</span><br><span class="line">dblTwo REAL8 10.1</span><br><span class="line">dblThree REAL8 0.0</span><br><span class="line">dblFOur REAL8 0.0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    FINIT  ;浮点单元初始化</span><br><span class="line">    ;加载两个直接操作数至FPU堆栈</span><br><span class="line">    fld dblOne</span><br><span class="line">    fld dblTwo</span><br><span class="line"></span><br><span class="line">    ;FST存储浮点值</span><br><span class="line">    fst dblThree</span><br><span class="line">    fst dblFOur</span><br><span class="line"></span><br><span class="line">    ;FSTP 存储浮点值</span><br><span class="line">    fstp dblThree</span><br><span class="line">    fstp dblFOur</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p>执行后，从逻辑上来讲两个值已经从堆栈上移除了。从物理上来讲，每次 FSTP 指令执行后，TOP指针增1，改变了 ST(0) 的位置。</p>
+<p>FIST：把 ST(0) 中的值转换成有符号数整数并把结果存储到目的操作数中，值可以存储在字或双字中。FIST 支持的内存操作数格式同 FST</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">;----------------------------------------------------</span><br><span class="line">;程序名：fst.asm</span><br><span class="line">;功能：演示 FIST 把 ST(0) 中的值转换成有符号整数并把结果存储到目的操作数中，值可以存储在字或双字中。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-26</span><br><span class="line">;----------------------------------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">dblOne REAL8 234.56</span><br><span class="line">dblTwo REAL8 10.1</span><br><span class="line">dblThree REAL8 0.0</span><br><span class="line">dblFOur REAL8 0.0</span><br><span class="line">num dw 0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    FINIT  ;浮点单元初始化</span><br><span class="line">    ;加载两个直接操作数至FPU堆栈</span><br><span class="line">    fld dblOne</span><br><span class="line">    fld dblTwo</span><br><span class="line"></span><br><span class="line">    ;FST存储浮点值</span><br><span class="line">    fst dblThree</span><br><span class="line">    fst dblFOur</span><br><span class="line"></span><br><span class="line">    ;FIST 存储浮点值</span><br><span class="line">    fist num</span><br><span class="line">    fstp dblFOur</span><br><span class="line">    fist num</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="算数运算指令"><a href="#算数运算指令" class="headerlink" title="算数运算指令"></a>算数运算指令</h2><p>基本的算数运算指令如下表所示：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234490301-0fc1523d-3082-4c4a-9de4-1ec37bdbbfd5.png"
+                      alt="25"
+                ></p>
+<p>算数运算指令支持的内存操作数类型同 FLD（加载）和 FST（存储），因此操作数类型可以是间接操作数、变址操作数、基址变址操作数等。</p>
+<h3 id="FCHS-和-FABS"><a href="#FCHS-和-FABS" class="headerlink" title="FCHS 和 FABS"></a>FCHS 和 FABS</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234517680-29d4ea3d-1501-49f6-a6d3-795aee874e4b.png"
+                      alt="26"
+                ></p>
+<h3 id="FADD，FADDP，FIADD"><a href="#FADD，FADDP，FIADD" class="headerlink" title="FADD，FADDP，FIADD"></a>FADD，FADDP，FIADD</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234546652-9872ee70-7917-4d72-9ad6-2ec9efc259b6.png"
+                      alt="27"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234548946-c47b8427-a8dc-42c3-93f8-2d2cb9590e4c.png"
+                      alt="28"
+                ></p>
+<h3 id="FSUB，FSUBP，FISUB"><a href="#FSUB，FSUBP，FISUB" class="headerlink" title="FSUB，FSUBP，FISUB"></a>FSUB，FSUBP，FISUB</h3><p>FSUB 指令从目的操作数中减去源操作数，把差存储到目的操作数中。目的操作数是一个 FPU 寄存器，源可以是 FPU 寄存器或内存操作数，其操作数格式同FADD：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FSUB</span><br><span class="line">FSUB m32fp</span><br><span class="line">FSUB m64fp</span><br><span class="line">FSUB ST(0),ST(i)</span><br><span class="line">FSUB ST(i),ST(0)</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234568430-3ab4f0a7-5c76-4268-a2fa-55883c5f3de4.png"
+                      alt="29"
+                ></p>
+<h3 id="FMUL，FMULP，FIMUL"><a href="#FMUL，FMULP，FIMUL" class="headerlink" title="FMUL，FMULP，FIMUL"></a>FMUL，FMULP，FIMUL</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234570673-65def3e6-43d4-457f-b378-62fd127c5d45.png"
+                      alt="30"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234570776-d12f07c5-eb83-4abc-936c-96c59cd46972.png"
+                      alt="31"
+                ></p>
+<h3 id="FDIV，FDIVP，FIDIV"><a href="#FDIV，FDIVP，FIDIV" class="headerlink" title="FDIV，FDIVP，FIDIV"></a>FDIV，FDIVP，FIDIV</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234573156-0e0a5bdb-b987-4be5-ac4b-4c6e28699a86.png"
+                      alt="32"
+                ></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">;----------------------------------------------------</span><br><span class="line">;程序名：fdiv.asm</span><br><span class="line">;功能：演示 FDIV 指令</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-25</span><br><span class="line">;----------------------------------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">dblOne  REAL8 234.56</span><br><span class="line">dblTwo  REAL8 10.1</span><br><span class="line">dblQuot REAL8 ?</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    FINIT  ;浮点单元初始化</span><br><span class="line">    ;加载两个直接操作数至FPU堆栈</span><br><span class="line">    fld dblOne</span><br><span class="line">    fdiv dblTwo</span><br><span class="line">    fstp dblQuot</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234577425-31491462-1e03-42e2-ae6e-b0aeb55e1aef.png"
+                      alt="33"
+                ></p>
+<h2 id="浮点值比较"><a href="#浮点值比较" class="headerlink" title="浮点值比较"></a>浮点值比较</h2><p>浮点值比较不能使用 cmp 指令，应使用 FCOM 指令。<br>在执行完 FCOM 指令之后，使用条件跳转指令之前还要执行一些必须的指令。<br>FCOM，FCOMP，FCOMPP：指令比较 ST(0) 和 源操作数，源草组数可以是内存操作数或 FPU 寄存器，其格式如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234580633-3eaf2fc3-b79c-4712-a564-414614b3f79d.png"
+                      alt="34"
+                ></p>
+<p><strong>条件码：</strong> C3，C2，C0 这三个 FPU 条件码标志说明了浮点值比较的结果，下表中的标题栏列出了各个浮点标志对应的 CPU 状态标志，这是因为 C3，C2，C0 分别与零标志、奇偶表示和进位标志在功能上类似。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/234582420-7996691c-24c0-4661-be18-5024ea2cab89.png"
+                      alt="35"
+                ></p>
+<p>例子：假如下 C++ 代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">double</span> X = <span class="number">1.2</span>;</span><br><span class="line"><span class="type">double</span> Y = <span class="number">3.0</span>;</span><br><span class="line"><span class="type">int</span> N = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span>(X &lt; Y&gt;)</span><br><span class="line">    &#123;</span><br><span class="line">        N = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>反汇编：</strong></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236108532-13b02896-f61f-41c0-a595-1112cb7d0d99.png"
+                      alt="36"
+                ></p>
+<blockquote>
+<p>在 C&#x2F;C++ 中用的是 CMOISD 指令，COMISD 指令可以接受内存操作数，且比较结果会直接传到 EFLAGS 寄存器中。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：fcmop.asm</span><br><span class="line">;功能：演示浮点比较指令 fcmop</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-5-4</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">.data</span><br><span class="line">X REAL8 1.2</span><br><span class="line">Y REAL8 3.0</span><br><span class="line">N DWORD 0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    fld X</span><br><span class="line">    fcomp Y</span><br><span class="line">    fnstsw ax   ;把 FPU 状态字传送到 AX 寄存器中</span><br><span class="line">    sahf        ;把 AH 复制到 EFLAGS 寄存器中</span><br><span class="line">    jnb L1</span><br><span class="line">    mov N,1</span><br><span class="line">L1:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p><strong>P6的改进：</strong> 对于前面的例子，需要注意的是：浮点数比较比整数比较运行时间开销更大，因此 Intel 的 P6 处理器引入了 FCOMI 指令，该指令比较两个浮点值并直接设置零标志、奇偶标志和进位标志。FOMI 的 格式如下：</p>
+<blockquote>
+<p>FCOMI ST(0),ST(i)</p>
+</blockquote>
+<p>下面使用 FCOMI 指令重写前面例子的代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：fcmoi.asm</span><br><span class="line">;功能：演示浮点比较指令 fcmoi</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-5-4</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">.data</span><br><span class="line">X REAL8 1.2</span><br><span class="line">Y REAL8 3.0</span><br><span class="line">N DWORD 0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    ;if(X&lt;Y)，注意 X 要放在 ST(0) 的位置</span><br><span class="line">    fld Y</span><br><span class="line">    fld X</span><br><span class="line">    fcomi ST(0),ST(1)</span><br><span class="line">    jnb L1</span><br><span class="line">    mov N,1</span><br><span class="line">L1:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p>FCOMI 指令代替了前面例子中的三条指令，不过需要一套额外的 FLD 指令。FCOMI 指令不接受内存操作数。</p>
+<h3 id="比较是否相等"><a href="#比较是否相等" class="headerlink" title="比较是否相等"></a>比较是否相等</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236134862-a047e4ac-25c9-4c79-8afb-75d23812f1db.png"
+                      alt="37"
+                ></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：fequal.asm</span><br><span class="line">;功能：演示比较两个浮点数是否相等</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-5-4</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">INCLUDE macros.inc</span><br><span class="line">.data</span><br><span class="line">epsilon REAL8 1.0E-12</span><br><span class="line">val2 REAL8 0.0</span><br><span class="line">;val3 REAL8 1.001E-13</span><br><span class="line">val3 REAL8 1.001E-12    ;如果使 val3 大于临界值，则val3和val2将不再相等</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    ;if(X&lt;Y)，注意 X 要放在 ST(0) 的位置</span><br><span class="line">    fld epsilon</span><br><span class="line">    fld val2</span><br><span class="line">    fsub val3</span><br><span class="line">    fabs</span><br><span class="line">    fcomi ST(0),ST(1)</span><br><span class="line">    ja skip</span><br><span class="line">    mWrite &lt;&quot;Values are equal&quot;,0dh,0ah&gt;</span><br><span class="line">skip:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236137363-ec2762ff-447a-414e-bde6-ee4f50d51f88.png"
+                      alt="38"
+                ></p>
+<h2 id="读写浮点值"><a href="#读写浮点值" class="headerlink" title="读写浮点值"></a>读写浮点值</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236139502-af33d61f-ff7a-4590-9bde-1d0329a59bea.png"
+                      alt="39"
+                ></p>
+<p>例子程序：下面的例子程序在 FPU 堆栈上压入两个浮点值，然后显示，接下来读入两个用户输入的值，相乘并显示其乘积：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：floatTest32.asm</span><br><span class="line">;功能：下面的例子程序在 FPU 堆栈上压入两个浮点值，然后显示，接下来读入两个用户输入的值，相乘并显示其乘积</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-5-4</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">INCLUDE macros.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">first REAL8 123.456</span><br><span class="line">second REAL8 10.0</span><br><span class="line">third REAL8 ?</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    finit       ;初始化 FPU</span><br><span class="line">;压入两个浮点数到 FPU 栈中，并显示 FPU 栈</span><br><span class="line">    fld first</span><br><span class="line">    fld second</span><br><span class="line">    call ShowFPUStack</span><br><span class="line">;输入两个浮点是并显示其乘积</span><br><span class="line">    mWrite &quot;Please enter a real number: &quot;</span><br><span class="line">    call ReadFloat</span><br><span class="line"></span><br><span class="line">    mWrite &quot;Please enter a real number: &quot;</span><br><span class="line">    call ReadFloat</span><br><span class="line"></span><br><span class="line">    fmul ST(0),ST(1)    ;相乘</span><br><span class="line">    mWrite &quot;Their product is: &quot;</span><br><span class="line">    call WriteFloat</span><br><span class="line">    call Crlf</span><br><span class="line"></span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236144353-32833279-ed6b-4742-ba70-fa1c726ec69c.png"
+                      alt="40"
+                ></p>
+<h2 id="异常的同步"><a href="#异常的同步" class="headerlink" title="异常的同步"></a>异常的同步</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236148441-0b87ba1c-3480-42d7-8dd6-33944902a8c7.png"
+                      alt="41"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236148491-5e30aec9-8cd9-428b-944c-f24113ec9bb6.png"
+                      alt="42"
+                ></p>
+<h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236148724-575b9de6-da2a-4a3f-b9d0-0452ad9fefeb.png"
+                      alt="43"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236149083-d045b67d-e666-48e4-b70a-25266d6d124b.png"
+                      alt="44"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236149134-41dc35ed-0341-41b0-96ce-9cfab01376c3.png"
+                      alt="45"
+                ></p>
+<h2 id="混合模式运算"><a href="#混合模式运算" class="headerlink" title="混合模式运算"></a>混合模式运算</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236149430-f0902388-81f2-4035-a4ee-8f92fa7bd331.png"
+                      alt="46"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236149513-2b3e467d-1bab-4c7c-a855-54615a86a237.png"
+                      alt="47"
+                ></p>
+<h2 id="屏蔽和未屏蔽异常"><a href="#屏蔽和未屏蔽异常" class="headerlink" title="屏蔽和未屏蔽异常"></a>屏蔽和未屏蔽异常</h2><p>浮点异常默认是屏蔽的，因此在浮点异常发生时，处理器给结果赋一个默认值，并继续安静地执行。</p>
+<blockquote>
+<p>因此我在异常的程序这一块，试验的两个例子都没出现报错，我一开始还以为是系统比较新的原因。</p>
+</blockquote>
+<p>如果在 FPU 控制字中未屏蔽异常，处理器将自动执行合适的异常处理程序。关闭异常屏蔽是通过清除 FPU 控制字中向合适的位完成的。想要关闭对除 0 异常的屏蔽，需要执行下面的步骤：</p>
+<ol>
+<li>存储 CPU 控制字到一个 16 位变量中</li>
+<li>清除位 2（除零标志位）</li>
+<li>加载变量到控制字中</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236159499-46440c52-f454-4d34-84bc-1f9147317811.png"
+                      alt="49"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236159668-23b5b4a0-3d8a-4e75-9b06-50bfacd095e8.png"
+                      alt="50"
+                ></p>
+<p>案例：屏蔽除零异常</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：floaterr.asm</span><br><span class="line">;功能：浮点异常默认是屏蔽的，演示关闭浮点异常</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-2-13</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">.data</span><br><span class="line">ctrlWord WORD ?</span><br><span class="line">val1 DWORD 1</span><br><span class="line">val2 REAL8 0.0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    fstcw ctrlWord      ;获取控制字</span><br><span class="line">    and ctrlWord,1111111111111011b  ;关闭对除零异常的屏蔽</span><br><span class="line">    fldcw ctrlWord      ;加载会 FPU 中</span><br><span class="line"></span><br><span class="line">    fild val1</span><br><span class="line">    fdiv val2</span><br><span class="line">    fst val2</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236157475-a9d0a2fa-16ea-4285-9f53-8df2ba636e8e.png"
+                      alt="48"
+                ></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：80386汇编-浮点处理器</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2023-04-23 14:06:00</li>
+        <li>
+            本文链接：https://9unkk.github.io/2023/04/23/80386-hui-bian-fu-dian-chu-li-qi/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2023/04/10/win32-hui-bian-windows-cheng-xu-she-ji-yu-xi-pian/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">win32汇编-windows程序设计（预习篇）</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E6%95%B0%E4%BA%8C%E8%BF%9B%E5%88%B6%E8%A1%A8%E7%A4%BA"><span class="nav-number">2.</span> <span class="nav-text">浮点数二进制表示</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IEEE-%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%B5%AE%E7%82%B9%E6%95%B0%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="nav-number">2.1.</span> <span class="nav-text">IEEE 二进制浮点数的表示</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7"><span class="nav-number">2.1.1.</span> <span class="nav-text">符号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%BE%E6%95%B0"><span class="nav-number">2.1.2.</span> <span class="nav-text">尾数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%BE%E6%95%B0%E7%9A%84%E7%B2%BE%E5%BA%A6"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">尾数的精度</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E6%95%B0"><span class="nav-number">2.2.</span> <span class="nav-text">指数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%B5%AE%E7%82%B9%E6%95%B0%E7%9A%84%E6%AD%A3%E8%A7%84%E5%8C%96"><span class="nav-number">2.3.</span> <span class="nav-text">二进制浮点数的正规化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IEEE-%E8%A1%A8%E7%A4%BA%E6%B3%95"><span class="nav-number">2.4.</span> <span class="nav-text">IEEE 表示法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%8A%E5%8D%81%E8%BF%9B%E5%88%B6%E5%88%86%E6%95%B0%E8%BD%AC%E6%8D%A2%E4%B8%BA%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AE%9E%E6%95%B0"><span class="nav-number">2.5.</span> <span class="nav-text">把十进制分数转换为二进制实数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E5%8D%95%E5%85%83"><span class="nav-number">3.</span> <span class="nav-text">浮点单元</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E5%AF%84%E5%AD%98%E5%99%A8%E6%A0%88"><span class="nav-number">3.1.</span> <span class="nav-text">浮点寄存器栈</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E6%95%B0%E6%8D%AE%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">3.1.1.</span> <span class="nav-text">浮点数据寄存器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E5%AF%84%E5%AD%98%E5%99%A8%E7%9A%84%E7%94%A8%E9%80%94"><span class="nav-number">3.1.2.</span> <span class="nav-text">特殊寄存器的用途</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%91%E4%BC%BC"><span class="nav-number">3.2.</span> <span class="nav-text">近似</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E5%BC%82%E5%B8%B8"><span class="nav-number">3.3.</span> <span class="nav-text">浮点异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E6%8C%87%E4%BB%A4%E9%9B%86"><span class="nav-number">3.4.</span> <span class="nav-text">浮点指令集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%88FINIT%EF%BC%89"><span class="nav-number">3.4.1.</span> <span class="nav-text">初始化（FINIT）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.4.2.</span> <span class="nav-text">浮点数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E6%B5%AE%E7%82%B9%E5%80%BC%EF%BC%88FLD%EF%BC%89"><span class="nav-number">3.4.3.</span> <span class="nav-text">加载浮点值（FLD）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FILD-%E6%8C%87%E4%BB%A4"><span class="nav-number">3.4.4.</span> <span class="nav-text">FILD 指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E6%B5%AE%E7%82%B9%E5%80%BC%EF%BC%88FST%E3%80%81FSTP%EF%BC%89"><span class="nav-number">3.4.5.</span> <span class="nav-text">存储浮点值（FST、FSTP）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%95%B0%E8%BF%90%E7%AE%97%E6%8C%87%E4%BB%A4"><span class="nav-number">3.5.</span> <span class="nav-text">算数运算指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FCHS-%E5%92%8C-FABS"><span class="nav-number">3.5.1.</span> <span class="nav-text">FCHS 和 FABS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FADD%EF%BC%8CFADDP%EF%BC%8CFIADD"><span class="nav-number">3.5.2.</span> <span class="nav-text">FADD，FADDP，FIADD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FSUB%EF%BC%8CFSUBP%EF%BC%8CFISUB"><span class="nav-number">3.5.3.</span> <span class="nav-text">FSUB，FSUBP，FISUB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FMUL%EF%BC%8CFMULP%EF%BC%8CFIMUL"><span class="nav-number">3.5.4.</span> <span class="nav-text">FMUL，FMULP，FIMUL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FDIV%EF%BC%8CFDIVP%EF%BC%8CFIDIV"><span class="nav-number">3.5.5.</span> <span class="nav-text">FDIV，FDIVP，FIDIV</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E5%80%BC%E6%AF%94%E8%BE%83"><span class="nav-number">3.6.</span> <span class="nav-text">浮点值比较</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E8%BE%83%E6%98%AF%E5%90%A6%E7%9B%B8%E7%AD%89"><span class="nav-number">3.6.1.</span> <span class="nav-text">比较是否相等</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BB%E5%86%99%E6%B5%AE%E7%82%B9%E5%80%BC"><span class="nav-number">3.7.</span> <span class="nav-text">读写浮点值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E7%9A%84%E5%90%8C%E6%AD%A5"><span class="nav-number">3.8.</span> <span class="nav-text">异常的同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="nav-number">3.9.</span> <span class="nav-text">代码示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B7%E5%90%88%E6%A8%A1%E5%BC%8F%E8%BF%90%E7%AE%97"><span class="nav-number">3.10.</span> <span class="nav-text">混合模式运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%8F%E8%94%BD%E5%92%8C%E6%9C%AA%E5%B1%8F%E8%94%BD%E5%BC%82%E5%B8%B8"><span class="nav-number">3.11.</span> <span class="nav-text">屏蔽和未屏蔽异常</span></a></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

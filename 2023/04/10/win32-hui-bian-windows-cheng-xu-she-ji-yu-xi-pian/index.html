@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            win32汇编-windows程序设计（预习篇） |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">win32汇编-windows程序设计（预习篇）</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2023-04-10 14:06:00</span>
+        <span class="mobile">2023-04-10 14:06</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>9.8k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>39 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>《Inetel 汇编语言程序设计》这本书中涉及了很多知识点，但大多都是简单地提了一下，知识点写的并不深入。这篇 win32 汇编算是提前预习了解，后续会更加深入学习这些知识点。</p>
+<h1 id="什么是windows程序"><a href="#什么是windows程序" class="headerlink" title="什么是windows程序"></a>什么是windows程序</h1><p>用汇编写 windows 程序，这个就是 win32 汇编。windows程序是面向对象的程序，我们之前学习的内容更多的侧重于算法，按照代码的顺序执行（面向过程的程序）。windows程序是一种消息驱动的程序，根据消息传递的顺序来执行的，而不是按写代码的顺序执行的。</p>
+<h1 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h1><h2 id="控制台程序"><a href="#控制台程序" class="headerlink" title="控制台程序"></a>控制台程序</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230841647-1b3c4472-d439-4d4f-a052-5ff42575a0fb.png"
+                      alt="1"
+                ></p>
+<p><strong>补充：</strong> 在学习8086汇编的过程中，写过创建一个窗口，显示显存中的内容。控制台显示字符的原理就是：将窗口定位到显存的某个地址，再输出显示该线性地址的内容。只不过在win32中这个窗口和具体显存地址是由windows系统自动创建分配。</p>
+<h2 id="Win32-API-的参考信息"><a href="#Win32-API-的参考信息" class="headerlink" title="Win32 API 的参考信息"></a>Win32 API 的参考信息</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230845405-45ce56a2-476f-4420-933f-a787957b91cb.png"
+                      alt="2"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230845564-c8b23df9-d42c-4391-bec2-9e71525a42fe.png"
+                      alt="3"
+                ></p>
+<h2 id="高级操作和底层操作"><a href="#高级操作和底层操作" class="headerlink" title="高级操作和底层操作"></a>高级操作和底层操作</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230845804-6f88f013-1ec1-4fb1-9637-ead1b982d63c.png"
+                      alt="4"
+                ></p>
+<h2 id="windows-的数据类型"><a href="#windows-的数据类型" class="headerlink" title="windows 的数据类型"></a>windows 的数据类型</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230845974-b8cc695e-e604-421b-a198-6f75ab8c972d.png"
+                      alt="5"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230846098-57184d35-098a-48ed-95f2-5cae3f4bdce8.png"
+                      alt="6"
+                ></p>
+<h2 id="SmallWin-inc-包含文件"><a href="#SmallWin-inc-包含文件" class="headerlink" title="SmallWin.inc 包含文件"></a>SmallWin.inc 包含文件</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230846816-30d03a89-578b-4d24-b110-b4c22655bc6a.png"
+                      alt="7"
+                ></p>
+<h2 id="控制台句柄"><a href="#控制台句柄" class="headerlink" title="控制台句柄"></a>控制台句柄</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230847035-66cdefbb-b3ba-404f-a3d4-219caab57861.png"
+                      alt="8"
+                ></p>
+<h2 id="Win32控制台函数"><a href="#Win32控制台函数" class="headerlink" title="Win32控制台函数"></a>Win32控制台函数</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230848327-5d57906b-f575-4980-9096-b16c595c309e.png"
+                      alt="9"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230848664-e1d6868e-1479-4a81-a4a3-6ea9147135fd.png"
+                      alt="10"
+                ></p>
+<h2 id="显示消息框"><a href="#显示消息框" class="headerlink" title="显示消息框"></a>显示消息框</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230852854-6b646bdd-0a9b-4f1c-8f6d-6532efe52106.png"
+                      alt="11"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230853015-c8b6fb34-51cf-4ba1-81e2-66438c2817f4.png"
+                      alt="12"
+                ></p>
+<p><strong>程序清单：</strong> 由于 MessageBox 是 MessageBoxA 的别名，因此程序中使用了前者</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：MessageBox.asm</span><br><span class="line">;功能：演示 MessageBox API</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-10</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">;INCLUDE windows.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">captionW BYTE &quot;Attempt to Divide by Zero&quot;,0</span><br><span class="line">warningMsg BYTE &quot;Please check your denominator.&quot;,0</span><br><span class="line"></span><br><span class="line">captionQ BYTE &quot;Question&quot;,0</span><br><span class="line">questionMsg BYTE &quot;Do you want to know my name?&quot;,0</span><br><span class="line"></span><br><span class="line">showMyName BYTE &quot;My Name is MASM&quot;,0dh,0ah,0</span><br><span class="line"></span><br><span class="line">captionC BYTE &quot;Information&quot;,0</span><br><span class="line">infoMsg BYTE &quot;Your file was erased.&quot;,0dh,0ah</span><br><span class="line">        BYTE &quot;Notify system admin, or restore backup?&quot;,0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">;显示一条警告信息</span><br><span class="line">INVOKE MessageBox,NULL,ADDR warningMsg,</span><br><span class="line">       ADDR captionW,</span><br><span class="line">       MB_OK + MB_ICONEXCLAMATION</span><br><span class="line"></span><br><span class="line">;询问一个问题，等待回应</span><br><span class="line">INVOKE MessageBox,NULL,ADDR questionMsg,</span><br><span class="line">       ADDR captionQ,MB_YESNO + MB_ICONQUESTION</span><br><span class="line"></span><br><span class="line">    cmp eax,IDYES</span><br><span class="line">    jne L2</span><br><span class="line">;向控制台窗口写名称</span><br><span class="line">    mov edx,OFFSET showMyName</span><br><span class="line">    call WriteString</span><br><span class="line">;更复杂的按钮，可能会让用户迷惑</span><br><span class="line">L2:</span><br><span class="line">    INVOKE MessageBox,NULL,ADDR infoMsg,ADDR captionC,MB_YESNOCANCEL + MB_ICONEXCLAMATION + MB_DEFBUTTON2</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231049031-ea9fa548-53f2-4e3c-9b1b-437e298f2c23.png"
+                      alt="13"
+                ></p>
+<h2 id="控制台输入"><a href="#控制台输入" class="headerlink" title="控制台输入"></a>控制台输入</h2><p>本书中的 ReadString 和 ReadChar 过程，都是 Win32 API 函数 ReadConsole 的封装。<br><strong>控制台输入缓冲区：</strong> Win32 控制台有一个输入缓冲区，其中包含一个输入动作记录的队列，每个输入动作，如键盘敲击、鼠标移动、按下鼠标等，都会在缓冲区中产生一条记录。高级操作函数如 ReadConsole 等过滤并处理这些输入数据，只返回字符流。</p>
+<h3 id="ReadConsole-函数"><a href="#ReadConsole-函数" class="headerlink" title="ReadConsole 函数"></a>ReadConsole 函数</h3><p>ReadConsole 函数提供了一种把文本输入到读取到一个缓冲区中的便捷方法，函数原型如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ReadConsole PROTO,</span><br><span class="line">    hConsoleInput:HANDLE,   ;输入句柄</span><br><span class="line">    lpBuffer:PTR BYTE,      ;缓冲区地址指针</span><br><span class="line">    nNumberOfCharsToRead:DWORD,     ;要读取的字符数量</span><br><span class="line">    lpNumberOfCharsRead:PTR DWORD,  ;指向返回实际读取数量大小的指针</span><br><span class="line">    lpReserved:DWORD                ;（保留）</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>hConsoleInput 参数是 GetStdHandle 函数返回的有效输入句柄</li>
+<li>lpBuffer 参数指向一个字符缓冲区</li>
+<li>nNumberOfCharsToRead 参数是一个 32 位整数，指定了要读取字符的最大数量</li>
+<li>lpNumberOfCharsRead 参数是指向一个双字变量的指针，函数运行时会填写该变量，它返回实际读取到缓冲区中的字符数量。</li>
+<li>最后一个参数未使用，使用时要传递一个数值（比如：0）</li>
+</ul>
+<p>除了用户输入以外，调用 ReadConsole 读入输入缓冲区中的文本还包含两个额外的字符————行结束符（回车和换行符）。欲使输入缓冲区中的文本以 0 结尾，那么应该把包含 0Dh（回车）的字节替换为 0，ReadString 就是这样做的。</p>
+<p><strong>例子程序：</strong> 写一个程序读取用户输入的字符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：ReadConsole.asm</span><br><span class="line">;功能：读取用户输入的字符</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-11</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">BufSize = 80</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">buffer BYTE BufSize DUP(?),0,0</span><br><span class="line">stdInHandle HANDLE ?</span><br><span class="line">bytesRead DWORD ?</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    ;获取标准输入句柄</span><br><span class="line">    INVOKE GetStdHandle,STD_INPUT_HANDLE</span><br><span class="line">    mov stdInHandle,eax</span><br><span class="line"></span><br><span class="line">    ;等待用户输入</span><br><span class="line">    INVOKE ReadConsole,stdInHandle,ADDR buffer,BufSize - 2,ADDR bytesRead,0</span><br><span class="line"></span><br><span class="line">    ;显示缓冲区内容</span><br><span class="line">    mov esi,OFFSET buffer</span><br><span class="line">    mov ecx,bytesRead</span><br><span class="line">    mov ebx,TYPE buffer</span><br><span class="line">    call DumpMem</span><br><span class="line"></span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231066401-9fa6c4a0-c4a4-412e-9fd0-d9ccedd03616.png"
+                      alt="14"
+                ></p>
+<h3 id="错误检查"><a href="#错误检查" class="headerlink" title="错误检查"></a>错误检查</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231066711-620b9bc0-765a-443c-9109-ca56ea7dffbe.png"
+                      alt="15"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231117891-34f431d3-8d7e-4a82-a31d-9ab4069dc92c.png"
+                      alt="16"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231118013-905b5d9c-5fab-4add-97d9-bae9ae8997ce.png"
+                      alt="17"
+                ></p>
+<h3 id="单字符的输入"><a href="#单字符的输入" class="headerlink" title="单字符的输入"></a>单字符的输入</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231118893-beee6afc-d48a-455f-89aa-4a09b5124d01.png"
+                      alt="18"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231119105-0bc2d22b-46d4-4fbf-a9f5-a52e1680f4d6.png"
+                      alt="19"
+                ></p>
+<p><strong>ReadKey测试程序:</strong> 下面的程序测试 ReadKey，程序使用一个循环延时等待按键输入，然后输出是否按下了 CapsLock 键。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：TestReadkey.asm</span><br><span class="line">;功能：使用一个循环延时等待按键输入，然后输出是否按下了 CapsLock 键。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-11</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">INCLUDE Macros.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">L1:</span><br><span class="line">    mov eax,10      ;延时等待键盘输入</span><br><span class="line">    call Delay</span><br><span class="line">    call ReadKey</span><br><span class="line">    jz L1</span><br><span class="line"></span><br><span class="line">    test ebx,CAPSLOCK_ON</span><br><span class="line">    jz L2</span><br><span class="line">    mWrite &lt;&quot;CapsLock is ON&quot;,0dh,0ah&gt;</span><br><span class="line">    jmp L3</span><br><span class="line">L2:</span><br><span class="line">    mWrite &lt;&quot;CapsLock is OFF&quot;,0dh,0ah&gt;</span><br><span class="line">L3:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231199828-5040c451-5f95-4553-942d-4b85113ded0a.png"
+                      alt="20"
+                ></p>
+<h3 id="获取键盘状态"><a href="#获取键盘状态" class="headerlink" title="获取键盘状态"></a>获取键盘状态</h3><p>调用 GetKeyState API 函数可以测试单个按键的状态，查看其是否正被按下。函数原型如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GetKeyState PROTO,nVirtKey:DWORD</span><br></pre></td></tr></table></figure>
+<p>调用 GetKeyState 时，应传递一个要检查按键的虚拟键码，在函数返回后，应测试EAX中的相应位是否置位了。一些虚拟键码的值以及应检查的对应数据位如下表：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231203164-390eb27c-6796-405f-8ce9-1338436fbc26.png"
+                      alt="21"
+                ></p>
+<p>下面的例子程序演示了 GetKeyState 的用法，程序检查了NumLock 和 左Shift按键状态：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：Keybd.asm</span><br><span class="line">;功能：检查了NumLock 和 左Shift按键状态</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-11</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">INCLUDE Macros.inc</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    INVOKE GetKeyState,VK_NUMLOCK</span><br><span class="line">    test al,1</span><br><span class="line">    .IF !Zero?</span><br><span class="line">        mWrite &lt;&quot;The NumLock ke is ON&quot;,0dh,0ah&gt;</span><br><span class="line">    .ENDIF</span><br><span class="line">    INVOKE GetKeyState,VK_LSHIFT</span><br><span class="line">    test al,80h</span><br><span class="line">    .IF !Zero?</span><br><span class="line">        mWrite &lt;&quot;The Left Shift ke is currently DOWN&quot;,0dh,0ah&gt;</span><br><span class="line">    .ENDIF</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+<h2 id="控制台输出"><a href="#控制台输出" class="headerlink" title="控制台输出"></a>控制台输出</h2><p>在第5章介绍的 Irvine32 链接库中的 WriteSring 过程只要一个参数：通过 EDX 传递的字符串地址。事实上，WriteString 过程是对 win32 函数 WriteConsole 的封装，调用后者时处理的细节要更多一些。</p>
+<h3 id="相关的数据结构"><a href="#相关的数据结构" class="headerlink" title="相关的数据结构"></a>相关的数据结构</h3><p>一些 win32 控制台函数使用预定义的数据结构，如 COORD 和 SMALL_Rect 结构。COORD 结构用于存放字符在控制台屏幕缓冲区中的坐标，坐标系的远点(0,0)在屏幕的 左上角：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">COORD STRUCT</span><br><span class="line">    X WORD ?</span><br><span class="line">    Y WORD ?</span><br><span class="line">COORD ENDS</span><br></pre></td></tr></table></figure>
+
+<p>SMALL_RECT 结构用于存放矩形区域的左上角和右小角坐标，它制定了控制台窗口中的一块矩形区域：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SMALL_RECT STRUCT</span><br><span class="line">    Left WORD ?</span><br><span class="line">    Top WORD ?</span><br><span class="line">    Right WORD ?</span><br><span class="line">    Bottom WORD ?</span><br><span class="line">SMALL_RECT ENDS</span><br></pre></td></tr></table></figure>
+
+<h3 id="WriteConsole-函数"><a href="#WriteConsole-函数" class="headerlink" title="WriteConsole 函数"></a>WriteConsole 函数</h3><p>WriteConsole 函数在控制台窗口中的当前光标位置显示一个字符串并前进光标，支持标准的 ASCII 控制符。要显示字符串不必以0结尾。函数原型如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">WriteConsole PROTO,</span><br><span class="line">    hConsoleOutput:HANDLE,</span><br><span class="line">    lpBuffer:PTR BYTE,</span><br><span class="line">    nNumberOfCharsToWrite:DWORD,</span><br><span class="line">    lpNumberOfCharsWritten:PTR DWORD,</span><br><span class="line">    lpReserved:DWORD</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第一个参数 hConsoleOutput：控制台输出句柄</li>
+<li>第二个参数 lpBuffer：指向要显示的字符串的指针</li>
+<li>第三个参数 nNumberOfCharsToWrite 指定了要显示的字符串长度</li>
+<li>第四个参数 lpNumberOfCharsWritten 指向一个整数变量，函数通过该变量返回实际输出的字符数量</li>
+<li>最后一个参数保留未用，在使用的时候把它置为0</li>
+</ul>
+<p><strong>例子程序：Console</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">;-----------------------------------------------------</span><br><span class="line">;程序名：Console.asm</span><br><span class="line">;功能：在控制台窗口显示一个字符串，以此示范 GetStdHandle，</span><br><span class="line">;ExitProcess 和 WriteConsole 函数的用法。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-2-13</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">end1 EQU &lt;0dh,0ah&gt;</span><br><span class="line"></span><br><span class="line">Message LABEL BYTE</span><br><span class="line">    BYTE &quot;This is a simple demonstration of&quot;</span><br><span class="line">    BYTE &quot;Console mode output,using the GetStdHandle&quot;</span><br><span class="line">    BYTE &quot;and WriteConsole functions.&quot;,end1</span><br><span class="line">messageSize DWORD ($-Message)</span><br><span class="line"></span><br><span class="line">consoleHandle HANDLE 0  ;标准输出设备句柄</span><br><span class="line">bytesWritten DWORD ?    ;一输出的字符数量</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    ;获取句柄</span><br><span class="line">    INVOKE GetStdHandle,STD_OUTPUT_HANDLE</span><br><span class="line">    mov consoleHandle,eax</span><br><span class="line">    ;在控制台显示一个字符串</span><br><span class="line">    INVOKE WriteConsole,</span><br><span class="line">    consoleHandle,</span><br><span class="line">    ADDR Message,</span><br><span class="line">    messageSize,</span><br><span class="line">    bytesWritten,</span><br><span class="line">    0</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h3 id="WriteConsoleOutputCharacter-函数"><a href="#WriteConsoleOutputCharacter-函数" class="headerlink" title="WriteConsoleOutputCharacter 函数"></a>WriteConsoleOutputCharacter 函数</h3><p>WriteConsoleOutputCharacter 函数将一定数量的字符复制到屏幕缓冲区从指定位置开始的连续空间中。函数原型如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">WriteConsoleOutputCharacter PROTO,</span><br><span class="line">    hConsoleOutput:HANDLE,              ;控制台缓冲区句柄</span><br><span class="line">    lpcharacter:PTR BYTE,               ;字符串缓冲区地址</span><br><span class="line">    nLength:DWORD,                      ;缓冲区大小</span><br><span class="line">    dwWriteCoord:COORD,                 ;首字符的坐标</span><br><span class="line">    lpNumberOfCharsWritten:PTR DWORD    ;实际输出字符的数量</span><br></pre></td></tr></table></figure>
+
+<p>输出字符的时候，如果到达屏幕行的末尾，那么自动换行。该函数不影响控制台缓冲区中原有字符的属性值。如果函数无法输出字符，返回值为0，忽略字符串中的 ASCII 控制字符，如制表符、回车符和换行符。</p>
+<h2 id="文件的读写"><a href="#文件的读写" class="headerlink" title="文件的读写"></a>文件的读写</h2><h3 id="CreateFile-函数"><a href="#CreateFile-函数" class="headerlink" title="CreateFile 函数"></a>CreateFile 函数</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231468232-ffed9151-cfba-4851-953e-36fc5d57073d.png"
+                      alt="22"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231468625-9812fc59-9163-44d0-931c-27998196ec54.png"
+                      alt="23"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231468865-91f756e1-9ef8-4302-b377-b85c9b04a2eb.png"
+                      alt="24"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231473229-141f5ea9-9704-4985-8213-6f88d49baabc.png"
+                      alt="25"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231474289-bcc80bad-c3f7-427a-ab01-ea85999147f1.png"
+                      alt="26"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231474456-3b9cf708-b5bc-4211-98dd-b45a0a856048.png"
+                      alt="27"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231475074-116caefd-4319-4668-b9f8-abdb71937771.png"
+                      alt="28"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231475330-94edb84e-3a52-43cf-b9d3-09a4f73dd089.png"
+                      alt="29"
+                ></p>
+<h2 id="Irvine32-库的文件-I-x2F-O-过程"><a href="#Irvine32-库的文件-I-x2F-O-过程" class="headerlink" title="Irvine32 库的文件 I&#x2F;O 过程"></a>Irvine32 库的文件 I&#x2F;O 过程</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231476440-cc820b12-658b-4b35-ad4f-c8ca712eadf3.png"
+                      alt="30"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231476609-7e2ba032-ec23-4575-b331-3fd1527dcc16.png"
+                      alt="31"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/231476793-92a47659-c3fd-4994-abdd-f62a186adcfc.png"
+                      alt="32"
+                ></p>
+<h2 id="测试文件-I-x2F-O-过程"><a href="#测试文件-I-x2F-O-过程" class="headerlink" title="测试文件 I&#x2F;O 过程"></a>测试文件 I&#x2F;O 过程</h2><h3 id="演示创建文件的例子程序"><a href="#演示创建文件的例子程序" class="headerlink" title="演示创建文件的例子程序"></a>演示创建文件的例子程序</h3><p>下面的程序创建了一个输出文件，要求用户输入一段文本，然后把文本写入输出文件并报告已写入字节数，最后关闭文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">;-------------------------------------------------------</span><br><span class="line">;程序名：CreateFile.asm</span><br><span class="line">;功能：创建一个输出文件，要求用户输入一段文本，</span><br><span class="line">;然后把文本写入输出文件并报告已写入字节数，最后关闭文件。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-15</span><br><span class="line">;-------------------------------------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">BUFFER_SIZE = 501</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">buffer BYTE BUFFER_SIZE DUP(?)</span><br><span class="line">filename BYTE &quot;output.txt&quot;,0</span><br><span class="line">fileHandle HANDLE ?</span><br><span class="line">stringLength DWORD ?</span><br><span class="line">bytesWritten DWORD ?</span><br><span class="line">str1 BYTE &quot;Cannot create file&quot;,0dh,0ah,0</span><br><span class="line">str2 BYTE &quot;Bytes written to file [output.txt]: &quot;,0</span><br><span class="line">str3 BYTE &quot;Enter up to 500 characters and press&quot;</span><br><span class="line">     BYTE &quot;[Enter]: &quot;,0dh,0ah,0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    ;创建一个新的文本文件</span><br><span class="line">    mov edx,OFFSET filename</span><br><span class="line">    call CreateOutputFile</span><br><span class="line">    mov fileHandle,eax</span><br><span class="line"></span><br><span class="line">    ;检查错误</span><br><span class="line">    cmp eax,INVALID_HANDLE_VALUE</span><br><span class="line">    jne file_ok</span><br><span class="line">    mov edx,OFFSET str1</span><br><span class="line">    call WriteString</span><br><span class="line">    jmp quit</span><br><span class="line">file_ok:</span><br><span class="line">    ;要求用户输入一个字符串</span><br><span class="line">    mov edx,OFFSET str3</span><br><span class="line">    call WriteString</span><br><span class="line">    mov ecx,BUFFER_SIZE</span><br><span class="line">    mov edx,OFFSET buffer</span><br><span class="line">    call ReadString</span><br><span class="line">    mov StringLength,eax</span><br><span class="line">    ;把缓冲区写入输出文件</span><br><span class="line">    mov eax,fileHandle</span><br><span class="line">    mov edx,OFFSET buffer</span><br><span class="line">    mov ecx,StringLength</span><br><span class="line">    call WriteToFile</span><br><span class="line">    mov bytesWritten,eax</span><br><span class="line">    call CloseFile</span><br><span class="line">    ;显示返回值</span><br><span class="line">    mov edx,OFFSET str2</span><br><span class="line">    call WriteString</span><br><span class="line">    mov eax,bytesWritten</span><br><span class="line">    call WriteDec</span><br><span class="line">    call Crlf</span><br><span class="line">quit:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h3 id="演示读取文件的例子程序"><a href="#演示读取文件的例子程序" class="headerlink" title="演示读取文件的例子程序"></a>演示读取文件的例子程序</h3><p>下面的程序打开一个文件用于输入，把它的内容读入一个缓冲区，然后显示缓冲区的内容调用的所有过程都是 Irvine32 库中的过程：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：ReadFile.asm</span><br><span class="line">;功能：打开一个文件用于输入，把它的内容读入一个缓冲区，然后显示缓冲区的内容。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-15</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">INCLUDE macros.inc</span><br><span class="line">BUFFER_SIZE = 5000</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">buffer BYTE BUFFER_SIZE DUP(?)</span><br><span class="line">filename BYTE 80 DUP(?)</span><br><span class="line">fileHandle HANDLE ?</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    ;允许用户输入一个文件名</span><br><span class="line">    mWrite &quot;Enter an input filename: &quot;</span><br><span class="line">    mov edx,OFFSET filename</span><br><span class="line">    mov ecx,SIZEOF filename</span><br><span class="line">    call ReadString</span><br><span class="line">    ;打开文件用于输入</span><br><span class="line">    mov edx,OFFSET filename</span><br><span class="line">    call OpenInputFile</span><br><span class="line">    mov fileHandle,eax</span><br><span class="line">    ;检查错误</span><br><span class="line">    cmp eax,INVALID_HANDLE_VALUE</span><br><span class="line">    jne file_ok</span><br><span class="line">    mWrite &lt;&quot;Cannot open file&quot;,0dh,0ah&gt;</span><br><span class="line">    jmp quit</span><br><span class="line">file_ok:</span><br><span class="line">    ;把文件内容读入一个缓冲区</span><br><span class="line">    mov edx,OFFSET buffer</span><br><span class="line">    mov ecx,BUFFER_SIZE</span><br><span class="line">    call ReadFromFile</span><br><span class="line">    jnc check_buffer_size</span><br><span class="line">    mWrite &quot;Error reading file.&quot;</span><br><span class="line">    call WriteWindowsMsg</span><br><span class="line">    jmp close_file</span><br><span class="line">check_buffer_size:</span><br><span class="line">    cmp eax,BUFFER_SIZE</span><br><span class="line">    jb buf_size_ok</span><br><span class="line">    mWrite &lt;&quot;Error: Buffer too small for the file&quot;,0dh,0ah&gt;</span><br><span class="line">    jmp quit</span><br><span class="line">buf_size_ok:</span><br><span class="line">    mov buffer[eax],0</span><br><span class="line">    mWrite &quot;File size: &quot;</span><br><span class="line">    call WriteDec</span><br><span class="line">    call Crlf</span><br><span class="line">;显示缓冲区内容</span><br><span class="line">    mWrite &lt;&quot;Buffer:&quot;,0dh,0ah,0dh,0ah&gt;</span><br><span class="line">    mov edx,OFFSET buffer</span><br><span class="line">    call WriteString</span><br><span class="line">    call Crlf</span><br><span class="line">close_file:</span><br><span class="line">    mov eax,fileHandle</span><br><span class="line">    call CloseFile</span><br><span class="line">quit:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="控制台窗口的操作"><a href="#控制台窗口的操作" class="headerlink" title="控制台窗口的操作"></a>控制台窗口的操作</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/232203338-f4326977-73cb-4246-9dbf-0c81d7a2cc36.png"
+                      alt="33"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/232203367-ba72ee8a-dc4c-4da5-9e1c-a0f8fab96d2f.png"
+                      alt="34"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/232203651-a2ba2e88-a4ed-44fd-a51d-167b8bab0a4f.png"
+                      alt="35"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/232204135-c5e33dfd-8e77-48b3-b814-b3cc724ffd8b.png"
+                      alt="36"
+                ></p>
+<p>下面的 SCroll.asm 程序在屏幕缓冲区上显示 50 行文本，然后改变控制台窗口的大小和位置，达到有效地回滚文字地效果。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">;----------------------------------------------------------</span><br><span class="line">;程序名：Scroll.asm</span><br><span class="line">;功能：在屏幕缓冲区上显示50行文本，然后改变控制台窗口的位置和大小，达到有效地回滚文字地效果。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-15</span><br><span class="line">;----------------------------------------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">message BYTE &quot;: This line of text was Written &quot;</span><br><span class="line">        BYTE &quot;to the screen buffer&quot;,0dh,0ah</span><br><span class="line">messageSize DWORD ($-message)</span><br><span class="line"></span><br><span class="line">outHandle HANDLE 0</span><br><span class="line">bytesWritten DWORD ?</span><br><span class="line">lineNum DWORD 0</span><br><span class="line">;左上：0列，0行；右下：60列，11行</span><br><span class="line">windowRect SMALL_RECT &lt;0,0,60,11&gt;</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    INVOKE GetStdHandle,STD_OUTPUT_HANDLE</span><br><span class="line">    mov outHandle,eax</span><br><span class="line">.REPEAT</span><br><span class="line">    mov eax,lineNum</span><br><span class="line">    call WriteDec</span><br><span class="line">    INVOKE WriteConsole,</span><br><span class="line">    outHandle,</span><br><span class="line">    ADDR message,</span><br><span class="line">    messageSize,</span><br><span class="line">    ADDR bytesWritten,</span><br><span class="line">    0</span><br><span class="line">    inc lineNum</span><br><span class="line">.UNTIL lineNum &gt; 50</span><br><span class="line">;调整控制台窗口相对于屏幕缓冲区的大小并重新定位</span><br><span class="line">    INVOKE SetConsoleWindowInfo,</span><br><span class="line">    outHandle,</span><br><span class="line">    TRUE,</span><br><span class="line">    ADDR windowRect ;窗口大小</span><br><span class="line"></span><br><span class="line">    call Readchar   ;等待按键</span><br><span class="line">    call Clrscr     ;清除屏幕缓冲区</span><br><span class="line">    call Readchar   ;等待第二次按键</span><br><span class="line"></span><br><span class="line">    INVOKE ExitProcess,0</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/232206262-a42ebf82-e9cd-493d-a1f3-a6586b3f7570.png"
+                      alt="37"
+                ></p>
+<h2 id="光标的控制"><a href="#光标的控制" class="headerlink" title="光标的控制"></a>光标的控制</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/232206358-ca79196d-4938-4792-bf4e-e61f18dc1366.png"
+                      alt="38"
+                ></p>
+<h2 id="文本颜色的控制"><a href="#文本颜色的控制" class="headerlink" title="文本颜色的控制"></a>文本颜色的控制</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/232206400-70b6e5eb-4783-4c02-87ee-c33de89408c9.png"
+                      alt="39"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/232206522-49f5cd8d-0fc2-4088-a99b-58b9322916b4.png"
+                      alt="40"
+                ></p>
+<h3 id="WriteColors"><a href="#WriteColors" class="headerlink" title="WriteColors"></a>WriteColors</h3><p>例子程序 WriteColors.asm 创建一个字符数组和一个属性数组，属性数组里面的每个属性对应字符数组里面的一个字符。程序调用 WriteConsoleOutputAttribute 函数把颜色属性复制到屏幕缓冲区中，然后调用 WriteConsoleOutputCharacter 函数把字符复制到屏幕缓冲区中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">;------------------------------------------------------------</span><br><span class="line">;程序名：WriteColors.asm</span><br><span class="line">;功能：创建一个字符数组和一个属性数组，属性数组里面的每个属性对应字符数组里面的一个字符。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-2-13</span><br><span class="line">;------------------------------------------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">.data</span><br><span class="line">outHandle HANDLE ?</span><br><span class="line">cellsWriten DWORD ?</span><br><span class="line">xyPos COORD &lt;10,2&gt;</span><br><span class="line"></span><br><span class="line">;字符代码数组</span><br><span class="line">buffer BYTE 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20</span><br><span class="line">BUFSIZE DWORD ($-buffer)</span><br><span class="line">;字符颜色数组</span><br><span class="line">attributes WORD 0Fh,0Eh,0Dh,0Ch,0Bh,0Ah,9,8,7,6</span><br><span class="line">           WORD 5,4,3,2,1,0F0h,0E0h,0D0h,0C0h,0B0h</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    ;获取控制台标准输出的句柄</span><br><span class="line">    INVOKE GetStdHandle,STD_OUTPUT_HANDLE</span><br><span class="line">    mov outHandle,eax</span><br><span class="line"></span><br><span class="line">    ;设置相邻连续字符的颜色</span><br><span class="line">    INVOKE WriteConsoleOutputAttribute,</span><br><span class="line">        outHandle,ADDR attributes,</span><br><span class="line">        BufSize,xyPos,</span><br><span class="line">        ADDR cellsWriten</span><br><span class="line"></span><br><span class="line">    ;输出 1 到 20 的字符代码</span><br><span class="line">    INVOKE WriteConsoleOutputCharacter,</span><br><span class="line">        outHandle,ADDR buffer,BUFSIZE,</span><br><span class="line">        xyPos,ADDR cellsWriten</span><br><span class="line"></span><br><span class="line">    INVOKE ExitProcess,0</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/232207725-98894c38-5beb-4e48-a84b-8a1dd9030eaf.png"
+                      alt="41"
+                ></p>
+<blockquote>
+<p>严格意义上来说颜色和字符复制的缓冲区不在同一个位置，只是函数忽略了这个细节，看上去是同一个位置。学过 8086 汇编的都应该能理解。</p>
+</blockquote>
+<h2 id="时间和日期函数"><a href="#时间和日期函数" class="headerlink" title="时间和日期函数"></a>时间和日期函数</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/232264694-fb91739a-c808-4c27-b03d-bf5ac750c5e5.png"
+                      alt="42"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/232264724-d6b8bd3a-a5cc-41da-8135-c9d51e6e69c2.png"
+                      alt="43"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/232264756-eda6dd18-85e4-49bd-8d3b-ee9245f1aee2.png"
+                      alt="44"
+                ><br>下面的例子程序 Timer.asm 测量两次调用 GetTickCount 之间经过的时间，并检查时间计数器值是否发生回滚（超过49.7天）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">;-------------------------------------------------</span><br><span class="line">;程序名：Timer.asm</span><br><span class="line">;功能：调用两次 GetTickCount 监控系统经过的时间，</span><br><span class="line">;并检查时间计数器值是否发生了回滚。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-16</span><br><span class="line">;--------------------------------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">INCLUDE macros.inc</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">startTime DWORD ?</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    INVOKE GetTickCount</span><br><span class="line">    mov startTime,eax</span><br><span class="line"></span><br><span class="line">    ;创建一个无用的循环</span><br><span class="line">    mov ecx,10000100h</span><br><span class="line">L1:</span><br><span class="line">    imul ebx</span><br><span class="line">    imul ebx</span><br><span class="line">    imul ebx</span><br><span class="line">    loop L1</span><br><span class="line"></span><br><span class="line">    INVOKE GetTickCount</span><br><span class="line">    cmp eax,startTime</span><br><span class="line">    jb error</span><br><span class="line"></span><br><span class="line">    sub eax,startTime</span><br><span class="line">    call WriteDec</span><br><span class="line">    mWrite &lt;&quot; milliseconds have elapased&quot;,0dh,0ah&gt;</span><br><span class="line">    jmp quit</span><br><span class="line">error:</span><br><span class="line">    mWrite &quot;Error: GetTickCOunt invalid--system has&quot;</span><br><span class="line">    mWrite &lt;&quot;been active for more than 49.7 days&quot;,0dh,0ah&gt;</span><br><span class="line">quit:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/232265270-31b5054c-a7c3-4760-ae75-790f8e9419ca.png"
+                      alt="45"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/232265304-4a607a09-147e-41e1-a421-3727f5994ebb.png"
+                      alt="46"
+                ></p>
+<h1 id="编写windows-图形界面应用程序"><a href="#编写windows-图形界面应用程序" class="headerlink" title="编写windows 图形界面应用程序"></a>编写windows 图形界面应用程序</h1><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/232265340-afe08cf6-3603-45c4-bb50-c84754301135.png"
+                      alt="47"
+                ></p>
+<h2 id="必须了解的数据结构"><a href="#必须了解的数据结构" class="headerlink" title="必须了解的数据结构"></a>必须了解的数据结构</h2><h3 id="POINT-结构"><a href="#POINT-结构" class="headerlink" title="POINT 结构"></a>POINT 结构</h3><p>POINT 结构定义了以像素为单位的屏幕上某个点的 X 和 Y 坐标，它可以用来定位屏幕上的某个对象的坐标，如图形对象、窗口、鼠标点击时的位置等：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">POINT STRUCT</span><br><span class="line">    ptX DWORD ?</span><br><span class="line">    ptY DWORD ?</span><br><span class="line">POINT ENDS</span><br></pre></td></tr></table></figure>
+
+<h3 id="RECT-结构"><a href="#RECT-结构" class="headerlink" title="RECT 结构"></a>RECT 结构</h3><p>RECT 结构定义了一个矩形边界，left 字段为矩形左边界 X 坐标，top 字段为矩形顶边的 Y 坐标。right 和  bottom 字段值定义了矩形右下角的坐标：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">RECT STRUCT</span><br><span class="line">    left    DWORD ?</span><br><span class="line">    top     DWORD ?</span><br><span class="line">    right   DWORD ?</span><br><span class="line">    bottom  DWORD ?</span><br><span class="line">RECT ENDS</span><br></pre></td></tr></table></figure>
+
+<h3 id="MSGStruct-结构"><a href="#MSGStruct-结构" class="headerlink" title="MSGStruct 结构"></a>MSGStruct 结构</h3><p>MSGStruct 结构定义了 Windows 消息需要的相关数据：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">MSGStruct STRUCT</span><br><span class="line">    msgWnd DWORD ?</span><br><span class="line">    msgMessage DWORD ?</span><br><span class="line">    msgWparam DWORD ?</span><br><span class="line">    msgLparam DWORD ?</span><br><span class="line">    msgTime DWORD ?</span><br><span class="line">    msgPt   POINT &lt;&gt;</span><br><span class="line">MSGStruct ENDS</span><br></pre></td></tr></table></figure>
+
+<h3 id="WNDCLASS-结构"><a href="#WNDCLASS-结构" class="headerlink" title="WNDCLASS 结构"></a>WNDCLASS 结构</h3><p>WNDCLASS 结构定义了一个窗口类，程序中的每个窗口必须属于一个窗口类，所以每个程序必须为它的主窗口创建窗口类。在能够显示主窗口之前，窗口类必须先在系统里面注册：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">WNDCLESS STRUCT</span><br><span class="line">    style           DWORD ?     ;窗口风格</span><br><span class="line">    lpfnWndProc     DWORD ?     ;窗口过程地址</span><br><span class="line">    cbClsExtra      DWORD ?     ;共享内存</span><br><span class="line">    cbWndExtra      DWORD ?     ;额外定义的数据</span><br><span class="line">    hInstance       DWORD ?     ;当前程序的句柄</span><br><span class="line">    hIcon           DWORD ?     ;图标句柄</span><br><span class="line">    hCursor         DWORD ?     ;光标句柄</span><br><span class="line">    hbrBackground   DWORD ?     ;背景画刷句柄</span><br><span class="line">    lpszMeunName    DWORD ?     ;菜单名称的指针</span><br><span class="line">    lpszClassName   DWORD ?     ;类名名称的指针 </span><br><span class="line">WNDCLASS ENDS</span><br></pre></td></tr></table></figure>
+<p>以下是这些字段的简要介绍：</p>
+<ul>
+<li>style 是一些不同风格选项的组合，如 WS_CAPTION 和 WS_BORDER，这个字段影响窗口的外观和行为。</li>
+<li>lpfnWndProc 是指向一个子程序的指针，这个子程序在我们自己的程序中，用来接收由用户触发的事件消息。</li>
+<li>cbWndExtra 参数为每个窗口实例分配一些额外内存</li>
+<li>hInstance 参数用来保存当前运行程序的句柄</li>
+<li>hIcon 和 hCursor 参数为当前程序原使用的图标和光标句柄</li>
+<li>hbrBackground 参数为背景颜色画刷的句柄。</li>
+<li>lpszMeunName 指向一个菜单名称字符串。</li>
+<li>lpszClassName 指向一个 0 结尾的窗口类名称字符串。</li>
+</ul>
+<h2 id="MessageBox-函数"><a href="#MessageBox-函数" class="headerlink" title="MessageBox 函数"></a>MessageBox 函数</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/232290451-043c9401-dfdf-4cf6-8522-10ca428f24d5.png"
+                      alt="48"
+                ></p>
+<h2 id="WinMain-过程"><a href="#WinMain-过程" class="headerlink" title="WinMain 过程"></a>WinMain 过程</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/232290746-89682685-5604-4843-aa93-add9994ffafa.png"
+                      alt="49"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/232290781-410c29f5-2c38-418e-a972-e16421b31a58.png"
+                      alt="50"
+                ></p>
+<h2 id="ErrorHandler-过程"><a href="#ErrorHandler-过程" class="headerlink" title="ErrorHandler 过程"></a>ErrorHandler 过程</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/232290840-dc65bc92-a789-4a6b-b543-4d403fa38c9f.png"
+                      alt="51"
+                ></p>
+<h2 id="程序清单"><a href="#程序清单" class="headerlink" title="程序清单"></a>程序清单</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br></pre></td><td class="code"><pre><span class="line">;-------------------------------------------------------</span><br><span class="line">;程序名：WinApp.asm</span><br><span class="line">;功能：这个程序会显示可调整大小的窗口，并且弹出若干个消息框，</span><br><span class="line">;特别感谢 Tom Joyce 提供本程序的第一个版本。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-17</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">INCLUDE GraphWin.inc</span><br><span class="line"></span><br><span class="line">;================================DATA================================================</span><br><span class="line">.data</span><br><span class="line">AppLoadMsgTitle BYTE &quot;Application Loaded&quot;,0</span><br><span class="line">AppLoadMsgText  BYTE &quot;This window was activated by a &quot;</span><br><span class="line">                BYTE &quot;VM_LBUTTONDOWN message&quot;,0</span><br><span class="line">PopupTitle      BYTE &quot;Popup Window&quot;,0</span><br><span class="line">PopupText       BYTE &quot;Main Window was activated by a&quot;</span><br><span class="line">                BYTE &quot;WM_LBUTTONDOWN message&quot;,0</span><br><span class="line">GreetTitle      BYTE &quot;Main window Active&quot;,0</span><br><span class="line">GreetText       BYTE &quot;This window is shown immediately after &quot;</span><br><span class="line">                BYTE &quot;CreateWindow and UpdateWindow are called.&quot;,0</span><br><span class="line"></span><br><span class="line">CloseMsg        BYTE &quot;WM_CLOSE message received&quot;,0</span><br><span class="line"></span><br><span class="line">ErrorTitle      BYTE &quot;Error&quot;,0</span><br><span class="line">WindowName      BYTE &quot;ASM Windows App&quot;,0</span><br><span class="line">className       BYTE &quot;ASMWin&quot;,0</span><br><span class="line"></span><br><span class="line">;定义应用程序的窗口类结构</span><br><span class="line">MainWin WNDCLASS &lt;NULL,WinProc,NULL,NULL,NULL,NULL,NULL,COLOR_WINDOW,NULL,className&gt;</span><br><span class="line"></span><br><span class="line">msg MSGStruct &lt;&gt;</span><br><span class="line">winRect RECT &lt;&gt;</span><br><span class="line">hMainWnd DWORD ?</span><br><span class="line">hInstance DWORD ?</span><br><span class="line"></span><br><span class="line">;=================================CODE================================================</span><br><span class="line">.code</span><br><span class="line">WinMain PROC</span><br><span class="line">    ;获取当前进程的句柄</span><br><span class="line">    INVOKE GetModuleHandle,NULL</span><br><span class="line">    mov hInstance,eax</span><br><span class="line">    mov MainWin.hInstance,eax</span><br><span class="line">    ;加载程序的光标和图标</span><br><span class="line">    INVOKE LoadIcon,NULL,IDI_APPLICATION</span><br><span class="line">    mov MainWin.hIcon,eax</span><br><span class="line">    INVOKE LoadCursor,NULL,IDC_ARROW</span><br><span class="line">    mov MainWin.hCursor,eax</span><br><span class="line">    ;注册窗口类</span><br><span class="line">    INVOKE RegisterClass,ADDR MainWin</span><br><span class="line">    .IF eax==0</span><br><span class="line">        call ErrorHandler</span><br><span class="line">        jmp Exit_Program</span><br><span class="line">    .ENDIF</span><br><span class="line">    ;创建应用程序的主窗口</span><br><span class="line">    INVOKE CreateWindowEx,0,ADDR className,ADDR WindowName,MAIN_WINDOW_STYLE,CW_USEDEFAULT,CW_USEDEFAULT,CW_USEDEFAULT,CW_USEDEFAULT,</span><br><span class="line">    NULL,NULL,hInstance,NULL</span><br><span class="line">    ;如果 CreateWindowEx 失败，显示一条消息并退出</span><br><span class="line">    .IF eax == 0</span><br><span class="line">        call ErrorHandler</span><br><span class="line">        jmp Exit_Program</span><br><span class="line">    .ENDIF</span><br><span class="line">    ;保存窗口句柄，并显示绘制窗口</span><br><span class="line">    mov hMainWnd,eax</span><br><span class="line">    INVOKE ShowWindow,hMainWnd,SW_SHOW</span><br><span class="line">    INVOKE UpdateWindow,hMainWnd</span><br><span class="line"></span><br><span class="line">    ;显示欢迎消息</span><br><span class="line">    INVOKE MessageBox,hMainWnd,ADDR GreetText,ADDR GreetTitle,MB_OK</span><br><span class="line"></span><br><span class="line">    ;开始程序的持续消息处理循环</span><br><span class="line">    Message_Loop:</span><br><span class="line">        ;从队列中获取下一条消息</span><br><span class="line">        INVOKE GetMessage,ADDR msg,NULL,NULL,NULL</span><br><span class="line"></span><br><span class="line">        ;若无消息则退出</span><br><span class="line">        .IF eax == 0</span><br><span class="line">            jmp Exit_Program</span><br><span class="line">        .ENDIF</span><br><span class="line"></span><br><span class="line">        ;把消息转发给程序的WinProc过程</span><br><span class="line">        INVOKE DispatchMessage,ADDR msg</span><br><span class="line">        jmp Message_Loop</span><br><span class="line">Exit_Program:</span><br><span class="line">    INVOKE ExitProcess,0</span><br><span class="line">WinMain ENDP</span><br><span class="line"></span><br><span class="line">;---------------------------------------------------------------------------------------------</span><br><span class="line">WinProc PROC,</span><br><span class="line">    hwnd:DWORD,localMsg:DWORD,wParam:DWORD,lParam:DWORD</span><br><span class="line">;应用程序的信息处理程序，它处理特定于应用程序的信息。所有其他的消息都被转发给默认的Windows消息处理程序</span><br><span class="line">;---------------------------------------------------------------------------------------------</span><br><span class="line">    mov eax,localMsg</span><br><span class="line"></span><br><span class="line">    .IF eax == WM_LBUTTONDOWN   ;鼠标按键消息</span><br><span class="line">        INVOKE MessageBox,hWnd,ADDR PopupText,</span><br><span class="line">            ADDR PopupTitle,MB_OK</span><br><span class="line">        jmp WinProcExit</span><br><span class="line">    .ELSEIF eax == WM_CREATE    ;创建窗口消息</span><br><span class="line">        INVOKE MessageBox,hWnd,ADDR AppLoadMsgText,</span><br><span class="line">            ADDR AppLoadMsgTitle,MB_OK</span><br><span class="line">        jmp WinProcExit</span><br><span class="line">    .ELSEIF eax == WM_CLOSE     ;关闭消息窗口</span><br><span class="line">        INVOKE MessageBox,hWnd,ADDR CloseMsg,</span><br><span class="line">            ADDR WindowName,MB_OK</span><br><span class="line">        INVOKE PostQuitMessage,0</span><br><span class="line">        jmp WinProcExit</span><br><span class="line">    .ELSE                       ;其他消息</span><br><span class="line">        INVOKE DefWindowProc,hWnd,localMsg,wParam,lParam</span><br><span class="line">        jmp WinProcExit</span><br><span class="line">    .ENDIF</span><br><span class="line"></span><br><span class="line">WinProcExit:</span><br><span class="line">    ret</span><br><span class="line">WinProc ENDP</span><br><span class="line"></span><br><span class="line">;------------------------</span><br><span class="line">ErrorHandler PROC</span><br><span class="line">;显示相应的系统错误信息</span><br><span class="line">;------------------------</span><br><span class="line">.data</span><br><span class="line">pErrorMsg DWORD ?           ;指向错误消息指针</span><br><span class="line">messageID DWORD ?</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">    INVOKE GetLastError     ;在 EAX 中返回错误消息的指针</span><br><span class="line">    mov messageID,eax</span><br><span class="line"></span><br><span class="line">    ;显示错误消息</span><br><span class="line">    INVOKE MessageBox,NULL,pErrorMsg,ADDR ErrorTitle,</span><br><span class="line">        MB_ICONERROR+MB_OK</span><br><span class="line">    </span><br><span class="line">    ;释放消息字符串</span><br><span class="line">    INVOKE LocalFree,pErrorMsg</span><br><span class="line">    ret</span><br><span class="line">ErrorHandler ENDP</span><br><span class="line">END WinMain</span><br></pre></td></tr></table></figure>
+
+<h1 id="动态内存分配"><a href="#动态内存分配" class="headerlink" title="动态内存分配"></a>动态内存分配</h1><h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><h3 id="静态内存分配"><a href="#静态内存分配" class="headerlink" title="静态内存分配"></a>静态内存分配</h3><p>源码中数组、变量和结构体数据，程序在编译时会自动分配相应的内存空间，而这一块内存空间在程序运行后是无法变动的，所以称为静态内存分配。但是静态分配的缺点也很明显容易出现内存空间不够用或内存空间浪费的现象。<br>比如一个数组分配了 20 个字节，但是在执行程序的时候发现这 20 个字节的空间不够用，此时程序就会发生错误。那我给这个数组分配 1000 个字节，现在内存是够用了，但是我实际使用了时候用不完这些内存，这就会造成内存空间的浪费。为了解决这个问题，因此动态内存分配就产生了。</p>
+<h3 id="动态内存分配-1"><a href="#动态内存分配-1" class="headerlink" title="动态内存分配"></a>动态内存分配</h3><p>在写汇编期间，我们可以使用自定分分配堆栈的大小，默认分配 128 字节。在现在的 windows 中堆默认分配 1M~2GGB 的堆空间，同时也可以手动分配堆的大小。</p>
+<h3 id="堆栈"><a href="#堆栈" class="headerlink" title="堆栈"></a>堆栈</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/233819257-99dbff23-7dcd-4381-9c82-9fcbcb64cdb9.png"
+                      alt="54"
+                ></p>
+<blockquote>
+<p>注：上面两块空白的区域都是堆栈。</p>
+</blockquote>
+<ol>
+<li>栈：由系统自动分配的内存空间叫栈</li>
+<li>堆：由用户手动分配的内存空间叫堆</li>
+</ol>
+<blockquote>
+<p>栈用于存储小块的数据，例如：push、call指令存储的数据和局部变量；堆用于大块的数据存储。</p>
+</blockquote>
+<h3 id="内存分配的使用"><a href="#内存分配的使用" class="headerlink" title="内存分配的使用"></a>内存分配的使用</h3><p>在编写程序时，所需的内存空间是确定的，就使用静态内存分配。如果需要使用的内存空间是不确定的，那就需要使用动态内存分配。堆空间会根据所需数据的大小分配堆空间，但不能超过堆空间的最大值。堆空间的自动分配是由操作系统自动调用 malloc 动态分配堆空间。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/233819963-c04bac1a-4999-4e95-8828-9b3e53373d7b.png"
+                      alt="55"
+                ></p>
+<h3 id="动态内存分配的流程"><a href="#动态内存分配的流程" class="headerlink" title="动态内存分配的流程"></a>动态内存分配的流程</h3><ol>
+<li>使用 GetProcessHeap（获取默认堆的句柄）或 HeapCreate（创建新的堆并获取堆句柄）</li>
+<li>使用 HeapAlloc 在堆中分配一块内存</li>
+<li>使用 HeapReAlloc 调整堆中内存块的大小</li>
+<li>使用 HeapSize 返回 HeapAlloc 或 HeapReAlloc 分配内存块的大小</li>
+<li>使用 HeapFree 释放堆中的内存</li>
+<li>使用 HeapDestroy 销毁堆（公有的堆不能销毁，会导致程序错误）</li>
+</ol>
+<h2 id="实操"><a href="#实操" class="headerlink" title="实操"></a>实操</h2><p>动态内存分配也称为堆（内存）分配（Heap Allocation），是程序设计语言提供的一种非常有用的工具，用户创建的对象、数组和其他结构保留内存。例如，在 JAVA 中，类似下面的语句会导致程序为创建的 String 对象保留内存：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;abcde&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>类似地，在 C++ 中，可能会需要为一个整数数组分配内存空间，其大小来自于一个变量：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> size;   </span><br><span class="line">cin  &gt;&gt; size;</span><br><span class="line"><span class="type">int</span> array[] = <span class="keyword">new</span> <span class="type">int</span>[size]</span><br></pre></td></tr></table></figure>
+
+<p>C&#x2F;C++ 和 JAVA 都有内建地运行时堆栈管理，用于处理程序地存储分配和存储释放请求，堆管理器通常在程序启动时请求操作系统分配一个大块地内存，堆管理器创建一个空闲存储块指针链表，在接到分配请求时，吧一个合适地内存块标记为保留并返回指向该内存块地指针，其后在接到针对同一内存块地释放请求时，堆管理器把该内存块放回空闲存储块的指针链表中（或释放该内存块）。每次新的分配请求到达时，堆管理器都会先扫描空闲存储块链表，查找第一个足够大的内存块以满足分配请求。</p>
+<p>汇编语言可通过多种方式进行动态内存分配：第一种方式是通过系统调用让操作系统为其分配内存块。第二种方式是实现字节堆管理器以处理小对象的内存分配请求。本节只讲述第一种方法。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/233611396-0e3f6f13-02d3-40f4-aa4e-1a9278b21f3f.png"
+                      alt="52"
+                ></p>
+<h2 id="GetProcessHeap"><a href="#GetProcessHeap" class="headerlink" title="GetProcessHeap"></a>GetProcessHeap</h2><p>GetProcessHeap：如果对使用当前程序拥有的默认堆，可以使用 GetProcessHeap 函数，该函数无参数，在 eax 中返回默认的堆句柄。函数原型如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GetProcessHeap PROTO</span><br></pre></td></tr></table></figure>
+
+<p>调用示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">;------------------------------------------</span><br><span class="line">;程序名：GetHeap.asm</span><br><span class="line">;功能：使用 GetProcessHeap 获取该程序的默认堆。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-22</span><br><span class="line">;-------------------------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">INCLUDE Macros.inc</span><br><span class="line">.data</span><br><span class="line">hHeap HANDLE ?  ;存储默认堆的句柄</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    INVOKE GetProcessHeap</span><br><span class="line">    .IF eax == NULL</span><br><span class="line">        mWrite &lt;&quot;Not getting the default heap handle&quot;&gt;</span><br><span class="line">        jmp quit</span><br><span class="line">    .ELSE</span><br><span class="line">        mov hHeap,eax</span><br><span class="line">        mWrite &lt;&quot;The defalut heap handle is stored in hHeap: 0x&quot;&gt;</span><br><span class="line">        mov eax,hHeap</span><br><span class="line">        call WriteHex</span><br><span class="line">    .ENDIF</span><br><span class="line">quit:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="HeapCreate"><a href="#HeapCreate" class="headerlink" title="HeapCreate"></a>HeapCreate</h2><p>HeapCreate: 允许为当前程序创建新的私有堆。函数原型如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HeapCreate PROTO,</span><br><span class="line">    flOptions:DWORD         ;堆分配选项</span><br><span class="line">    dwInitialSize:DWORD,    ;堆的初始大小，以字节为单位</span><br><span class="line">    dwMaximumSize:DWORD     ;堆的最大尺寸值，以字节为单位</span><br></pre></td></tr></table></figure>
+<p>调用时把 flOptions 设为 NULL，把 dwInitialSize 设置为堆的初始大小，实际的初始大小是该值按边界向上舍入后的值。当调用 HeapAlloc 分配内存块时，如果堆的大小超过堆的初始大小，堆将自动增长，上限是 dwMaximumSize 参数（按页边界向上舍入）指定的值。在调用该函数之后，如果堆未成功创建，则在 EAX 中返回 NULL。</p>
+<p>下面是调用示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">;-------------------------------</span><br><span class="line">;程序名：HeapCreate.asm</span><br><span class="line">;功能：使用 HeapCreate 创建一个堆</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-22</span><br><span class="line">;--------------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">INCLUDE Macros.inc</span><br><span class="line"></span><br><span class="line">HEAP_START  = 2000000      ;2M</span><br><span class="line">HEAP_MAX = 400000000    ;400M</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">hHeap HANDLE ?</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    INVOKE HeapCreate,0,HEAP_START,HEAP_MAX</span><br><span class="line">    .IF eax == NULL</span><br><span class="line">        call WriteWindowsMsg</span><br><span class="line">        jmp quit</span><br><span class="line">    .ELSE</span><br><span class="line">        mov hHeap,eax</span><br><span class="line">        mWrite &lt;&quot;The Create heap handle is stored in hHeap: 0x&quot;&gt;</span><br><span class="line">        mov eax,hHeap</span><br><span class="line">        call WriteHex</span><br><span class="line">    .ENDIF</span><br><span class="line">quit:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="HeapDestroy"><a href="#HeapDestroy" class="headerlink" title="HeapDestroy"></a>HeapDestroy</h2><p>HeapDestroy 销毁一个显存的私有堆（通过调用 HeapCreate 创建的）。调用时传递要销毁的堆的句柄：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HeapDestroy PROTO,</span><br><span class="line">    hHeap:DWORD         ;堆的句柄</span><br></pre></td></tr></table></figure>
+
+<p>如果销毁堆的失败，则 EAX 中返回 NULL。下面是 HeapDestroy 的调用示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">;-------------------------------</span><br><span class="line">;程序名：HeapDestroy.asm</span><br><span class="line">;功能：使用 HeapDestroy 销毁一个堆</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-22</span><br><span class="line">;--------------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">INCLUDE Macros.inc</span><br><span class="line"></span><br><span class="line">HEAP_START  = 2000000      ;2M</span><br><span class="line">HEAP_MAX = 400000000    ;400M</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">hHeap HANDLE ?</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    INVOKE HeapCreate,0,HEAP_START,HEAP_MAX</span><br><span class="line">    .IF eax == NULL</span><br><span class="line">        call WriteWindowsMsg</span><br><span class="line">        jmp quit</span><br><span class="line">    .ELSE</span><br><span class="line">        mov hHeap,eax</span><br><span class="line">        mWrite &lt;&quot;The Create heap handle is stored in hHeap: 0x&quot;&gt;</span><br><span class="line">        mov eax,hHeap</span><br><span class="line">        call WriteHex</span><br><span class="line">        call Crlf</span><br><span class="line">        INVOKE HeapDestroy,hHeap</span><br><span class="line">        .IF eax == NULL</span><br><span class="line">            call WriteWindowsMsg</span><br><span class="line">        .ELSE</span><br><span class="line">            mWrite &lt;&quot;Successfully Destroy the created heap&quot;&gt;</span><br><span class="line">        .ENDIF</span><br><span class="line">    .ENDIF</span><br><span class="line">quit:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p>HeapAlloc：HeapAlloc 从堆中分配一块内存。函数原型如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HeapAlloc PROTO,</span><br><span class="line">    hHeap:HANDLE,   ;堆的句柄</span><br><span class="line">    dwFlags:DWORD,  ;堆分配控制标志</span><br><span class="line">    dwBytes:DWORD   ;要分配的字节数</span><br></pre></td></tr></table></figure>
+
+<p>参数解释：</p>
+<ul>
+<li>hHeap 是通过调用 GetProcessHeap 或 HeapCreate 获取的 32 位堆句柄。</li>
+<li>dwFlags 是包含一个或多个标志值的双字，可以把该值设为 HEAP_ZERO_MEMORY，此时分配的内存块将以 0 初始化。</li>
+<li>dwBytes 是表示要分配的内存块大小的双字，大小以字节为单位计算的。</li>
+</ul>
+<p>如果调用成功，EAX 中返回分配的内存块的指针；如果调用失败，EAX 中的返回 NULL。下面的代码从 hHeap 表示的堆中分配 1000 个字节并以 0 初始化。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">;------------------------------------------</span><br><span class="line">;程序名：HeapAlloc.asm</span><br><span class="line">;功能：使用 HeapAlloc 在默认堆中初始化一个内存空间。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-22</span><br><span class="line">;-------------------------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">INCLUDE Macros.inc</span><br><span class="line"></span><br><span class="line">AllocBytes = 1000</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">hHeap HANDLE ?  ;存储默认堆的句柄</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    ;获取默认堆</span><br><span class="line">    INVOKE GetProcessHeap</span><br><span class="line">    .IF eax == NULL</span><br><span class="line">        mWrite &lt;&quot;Not getting the default heap handle&quot;&gt;</span><br><span class="line">        jmp quit</span><br><span class="line">    .ELSE</span><br><span class="line">        mov hHeap,eax</span><br><span class="line">        mWrite &lt;&quot;The defalut heap handle is stored in hHeap: 0x&quot;&gt;</span><br><span class="line">        mov eax,hHeap</span><br><span class="line">        call WriteHex</span><br><span class="line">        call Crlf</span><br><span class="line">        ;从默认堆中分配 1 MB 空间的内存，内存数据以 0 填充初始化</span><br><span class="line">        INVOKE HeapAlloc,hHeap,HEAP_ZERO_MEMORY,AllocBytes</span><br><span class="line">        .IF eax == NULL</span><br><span class="line">            mWrite &lt;&quot;HeapAlloc failed&quot;&gt;</span><br><span class="line">        .ELSE</span><br><span class="line">            mWrite &lt;&quot;HeapAlloc success&quot;&gt;</span><br><span class="line">        .ENDIF</span><br><span class="line">    .ENDIF</span><br><span class="line">quit:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="HeapFree"><a href="#HeapFree" class="headerlink" title="HeapFree"></a>HeapFree</h2><p>HeapFree 释放以前从堆中分配的内存块，内存块是以堆句柄和内存块的地址标识的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HeapFree PROTO,</span><br><span class="line">    hHeap:HANDLE,</span><br><span class="line">    dwFlags:DWORD,</span><br><span class="line">    lpMem:DWORD</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>第一个参乎上主要是包含要释放内存块的堆句柄</li>
+<li>第二个参数通常是 0</li>
+<li>第三个参数指的是指向要释放内存块的指针。</li>
+</ul>
+<p>如果内存块成功释放，返回非 0 值；如果释放失败，则返回 0 。下面是调用示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">;------------------------------------------</span><br><span class="line">;程序名：HeapFree.asm</span><br><span class="line">;功能：使用 HeapFree 在释放堆中分配的内存。</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-22</span><br><span class="line">;-------------------------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">INCLUDE Macros.inc</span><br><span class="line"></span><br><span class="line">AllocBytes = 1000</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">hHeap HANDLE ?  ;存储默认堆的句柄</span><br><span class="line">mHeap HANDLE ?  ;存储在堆中分配的内存句柄</span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    ;获取默认堆</span><br><span class="line">    INVOKE GetProcessHeap</span><br><span class="line">    .IF eax == NULL</span><br><span class="line">        mWrite &lt;&quot;Not getting the default heap handle&quot;&gt;</span><br><span class="line">        jmp quit</span><br><span class="line">    .ELSE</span><br><span class="line">        mov hHeap,eax</span><br><span class="line">        mWrite &lt;&quot;The defalut heap handle is stored in hHeap: 0x&quot;&gt;</span><br><span class="line">        mov eax,hHeap</span><br><span class="line">        call WriteHex</span><br><span class="line">        call Crlf</span><br><span class="line">        ;从默认堆中分配 1 MB 空间的内存，内存数据以 0 填充初始化</span><br><span class="line">        INVOKE HeapAlloc,hHeap,HEAP_ZERO_MEMORY,AllocBytes</span><br><span class="line">        mov mHeap,eax</span><br><span class="line">        .IF eax == NULL</span><br><span class="line">            mWrite &lt;&quot;HeapAlloc failed&quot;,0dh,0ah&gt;</span><br><span class="line">        .ELSE</span><br><span class="line">            mWrite &lt;&quot;HeapAlloc success&quot;,0dh,0ah&gt;</span><br><span class="line">        .ENDIF</span><br><span class="line">        ;从堆中释放分配的 1MB 空间的内存</span><br><span class="line">        INVOKE HeapFree,hHeap,0,mHeap</span><br><span class="line">        .IF eax == NULL</span><br><span class="line">            mWrite &lt;&quot;HeapFree failed&quot;,0dh,0ah&gt;</span><br><span class="line">        .ELSE</span><br><span class="line">            mWrite &lt;&quot;HeapFree success&quot;,0dh,0ah&gt;</span><br><span class="line">        .ENDIF</span><br><span class="line">    .ENDIF</span><br><span class="line">quit:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/233773463-fe9b46b2-c401-44d7-a825-067c6f576859.png"
+                      alt="53"
+                ></p>
+<h1 id="堆测试程序"><a href="#堆测试程序" class="headerlink" title="堆测试程序"></a>堆测试程序</h1><h2 id="Heaptest1"><a href="#Heaptest1" class="headerlink" title="Heaptest1"></a>Heaptest1</h2><p>下面的例子（Heaptest1.asm）使用动态内存分配的方法创建一个 1000 字节的数组，使用的是进程的默认堆：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：Heaptest1.asm</span><br><span class="line">;功能：这个程序使用动态内存分配来分配和填充一个字节数组</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-22</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">.data</span><br><span class="line">ARRAY_SIZE = 1000</span><br><span class="line">FILL_VAL EQU 0FFh</span><br><span class="line"></span><br><span class="line">hHeap   HANDLE ?    ;进程的堆句柄</span><br><span class="line">pArray  DWORD  ?    ;内存块的指针</span><br><span class="line">newHeap DWORD  ?    ;新堆的句柄</span><br><span class="line">str1 BYTE &quot;Heap size is: &quot;,0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    INVOKE GetProcessHeap       ;获取程序的默认堆的句柄</span><br><span class="line">    .IF eax == NULL</span><br><span class="line">        call WriteWindowsMsg</span><br><span class="line">        jmp quit</span><br><span class="line">    .ELSE</span><br><span class="line">        mov hHeap,eax</span><br><span class="line">    .ENDIF</span><br><span class="line"></span><br><span class="line">    call allocate_array</span><br><span class="line">    jnc arrayOK             ;失败了（CF=1）</span><br><span class="line">    call WriteWindowsMsg</span><br><span class="line">    call Crlf</span><br><span class="line">    jmp quit</span><br><span class="line">arrayOK:</span><br><span class="line">    call fill_array</span><br><span class="line">    call display_array</span><br><span class="line">    call Crlf</span><br><span class="line"></span><br><span class="line">    ;free the array</span><br><span class="line">    INVOKE HeapFree,hHeap,0,pArray</span><br><span class="line">quit:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line"></span><br><span class="line">;----------------------------------------------</span><br><span class="line">allocate_array PROC USES eax</span><br><span class="line">;功能：为数组动态分配空格符</span><br><span class="line">;入口参数：无</span><br><span class="line">;出口参数：无</span><br><span class="line">;----------------------------------------------</span><br><span class="line">    INVOKE HeapAlloc,hHeap,HEAP_ZERO_MEMORY,ARRAY_SIZE</span><br><span class="line">    .IF eax == NULL</span><br><span class="line">        stc</span><br><span class="line">    .ELSE</span><br><span class="line">        mov pArray,eax</span><br><span class="line">        clc</span><br><span class="line">    .ENDIF</span><br><span class="line"></span><br><span class="line">    ret</span><br><span class="line">allocate_array ENDP</span><br><span class="line"></span><br><span class="line">;------------------------------------------------</span><br><span class="line">fill_array PROC USES eax ebx ecx esi</span><br><span class="line">;功能：使用 FILL_VAL 填充数组</span><br><span class="line">;入口参数：无</span><br><span class="line">;出口参数：无</span><br><span class="line">;-------------------------------------------------</span><br><span class="line">    mov ecx,ARRAY_SIZE</span><br><span class="line">    mov esi,pArray</span><br><span class="line">L1:</span><br><span class="line">    mov BYTE PTR [esi],FILL_VAL     ;填充每一字节</span><br><span class="line">    inc esi</span><br><span class="line">    loop L1</span><br><span class="line"></span><br><span class="line">    ret</span><br><span class="line">fill_array ENDP</span><br><span class="line"></span><br><span class="line">;------------------------------------------------</span><br><span class="line">display_array PROC USES eax ebx ecx esi</span><br><span class="line">;功能：显示数组</span><br><span class="line">;入口参数：无</span><br><span class="line">;出口参数：无</span><br><span class="line">;-------------------------------------------------</span><br><span class="line">    mov ecx,ARRAY_SIZE      ;循环计数器</span><br><span class="line">    mov esi,pArray          ;指向数组</span><br><span class="line">L1:</span><br><span class="line">    mov al,[esi]            ;去一个字节</span><br><span class="line">    mov ebx,TYPE BYTE</span><br><span class="line">    call WriteHexB          ;显示之</span><br><span class="line">    inc esi</span><br><span class="line">    loop L1</span><br><span class="line"></span><br><span class="line">    ret</span><br><span class="line">display_array ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="Heaptest2"><a href="#Heaptest2" class="headerlink" title="Heaptest2"></a>Heaptest2</h2><p>下面的例子使用动态内存分配的方法循环分配 2000 个大约 0.5MB 的内存块：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：Heaptest2.asm</span><br><span class="line">;功能：使用动态内存分配的方法循环分配 2000 个大约 0.5MB 的内存块</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-22</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">.data</span><br><span class="line">HEAP_START = 2000000    ;2MB</span><br><span class="line">HEAP_MAX = 400000000    ;400MB</span><br><span class="line">BLOCK_SIZE = 500000     ;0.5MB</span><br><span class="line"></span><br><span class="line">hHeap HANDLE ?          ;堆的句柄</span><br><span class="line">pData DWORD  ?          ;内存块的指针</span><br><span class="line"></span><br><span class="line">str1 BYTE 0dh,0ah,&quot;Memory allocation failed&quot;,0dh,0ah,0</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    INVOKE HeapCreate,0,HEAP_START,HEAP_MAX</span><br><span class="line"></span><br><span class="line">    .IF eax == NULL</span><br><span class="line">        call WriteWindowsMsg</span><br><span class="line">        call Crlf</span><br><span class="line">        jmp quit</span><br><span class="line">    .ELSE</span><br><span class="line">        mov hHeap,eax</span><br><span class="line">    .ENDIF</span><br><span class="line"></span><br><span class="line">    mov ecx,2000        ;循环计数器</span><br><span class="line">L1:</span><br><span class="line">    call allocate_block ;每次循环分配一块内存</span><br><span class="line">    .IF Carry?</span><br><span class="line">        mov edx,OFFSET str1</span><br><span class="line">        call WriteString</span><br><span class="line">        jmp quit</span><br><span class="line">    .ELSE</span><br><span class="line">        mov al,&#x27;.&#x27;</span><br><span class="line">        call WriteChar</span><br><span class="line">    .ENDIF</span><br><span class="line">    ;每次循环释放分配的内存块，注释后会发生报错</span><br><span class="line">    ;因为每循环一次需要分配 0.5MB 的内存块</span><br><span class="line">    ;循环 2000 次，需要 1000MB 的堆空间已超过 HEAP_MAX 的上线</span><br><span class="line">    ;最后肯定是申请内存块失败</span><br><span class="line">    call free_block</span><br><span class="line">    loop L1</span><br><span class="line">quit:</span><br><span class="line">    INVOKE HeapDestroy,hHeap    ;销毁堆</span><br><span class="line">    .IF eax == NULL</span><br><span class="line">    call WriteWindowsMsg</span><br><span class="line">    call Crlf</span><br><span class="line">    .ENDIF</span><br><span class="line"></span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line"></span><br><span class="line">allocate_block PROC USES ecx</span><br><span class="line">    ;分配一块内存并以 0 填充</span><br><span class="line">    INVOKE HeapAlloc,hHeap,HEAP_ZERO_MEMORY,BLOCK_SIZE</span><br><span class="line"></span><br><span class="line">    .IF eax == NULL</span><br><span class="line">        stc             ;返回时 CF = 1</span><br><span class="line">    .ELSE</span><br><span class="line">        mov pData,eax   ;保存指针</span><br><span class="line">        clc             ;返回时 CF = 0</span><br><span class="line">    .ENDIF</span><br><span class="line">    ret</span><br><span class="line">allocate_block ENDP</span><br><span class="line"></span><br><span class="line">free_block PROC USES ecx</span><br><span class="line">    INVOKE HeapFree,hHeap,0,pData</span><br><span class="line">    ret</span><br><span class="line">free_block ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h1 id="IA-32内存管理"><a href="#IA-32内存管理" class="headerlink" title="IA-32内存管理"></a>IA-32内存管理</h1><p>本节的内容主要集中在内存管理的两个主要方面：</p>
+<ul>
+<li>从逻辑地址到线性地址的转换。</li>
+<li>从线性地址到物理地址的转换（分页）。</li>
+</ul>
+<h2 id="线性地址"><a href="#线性地址" class="headerlink" title="线性地址"></a>线性地址</h2><h3 id="逻辑地址到线性地址的转换"><a href="#逻辑地址到线性地址的转换" class="headerlink" title="逻辑地址到线性地址的转换"></a>逻辑地址到线性地址的转换</h3><p>多任务操作系统允许多个程序（任务）同时在内存中运行，每个程序用用属于它自己的唯一的数据空间。假设有三个程序，每个程序都在偏移地址 200h 处有一个变量，这三个变量是如何互相隔离呢？答案是：IA-32 处理器使用了一个经过一步或两个步骤的过程把每个变量的地址转换到另一个唯一的地址上去。</p>
+<p>第一步把变量的段和偏移地址合成一个线性地址，线性地址有可能是变量的物理地址，但是有些操作系统（如windows或者linux）使用了称为 IA-32 的分页技术，使程序能够使用比计算机中实际物理内存更多的线性地址空间。如果情况是这样，就要经过第二个步骤，使用页面转换的方法把线性地址转换到物理地址。</p>
+<p>下图展示了处理器如何使用段和偏移地址来确定一个变量的线性地址。每个段选择子指向描述符表里面的段描述符，段描述符包含了段的基地址（起始地址），逻辑地址中的 32 为偏移地址和段的基址相加就得到了线性地址。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/233830308-59fab5d3-2e7c-429f-b119-a723c671a0ea.png"
+                      alt="56"
+                ></p>
+<blockquote>
+<p>线性地址：线性地址是一个介于0~FFFFFFFF的32位整数，它代表内存中的一个位置。如果分页机制没有打开的话，那么线性地址实际上就是数据的物理地址。</p>
+</blockquote>
+<p>分页机制是 IA-32 系列处理器的一个重要特征，它使得计算机同时在内存中运行原本无法装入的一堆程序成为可能。</p>
+<p>在一开始处理器仅仅装入程序的一部分，剩余的部分保留在磁盘上面。程序要用到的内存被划分称为页的小块，通常每块的大小为 4 KB。运行每个程序的时候，处理器有选择的在内存中释放不用的页面，然后装入其他马上要被用到的页面。</p>
+<p>操作系统使用一个页目录和一系列的页表来追踪内存中所有程序的页面使用情况。当一个程序尝试访问线性地址空间中某个地址的时候，处理器自动把线性地址转换成物理地址，这个转换称为页面转换。如果需要的页面尚未在内存中，处理器打断程序的执行并引发一个页错误，操作系统捕获到这个错误并在程序恢复运行前把所需的页面从磁盘复制到内存中。从应用程序的角度看，页错误和页面转换是自动发生的。</p>
+<p>举例来说，下面的 winxp 虚拟机，分配了 1GB 的内存空间，但是系统显示的最大内存是2GB。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/233831936-0be376b5-1782-47c1-8b19-dc82cfb58aa9.png"
+                      alt="57"
+                ></p>
+<h3 id="描述符表"><a href="#描述符表" class="headerlink" title="描述符表"></a>描述符表</h3><p>段描述符存在于两种类型的表中：全局描述符表（GDT）和局部变量描述符表（LDT）</p>
+<p><strong>全局描述符表（GDT）：</strong> 系统中只存在一个全局描述符表，系统在处理器切换到保护模式时创建全局描述符表，表的基址存放在 GDTR（全局描述符表寄存器）里面。表中的项目（称为段描述符）指向各个段。操作系统可以把所有程序都要使用的段存放在 GDT 中。</p>
+<p><strong>局部描述符表（LDT）：</strong> 在一个多任务的操作系统中，每个程序或任务都有它自己的段描述符表，这个表称为局部描述符表（LDT）。当前程序的 LDT 的基址存放在 LDTR（局部描述符表寄存器）中。每个段描述符都包含了段在线性地址空间中的基址。如下图所示：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/233832517-6188dc7b-835d-408f-aff6-436b4b993e17.png"
+                      alt="58"
+                ></p>
+<p>一个段和其他段通常是不同的。图中显示了三个不同的逻辑地址，每个地址分别对应于 LDT 中的不同表项。在这个例子中，假设分页机制是关闭的，所以线性地址空间也就是物理地址空间。</p>
+<h3 id="段描述符的细节"><a href="#段描述符的细节" class="headerlink" title="段描述符的细节"></a>段描述符的细节</h3><p>段描述符中除了包含段的基址以外，有些数据位定义了段的限长和段类型。代码段是一个只读段的例子，如果程序尝试修改代码段的内容，那么处理器会产生一个页异常。段描述符中页包含保护级别，这样可以预防应用程序访问操作系统使用的数据。下面是段描述符各个域的含义：</p>
+<ul>
+<li><strong>基地址：</strong> 是一个 32 位的整数，定义了段在 4GB 的线性地址空间中的起始地址。</li>
+<li><strong>特权级：</strong> 每个段都有一个0~3级之间的权限等级，其中0级是最高级，通常被操作系统的核心代码所使用。如果低优先级（优先级数字大）的程序尝试去存取高优先级（优先级数字小）的段，那么处理器会产生一个异常。</li>
+<li><strong>段类型：</strong> 用来指明段的类型以及可以对这个段进行的访问方式，还有段的扩展方向（向上或向下）。数据段（包括堆栈段）可以是只读或者可读写的，可以是向上或向下扩展。代码段可以仅仅是可执行的或者是可执行&#x2F;可读的。</li>
+<li><strong>段存在标志：</strong> 这个数据位指明段当前是否在物理内存中存在。</li>
+<li><strong>粒度标志：</strong> 用来决定如何解释段限长域的数值，如果标志位清零，那么段长的单位是字节。如果该标志位置位，那么段限长是 4096 字节。</li>
+<li><strong>段限长：</strong> 是一个 20 位的整数，表示段的长度，它根据粒度标志的值按下面的两种方式解释：<ul>
+<li>1 字节到 1MB 字节的段长度。</li>
+<li>4096字节到 4GB 字节的段长度。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>在8086汇编中段寄存器的值是可以修改段的，但是到了 80386 系统中，为了保护内存中的系统数据不被修改，因此设计了段选择器这套方案。这样用户不能修改段寄存器，从而使得高 2GB 空间（系统数据存储空间）的数据不会被任意修改。</p>
+</blockquote>
+<h2 id="页面地址转换"><a href="#页面地址转换" class="headerlink" title="页面地址转换"></a>页面地址转换</h2><p>当分页机制被允许的时候，处理器必须把 32 位的线性地址转换到 32 位的物理地址，在这个过程中要使用一下三个数据结构：</p>
+<ul>
+<li>页目录：一个最多包含 1024 个 32 位表项的页表地址表。</li>
+<li>页表：一个最多包含 1024 个 32 位表项的页地址表。</li>
+<li>页：一个 4KB 或者 4MB 的地址空间。</li>
+</ul>
+<p>为了简单起见，下面讨论中假设使用 4KB 的页。<br>一个线性地址可以被分为三个部分：指向页目录的指针、指向页表的指针和在页中的偏移地址。页目录的起始地址存放在控制寄存器（CR3）中。如下图所示，当线性地址被转换到物理地址的时候，处理器执行了以下步骤：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/233836030-ba0902db-a567-492b-96b3-fff383480484.png"
+                      alt="59"
+                ></p>
+<ol>
+<li>线性地址代表线性地址空间的一个位置</li>
+<li>以线性地址中 10 位的页目录域作为索引，从页目录表中得到页表入口项，页表入口项中包含了页表地址。</li>
+<li>以线性地址中 10 位的页表域作为索引，从页表入口项中得到页在物理内存中的基址</li>
+<li>线性地址中 12 位的偏移地址域加上页的基址，就得到了操作数确切的物理地址</li>
+</ol>
+<blockquote>
+<p>页机制本质上是为了节省内存空间，程序运行时会生成多个页存储在exe程序所在的磁盘中，当某个页中的数据需要加载到内存时，系统才会把这个页加载到内存；当这个页的数据用不到的时候，就会交换页，把其他需要的页加载到内存中，而之前加载的页会重新存储到磁盘中。<br>页机制还有整理碎片化内存块的能力，它可将多个碎片化的物理内存地址，连续地写到页中，当对整个页进行读写时，就能达到整理碎片化内存块的能力。</p>
+</blockquote>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/233836400-e058a045-5c92-42fa-b30a-c625e66f112f.png"
+                      alt="60"
+                ></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：win32汇编-windows程序设计（预习篇）</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2023-04-10 14:06:00</li>
+        <li>
+            本文链接：https://9unkk.github.io/2023/04/10/win32-hui-bian-windows-cheng-xu-she-ji-yu-xi-pian/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2023/04/23/80386-hui-bian-fu-dian-chu-li-qi/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">80386汇编-浮点处理器</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2023/04/01/80386-hui-bian-jie-gou-he-hong/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">80386汇编-结构和宏</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFwindows%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.</span> <span class="nav-text">什么是windows程序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86"><span class="nav-number">3.</span> <span class="nav-text">背景知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E5%8F%B0%E7%A8%8B%E5%BA%8F"><span class="nav-number">3.1.</span> <span class="nav-text">控制台程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Win32-API-%E7%9A%84%E5%8F%82%E8%80%83%E4%BF%A1%E6%81%AF"><span class="nav-number">3.2.</span> <span class="nav-text">Win32 API 的参考信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C%E5%92%8C%E5%BA%95%E5%B1%82%E6%93%8D%E4%BD%9C"><span class="nav-number">3.3.</span> <span class="nav-text">高级操作和底层操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#windows-%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.4.</span> <span class="nav-text">windows 的数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SmallWin-inc-%E5%8C%85%E5%90%AB%E6%96%87%E4%BB%B6"><span class="nav-number">3.5.</span> <span class="nav-text">SmallWin.inc 包含文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E5%8F%B0%E5%8F%A5%E6%9F%84"><span class="nav-number">3.6.</span> <span class="nav-text">控制台句柄</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Win32%E6%8E%A7%E5%88%B6%E5%8F%B0%E5%87%BD%E6%95%B0"><span class="nav-number">3.7.</span> <span class="nav-text">Win32控制台函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E6%B6%88%E6%81%AF%E6%A1%86"><span class="nav-number">3.8.</span> <span class="nav-text">显示消息框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E5%8F%B0%E8%BE%93%E5%85%A5"><span class="nav-number">3.9.</span> <span class="nav-text">控制台输入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ReadConsole-%E5%87%BD%E6%95%B0"><span class="nav-number">3.9.1.</span> <span class="nav-text">ReadConsole 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E6%A3%80%E6%9F%A5"><span class="nav-number">3.9.2.</span> <span class="nav-text">错误检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E5%AD%97%E7%AC%A6%E7%9A%84%E8%BE%93%E5%85%A5"><span class="nav-number">3.9.3.</span> <span class="nav-text">单字符的输入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E9%94%AE%E7%9B%98%E7%8A%B6%E6%80%81"><span class="nav-number">3.9.4.</span> <span class="nav-text">获取键盘状态</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E5%8F%B0%E8%BE%93%E5%87%BA"><span class="nav-number">3.10.</span> <span class="nav-text">控制台输出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">3.10.1.</span> <span class="nav-text">相关的数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WriteConsole-%E5%87%BD%E6%95%B0"><span class="nav-number">3.10.2.</span> <span class="nav-text">WriteConsole 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WriteConsoleOutputCharacter-%E5%87%BD%E6%95%B0"><span class="nav-number">3.10.3.</span> <span class="nav-text">WriteConsoleOutputCharacter 函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%9A%84%E8%AF%BB%E5%86%99"><span class="nav-number">3.11.</span> <span class="nav-text">文件的读写</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CreateFile-%E5%87%BD%E6%95%B0"><span class="nav-number">3.11.1.</span> <span class="nav-text">CreateFile 函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Irvine32-%E5%BA%93%E7%9A%84%E6%96%87%E4%BB%B6-I-x2F-O-%E8%BF%87%E7%A8%8B"><span class="nav-number">3.12.</span> <span class="nav-text">Irvine32 库的文件 I&#x2F;O 过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6-I-x2F-O-%E8%BF%87%E7%A8%8B"><span class="nav-number">3.13.</span> <span class="nav-text">测试文件 I&#x2F;O 过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BC%94%E7%A4%BA%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6%E7%9A%84%E4%BE%8B%E5%AD%90%E7%A8%8B%E5%BA%8F"><span class="nav-number">3.13.1.</span> <span class="nav-text">演示创建文件的例子程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BC%94%E7%A4%BA%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6%E7%9A%84%E4%BE%8B%E5%AD%90%E7%A8%8B%E5%BA%8F"><span class="nav-number">3.13.2.</span> <span class="nav-text">演示读取文件的例子程序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E5%8F%B0%E7%AA%97%E5%8F%A3%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-number">3.14.</span> <span class="nav-text">控制台窗口的操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%89%E6%A0%87%E7%9A%84%E6%8E%A7%E5%88%B6"><span class="nav-number">3.15.</span> <span class="nav-text">光标的控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E9%A2%9C%E8%89%B2%E7%9A%84%E6%8E%A7%E5%88%B6"><span class="nav-number">3.16.</span> <span class="nav-text">文本颜色的控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WriteColors"><span class="nav-number">3.16.1.</span> <span class="nav-text">WriteColors</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E5%92%8C%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B0"><span class="nav-number">3.17.</span> <span class="nav-text">时间和日期函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E5%86%99windows-%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F"><span class="nav-number">4.</span> <span class="nav-text">编写windows 图形界面应用程序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%85%E9%A1%BB%E4%BA%86%E8%A7%A3%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">4.1.</span> <span class="nav-text">必须了解的数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#POINT-%E7%BB%93%E6%9E%84"><span class="nav-number">4.1.1.</span> <span class="nav-text">POINT 结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RECT-%E7%BB%93%E6%9E%84"><span class="nav-number">4.1.2.</span> <span class="nav-text">RECT 结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MSGStruct-%E7%BB%93%E6%9E%84"><span class="nav-number">4.1.3.</span> <span class="nav-text">MSGStruct 结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WNDCLASS-%E7%BB%93%E6%9E%84"><span class="nav-number">4.1.4.</span> <span class="nav-text">WNDCLASS 结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MessageBox-%E5%87%BD%E6%95%B0"><span class="nav-number">4.2.</span> <span class="nav-text">MessageBox 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WinMain-%E8%BF%87%E7%A8%8B"><span class="nav-number">4.3.</span> <span class="nav-text">WinMain 过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ErrorHandler-%E8%BF%87%E7%A8%8B"><span class="nav-number">4.4.</span> <span class="nav-text">ErrorHandler 过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E6%B8%85%E5%8D%95"><span class="nav-number">4.5.</span> <span class="nav-text">程序清单</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="nav-number">5.</span> <span class="nav-text">动态内存分配</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">5.1.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="nav-number">5.1.1.</span> <span class="nav-text">静态内存分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D-1"><span class="nav-number">5.1.2.</span> <span class="nav-text">动态内存分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86%E6%A0%88"><span class="nav-number">5.1.3.</span> <span class="nav-text">堆栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">5.1.4.</span> <span class="nav-text">内存分配的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="nav-number">5.1.5.</span> <span class="nav-text">动态内存分配的流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E6%93%8D"><span class="nav-number">5.2.</span> <span class="nav-text">实操</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GetProcessHeap"><span class="nav-number">5.3.</span> <span class="nav-text">GetProcessHeap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HeapCreate"><span class="nav-number">5.4.</span> <span class="nav-text">HeapCreate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HeapDestroy"><span class="nav-number">5.5.</span> <span class="nav-text">HeapDestroy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HeapFree"><span class="nav-number">5.6.</span> <span class="nav-text">HeapFree</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A0%86%E6%B5%8B%E8%AF%95%E7%A8%8B%E5%BA%8F"><span class="nav-number">6.</span> <span class="nav-text">堆测试程序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Heaptest1"><span class="nav-number">6.1.</span> <span class="nav-text">Heaptest1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Heaptest2"><span class="nav-number">6.2.</span> <span class="nav-text">Heaptest2</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IA-32%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">7.</span> <span class="nav-text">IA-32内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%9C%B0%E5%9D%80"><span class="nav-number">7.1.</span> <span class="nav-text">线性地址</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E5%9C%B0%E5%9D%80%E5%88%B0%E7%BA%BF%E6%80%A7%E5%9C%B0%E5%9D%80%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="nav-number">7.1.1.</span> <span class="nav-text">逻辑地址到线性地址的转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0%E7%AC%A6%E8%A1%A8"><span class="nav-number">7.1.2.</span> <span class="nav-text">描述符表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AE%B5%E6%8F%8F%E8%BF%B0%E7%AC%A6%E7%9A%84%E7%BB%86%E8%8A%82"><span class="nav-number">7.1.3.</span> <span class="nav-text">段描述符的细节</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B5%E9%9D%A2%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2"><span class="nav-number">7.2.</span> <span class="nav-text">页面地址转换</span></a></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

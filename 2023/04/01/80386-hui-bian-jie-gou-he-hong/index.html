@@ -126,12 +126,66 @@
 
                 
                     <div class="fade-in-down-animation">
-    <div class="page-template-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">80386汇编-结构和宏</span>
+        </div>
+
         
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2023-04-01 10:45:00</span>
+        <span class="mobile">2023-04-01 10:45</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>3.5k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>15 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
         
-        <div class="page-template-content markdown-body">
-            
-                <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>结构（srtucture）是逻辑上相互联的一组变量的模板，结构中的单个变量称为域（field），程序的语句可以把结构作为一个实体进行访问，也可以对结构中的单个域进行访问。结构通常包含不同类型的域。联合（union）同样是把多个标识符组合在一起，不过这些标识符公用同一块内存区域。<br>结构为归集数据以及在过程间进行传递提供方便。假设一个过程的输入参数是由 20 个与磁盘驱动器相关的数据构成的，调用过程时要想正确地传递所需参数是非常困难的，相反，应该把所有的相关数据存放在一个数据结构中，然后向过程传递结构的地址，这只需使用极少的堆栈空间（一个地址），被调用过程同时还能够修改结构的内容。<br><img  
+
+        <div class="article-content markdown-body">
+            <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>结构（srtucture）是逻辑上相互联的一组变量的模板，结构中的单个变量称为域（field），程序的语句可以把结构作为一个实体进行访问，也可以对结构中的单个域进行访问。结构通常包含不同类型的域。联合（union）同样是把多个标识符组合在一起，不过这些标识符公用同一块内存区域。<br>结构为归集数据以及在过程间进行传递提供方便。假设一个过程的输入参数是由 20 个与磁盘驱动器相关的数据构成的，调用过程时要想正确地传递所需参数是非常困难的，相反，应该把所有的相关数据存放在一个数据结构中，然后向过程传递结构的地址，这只需使用极少的堆栈空间（一个地址），被调用过程同时还能够修改结构的内容。<br><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="https://user-images.githubusercontent.com/25861639/229265887-517220ba-22d9-4dc0-a451-ae294347b6f0.png"
@@ -350,12 +404,276 @@
                      data-src="https://user-images.githubusercontent.com/25861639/229436848-15f6b2ef-7156-4139-b605-6759adceb2c8.png"
                       alt="33"
                 ></p>
+<h1 id="条件汇编伪指令"><a href="#条件汇编伪指令" class="headerlink" title="条件汇编伪指令"></a>条件汇编伪指令</h1><p>条件汇编伪指令和宏联合使用可以使得宏更加灵活，条件汇编伪指令的一半格式是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">IF condition</span><br><span class="line">    statements</span><br><span class="line">[ELSE</span><br><span class="line">    statements]</span><br></pre></td></tr></table></figure>
 
-            
+<blockquote>
+<p>本章介绍的常量条件伪指令和前面介绍的运行时伪指令（.IF和.ENDIF）是不一样的。运行时伪指令是基于存储在寄存器或变量中的运行时值对表达式的求值。</p>
+</blockquote>
+<p>下表列出常用的条件汇编伪指令，当说明中提到一条伪指令 “允许汇编” 的时候，就意味着其后直到下一个相邻的 ELSE 或 ENDIF 伪指令之间的所有语句都会被编译，这里必须强调的是，表中列出的伪指令是在编译时求值的。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230571444-ee0bb211-9bec-477f-bedc-207998d61dd4.png"
+                      alt="34"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230571545-fc954dbc-0bcf-44a9-974f-82f2c626b3dd.png"
+                      alt="35"
+                ></p>
+<h2 id="检查缺少的参数"><a href="#检查缺少的参数" class="headerlink" title="检查缺少的参数"></a>检查缺少的参数</h2><p>宏可以检查其任何一个参数是否为空。通常如果一个宏接收了空参数，预处理器展开宏的时候就会导致生成无效指令。例如，如果调用宏 mWriteString 的时候不传递参数，在宏展开的时候，把字符串偏移送 EDX 的指令就成了无效指令。如下图所示，编译产生了错误信息：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230574317-441b0b0d-87f7-4285-9a7f-f65f1cd4f99c.png"
+                      alt="36"
+                ></p>
+<p>为防止缺少参数产生的错误，可使用 IFB（if blank）伪指令，该伪指令在宏参数为空时返回真；也可以使用 IFNB（if not blank）伪指令，它在宏参数非空时返回真。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：Macro2.asm</span><br><span class="line">;功能：演示 IFB 伪指令，忽略宏参数错误</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-7</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">mWriteString MACRO string</span><br><span class="line">    IFB &lt;string&gt;</span><br><span class="line">    ECHO --------------------------------------------</span><br><span class="line">    ECHO *  Error: parameter missing in mWriteString</span><br><span class="line">    ECHO *  (no code generated)</span><br><span class="line">    ECHO --------------------------------------------</span><br><span class="line">    EXITM</span><br><span class="line">ENDIF</span><br><span class="line">push edx</span><br><span class="line">mov edx,OFFSET string</span><br><span class="line">call WriteString</span><br><span class="line">pop edx</span><br><span class="line">ENDM</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mWriteString</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230577986-a6f1c07a-17dc-4cb7-b42b-bfbd7c796e8b.png"
+                      alt="37"
+                ></p>
+<blockquote>
+<p>EXITM 伪指令告诉预处理器退出宏，不要再展开宏中其后的语句。</p>
+</blockquote>
+<h2 id="默认的参数初始化值"><a href="#默认的参数初始化值" class="headerlink" title="默认的参数初始化值"></a>默认的参数初始化值</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230583238-69e45c55-bfdd-4519-b0f3-a96fca84be34.png"
+                      alt="38"
+                ></p>
+<h2 id="布尔表达式"><a href="#布尔表达式" class="headerlink" title="布尔表达式"></a>布尔表达式</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230583505-9fa75998-d1e9-43ea-af57-fe255d2f69ad.png"
+                      alt="39"
+                ></p>
+<h2 id="IF-ELSE和ENDIF伪指令"><a href="#IF-ELSE和ENDIF伪指令" class="headerlink" title="IF,ELSE和ENDIF伪指令"></a>IF,ELSE和ENDIF伪指令</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230583980-c725cbba-680b-4a80-9fcc-d63ab6ab729c.png"
+                      alt="40"
+                ></p>
+<p>例子：mGotoxyConst 宏。mGotoxyConst 宏使用 LT 和 GT 操作符对传递给宏的参数进行范围检查，参数 X 和 Y 必须是常量。另一个符号常量 ERRS 用于统计发现的错误次数，检查 ERRS 可能被设置为 1；检查 Y 参数时，可能会再对 ERRS 加 1，最后 ERRS 的值大于 0，那么使用 EXITM 伪指令来退出宏：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">;-------------------------------------------------</span><br><span class="line">;程序名：Macro3.asm</span><br><span class="line">;功能：演示 IF,ELSE和ENDIF伪指令如何使用后布尔表达式</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-7</span><br><span class="line">;-------------------------------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">;------------------------------------------------</span><br><span class="line">;REQ 修饰宏参数，标志这个参数是必须的</span><br><span class="line">mGotoxyConst MACRO X:REQ, Y:REQ </span><br><span class="line">; X为列，Y为行，将光标定位在（X,Y）上</span><br><span class="line">; X和Y必须是常量</span><br><span class="line">; 范围：0 &lt;= X &lt;80，0 &lt;= Y &lt; 24</span><br><span class="line">;------------------------------------------------</span><br><span class="line">    LOCAL ERRS</span><br><span class="line">    ERRS = 0</span><br><span class="line">    IF (X LT 0) OR (X GT 79)</span><br><span class="line">        ECHO Warning: First argument to mGotoxy (X) is out of range.</span><br><span class="line">        ECHO ******************************************************</span><br><span class="line">        ERRS = 1</span><br><span class="line">    ENDIF</span><br><span class="line">    IF (Y LT 0) OR (Y GT 24)</span><br><span class="line">        ECHO Warning: First argument to mGotoxy (Y) is out of range.</span><br><span class="line">        ECHO ******************************************************</span><br><span class="line">        ERRS = ERRS + 1</span><br><span class="line">    ENDIF</span><br><span class="line">    IF ERRS GT 0</span><br><span class="line">        EXITM</span><br><span class="line">    ENDIF</span><br><span class="line">    push edx</span><br><span class="line">    mov dh,Y</span><br><span class="line">    mov dl,X</span><br><span class="line">    call Gotoxy</span><br><span class="line">    pop edx</span><br><span class="line">ENDM</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mGotoxyConst -1,5</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230590325-073db9e9-2689-4d28-a790-5cdc5fbfe9ed.png"
+                      alt="41"
+                ></p>
+<h2 id="IFIDN-和-IFIDNI-伪指令"><a href="#IFIDN-和-IFIDNI-伪指令" class="headerlink" title="IFIDN 和 IFIDNI 伪指令"></a>IFIDN 和 IFIDNI 伪指令</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230699115-80f2c574-e482-4b41-838a-22e7ded54e61.png"
+                      alt="42"
+                ></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：mReadBuf.asm</span><br><span class="line">;功能：演示 IFIDNI 伪指令的使用</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-8</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line">.data</span><br><span class="line">buffer DB 20 DUP(?)</span><br><span class="line"></span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">mReadBuf MACRO bufferPtr,maxChars</span><br><span class="line">;</span><br><span class="line">;功能：读取键盘输入，并存储到缓冲区 buffer 中</span><br><span class="line">;入口参数：buffer缓冲区的偏移地址，键盘输入字符数数量的最大值</span><br><span class="line">;第二个参数不能是 edx或EDX</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">    IFIDNI &lt;maxChars&gt;,&lt;EDX&gt;</span><br><span class="line">        ECHO Warning: Second argument to mReadBuf cannont be EDX</span><br><span class="line">        ECHO ****************************************************</span><br><span class="line">        EXITM</span><br><span class="line">    ENDIF</span><br><span class="line">    push ecx</span><br><span class="line">    push edx</span><br><span class="line">    mov edx,bufferPtr</span><br><span class="line">    mov ecx,maxChars</span><br><span class="line">    call ReadString</span><br><span class="line">    pop edx</span><br><span class="line">    pop ecx</span><br><span class="line">ENDM</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mReadBuf OFFSET buffer,edx</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230699914-561efc73-8720-4d67-8af5-43d3ebaecbe7.png"
+                      alt="43"
+                ></p>
+<h2 id="例子：对矩阵行求和"><a href="#例子：对矩阵行求和" class="headerlink" title="例子：对矩阵行求和"></a>例子：对矩阵行求和</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：mRowSum.asm</span><br><span class="line">;功能：计算选定数组的和</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-9</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">mcalc_row_sum MACRO index,arrayOffset,rowsize,eltType</span><br><span class="line">;入口参数：EBX = 表的偏移，EAX = 行数，ECX = 行的大小（BYTE）</span><br><span class="line">;出口参数：EAX = 选定行的和</span><br><span class="line">;--------------------------------------------------------</span><br><span class="line">LOCAL L1</span><br><span class="line">    push ebx</span><br><span class="line">    push ecx</span><br><span class="line">    push edx</span><br><span class="line">    push esi</span><br><span class="line">;设置参数</span><br><span class="line">    mov eax,index</span><br><span class="line">    mov ebx,arrayOffset</span><br><span class="line">    mov ecx,rowsize</span><br><span class="line">;计算偏移</span><br><span class="line">    mul ecx</span><br><span class="line">    add ebx,eax</span><br><span class="line">;准备循环计数器</span><br><span class="line">    shr ecx,(TYPE eltType / 2)</span><br><span class="line">;初始化累加器和列索引</span><br><span class="line">    mov eax,0</span><br><span class="line">    mov esi,0</span><br><span class="line">L1:</span><br><span class="line">    IFIDNI &lt;eltType&gt;,&lt;DWORD&gt;</span><br><span class="line">        mov edx,eltType PTR[ebx + esi*(TYPE eltType)]</span><br><span class="line">    ELSE</span><br><span class="line">        movzx edx,BYTE PTR[ebx + esi*(TYPE eltType)]</span><br><span class="line">    ENDIF</span><br><span class="line"></span><br><span class="line">    add eax,edx</span><br><span class="line">    inc esi</span><br><span class="line">    loop L1</span><br><span class="line">    pop esi</span><br><span class="line">    pop edx</span><br><span class="line">    pop ecx</span><br><span class="line">    pop ebx</span><br><span class="line">ENDM</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">TableB BYTE 1h ,2h ,3h,4h ,5h ,6h ,7h ,8h</span><br><span class="line">rowsizeB = ($-TableB)</span><br><span class="line">       BYTE 9h ,10h,11h,12h,13h,14h,15h,16h</span><br><span class="line">       BYTE 17h,18h,19h,20h,21h,22h,23h,24h</span><br><span class="line"></span><br><span class="line">TableW WORD 1h ,2h ,3h,4h ,5h ,6h ,7h ,8h</span><br><span class="line">rowsizeW = ($-TableW)</span><br><span class="line">       WORD 9h ,10h,11h,12h,13h,14h,15h,16h</span><br><span class="line">       WORD 17h,18h,19h,20h,21h,22h,23h,24h</span><br><span class="line"></span><br><span class="line">TableD DWORD 1h ,2h ,3h,4h ,5h ,6h ,7h ,8h</span><br><span class="line">rowsizeD = ($-TableD)</span><br><span class="line">       DWORD 9h ,10h,11h,12h,13h,14h,15h,16h</span><br><span class="line">       DWORD 17h,18h,19h,20h,21h,22h,23h,24h</span><br><span class="line"></span><br><span class="line">index DWORD 3</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mcalc_row_sum index,OFFSET TableB,rowsizeB,BYTE</span><br><span class="line">    mcalc_row_sum index,OFFSET TableW,rowsizeW,WORD</span><br><span class="line">    mcalc_row_sum index,OFFSET TableD,rowsizeD,DWORD</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h2 id="特殊操作符"><a href="#特殊操作符" class="headerlink" title="特殊操作符"></a>特殊操作符</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230762131-8750ace8-3211-4a07-bae8-595f345f335b.png"
+                      alt="44"
+                ></p>
+<h3 id="替换操作符"><a href="#替换操作符" class="headerlink" title="替换操作符"></a>替换操作符</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230763415-bb30e582-2f4b-4d88-bd19-01c2719e874f.png"
+                      alt="45"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230763459-c8f266fa-38cd-4a5a-af1e-55b97f7c50b2.png"
+                      alt="46"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230765810-1c8dcc4e-77fe-4ff5-a32f-7ed55a467edd.png"
+                      alt="47"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230765851-68b35ead-d7fd-4a0a-9bbe-bd6f2e052813.png"
+                      alt="48"
+                ></p>
+<h3 id="展开操作符（-）"><a href="#展开操作符（-）" class="headerlink" title="展开操作符（%）"></a>展开操作符（%）</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230766261-594a17f6-1411-44e5-8b4d-83fdb9a1a8ab.png"
+                      alt="49"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230766943-04c7b00d-60f4-4ce0-a826-3ddb7178d6c2.png"
+                      alt="50"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230767393-2c4e9118-bf32-4e66-8046-ebc4f90c3131.png"
+                      alt="51"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230767445-c516b036-dcb3-4508-92ad-45cb595dfe69.png"
+                      alt="52"
+                ></p>
+<h3 id="文本操作符（-lt-gt-）"><a href="#文本操作符（-lt-gt-）" class="headerlink" title="文本操作符（&lt;&gt;）"></a>文本操作符（&lt;&gt;）</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230767485-c5423c63-ff6d-4089-8356-90cfb507f79c.png"
+                      alt="53"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230767513-7b24f36d-3eea-464e-ba09-dab165a74647.png"
+                      alt="54"
+                ></p>
+<h2 id="宏函数"><a href="#宏函数" class="headerlink" title="宏函数"></a>宏函数</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230767625-70e26dc2-03eb-4d70-bcda-aa98b77af88a.png"
+                      alt="55"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230767664-1703ebcb-2805-4b38-a058-d98f0d3d9c4f.png"
+                      alt="56"
+                ></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：HelloNew.asm</span><br><span class="line">;功能：演示宏函数的使用</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-10</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Macros.inc</span><br><span class="line">IF IsDefined( RealMode )</span><br><span class="line">    INCLUDE Irvine16.inc</span><br><span class="line">ELSE</span><br><span class="line">    INCLUDE Irvine32.inc</span><br><span class="line">ENDIF</span><br><span class="line"></span><br><span class="line">;Startup MACRO</span><br><span class="line">;    IF IsDefined(RealMode)</span><br><span class="line">;        mov ax,@data</span><br><span class="line">;        mov ds,ax</span><br><span class="line">;    ENDIF</span><br><span class="line">;ENDM</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    Startup</span><br><span class="line">    mWrite &lt;&quot;This program can be assembled to run &quot;,0dh,0ah&gt;</span><br><span class="line">    mWrite &lt;&quot;in both Real mode and Protected mode.&quot;,0dh,0ah&gt;</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+
+<h1 id="定义重复块"><a href="#定义重复块" class="headerlink" title="定义重复块"></a>定义重复块</h1><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230767890-a0707643-f340-44e0-b29d-6fe380ed83f3.png"
+                      alt="57"
+                ></p>
+<h2 id="WHILE-指令"><a href="#WHILE-指令" class="headerlink" title="WHILE 指令"></a>WHILE 指令</h2><p>只要在特定常量表达式为真，WHILE 伪指令就重复语句块。格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">WHILE constExpression</span><br><span class="line">    statements</span><br><span class="line">ENDM</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230768090-edf6b736-2138-49d8-8407-183ac5dd7384.png"
+                      alt="58"
+                ></p>
+<h2 id="REPEAT-伪指令"><a href="#REPEAT-伪指令" class="headerlink" title="REPEAT 伪指令"></a>REPEAT 伪指令</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230768152-a93af519-f5af-4f98-bd6a-3ca62d2c30be.png"
+                      alt="59"
+                ></p>
+<h2 id="FOR-伪指令"><a href="#FOR-伪指令" class="headerlink" title="FOR 伪指令"></a>FOR 伪指令</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230768232-d068b275-4115-4ce5-a4f8-d660ae1c6878.png"
+                      alt="60"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230768244-129df2fc-fe52-4c96-b368-e12c6d19226e.png"
+                      alt="61"
+                ></p>
+<h2 id="FORC-伪指令"><a href="#FORC-伪指令" class="headerlink" title="FORC 伪指令"></a>FORC 伪指令</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230769686-c0e18ade-a702-4bc7-961a-f25b3d91661b.png"
+                      alt="62"
+                ></p>
+<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230811927-4bd28bba-28ad-4a07-af4a-00eea46ba6a3.png"
+                      alt="63"
+                ></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">;---------------------------</span><br><span class="line">;程序名：List.asm</span><br><span class="line">;功能：演示链表的使用</span><br><span class="line">;作者：9unk</span><br><span class="line">;编写时间：2023-4-10</span><br><span class="line">;----------------------------</span><br><span class="line">INCLUDE Irvine32.inc</span><br><span class="line"></span><br><span class="line">ListNode STRUCT</span><br><span class="line">    NodeData DWORD ?</span><br><span class="line">    NextPtr DWORD ?</span><br><span class="line">ListNode ENDS</span><br><span class="line"></span><br><span class="line">ToTalNodeCount = 15</span><br><span class="line">NULL = 0</span><br><span class="line">Counter = 0</span><br><span class="line"></span><br><span class="line">.data</span><br><span class="line">LinkedList LABEL PTR ListMode</span><br><span class="line">REPEAT ToTalNodeCount</span><br><span class="line">    Counter = Counter + 1</span><br><span class="line">    ListNode &lt;Counter,($+Counter*SIZEOF ListNode)&gt;</span><br><span class="line">ENDM</span><br><span class="line">ListNode &lt;0,0&gt;</span><br><span class="line"></span><br><span class="line">.code</span><br><span class="line">main PROC</span><br><span class="line">    mov esi,OFFSET LinkedList</span><br><span class="line"></span><br><span class="line">    ;显示 NodeData 域中的整数</span><br><span class="line">NextNode:</span><br><span class="line">    ;检查是否是尾节点</span><br><span class="line">    mov eax,(ListNode PTR [esi]).NextPtr</span><br><span class="line">    cmp eax,NULL</span><br><span class="line">    je quit</span><br><span class="line">    ;显示节点数据</span><br><span class="line">    mov eax,(ListNode PTR [esi]).NodeData</span><br><span class="line">    call WriteDec</span><br><span class="line">    call Crlf</span><br><span class="line">    ;获取下一个节点的指针</span><br><span class="line">    mov esi,(ListNode PTR [esi]).NextPtr</span><br><span class="line">    jmp NextNode</span><br><span class="line">quit:</span><br><span class="line">    exit</span><br><span class="line">main ENDP</span><br><span class="line">END main</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230815127-2cc36318-7cb5-4a66-a3ae-378057b92962.png"
+                      alt="64"
+                ></p>
+
         </div>
-        <div class="page-template-comments">
-            
-        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：80386汇编-结构和宏</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2023-04-01 10:45:00</li>
+        <li>
+            本文链接：https://9unkk.github.io/2023/04/01/80386-hui-bian-jie-gou-he-hong/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2023/04/10/win32-hui-bian-windows-cheng-xu-she-ji-yu-xi-pian/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">win32汇编-windows程序设计（预习篇）</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2023/03/26/80386-hui-bian-zi-fu-chuan-he-shu-zu/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">80386汇编-字符串和数组</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
     </div>
 </div>
 
@@ -388,6 +706,23 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-bottom-side-tools">
@@ -434,6 +769,14 @@
 
     </div>
 
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">定义结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%9F%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.1.1.</span> <span class="nav-text">域的初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%B8%AD%E5%9F%9F%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.1.2.</span> <span class="nav-text">结构中域的初始化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%E7%BB%93%E6%9E%84%E5%8F%98%E9%87%8F"><span class="nav-number">1.2.</span> <span class="nav-text">声明结构变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E7%BB%93%E6%9E%84%E5%8F%98%E9%87%8F"><span class="nav-number">1.3.</span> <span class="nav-text">引用结构变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9A%E6%98%BE%E7%A4%BA%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4"><span class="nav-number">1.4.</span> <span class="nav-text">例子：显示系统时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E7%9A%84%E5%B5%8C%E5%A5%97"><span class="nav-number">1.5.</span> <span class="nav-text">结构的嵌套</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%86%89%E6%B1%89%E8%B5%B0%E8%B7%AF"><span class="nav-number">1.6.</span> <span class="nav-text">醉汉走路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%94%E5%90%88%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">1.7.</span> <span class="nav-text">联合的声明和使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%8F"><span class="nav-number">2.</span> <span class="nav-text">宏</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8F%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text">宏的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8F%E7%9A%84%E8%B0%83%E7%94%A8"><span class="nav-number">2.2.</span> <span class="nav-text">宏的调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8F%E7%9A%84%E5%85%B6%E4%BB%96%E7%89%B9%E6%80%A7"><span class="nav-number">2.3.</span> <span class="nav-text">宏的其他特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E4%B9%A6%E9%99%84%E5%B8%A6%E7%9A%84%E5%AE%8F%E5%BA%93"><span class="nav-number">2.4.</span> <span class="nav-text">本书附带的宏库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.5.</span> <span class="nav-text">例子程序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E6%B1%87%E7%BC%96%E4%BC%AA%E6%8C%87%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">条件汇编伪指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E7%BC%BA%E5%B0%91%E7%9A%84%E5%8F%82%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">检查缺少的参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E7%9A%84%E5%8F%82%E6%95%B0%E5%88%9D%E5%A7%8B%E5%8C%96%E5%80%BC"><span class="nav-number">3.2.</span> <span class="nav-text">默认的参数初始化值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%83%E5%B0%94%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">3.3.</span> <span class="nav-text">布尔表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IF-ELSE%E5%92%8CENDIF%E4%BC%AA%E6%8C%87%E4%BB%A4"><span class="nav-number">3.4.</span> <span class="nav-text">IF,ELSE和ENDIF伪指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IFIDN-%E5%92%8C-IFIDNI-%E4%BC%AA%E6%8C%87%E4%BB%A4"><span class="nav-number">3.5.</span> <span class="nav-text">IFIDN 和 IFIDNI 伪指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9A%E5%AF%B9%E7%9F%A9%E9%98%B5%E8%A1%8C%E6%B1%82%E5%92%8C"><span class="nav-number">3.6.</span> <span class="nav-text">例子：对矩阵行求和</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E6%93%8D%E4%BD%9C%E7%AC%A6"><span class="nav-number">3.7.</span> <span class="nav-text">特殊操作符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2%E6%93%8D%E4%BD%9C%E7%AC%A6"><span class="nav-number">3.7.1.</span> <span class="nav-text">替换操作符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%95%E5%BC%80%E6%93%8D%E4%BD%9C%E7%AC%A6%EF%BC%88-%EF%BC%89"><span class="nav-number">3.7.2.</span> <span class="nav-text">展开操作符（%）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E6%93%8D%E4%BD%9C%E7%AC%A6%EF%BC%88-lt-gt-%EF%BC%89"><span class="nav-number">3.7.3.</span> <span class="nav-text">文本操作符（&lt;&gt;）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8F%E5%87%BD%E6%95%B0"><span class="nav-number">3.8.</span> <span class="nav-text">宏函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E9%87%8D%E5%A4%8D%E5%9D%97"><span class="nav-number">4.</span> <span class="nav-text">定义重复块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#WHILE-%E6%8C%87%E4%BB%A4"><span class="nav-number">4.1.</span> <span class="nav-text">WHILE 指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#REPEAT-%E4%BC%AA%E6%8C%87%E4%BB%A4"><span class="nav-number">4.2.</span> <span class="nav-text">REPEAT 伪指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FOR-%E4%BC%AA%E6%8C%87%E4%BB%A4"><span class="nav-number">4.3.</span> <span class="nav-text">FOR 伪指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FORC-%E4%BC%AA%E6%8C%87%E4%BB%A4"><span class="nav-number">4.4.</span> <span class="nav-text">FORC 伪指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E8%A1%A8"><span class="nav-number">4.5.</span> <span class="nav-text">链表</span></a></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
     
 
     <div class="image-viewer-container">
@@ -507,6 +850,14 @@
 
 
 <div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
     
 </div>
 

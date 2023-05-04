@@ -172,12 +172,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fas fa-file-word"></i>&nbsp;<span>1.9k 字</span>
+            <i class="fas fa-file-word"></i>&nbsp;<span>2.4k 字</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fas fa-clock"></i>&nbsp;<span>7 分钟</span>
+            <i class="fas fa-clock"></i>&nbsp;<span>9 分钟</span>
         </span>
     
     
@@ -474,6 +474,140 @@
 </blockquote>
 </li>
 </ol>
+<h2 id="004-Acid-Bytes-2"><a href="#004-Acid-Bytes-2" class="headerlink" title="004-Acid Bytes.2"></a>004-Acid Bytes.2</h2><h3 id="查看程序基本信息-2"><a href="#查看程序基本信息-2" class="headerlink" title="查看程序基本信息"></a>查看程序基本信息</h3><p>使用PE工具，查看这是个32位可执行程序，且加了 UPX 壳<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230323167-3aacc4a6-4e6d-4cd3-bb8e-0723fd4facc3.png"
+                      alt="84"
+                ></p>
+<h3 id="脱壳"><a href="#脱壳" class="headerlink" title="脱壳"></a>脱壳</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230338108-a2ab88bb-8ef4-443c-8a38-399eed0ebbc3.png"
+                      alt="85"
+                ></p>
+<p>重新查看程序信息<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230338538-2e3ff186-d3ea-44a2-bd6c-c2eb7f7c97c5.png"
+                      alt="86"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230339236-c37ccc24-b81c-4f01-bcbe-d988bbdc6857.png"
+                      alt="87"
+                ></p>
+<p>从上面的截图来看，程序使用的是 Delphi 语言，并且确定了程序的错误信息。</p>
+<h3 id="使用-IDR-加载脱壳程序-并进行分析"><a href="#使用-IDR-加载脱壳程序-并进行分析" class="headerlink" title="使用 IDR 加载脱壳程序,并进行分析"></a>使用 IDR 加载脱壳程序,并进行分析</h3><h4 id="程序执行流程"><a href="#程序执行流程" class="headerlink" title="程序执行流程"></a>程序执行流程</h4><ol>
+<li>使用 GetText 获取窗口数据</li>
+<li>使用 StrCmp 判断窗口数据（serial）是不是 “12011982”</li>
+<li>如果是就输出破解成功的消息框；如果serial为空，就输出消息框提示输入内容；如果不是就输出破解失败的消息框<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230402813-bad8b437-6d2e-4db3-8628-db9e6485e9c5.png"
+                      alt="88"
+                ></li>
+</ol>
+<blockquote>
+<p>从上图中可以很清晰地判断出 serial 的值就是 “12011982”</p>
+</blockquote>
+<h2 id="005-Andrnalin-1"><a href="#005-Andrnalin-1" class="headerlink" title="005-Andrnalin.1"></a>005-Andrnalin.1</h2><h3 id="查看程序基本信息-3"><a href="#查看程序基本信息-3" class="headerlink" title="查看程序基本信息"></a>查看程序基本信息</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230522841-ff615379-b0d6-46ac-9047-3affd6af4aa8.png"
+                      alt="89"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230526304-fcf8b49c-291a-4b6c-bfba-4d3519390c7c.png"
+                      alt="90"
+                ></p>
+<h3 id="程序分析-1"><a href="#程序分析-1" class="headerlink" title="程序分析"></a>程序分析</h3><ol>
+<li><p>F9运行程序到程序领空<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230526475-657d996a-0864-41bd-9f5c-f3937e72c327.png"
+                      alt="91"
+                ></p>
+</li>
+<li><p>在当前模块搜索字符串<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230526887-f44b1e85-0f8d-4b2c-bed6-a53947a431e4.png"
+                      alt="92"
+                ></p>
+</li>
+<li><p>双击字符串定位到相应指令处<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230527189-e9e94caa-131e-49e3-bab3-d56fd27cfec0.png"
+                      alt="93"
+                ></p>
+</li>
+<li><p>向上查找，看看有没有可疑的函数<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230527543-cf7d053d-cc9b-4861-8259-3e30032d6137.png"
+                      alt="94"
+                ></p>
+</li>
+</ol>
+<blockquote>
+<p>在strcmp指令处下断点</p>
+</blockquote>
+<ol start="5">
+<li>向 strcmp 函数后面查找第一个跳转指令<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230527934-e0244416-f6fd-4d64-bb5a-7f9b40133c04.png"
+                      alt="95"
+                ></li>
+</ol>
+<blockquote>
+<p>根据跳转指令后面的字符串和call，可以判断这一块是正确破解后的输出，这里跳转指令是关键跳转，我么在这里下断点。</p>
+</blockquote>
+<ol start="6">
+<li>调试程序<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230529534-023a483d-4b84-45ae-aef8-7f3f986f6d3c.png"
+                      alt="96"
+                ></li>
+</ol>
+<p>这里主要在就是看这两条指令 <code>neg edi</code>和<code>sbb edi,edi</code> 这两条指令:</p>
+<ul>
+<li>当 edi &#x3D; -1 时，执行neg指令后，edi&#x3D;1，CF标志位为1；执行 sbb 指令 edi&#x3D;edi-edi-CF位&#x3D;-1</li>
+<li>当 edi &#x3D; 0 时，执行neg指令后，edi&#x3D;0，CF标志位为0；执行 sbb 指令 edi&#x3D;edi-edi-CF位&#x3D;0</li>
+</ul>
+<blockquote>
+<p>指令复习：neg指令，求补码指令，对操作数执行求补运算：用零减操作数，然后结果返回到操作数。neg指令对CF标志位有影响。</p>
+</blockquote>
+<p>后面又执行了两条指令：<code>inc edi</code>和<code>neg edi</code></p>
+<ul>
+<li>当 edi&#x3D;-1 时，执行指令后 edi&#x3D;0</li>
+<li>当 edi&#x3D;0 时，执行指令后 edi&#x3D;1</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230534396-2e64c703-1f1e-4e14-b324-2530a73e6149.png"
+                      alt="97"
+                ></p>
+<p>当 di&#x3D;si&#x3D;0 时，破解失败；当 di!&#x3D;si时，破解成功。（esi 在之前就已经置为0了）<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230536754-90b645cb-2cf9-454d-8201-6ffcd2eb736d.png"
+                      alt="98"
+                ></p>
+<ol start="7">
+<li>验证 key（SynTaX 2oo1）</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/230537215-68008f85-d08a-453c-98b1-1de3e761da9a.png"
+                      alt="99"
+                ></p>
 
         </div>
 
@@ -647,7 +781,7 @@
         <aside class="page-aside">
             <div class="post-toc-wrap">
     <div class="post-toc">
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B0-160-%E4%B8%AA-CrackMe"><span class="nav-number">2.</span> <span class="nav-text">新 160 个 CrackMe</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#001-abexcm5"><span class="nav-number">2.1.</span> <span class="nav-text">001-abexcm5</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="nav-number">2.1.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">2.1.2.</span> <span class="nav-text">搜索字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90%EF%BC%88%E9%9D%99%E6%80%81-%E5%8A%A8%E6%80%81%EF%BC%89"><span class="nav-number">2.1.3.</span> <span class="nav-text">程序分析（静态+动态）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA"><span class="nav-number">2.1.4.</span> <span class="nav-text">编写注册机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#002-Cruehead-CrackMe-3"><span class="nav-number">2.2.</span> <span class="nav-text">002-Cruehead-CrackMe-3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.2.2.</span> <span class="nav-text">动态调试程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90"><span class="nav-number">2.2.3.</span> <span class="nav-text">程序分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GetModuleHandle-%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">GetModuleHandle 函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CreateFile-%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">CreateFile 函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95"><span class="nav-number">2.2.3.3.</span> <span class="nav-text">动态调试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-1"><span class="nav-number">2.2.4.</span> <span class="nav-text">编写注册机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-number">2.2.5.</span> <span class="nav-text">补充</span></a></li></ol></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B0-160-%E4%B8%AA-CrackMe"><span class="nav-number">2.</span> <span class="nav-text">新 160 个 CrackMe</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#001-abexcm5"><span class="nav-number">2.1.</span> <span class="nav-text">001-abexcm5</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="nav-number">2.1.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">2.1.2.</span> <span class="nav-text">搜索字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90%EF%BC%88%E9%9D%99%E6%80%81-%E5%8A%A8%E6%80%81%EF%BC%89"><span class="nav-number">2.1.3.</span> <span class="nav-text">程序分析（静态+动态）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA"><span class="nav-number">2.1.4.</span> <span class="nav-text">编写注册机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#002-Cruehead-CrackMe-3"><span class="nav-number">2.2.</span> <span class="nav-text">002-Cruehead-CrackMe-3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.2.2.</span> <span class="nav-text">动态调试程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90"><span class="nav-number">2.2.3.</span> <span class="nav-text">程序分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GetModuleHandle-%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">GetModuleHandle 函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CreateFile-%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">CreateFile 函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95"><span class="nav-number">2.2.3.3.</span> <span class="nav-text">动态调试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-1"><span class="nav-number">2.2.4.</span> <span class="nav-text">编写注册机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-number">2.2.5.</span> <span class="nav-text">补充</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#004-Acid-Bytes-2"><span class="nav-number">2.3.</span> <span class="nav-text">004-Acid Bytes.2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%B1%E5%A3%B3"><span class="nav-number">2.3.2.</span> <span class="nav-text">脱壳</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-IDR-%E5%8A%A0%E8%BD%BD%E8%84%B1%E5%A3%B3%E7%A8%8B%E5%BA%8F-%E5%B9%B6%E8%BF%9B%E8%A1%8C%E5%88%86%E6%9E%90"><span class="nav-number">2.3.3.</span> <span class="nav-text">使用 IDR 加载脱壳程序,并进行分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">2.3.3.1.</span> <span class="nav-text">程序执行流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#005-Andrnalin-1"><span class="nav-number">2.4.</span> <span class="nav-text">005-Andrnalin.1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-3"><span class="nav-number">2.4.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90-1"><span class="nav-number">2.4.2.</span> <span class="nav-text">程序分析</span></a></li></ol></li></ol></li></ol>
     </div>
 </div>
         </aside>
