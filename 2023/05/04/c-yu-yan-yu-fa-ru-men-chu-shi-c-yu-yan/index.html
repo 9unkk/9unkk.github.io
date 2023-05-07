@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            C语言语法入门-初识C语言 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">C语言语法入门-初识C语言</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2023-05-04 21:00:00</span>
+        <span class="mobile">2023-05-04 21:00</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>6.4k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>31 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1>C 语言发展史</h1>
+<p>C 语言是从两种语言 BCPL 和 B.BCPL 语言演变而来的。BCPL 是由马丁.理查兹在 1967年开发的，作为编写操作系统软件和编译器的语言。肯·汤普逊用他的 B 语言模拟了 BCPL 中的许多功能，1970年，他使用B语言在贝尔实验室创建了 UNIX 操作系统的早期版本。BCPL和B语言都是 “无数据类型” 语言，每个数据项都占据一个 “字” 大小，如果程序想要使用其他的数据类型就比较麻烦。</p>
+<p>C语言是由贝尔实验室丹尼斯.里奇从 B 进化而来的，最初在 1972 年在 DDCPDP-11 计算机上实现。C 语言使用了 BCPL 和 B 语言中的许多概念，同时添加了数据类型和其他强大的特性。C 最初广泛认为是 UNIX 操作系统的开发语言。今天，几乎所有新的主要操作系统大多数是使用 C/C++ 编写的。C 主要是硬件独立的。通过仔细的设计，就可以编写适用于大多数计算机的 C 程序。</p>
+<p>到 20 世纪 79 年代末，C 已经演变成现在被称为 “传统C”。1978 年，柯尼汉和丹尼斯里奇的书 《The C Programming Language》 的出版，引起了人们对这种语言的广泛关注。这就成为了有史以来最成功的计算机科学书籍之一。</p>
+<p>C 语言在各类型的计算机上快速扩展，这也导致了许多类似但往往不兼容的改动。对于那些需要开发能够在多个平台上运行代码的程序员来说，这是一个严重的问题。很明显，C语言要定一个标准，让语言规范化。</p>
+<p>1983年，美国成立了一个技术委员会，主要是 “提供一个明确的和计算机独立的语言定义”。1989年获得批准，该标准于 1999 年更新发布C99。C99 是 C 语言的修订标准，并不是所有流行的 C 编译器都支持 C99。</p>
+<p>2011年：ISO发布了C语言的最新标准，称为C11。C11标准增加了一些新的特性和标准库函数，如泛型选择、多线程支持、原子操作和_Static_assert等。</p>
+<h1>C 标准库</h1>
+<p>在我们之前写的 386 汇编中，里面调用的函数基本都是 C 语言标准库或者windows API 的函数。一下列出常用的C/C++语言标准库的头文件：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;assert.h&gt;</span>     <span class="comment">//设定插入点</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;ctype.h&gt;</span>      <span class="comment">//字符处理</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;errno.h&gt;</span>      <span class="comment">//定义错误码</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;float.h&gt;</span>      <span class="comment">//浮点数处理</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fstream.h&gt;</span>    <span class="comment">//文件输入/输出</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iomanip.h&gt;</span>    <span class="comment">//参数化输入/输出</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream.h&gt;</span>    <span class="comment">//数据流输入/输出</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;limits.h&gt;</span>    <span class="comment">//定义各种类型最值常量</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;locale.h&gt;</span>    <span class="comment">//定义本地化函数</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;math.h&gt;</span>    <span class="comment">//定义数字函数</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span>    <span class="comment">//定义输入/输出函数</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span>    <span class="comment">//定义杂项函数及内存分配函数</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span>    <span class="comment">//字符串处理</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;strstrea.h&gt;</span>    <span class="comment">//基于数组的输入/输出</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span>    <span class="comment">//定义关于时间函数</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;wchar.h&gt;</span>    <span class="comment">//宽字符处理及输入/输出</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;wctype.h&gt;</span>    <span class="comment">//宽字符分类</span></span></span><br></pre></td></tr></table></figure>
+<p>标准C++（同上的不再注释）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;algorithm&gt;</span>    <span class="comment">//STL通用算法</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bitset&gt;</span>    <span class="comment">//STL位集容器</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cctype&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cerrno&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;clocale&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;complex&gt;</span>    <span class="comment">//复数类</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;ctime&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;deque&gt;</span>    <span class="comment">//STL双端队列容器</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;exception&gt;</span>    <span class="comment">//异常处理</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;functional&gt;</span>    <span class="comment">//STL定义运算函数（代替运算符）</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;limits&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;list&gt;</span>    <span class="comment">//STL线性列表容器</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;map&gt;</span>    <span class="comment">//STL映射容器</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iomanip&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;ios&gt;</span>    <span class="comment">//基本输入/输出支持</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iosfwd&gt;</span>    <span class="comment">//输入/输出系统使用的前置声明</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;istream&gt;</span>    <span class="comment">//基本的输入流</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;ostream&gt;</span>    <span class="comment">//基本的输出流</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;queue&gt;</span>    <span class="comment">//STL队列容器</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;set&gt;</span>    <span class="comment">//STL集合容器</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sstream&gt;</span>    <span class="comment">//基于字符串的流</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stack&gt;</span>    <span class="comment">//STL堆栈容器</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdexcept&gt;</span>    <span class="comment">//标准异常类</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;streambuf&gt;</span>    <span class="comment">//底层输入/输出支持</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span>    <span class="comment">//字符串类</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;utility&gt;</span>    <span class="comment">//STL通用模板类</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span>    <span class="comment">//STL动态数组容器</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cwchar&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cwctype&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>C99 增加</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;complex.h&gt;</span>    <span class="comment">//复数处理</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fenv.h&gt;</span>    <span class="comment">//浮点环境</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;inttypes.h&gt;</span>    <span class="comment">//整数格式转换</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdbool.h&gt;</span>    <span class="comment">//布尔环境</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdint.h&gt;</span>    <span class="comment">//整型环境</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;tgmath.h&gt;</span>    <span class="comment">//通用类型数学宏</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;conio.h&gt;</span>    <span class="comment">//说明调用DOS控制台 I/O子程序的各个函数</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sio.h&gt;</span>    <span class="comment">//包含字符串库函数说明的头文件</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;slib.h&gt;</span>    <span class="comment">//包含动态存储与释放函数头文件</span></span></span><br></pre></td></tr></table></figure>
+<h1>显示计算结果</h1>
+<h2 id="计算整数的和并显示结果">计算整数的和并显示结果</h2>
+<p>计算整数 15 和 37的和，并显示结果。</p>
+<h3 id="代码清单1-1">代码清单1-1</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：list0101.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	显示整数 15 和 37 的和</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, <span class="number">15</span> + <span class="number">37</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="反汇编（debug模式）">反汇编（debug模式）</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 提升栈顶</span></span><br><span class="line"><span class="number">00</span>C21840  push        ebp  </span><br><span class="line"><span class="number">00</span>C21841  mov         ebp,esp  </span><br><span class="line"><span class="number">00</span>C21843  sub         esp,<span class="number">0</span>C0h  </span><br><span class="line"><span class="number">00</span>C21849  push        ebx  </span><br><span class="line"><span class="number">00</span>C2184A  push        esi  </span><br><span class="line"><span class="number">00</span>C2184B  push        edi  </span><br><span class="line"><span class="number">00</span>C2184C  mov         edi,ebp</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化堆栈空间，填充 0xCC</span></span><br><span class="line"><span class="number">00</span>C2184E  xor         ecx,ecx  </span><br><span class="line"><span class="number">00</span>C21850  mov         eax,<span class="number">0</span>CCCCCCCCh  </span><br><span class="line"><span class="number">00</span>C21855  rep stos    dword ptr es:[edi]</span><br><span class="line"></span><br><span class="line"><span class="comment">//C++ 的调试辅助函数，当/JMC被启用时，就会插入 __CheckForDebuggerJustMyCode 函数</span></span><br><span class="line"><span class="number">00</span>C21857  mov         ecx,offset _FC42537F_mjc@cpp (<span class="number">0</span>C2C008h)  </span><br><span class="line"><span class="number">00</span>C2185C  call        @__CheckForDebuggerJustMyCode@<span class="number">4</span> (<span class="number">0</span>C21316h)  </span><br><span class="line"></span><br><span class="line"><span class="comment">//	printf(&quot;%d&quot;, 15 + 37); 这里使用的是外平栈</span></span><br><span class="line"><span class="number">00</span>C21861  push        <span class="number">34</span>h  </span><br><span class="line"><span class="number">00</span>C21863  push        offset <span class="built_in">string</span> <span class="string">&quot;%d&quot;</span> (<span class="number">0</span>C27B30h)  </span><br><span class="line"><span class="number">00</span>C21868  call        _printf (<span class="number">0</span>C210CDh)  </span><br><span class="line"><span class="number">00</span>C2186D  add         esp,<span class="number">8</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment">//return 0;</span></span><br><span class="line"><span class="number">00</span>C21870  xor         eax,eax  </span><br><span class="line"></span><br><span class="line"><span class="comment">//降低栈顶</span></span><br><span class="line"><span class="number">00</span>C21872  pop         edi  </span><br><span class="line"><span class="number">00</span>C21873  pop         esi  </span><br><span class="line"><span class="number">00</span>C21874  pop         ebx  </span><br><span class="line"><span class="number">00</span>C21875  add         esp,<span class="number">0</span>C0h</span><br><span class="line"></span><br><span class="line"><span class="comment">//检查堆栈是否平衡，降低栈顶后 esp == ebp</span></span><br><span class="line"><span class="number">00</span>C2187B  cmp         ebp,esp  </span><br><span class="line"><span class="number">00</span>C2187D  call        __RTC_CheckEsp (<span class="number">0</span>C2123Fh)</span><br><span class="line"></span><br><span class="line"><span class="comment">//不管堆栈有没有平衡，强制降低栈顶</span></span><br><span class="line"><span class="number">00</span>C21882  mov         esp,ebp</span><br><span class="line"></span><br><span class="line"><span class="comment">//降低栈底，函数返回</span></span><br><span class="line"><span class="number">00</span>C21884  pop         ebp  </span><br><span class="line"><span class="number">00</span>C21885  ret  </span><br></pre></td></tr></table></figure>
+<h4 id="反汇编（release模式）">反汇编（release模式）</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//	printf(&quot;%d&quot;, 15 + 37);</span></span><br><span class="line"></span><br><span class="line"><span class="number">00E91040</span>  push        <span class="number">34</span>h  </span><br><span class="line"><span class="number">00E91042</span>  push        offset <span class="built_in">string</span> <span class="string">&quot;%d&quot;</span> (<span class="number">0E92100</span>h)  </span><br><span class="line"><span class="number">00E91047</span>  call        <span class="title function_">printf</span> <span class="params">(<span class="number">0E91010</span>h)</span>  </span><br><span class="line">00E9104C  add         esp,8  </span><br><span class="line"></span><br><span class="line"><span class="comment">//	return 0;</span></span><br><span class="line">00E9104F  xor         eax,eax  </span><br><span class="line">00E91051  ret  </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>实模式下直接把没有用的堆栈架构代码去掉了。本程序用的是 VS2022，不同版本的编译器，调试结果都有所不同。</p>
+</blockquote>
+<h4 id="硬编码">硬编码</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">55</span>                   <span class="comment">//push        ebp  </span></span><br><span class="line"><span class="number">8B</span> EC                <span class="comment">//mov         ebp,esp  </span></span><br><span class="line"><span class="number">81</span> EC C0 <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>    <span class="comment">//sub         esp,0C0h  </span></span><br><span class="line"><span class="number">53</span>                   <span class="comment">//push        ebx  </span></span><br><span class="line"><span class="number">56</span>                   <span class="comment">//push        esi  </span></span><br><span class="line"><span class="number">57</span>                   <span class="comment">//push        edi  </span></span><br><span class="line"><span class="number">8B</span> FD                <span class="comment">//mov         edi,ebp  </span></span><br><span class="line"><span class="number">33</span> C9                <span class="comment">//xor         ecx,ecx  </span></span><br><span class="line">B8 CC CC CC CC       <span class="comment">//mov         eax,0CCCCCCCCh  </span></span><br><span class="line">F3 AB                <span class="comment">//rep stos    dword ptr es:[edi]  </span></span><br><span class="line">B9 <span class="number">08</span> C0 DB <span class="number">00</span>       <span class="comment">//mov         ecx,offset _FC42537F_mjc@cpp (0DBC008h)  </span></span><br><span class="line">E8 B5 FA FF FF       <span class="comment">//call        @__CheckForDebuggerJustMyCode@4 (0DB1316h)  </span></span><br><span class="line"><span class="number">6</span>A <span class="number">34</span>                <span class="comment">//push        34h  </span></span><br><span class="line"><span class="number">68</span> <span class="number">30</span> <span class="number">7B</span> DB <span class="number">00</span>       <span class="comment">//push        offset string &quot;%d&quot; (0DB7B30h)  </span></span><br><span class="line">E8 <span class="number">60</span> F8 FF FF       <span class="comment">//call        _printf (0DB10CDh)  </span></span><br><span class="line"><span class="number">83</span> C4 <span class="number">08</span>             <span class="comment">//add         esp,8  </span></span><br><span class="line"><span class="number">33</span> C0                <span class="comment">//xor         eax,eax  </span></span><br><span class="line"><span class="number">5F</span>                   <span class="comment">//pop         edi  </span></span><br><span class="line"><span class="number">5</span>E                   <span class="comment">//pop         esi  </span></span><br><span class="line"><span class="number">5B</span>                   <span class="comment">//pop         ebx  </span></span><br><span class="line"><span class="number">81</span> C4 C0 <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>    <span class="comment">//add         esp,0C0h  </span></span><br><span class="line"><span class="number">3B</span> EC                <span class="comment">//cmp         ebp,esp  </span></span><br><span class="line">E8 BD F9 FF FF       <span class="comment">//call        __RTC_CheckEsp (0DB123Fh)  </span></span><br><span class="line"><span class="number">8B</span> E5                <span class="comment">//mov         esp,ebp  </span></span><br><span class="line"><span class="number">5</span>D                   <span class="comment">//pop         ebp  </span></span><br><span class="line">C3                   <span class="comment">//ret  </span></span><br></pre></td></tr></table></figure>
+<h3 id="printf函数">printf函数</h3>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236385617-120c5a38-85c2-4f8a-97c1-7cdf51a826e5.png"
+                      alt="1"
+                ><br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236385649-2c49109d-5816-4652-8f57-c284d5fd01ca.png"
+                      alt="2"
+                ></p>
+<h4 id="printf格式化字符串漏洞">printf格式化字符串漏洞</h4>
+<p>上面代码中的 %d 是格式化字符串，用来说明后续的参数要输出什么样类型的数据，常见的格式化字符串如下：<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236386885-d9a71c66-5fc9-46af-aea6-f9fb31f3b580.png"
+                      alt="3"
+                ></p>
+<p>使用 vs6.0 编写如下程序：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> s = <span class="number">0</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;the value of s is %n\n&quot;</span>, &amp;s);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, s);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出的字符串长度，包括空格符 &quot;the value of s is &quot; 一共是18个字符，执行完第一个printf指令后，s变量的值变为18 。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236392120-ad102a3c-32fa-41cc-9e92-0c7a195feb5f.png"
+                      alt="4"
+                ></p>
+<blockquote>
+<p>在现在新的编译器中是不允许使用 “%n” 格式化字符来为变量赋值。</p>
+</blockquote>
+<p>printf 函数的格式化字符串可以写任意多个，每一个格式化字符串对应一个要输出的参数。如果格式化字符串数量多于后面的参数数量，这就会导致字符串格式化漏洞，泄露堆栈信息。案例如下：<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236398502-49541cc3-58fd-4d28-9bd2-819723999029.png"
+                      alt="5"
+                ></p>
+<p>动态调试查看堆栈状态：<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236400904-3dd562bb-a2f8-4c20-b81c-1655ff642840.png"
+                      alt="6"
+                ></p>
+<p>可以看到我们最后一个 “%d” 输出的是 ebp 的值。</p>
+<h4 id="利用该漏洞打印-call-mian-函数的EIP指针">利用该漏洞打印 call mian 函数的EIP指针</h4>
+<p>动态调试进入到 main 函数内，并计算堆栈大小：<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236413530-eff96809-83c3-44b3-8e0e-12be6a7701cd.png"
+                      alt="7"
+                ></p>
+<blockquote>
+<p>0x40=64(Byte)=16(DWORD)<br>
+16+4=20(DWORD)</p>
+</blockquote>
+<p>一共是20个字大小的堆栈空间，我们想要打印 call main 后的EIP，就需要再多打印一个 %x。<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236414511-082eab75-2170-49fe-a551-c127c51e4c50.png"
+                      alt="8"
+                ></p>
+<p>401219 的上一个值就是 ebp 的值，401219 对应的指针就是当前输出的值 [ebp+4] = 12ffc4</p>
+<blockquote>
+<p>我这里多打印了一个 “%x”。</p>
+</blockquote>
+<h2 id="计算并显示整数的差">计算并显示整数的差</h2>
+<p>printf 函数中使用减法运算也很方便。</p>
+<h3 id="代码清单1-2">代码清单1-2</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：list0102.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">		输出15-37的结果</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, <span class="number">15</span> - <span class="number">37</span>);		<span class="comment">//输出 15-37 的结果 </span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="格式化字符串的转换与说明">格式化字符串的转换与说明</h2>
+<p>把 printf 函数第一个实参设置更长复杂一些。</p>
+<h3 id="代码清单1-3">代码清单1-3</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：list0103.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">		输出15-37的结果</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;15减去37的结果是：%d\n&quot;</span>, <span class="number">15</span> - <span class="number">37</span>);		<span class="comment">//输出 15-37 的结果 </span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236429197-c4c45994-a4d8-4fbb-8425-94a4b21c4db6.png"
+                      alt="9"
+                ></p>
+<h2 id="无格式化输出">无格式化输出</h2>
+<p>调用 printf 函数的时候也可以使用一个参数。这时，格式化字符串内的字符将按照原样显示。</p>
+<h3 id="代码清单1-4">代码清单1-4</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：list0104.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	打招呼并进行自我介绍</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;你好！我叫9unk。\n&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="代码清单1-5">代码清单1-5</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：list0105.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	打招呼并进行自我介绍，分行显示</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;你好！\n我叫9unk。\n&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="代码清单1-6">代码清单1-6</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：list0106.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	打招呼并进行自我介绍，分行显示</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;你好！\n&quot;</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;我叫9unk。\n&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>字符串常量：</strong> 向 “ABC” 和 “您好！” 这样用双引号 (&quot;) 括起来的一连串排列的文字，称为字符串常量。</p>
+<h2 id="转义字符">转义字符</h2>
+<p>前面能够实现换行的特殊符号 \n，就是转义字符。响铃的转义字符是 \a</p>
+<h3 id="代码清单1-7">代码清单1-7</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：list0107.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	显示 &quot;你好！&quot; 之后响铃3次</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;你好！\a\a\a\n&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1>变量</h1>
+<p>为了记录下计算过程中的结果以及最终结果，需要使用变量。</p>
+<h2 id="变量和声明">变量和声明</h2>
+<p><strong>变量的声明：</strong> 数据类型 变量名<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236475997-0cd20a12-ed1b-4948-bd4b-3e9fb6317778.png"
+                      alt="10"
+                ></p>
+<h3 id="代码清单1-8">代码清单1-8</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：list0108.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	为两个变量赋整数值并显示。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> x, y;</span><br><span class="line">	x = <span class="number">57</span>;</span><br><span class="line">	y = x + <span class="number">10</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;X的值是%d。\n&quot;</span>,x);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Y的值是%d。\n&quot;</span>, y);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="反汇编（debug模式）-2">反汇编（debug模式）</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00</span>A244E0  push        ebp  </span><br><span class="line"><span class="number">00</span>A244E1  mov         ebp,esp  </span><br><span class="line"><span class="number">00</span>A244E3  sub         esp,<span class="number">0</span>D8h  </span><br><span class="line"><span class="number">00</span>A244E9  push        ebx  </span><br><span class="line"><span class="number">00</span>A244EA  push        esi  </span><br><span class="line"><span class="number">00</span>A244EB  push        edi  </span><br><span class="line"><span class="number">00</span>A244EC  lea         edi,[ebp<span class="number">-18</span>h]  </span><br><span class="line"><span class="number">00</span>A244EF  mov         ecx,<span class="number">6</span>  </span><br><span class="line"><span class="number">00</span>A244F4  mov         eax,<span class="number">0</span>CCCCCCCCh  </span><br><span class="line"><span class="number">00</span>A244F9  rep stos    dword ptr es:[edi]  </span><br><span class="line"><span class="number">00</span>A244FB  mov         ecx,<span class="number">0</span>A2C008h  </span><br><span class="line"><span class="number">00</span>A24500  call        <span class="number">00</span>A21316  </span><br><span class="line"></span><br><span class="line"><span class="comment">//x = 57;</span></span><br><span class="line"><span class="number">00</span>A24505  mov         dword ptr [ebp<span class="number">-8</span>],<span class="number">39</span>h</span><br><span class="line"></span><br><span class="line"><span class="comment">//y = x + 10;</span></span><br><span class="line"><span class="number">00</span>A2450C  mov         eax,dword ptr [ebp<span class="number">-8</span>]  </span><br><span class="line"><span class="number">00</span>A2450F  add         eax,<span class="number">0</span>Ah  </span><br><span class="line"><span class="number">00</span>A24512  mov         dword ptr [ebp<span class="number">-14</span>h],eax</span><br><span class="line"></span><br><span class="line"><span class="comment">//printf(&quot;X的值是%d。\n&quot;,x);</span></span><br><span class="line"><span class="number">00</span>A24515  mov         eax,dword ptr [ebp<span class="number">-8</span>]  </span><br><span class="line"><span class="number">00</span>A24518  push        eax  </span><br><span class="line"><span class="number">00</span>A24519  push        <span class="number">0</span>A27CD0h  </span><br><span class="line"><span class="number">00</span>A2451E  call        <span class="number">00</span>A210CD  </span><br><span class="line"><span class="number">00</span>A24523  add         esp,<span class="number">8</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment">//printf(&quot;Y的值是%d。\n&quot;, y);</span></span><br><span class="line"><span class="number">00</span>A24526  mov         eax,dword ptr [ebp<span class="number">-14</span>h]  </span><br><span class="line"><span class="number">00</span>A24529  push        eax  </span><br><span class="line"><span class="number">00</span>A2452A  push        <span class="number">0</span>A27BD0h  </span><br><span class="line"><span class="number">00</span>A2452F  call        <span class="number">00</span>A210CD  </span><br><span class="line"><span class="number">00</span>A24534  add         esp,<span class="number">8</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment">//return 0;</span></span><br><span class="line"><span class="number">00</span>A24537  xor         eax,eax  </span><br><span class="line"></span><br><span class="line"><span class="number">00</span>A24539  pop         edi  </span><br><span class="line"><span class="number">00</span>A2453A  pop         esi  </span><br><span class="line"><span class="number">00</span>A2453B  pop         ebx  </span><br><span class="line"><span class="number">00</span>A2453C  add         esp,<span class="number">0</span>D8h  </span><br><span class="line"><span class="number">00</span>A24542  cmp         ebp,esp  </span><br><span class="line"><span class="number">00</span>A24544  call        <span class="number">00</span>A2123F  </span><br><span class="line"><span class="number">00</span>A24549  mov         esp,ebp  </span><br><span class="line"><span class="number">00</span>A2454B  pop         ebp  </span><br><span class="line"><span class="number">00</span>A2454C  ret  </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>局部变量使用的是 [ebp-xxx]</p>
+</blockquote>
+<blockquote>
+<p>局部变量+立即数：mov eax,[ebp-xxx]，add eax,立即数</p>
+</blockquote>
+<h4 id="反汇编（release模式）-2">反汇编（release模式）</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//int x, y;</span></span><br><span class="line"><span class="comment">//x = 57;</span></span><br><span class="line"><span class="comment">//y = x + 10;</span></span><br><span class="line"><span class="comment">//printf(&quot;X的值是%d。\n&quot;,x);</span></span><br><span class="line"><span class="number">007F</span>1040 <span class="number">6</span>A <span class="number">39</span>                push        <span class="number">39</span>h  </span><br><span class="line"><span class="number">007F</span>1042 <span class="number">68</span> <span class="number">00</span> <span class="number">21</span> <span class="number">7F</span> <span class="number">00</span>       push        offset <span class="built_in">string</span> <span class="string">&quot;X\xb5\xc4\xd6\xb5\xca\xc7%d\xa1\xa3\n&quot;</span> (<span class="number">07F</span>2100h)  </span><br><span class="line"><span class="number">007F</span>1047 E8 C4 FF FF FF       call        <span class="title function_">printf</span> <span class="params">(<span class="number">07F</span>1010h)</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment">//printf(&quot;Y的值是%d。\n&quot;, y);</span></span><br><span class="line">007F104C 6A 43                push        43h  </span><br><span class="line">007F104E 68 10 21 7F 00       push        offset <span class="built_in">string</span> &quot;Y\xb5\xc4\xd6\xb5\xca\xc7%d\xa1\xa3\n&quot; <span class="params">(<span class="number">07F</span>2110h)</span>  </span><br><span class="line">007F1053 E8 B8 FF FF FF       call        <span class="title function_">printf</span> <span class="params">(<span class="number">07F</span>1010h)</span>  </span><br><span class="line">007F1058 83 C4 10             add         esp,10h  </span><br><span class="line"><span class="comment">//return 0;</span></span><br><span class="line">007F105B 33 C0                xor         eax,eax  </span><br><span class="line">007F105D C3                   ret  </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>实模式下直接把堆栈框架删除，把printf函数所需的值直接带入调用（运算结果在编译的时候就已经完成）。</p>
+</blockquote>
+<h4 id="硬编码-2">硬编码</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">55</span>                   <span class="comment">//push        ebp  </span></span><br><span class="line"><span class="number">8B</span> EC                <span class="comment">//mov         ebp,esp  </span></span><br><span class="line"><span class="number">81</span> EC D8 <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>    <span class="comment">//sub         esp,0D8h  </span></span><br><span class="line"><span class="number">53</span>                   <span class="comment">//push        ebx  </span></span><br><span class="line"><span class="number">56</span>                   <span class="comment">//push        esi  </span></span><br><span class="line"><span class="number">57</span>                   <span class="comment">//push        edi  </span></span><br><span class="line"><span class="number">8</span>D <span class="number">7</span>D E8             <span class="comment">//lea         edi,[ebp-18h]  </span></span><br><span class="line">B9 <span class="number">06</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>       <span class="comment">//mov         ecx,6  </span></span><br><span class="line">B8 CC CC CC CC       <span class="comment">//mov         eax,0CCCCCCCCh  </span></span><br><span class="line">F3 AB                <span class="comment">//rep stos    dword ptr es:[edi]  </span></span><br><span class="line">B9 <span class="number">08</span> C0 A2 <span class="number">00</span>       <span class="comment">//mov         ecx,offset _FC42537F_mjc@cpp (0A2C008h)  </span></span><br><span class="line">E8 <span class="number">11</span> CE FF FF       <span class="comment">//call        @__CheckForDebuggerJustMyCode@4 (0A21316h)  </span></span><br><span class="line">C7 <span class="number">45</span> F8 <span class="number">39</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="comment">//mov         dword ptr [x],39h  </span></span><br><span class="line"><span class="number">8B</span> <span class="number">45</span> F8             <span class="comment">//mov         eax,dword ptr [x]  </span></span><br><span class="line"><span class="number">83</span> C0 <span class="number">0</span>A             <span class="comment">//add         eax,0Ah  </span></span><br><span class="line"><span class="number">89</span> <span class="number">45</span> EC             <span class="comment">//mov         dword ptr [y],eax  </span></span><br><span class="line"><span class="number">8B</span> <span class="number">45</span> F8             <span class="comment">//mov         eax,dword ptr [x]  </span></span><br><span class="line"><span class="number">50</span>                   <span class="comment">//push        eax  </span></span><br><span class="line"><span class="number">68</span> D0 <span class="number">7</span>C A2 <span class="number">00</span>       <span class="comment">//push        offset string &quot;X\xb5\xc4\xd6\xb5\xca\xc7%d\xa1\xa3\n&quot; (0A27CD0h)  </span></span><br><span class="line">E8 AA CB FF FF       <span class="comment">//call        _printf (0A210CDh)  </span></span><br><span class="line"><span class="number">83</span> C4 <span class="number">08</span>             <span class="comment">//add         esp,8  </span></span><br><span class="line"><span class="number">8B</span> <span class="number">45</span> EC             <span class="comment">//mov         eax,dword ptr [y]  </span></span><br><span class="line"><span class="number">50</span>                   <span class="comment">//push        eax  </span></span><br><span class="line"><span class="number">68</span> D0 <span class="number">7B</span> A2 <span class="number">00</span>       <span class="comment">//push        offset string &quot;Y\xb5\xc4\xd6\xb5\xca\xc7%d\xa1\xa3\n&quot; (0A27BD0h)  </span></span><br><span class="line">E8 <span class="number">99</span> CB FF FF       <span class="comment">//call        _printf (0A210CDh)  </span></span><br><span class="line"><span class="number">83</span> C4 <span class="number">08</span>             <span class="comment">//add         esp,8  </span></span><br><span class="line"><span class="number">33</span> C0                <span class="comment">//xor         eax,eax  </span></span><br><span class="line"><span class="number">5F</span>                   <span class="comment">//pop         edi  </span></span><br><span class="line"><span class="number">5</span>E                   <span class="comment">//pop         esi  </span></span><br><span class="line"><span class="number">5B</span>                   <span class="comment">//pop         ebx  </span></span><br><span class="line"><span class="number">81</span> C4 D8 <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>    <span class="comment">//add         esp,0D8h  </span></span><br><span class="line"><span class="number">3B</span> EC                <span class="comment">//cmp         ebp,esp  </span></span><br><span class="line">E8 F6 CC FF FF       <span class="comment">//call        __RTC_CheckEsp (0A2123Fh)  </span></span><br><span class="line"><span class="number">8B</span> E5                <span class="comment">//mov         esp,ebp  </span></span><br><span class="line"><span class="number">5</span>D                   <span class="comment">//pop         ebp  </span></span><br><span class="line">C3                   <span class="comment">//ret  </span></span><br></pre></td></tr></table></figure>
+<p><strong>赋值：</strong> 本程序中的等号 “=”，表示把右侧的值赋给左侧的变量。</p>
+<h2 id="初始化">初始化</h2>
+<p>尝试删除变量的赋值。</p>
+<h3 id="代码清单1-9">代码清单1-9</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*程序名：list0109.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	在不为两个变量赋值的情况下显示。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> x, y;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;X的值是%d。\n&quot;</span>,x);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Y的值是%d。\n&quot;</span>, y);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236483327-91922712-cd16-4953-8f2e-41f9faef3ccc.png"
+                      alt="11"
+                ></p>
+<p>变量 x 和 y 变成奇怪的值。这是因为在生成变量的时候，变量会被放入一个不确定的值，即 <strong>垃圾值</strong>。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236484295-6c5adcdb-6824-4cef-8d09-9069ed161f25.png"
+                      alt="12"
+                ></p>
+<blockquote>
+<p>新的 C 编译器中已经不允许这样写了。我这里使用 VS6.0 进行演示。</p>
+</blockquote>
+<h2 id="声明时初始化">声明时初始化</h2>
+<p>如果事先已经知道了变量中要存放的值，就应该首先将该值赋给变量。在声明变量的时候，除了有特别要求之外，一定要对其进行初始化。</p>
+<h3 id="代码清单1-10">代码清单1-10</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：list0110.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	对两个变量进行初始化并显示。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> x = <span class="number">57</span>;</span><br><span class="line">	<span class="type">int</span> y = x + <span class="number">10</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;X的值是%d。\n&quot;</span>,x);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Y的值是%d。\n&quot;</span>, y);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="反汇编（debug模式）-3">反汇编（debug模式）</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">009</span>C44E0 <span class="number">55</span>                   push        ebp  </span><br><span class="line"><span class="number">009</span>C44E1 <span class="number">8B</span> EC                mov         ebp,esp  </span><br><span class="line"><span class="number">009</span>C44E3 <span class="number">81</span> EC D8 <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>    sub         esp,<span class="number">0</span>D8h  </span><br><span class="line"><span class="number">009</span>C44E9 <span class="number">53</span>                   push        ebx  </span><br><span class="line"><span class="number">009</span>C44EA <span class="number">56</span>                   push        esi  </span><br><span class="line"><span class="number">009</span>C44EB <span class="number">57</span>                   push        edi  </span><br><span class="line"><span class="number">009</span>C44EC <span class="number">8</span>D <span class="number">7</span>D E8             lea         edi,[ebp<span class="number">-18</span>h]  </span><br><span class="line"><span class="number">009</span>C44EF B9 <span class="number">06</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>       mov         ecx,<span class="number">6</span>  </span><br><span class="line"><span class="number">009</span>C44F4 B8 CC CC CC CC       mov         eax,<span class="number">0</span>CCCCCCCCh  </span><br><span class="line"><span class="number">009</span>C44F9 F3 AB                rep stos    dword ptr es:[edi]  </span><br><span class="line"><span class="number">009</span>C44FB B9 <span class="number">08</span> C0 <span class="number">9</span>C <span class="number">00</span>       mov         ecx,offset _FC42537F_mjc@cpp (<span class="number">09</span>CC008h)  </span><br><span class="line"><span class="number">009</span>C4500 E8 <span class="number">11</span> CE FF FF       call        @__CheckForDebuggerJustMyCode@<span class="number">4</span> (<span class="number">09</span>C1316h)  </span><br><span class="line"><span class="comment">//int x = 57;</span></span><br><span class="line"><span class="number">009</span>C4505 C7 <span class="number">45</span> F8 <span class="number">39</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> mov         dword ptr [x],<span class="number">39</span>h  </span><br><span class="line"></span><br><span class="line"><span class="comment">//int y = x + 10;</span></span><br><span class="line"><span class="number">009</span>C450C <span class="number">8B</span> <span class="number">45</span> F8             mov         eax,dword ptr [x]  </span><br><span class="line"><span class="number">009</span>C450F <span class="number">83</span> C0 <span class="number">0</span>A             add         eax,<span class="number">0</span>Ah  </span><br><span class="line"><span class="number">009</span>C4512 <span class="number">89</span> <span class="number">45</span> EC             mov         dword ptr [y],eax  </span><br><span class="line">	</span><br><span class="line"><span class="comment">//printf(&quot;X的值是%d。\n&quot;,x);</span></span><br><span class="line"><span class="number">009</span>C4515 <span class="number">8B</span> <span class="number">45</span> F8             mov         eax,dword ptr [x]  </span><br><span class="line"><span class="number">009</span>C4518 <span class="number">50</span>                   push        eax  </span><br><span class="line"><span class="number">009</span>C4519 <span class="number">68</span> D0 <span class="number">7</span>C <span class="number">9</span>C <span class="number">00</span>       push        offset <span class="built_in">string</span> <span class="string">&quot;X\xb5\xc4\xd6\xb5\xca\xc7%d\xa1\xa3\n&quot;</span> (<span class="number">09</span>C7CD0h)  </span><br><span class="line"><span class="number">009</span>C451E E8 AA CB FF FF       call        _printf (<span class="number">09</span>C10CDh)  </span><br><span class="line"><span class="number">009</span>C4523 <span class="number">83</span> C4 <span class="number">08</span>             add         esp,<span class="number">8</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment">//printf(&quot;Y的值是%d。\n&quot;, y);</span></span><br><span class="line"><span class="number">009</span>C4526 <span class="number">8B</span> <span class="number">45</span> EC             mov         eax,dword ptr [y]  </span><br><span class="line"><span class="number">009</span>C4529 <span class="number">50</span>                   push        eax  </span><br><span class="line"><span class="number">009</span>C452A <span class="number">68</span> D0 <span class="number">7B</span> <span class="number">9</span>C <span class="number">00</span>       push        offset <span class="built_in">string</span> <span class="string">&quot;Y\xb5\xc4\xd6\xb5\xca\xc7%d\xa1\xa3\n&quot;</span> (<span class="number">09</span>C7BD0h)  </span><br><span class="line"><span class="number">009</span>C452F E8 <span class="number">99</span> CB FF FF       call        _printf (<span class="number">09</span>C10CDh)  </span><br><span class="line"><span class="number">009</span>C4534 <span class="number">83</span> C4 <span class="number">08</span>             add         esp,<span class="number">8</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment">//return 0;</span></span><br><span class="line"><span class="number">009</span>C4537 <span class="number">33</span> C0                xor         eax,eax  </span><br><span class="line"></span><br><span class="line"><span class="number">009</span>C4539 <span class="number">5F</span>                   pop         edi  </span><br><span class="line"><span class="number">009</span>C453A <span class="number">5</span>E                   pop         esi  </span><br><span class="line"><span class="number">009</span>C453B <span class="number">5B</span>                   pop         ebx  </span><br><span class="line"><span class="number">009</span>C453C <span class="number">81</span> C4 D8 <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>    add         esp,<span class="number">0</span>D8h  </span><br><span class="line"><span class="number">009</span>C4542 <span class="number">3B</span> EC                cmp         ebp,esp  </span><br><span class="line"><span class="number">009</span>C4544 E8 F6 CC FF FF       call        __RTC_CheckEsp (<span class="number">09</span>C123Fh)  </span><br><span class="line"><span class="number">009</span>C4549 <span class="number">8B</span> E5                mov         esp,ebp  </span><br><span class="line"><span class="number">009</span>C454B <span class="number">5</span>D                   pop         ebp  </span><br><span class="line"><span class="number">009</span>C454C C3                   ret  </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>赋值和初始化都是使用 mov 指令传送立即数到 [ebp-xxx] 中。实模式下汇编代码都是一样的，这里就忽略了。</p>
+</blockquote>
+<p><strong>初始化和赋值：</strong> 初始化就是在生成变量时放入值。赋值就是在生成的变量中放入值。</p>
+<h1>输入和显示</h1>
+<p>介绍如何通过键盘输入的整数值，并将其存放在变量中。</p>
+<h2 id="通过键盘进行输入">通过键盘进行输入</h2>
+<p>读取一个整数值，并显示出来进行确认。</p>
+<h3 id="代码清单1-11">代码清单1-11</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：list0111.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	显示并确认输入的整数值。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _CRT_SECURE_NO_WARNINGS</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> input;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;请输入一个整数值：&quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;input);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;您输入的是%d。\n&quot;</span>, input);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在新版的编译器中需要使用 “#define _CRT_SECURE_NO_WARNINGS” 来忽略告警信息。</p>
+</blockquote>
+<h4 id="反汇编（debug模式）-4">反汇编（debug模式）</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00081830</span>     push        ebp  </span><br><span class="line"><span class="number">00081831</span>     mov         ebp,esp  </span><br><span class="line"><span class="number">00081833</span>     sub         esp,<span class="number">0</span>D0h  </span><br><span class="line"><span class="number">00081839</span>     push        ebx  </span><br><span class="line"><span class="number">0008183</span>A     push        esi  </span><br><span class="line"><span class="number">0008183B</span>     push        edi  </span><br><span class="line"><span class="number">0008183</span>C     lea         edi,[ebp<span class="number">-10</span>h]  </span><br><span class="line"><span class="number">0008183F</span>     mov         ecx,<span class="number">4</span>  </span><br><span class="line"><span class="number">00081844</span>     mov         eax,<span class="number">0</span>CCCCCCCCh  </span><br><span class="line"><span class="number">00081849</span>     rep stos    dword ptr es:[edi]  </span><br><span class="line"><span class="number">0008184B</span>     mov         eax,dword ptr [__security_cookie (<span class="number">08</span>A020h)]  </span><br><span class="line"><span class="number">00081850</span>     xor         eax,ebp  </span><br><span class="line"><span class="number">00081852</span>     mov         dword ptr [ebp<span class="number">-4</span>],eax  </span><br><span class="line"><span class="number">00081855</span>     mov         ecx,offset _FC42537F_mjc@cpp (<span class="number">08</span>C008h)  </span><br><span class="line"><span class="number">0008185</span>A     call        @__CheckForDebuggerJustMyCode@<span class="number">4</span> (<span class="number">081316</span>h)  </span><br><span class="line"></span><br><span class="line"><span class="comment">//printf(&quot;请输入一个整数值：&quot;);</span></span><br><span class="line"><span class="number">0008185F</span>     push        offset <span class="built_in">string</span> <span class="string">&quot;\xc7\xeb\xca\xe4\xc8\xeb\xd2\xbb\xb8\xf6\xd5\xfb\xca\xfd\xd6\xb5\xa3\xba&quot;</span> (<span class="number">087</span>CD0h)  </span><br><span class="line"><span class="number">00081864</span>     call        _printf (<span class="number">0810</span>CDh)  </span><br><span class="line"><span class="number">00081869</span>     add         esp,<span class="number">4</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment">//scanf(&quot;%d&quot;, &amp;input);</span></span><br><span class="line"><span class="number">0008186</span>C     lea         eax,[input]  </span><br><span class="line"><span class="number">0008186F</span>     push        eax  </span><br><span class="line"><span class="number">00081870</span>     push        offset <span class="built_in">string</span> <span class="string">&quot;%d&quot;</span> (<span class="number">087B</span>D0h)  </span><br><span class="line"><span class="number">00081875</span>     call        _scanf (<span class="number">0813B</span>1h)  </span><br><span class="line"><span class="number">0008187</span>A     add         esp,<span class="number">8</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment">//printf(&quot;您输入的是%d。\n&quot;, input);</span></span><br><span class="line"><span class="number">0008187</span>D     mov         eax,dword ptr [input]  </span><br><span class="line"><span class="number">00081880</span>     push        eax  </span><br><span class="line"><span class="number">00081881</span>     push        offset <span class="built_in">string</span> <span class="string">&quot;\xc4\xfa\xca\xe4\xc8\xeb\xb5\xc4\xca\xc7%d\xa1\xa3\n&quot;</span> (<span class="number">087B</span>D4h)  </span><br><span class="line"><span class="number">00081886</span>     call        _printf (<span class="number">0810</span>CDh)  </span><br><span class="line"><span class="number">0008188B</span>     add         esp,<span class="number">8</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment">//return 0;</span></span><br><span class="line"><span class="number">0008188</span>E     xor         eax,eax  </span><br><span class="line"></span><br><span class="line"><span class="number">00081890</span>     push        edx  </span><br><span class="line"><span class="number">00081891</span>     mov         ecx,ebp  </span><br><span class="line"><span class="number">00081893</span>     push        eax  </span><br><span class="line"><span class="number">00081894</span>     lea         edx,ds:[<span class="number">818</span>C0h]  </span><br><span class="line"><span class="number">0008189</span>A     call        @_RTC_CheckStackVars@<span class="number">8</span> (<span class="number">0811E0</span>h)  </span><br><span class="line"><span class="number">0008189F</span>     pop         eax  </span><br><span class="line"><span class="number">000818</span>A0     pop         edx  </span><br><span class="line"><span class="number">000818</span>A1     pop         edi  </span><br><span class="line"><span class="number">000818</span>A2     pop         esi  </span><br><span class="line"><span class="number">000818</span>A3     pop         ebx  </span><br><span class="line"><span class="number">000818</span>A4     mov         ecx,dword ptr [ebp<span class="number">-4</span>]  </span><br><span class="line"><span class="number">000818</span>A7     xor         ecx,ebp  </span><br><span class="line"><span class="number">000818</span>A9     call        @__security_check_cookie@<span class="number">4</span> (<span class="number">081145</span>h)  </span><br><span class="line"><span class="number">000818</span>AE     add         esp,<span class="number">0</span>D0h  </span><br><span class="line"><span class="number">000818B</span>4     cmp         ebp,esp  </span><br><span class="line"><span class="number">000818B</span>6     call        __RTC_CheckEsp (<span class="number">08123F</span>h)  </span><br><span class="line"><span class="number">000818B</span>B     mov         esp,ebp  </span><br><span class="line"><span class="number">000818B</span>D     pop         ebp  </span><br><span class="line"><span class="number">000818B</span>E     ret  </span><br></pre></td></tr></table></figure>
+<h4 id="反汇编（release模式）-3">反汇编（release模式）</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00E81080</span>     push        ebp  </span><br><span class="line"><span class="number">00E81081</span>     mov         ebp,esp  </span><br><span class="line"><span class="number">00E81083</span>     sub         esp,<span class="number">8</span>  </span><br><span class="line"><span class="number">00E81086</span>     mov         eax,dword ptr [__security_cookie (<span class="number">0E83000</span>h)]  </span><br><span class="line"><span class="number">00E8108</span>B     xor         eax,ebp  </span><br><span class="line"><span class="number">00E8108</span>D     mov         dword ptr [ebp<span class="number">-4</span>],eax  </span><br><span class="line"></span><br><span class="line"><span class="comment">//printf(&quot;请输入一个整数值：&quot;);</span></span><br><span class="line"><span class="number">00E81090</span>     push        offset <span class="built_in">string</span> <span class="string">&quot;\xc7\xeb\xca\xe4\xc8\xeb\xd2\xbb\xb8\xf6\xd5\xfb\xca\xfd\xd6\xb5\xa3\xba&quot;</span> (<span class="number">0E82108</span>h)  </span><br><span class="line"><span class="number">00E81095</span>     call        <span class="title function_">printf</span> <span class="params">(<span class="number">0E81020</span>h)</span>  </span><br><span class="line">	</span><br><span class="line"><span class="comment">//scanf(&quot;%d&quot;, &amp;input);</span></span><br><span class="line">00E8109A     lea         eax,[input]  </span><br><span class="line">00E8109D     push        eax  </span><br><span class="line">00E8109E     push        offset <span class="built_in">string</span> &quot;%d&quot; <span class="params">(<span class="number">0E8211</span>Ch)</span>  </span><br><span class="line">00E810A3     call        <span class="title function_">scanf</span> <span class="params">(<span class="number">0E81050</span>h)</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment">//printf(&quot;您输入的是%d。\n&quot;, input);</span></span><br><span class="line">00E810A8     push        dword ptr [input]  </span><br><span class="line">00E810AB     push        offset <span class="built_in">string</span> &quot;\xc4\xfa\xca\xe4\xc8\xeb\xb5\xc4\xca\xc7%d\xa1\xa3\n&quot; <span class="params">(<span class="number">0E82120</span>h)</span>  </span><br><span class="line">00E810B0     call        <span class="title function_">printf</span> <span class="params">(<span class="number">0E81020</span>h)</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment">//return 0;</span></span><br><span class="line">00E810B5     mov         ecx,dword ptr [ebp-4]  </span><br><span class="line">00E810B8     add         esp,14h  </span><br><span class="line">00E810BB     xor         ecx,ebp  </span><br><span class="line">00E810BD     xor         eax,eax  </span><br><span class="line">00E810BF     call        __<span class="title function_">security_check_cookie</span> <span class="params">(<span class="number">0E810</span>C8h)</span>  </span><br><span class="line">00E810C4     mov         esp,ebp  </span><br><span class="line">00E810C6     pop         ebp  </span><br><span class="line">00E810C7     ret  </span><br></pre></td></tr></table></figure>
+<h4 id="硬编码-3">硬编码</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">55</span>                   push        ebp  </span><br><span class="line"><span class="number">8B</span> EC                mov         ebp,esp  </span><br><span class="line"><span class="number">81</span> EC D0 <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>    sub         esp,<span class="number">0</span>D0h  </span><br><span class="line"><span class="number">53</span>                   push        ebx  </span><br><span class="line"><span class="number">56</span>                   push        esi  </span><br><span class="line"><span class="number">57</span>                   push        edi  </span><br><span class="line"><span class="number">8</span>D <span class="number">7</span>D F0             lea         edi,[ebp<span class="number">-10</span>h]  </span><br><span class="line">B9 <span class="number">04</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>       mov         ecx,<span class="number">4</span>  </span><br><span class="line">B8 CC CC CC CC       mov         eax,<span class="number">0</span>CCCCCCCCh  </span><br><span class="line">F3 AB                rep stos    dword ptr es:[edi]  </span><br><span class="line">A1 <span class="number">20</span> A0 <span class="number">08</span> <span class="number">00</span>       mov         eax,dword ptr [__security_cookie (<span class="number">08</span>A020h)]  </span><br><span class="line"><span class="number">33</span> C5                xor         eax,ebp  </span><br><span class="line"><span class="number">89</span> <span class="number">45</span> FC             mov         dword ptr [ebp<span class="number">-4</span>],eax  </span><br><span class="line">B9 <span class="number">08</span> C0 <span class="number">08</span> <span class="number">00</span>       mov         ecx,offset _FC42537F_mjc@cpp (<span class="number">08</span>C008h)  </span><br><span class="line">E8 B7 FA FF FF       call        @__CheckForDebuggerJustMyCode@<span class="number">4</span> (<span class="number">081316</span>h)  </span><br><span class="line"><span class="number">68</span> D0 <span class="number">7</span>C <span class="number">08</span> <span class="number">00</span>       push        offset <span class="built_in">string</span> <span class="string">&quot;\xc7\xeb\xca\xe4\xc8\xeb\xd2\xbb\xb8\xf6\xd5\xfb\xca\xfd\xd6\xb5\xa3\n&quot;</span></span><br><span class="line">E8 <span class="number">64</span> F8 FF FF       call        _printf (<span class="number">0810</span>CDh)  </span><br><span class="line"><span class="number">83</span> C4 <span class="number">04</span>             add         esp,<span class="number">4</span>  </span><br><span class="line"><span class="number">8</span>D <span class="number">45</span> F4             lea         eax,[input]  </span><br><span class="line"><span class="number">50</span>                   push        eax  </span><br><span class="line"><span class="number">68</span> D0 <span class="number">7B</span> <span class="number">08</span> <span class="number">00</span>       push        offset <span class="built_in">string</span> <span class="string">&quot;%d&quot;</span> (<span class="number">087B</span>D0h)  </span><br><span class="line">E8 <span class="number">37</span> FB FF FF       call        _scanf (<span class="number">0813B</span>1h)  </span><br><span class="line"><span class="number">83</span> C4 <span class="number">08</span>             add         esp,<span class="number">8</span>  </span><br><span class="line"><span class="number">8B</span> <span class="number">45</span> F4             mov         eax,dword ptr [input]  </span><br><span class="line"><span class="number">50</span>                   push        eax  </span><br><span class="line"><span class="number">68</span> D4 <span class="number">7B</span> <span class="number">08</span> <span class="number">00</span>       push        offset <span class="built_in">string</span> <span class="string">&quot;\xc4\xfa\xca\xe4\xc8\xeb\xb5\xc4\xca\xc7%d\xa1\xa3\n&quot;</span> (<span class="number">087B</span>D4h)  </span><br><span class="line">E8 <span class="number">42</span> F8 FF FF       call        _printf (<span class="number">0810</span>CDh)  </span><br><span class="line"><span class="number">83</span> C4 <span class="number">08</span>             add         esp,<span class="number">8</span>  </span><br><span class="line"><span class="number">0</span>;</span><br><span class="line"><span class="number">33</span> C0                xor         eax,eax  </span><br><span class="line"><span class="number">52</span>                   push        edx  </span><br><span class="line"><span class="number">8B</span> CD                mov         ecx,ebp  </span><br><span class="line"><span class="number">50</span>                   push        eax  </span><br><span class="line"><span class="number">8</span>D <span class="number">15</span> C0 <span class="number">18</span> <span class="number">08</span> <span class="number">00</span>    lea         edx,ds:[<span class="number">818</span>C0h]  </span><br><span class="line">E8 <span class="number">41</span> F9 FF FF       call        @_RTC_CheckStackVars@<span class="number">8</span> (<span class="number">0811E0</span>h)  </span><br><span class="line"><span class="number">58</span>                   pop         eax  </span><br><span class="line"><span class="number">5</span>A                   pop         edx  </span><br><span class="line"><span class="number">5F</span>                   pop         edi  </span><br><span class="line"><span class="number">5</span>E                   pop         esi  </span><br><span class="line"><span class="number">5B</span>                   pop         ebx  </span><br><span class="line"><span class="number">8B</span> <span class="number">4</span>D FC             mov         ecx,dword ptr [ebp<span class="number">-4</span>]  </span><br><span class="line"><span class="number">33</span> CD                xor         ecx,ebp  </span><br><span class="line">E8 <span class="number">97</span> F8 FF FF       call        @__security_check_cookie@<span class="number">4</span> (<span class="number">081145</span>h)  </span><br><span class="line"><span class="number">81</span> C4 D0 <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>    add         esp,<span class="number">0</span>D0h  </span><br><span class="line"><span class="number">3B</span> EC                cmp         ebp,esp  </span><br><span class="line">E8 <span class="number">84</span> F9 FF FF       call        __RTC_CheckEsp (<span class="number">08123F</span>h)  </span><br><span class="line"><span class="number">8B</span> E5                mov         esp,ebp  </span><br><span class="line"><span class="number">5</span>D                   pop         ebp  </span><br><span class="line">C3                   ret  </span><br></pre></td></tr></table></figure>
+<h2 id="格式化输入函数-scanf">格式化输入函数 scanf</h2>
+<p>scanf 可以同样像 printf 函数那样，通过转换说明 “%d” 来限制函数只能读取十进制数。需要注意的是 scanf 函数进行读取时，变量名前必须加上一个特定的特殊字符 “&amp;”。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236652586-4bae363e-3b11-4bc4-98e1-890427ea6f49.png"
+                      alt="13"
+                ></p>
+<blockquote>
+<p>字符 “&amp;” 在 C 语言中的意思就是便是后面跟着的变量的内存地址，也就是我们常说的指针。例如 ”&amp;input“ 表示变量 input 变量的内存地址（指针）</p>
+</blockquote>
+<h2 id="乘法运算">乘法运算</h2>
+<p>读取一个整数，并显示其5倍数的值</p>
+<h3 id="代码清单1-12">代码清单1-12</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：list0112.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	读取一个整数并显示其5倍数的值</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _CRT_SECURE_NO_WARNINGS</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> input;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;请输入一个整数值：&quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;input);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;它的5倍数是%d。\n&quot;</span>, input*<span class="number">5</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="反汇编">反汇编</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//printf(&quot;它的5倍数是%d。\n&quot;, input*5);</span></span><br><span class="line"><span class="number">6B</span> <span class="number">45</span> F4 <span class="number">05</span>          imul        eax,dword ptr [input],<span class="number">5</span>  </span><br><span class="line"><span class="number">50</span>                   push        eax  </span><br><span class="line"><span class="number">68</span> D4 <span class="number">7B</span> <span class="number">0</span>C <span class="number">00</span>       push        offset <span class="built_in">string</span> <span class="string">&quot;\xcb\xfc\xb5\xc45\xb1\xb6\xca\xfd\xca\xc7%d\xa1\xa3\n&quot;</span> (<span class="number">0</span>C7BD4h)  </span><br><span class="line">E8 <span class="number">41</span> F8 FF FF       call        _printf (<span class="number">0</span>C10CDh)  </span><br><span class="line"><span class="number">83</span> C4 <span class="number">08</span>             add         esp,<span class="number">8</span>  </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>有符号数局部变量乘法：imul eax,[ebp-xxx],立即数</p>
+</blockquote>
+<h2 id="输出函数-puts">输出函数 puts</h2>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236652843-b9008a2a-b758-4ca0-9b1a-1ec1779a6352.png"
+                      alt="14"
+                ></p>
+<h3 id="代码清单1-13">代码清单1-13</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：list0113.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	显示读取到的两个整数的和</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _CRT_SECURE_NO_WARNINGS</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> n1,n2;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;请输入两个整数。&quot;</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;整数1：&quot;</span>);		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n1);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;整数2：&quot;</span>);		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n2);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;它们的和是 %d。\n&quot;</span>, n1 + n2);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="反汇编-2">反汇编</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">68</span> D0 <span class="number">7</span>C AA <span class="number">00</span>       push        offset <span class="built_in">string</span> <span class="string">&quot;\xc7\xeb\xca\xe4\xc8\xeb\xc1\xbd\xb8\xf6\xd5\xfb\xca\xfd\xa1\xa3&quot;</span> (<span class="number">0</span>AA7CD0h)  </span><br><span class="line">FF <span class="number">15</span> <span class="number">80</span> B1 AA <span class="number">00</span>    call        dword ptr [__imp__puts (<span class="number">0</span>AAB180h)]  </span><br><span class="line"><span class="number">83</span> C4 <span class="number">04</span>             add         esp,<span class="number">4</span>  </span><br></pre></td></tr></table></figure>
+<h3 id="代码清单1-14">代码清单1-14</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：list0114.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	显示读取到的两个整数的和</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _CRT_SECURE_NO_WARNINGS</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> n1,n2;</span><br><span class="line">	<span class="type">int</span> sum;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;请输入两个整数。&quot;</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;整数1：&quot;</span>);		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n1);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;整数2：&quot;</span>);		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n2);</span><br><span class="line"></span><br><span class="line">	sum = n1 + n2;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;它们的和是 %d。\n&quot;</span>, sum);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="反汇编-3">反汇编</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//sum = n1 + n2;</span></span><br><span class="line"><span class="number">8B</span> <span class="number">45</span> F4             mov         eax,dword ptr [ebp<span class="number">-0</span>Ch]  </span><br><span class="line"><span class="number">03</span> <span class="number">45</span> E8             add         eax,dword ptr [ebp<span class="number">-18</span>h]  </span><br><span class="line"><span class="number">89</span> <span class="number">45</span> DC             mov         dword ptr [ebp<span class="number">-24</span>h],eax  </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>局部变量相加并赋值反汇编：mov eax,[ebp-xxx]；add eax,[ebp-xxx]；mov [ebp-xxx],eax</p>
+</blockquote>
+<h1>课后练习</h1>
+<h2 id="练习-1-1">练习 1-1</h2>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236653412-dd682028-f6a6-4321-8415-31f15f266b4e.png"
+                      alt="15"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：lx1-1.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">		计算出15-37的结果，并输出 &quot;15减去37的结果是-22.&quot;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;15减去37的结果是%d\n&quot;</span>, <span class="number">15</span> - <span class="number">37</span>);		<span class="comment">//输出 15-37 的结果 </span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="练习-1-2">练习 1-2</h2>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236653422-a17f9de8-64c1-4d64-80d5-3646f78ee15d.png"
+                      alt="16"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：lx1-2.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">		调用一次printf函数，显示右侧内容。							  天</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">																	地</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">																	人</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;天\n\n地\n\n人\n&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="练习1-3">练习1-3</h2>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236653432-c1654bab-c211-4b7d-9932-66a1c829b29a.png"
+                      alt="17"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：lx1-3.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">		调用一次printf函数，显示右侧内容。	喂！</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">																	您好！</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">																	再见。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;喂！\n\n您好！\n\n再见。\n&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="练习1-4">练习1-4</h2>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236653563-d7d16728-f2b2-4fa7-be59-76453db3d1b3.png"
+                      alt="18"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：lx1-4.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">		int型变量的声明中为变量赋一个实数值的初始值，小数部分会被删除，只保留整数部分</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> x = <span class="number">3.14</span>;</span><br><span class="line">	<span class="type">int</span> y = <span class="number">5.7</span>;		<span class="comment">//int数据类型-整型，宽度4字节</span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;变量x=%d\n&quot;</span>, x);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;变量y=%d\n&quot;</span>, y);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="练习1-5">练习1-5</h2>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236654453-97ffe09e-2254-4e55-a2cd-31e243530160.png"
+                      alt="19"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：lx1-5.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">		读取一个整数并显示该整数加12之后的结果。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _CRT_SECURE_NO_WARNINGS</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> input;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;请输入一个整数：&quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;input);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;该值加12的结果：%d&quot;</span>, input + <span class="number">12</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="练习1-6">练习1-6</h2>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236654640-d331a472-1fee-4f0a-96ad-94e7d190764d.png"
+                      alt="20"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：lx1-6.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">		读取一个整数并显示该整数减去6之后的结果。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _CRT_SECURE_NO_WARNINGS</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> input;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;请输入一个整数：&quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;input);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;结果：%d - 6 = %d&quot;</span>,input,input - <span class="number">6</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="练习1-7">练习1-7</h2>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236654812-2c5c5a2e-fca4-43da-b0a2-e6bca2aed1b4.png"
+                      alt="21"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：lx1-7.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">		调用puts函数显示右侧内容。	天</span></span><br><span class="line"><span class="comment">														地</span></span><br><span class="line"><span class="comment">														人</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//puts 只输出字符串，且默认会加上换行符 &quot;\n&quot;</span></span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;天\n地\n人&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="练习1-8">练习1-8</h2>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236654833-65b0e390-ee23-4898-85c4-287bfede59dc.png"
+                      alt="22"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：lx1-8.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">		从键盘接收两个数字，并显示两个整数的乘积，输出格式如下：</span></span><br><span class="line"><span class="comment">		请输入两个整数。</span></span><br><span class="line"><span class="comment">		整数1：</span></span><br><span class="line"><span class="comment">		整数2：</span></span><br><span class="line"><span class="comment">		它们的乘积是</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _CRT_SECURE_NO_DEPRECATE</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> x, y;</span><br><span class="line">	<span class="comment">//puts 只输出字符串，且默认会加上换行符 &quot;\n&quot;</span></span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;请输入两个整数。&quot;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;整数1：&quot;</span>);			<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;整数2：&quot;</span>);			<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;y);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;它们的乘积是%d\n&quot;</span>, x * y);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="练习1-9">练习1-9</h2>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://user-images.githubusercontent.com/25861639/236654914-4505bba8-1ccf-4da0-ba88-9cc850a82df3.png"
+                      alt="23"
+                ></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：lx1-9.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">		从键盘接收三个数字，并显示三个整数的和，输出格式如下：</span></span><br><span class="line"><span class="comment">		请输入三个整数。</span></span><br><span class="line"><span class="comment">		整数1：</span></span><br><span class="line"><span class="comment">		整数2：</span></span><br><span class="line"><span class="comment">		整数3：</span></span><br><span class="line"><span class="comment">		它们的和是</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _CRT_SECURE_NO_DEPRECATE</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> x, y, z;</span><br><span class="line">	<span class="comment">//puts 只输出字符串，且默认会加上换行符 &quot;\n&quot;</span></span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;请输入两个整数。&quot;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;整数1：&quot;</span>);			<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;整数2：&quot;</span>);			<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;y);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;整数3：&quot;</span>);			<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;z);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;它们的和是%d\n&quot;</span>, x + y + z);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：C语言语法入门-初识C语言</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2023-05-04 21:00:00</li>
+        <li>
+            本文链接：https://9unkk.github.io/2023/05/04/c-yu-yan-yu-fa-ru-men-chu-shi-c-yu-yan/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2023/04/23/80386-hui-bian-fu-dian-chu-li-qi/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">80386汇编-浮点处理器</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">C 语言发展史</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">C 标准库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">显示计算结果</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%95%B4%E6%95%B0%E7%9A%84%E5%92%8C%E5%B9%B6%E6%98%BE%E7%A4%BA%E7%BB%93%E6%9E%9C"><span class="nav-number">3.1.</span> <span class="nav-text">计算整数的和并显示结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%B8%85%E5%8D%951-1"><span class="nav-number">3.1.1.</span> <span class="nav-text">代码清单1-1</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E6%B1%87%E7%BC%96%EF%BC%88debug%E6%A8%A1%E5%BC%8F%EF%BC%89"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">反汇编（debug模式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E6%B1%87%E7%BC%96%EF%BC%88release%E6%A8%A1%E5%BC%8F%EF%BC%89"><span class="nav-number">3.1.1.2.</span> <span class="nav-text">反汇编（release模式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A1%AC%E7%BC%96%E7%A0%81"><span class="nav-number">3.1.1.3.</span> <span class="nav-text">硬编码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#printf%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.2.</span> <span class="nav-text">printf函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#printf%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">printf格式化字符串漏洞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E8%AF%A5%E6%BC%8F%E6%B4%9E%E6%89%93%E5%8D%B0-call-mian-%E5%87%BD%E6%95%B0%E7%9A%84EIP%E6%8C%87%E9%92%88"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">利用该漏洞打印 call mian 函数的EIP指针</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E5%B9%B6%E6%98%BE%E7%A4%BA%E6%95%B4%E6%95%B0%E7%9A%84%E5%B7%AE"><span class="nav-number">3.2.</span> <span class="nav-text">计算并显示整数的差</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%B8%85%E5%8D%951-2"><span class="nav-number">3.2.1.</span> <span class="nav-text">代码清单1-2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E8%BD%AC%E6%8D%A2%E4%B8%8E%E8%AF%B4%E6%98%8E"><span class="nav-number">3.3.</span> <span class="nav-text">格式化字符串的转换与说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%B8%85%E5%8D%951-3"><span class="nav-number">3.3.1.</span> <span class="nav-text">代码清单1-3</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA"><span class="nav-number">3.4.</span> <span class="nav-text">无格式化输出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%B8%85%E5%8D%951-4"><span class="nav-number">3.4.1.</span> <span class="nav-text">代码清单1-4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%B8%85%E5%8D%951-5"><span class="nav-number">3.4.2.</span> <span class="nav-text">代码清单1-5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%B8%85%E5%8D%951-6"><span class="nav-number">3.4.3.</span> <span class="nav-text">代码清单1-6</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AC%E4%B9%89%E5%AD%97%E7%AC%A6"><span class="nav-number">3.5.</span> <span class="nav-text">转义字符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%B8%85%E5%8D%951-7"><span class="nav-number">3.5.1.</span> <span class="nav-text">代码清单1-7</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">变量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E5%92%8C%E5%A3%B0%E6%98%8E"><span class="nav-number">4.1.</span> <span class="nav-text">变量和声明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%B8%85%E5%8D%951-8"><span class="nav-number">4.1.1.</span> <span class="nav-text">代码清单1-8</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E6%B1%87%E7%BC%96%EF%BC%88debug%E6%A8%A1%E5%BC%8F%EF%BC%89-2"><span class="nav-number">4.1.1.1.</span> <span class="nav-text">反汇编（debug模式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E6%B1%87%E7%BC%96%EF%BC%88release%E6%A8%A1%E5%BC%8F%EF%BC%89-2"><span class="nav-number">4.1.1.2.</span> <span class="nav-text">反汇编（release模式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A1%AC%E7%BC%96%E7%A0%81-2"><span class="nav-number">4.1.1.3.</span> <span class="nav-text">硬编码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">4.2.</span> <span class="nav-text">初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%B8%85%E5%8D%951-9"><span class="nav-number">4.2.1.</span> <span class="nav-text">代码清单1-9</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%E6%97%B6%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">4.3.</span> <span class="nav-text">声明时初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%B8%85%E5%8D%951-10"><span class="nav-number">4.3.1.</span> <span class="nav-text">代码清单1-10</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E6%B1%87%E7%BC%96%EF%BC%88debug%E6%A8%A1%E5%BC%8F%EF%BC%89-3"><span class="nav-number">4.3.1.1.</span> <span class="nav-text">反汇编（debug模式）</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">5.</span> <span class="nav-text">输入和显示</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E9%94%AE%E7%9B%98%E8%BF%9B%E8%A1%8C%E8%BE%93%E5%85%A5"><span class="nav-number">5.1.</span> <span class="nav-text">通过键盘进行输入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%B8%85%E5%8D%951-11"><span class="nav-number">5.1.1.</span> <span class="nav-text">代码清单1-11</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E6%B1%87%E7%BC%96%EF%BC%88debug%E6%A8%A1%E5%BC%8F%EF%BC%89-4"><span class="nav-number">5.1.1.1.</span> <span class="nav-text">反汇编（debug模式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E6%B1%87%E7%BC%96%EF%BC%88release%E6%A8%A1%E5%BC%8F%EF%BC%89-3"><span class="nav-number">5.1.1.2.</span> <span class="nav-text">反汇编（release模式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A1%AC%E7%BC%96%E7%A0%81-3"><span class="nav-number">5.1.1.3.</span> <span class="nav-text">硬编码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%85%A5%E5%87%BD%E6%95%B0-scanf"><span class="nav-number">5.2.</span> <span class="nav-text">格式化输入函数 scanf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%98%E6%B3%95%E8%BF%90%E7%AE%97"><span class="nav-number">5.3.</span> <span class="nav-text">乘法运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%B8%85%E5%8D%951-12"><span class="nav-number">5.3.1.</span> <span class="nav-text">代码清单1-12</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E6%B1%87%E7%BC%96"><span class="nav-number">5.3.1.1.</span> <span class="nav-text">反汇编</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E5%87%BD%E6%95%B0-puts"><span class="nav-number">5.4.</span> <span class="nav-text">输出函数 puts</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%B8%85%E5%8D%951-13"><span class="nav-number">5.4.1.</span> <span class="nav-text">代码清单1-13</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E6%B1%87%E7%BC%96-2"><span class="nav-number">5.4.1.1.</span> <span class="nav-text">反汇编</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%B8%85%E5%8D%951-14"><span class="nav-number">5.4.2.</span> <span class="nav-text">代码清单1-14</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E6%B1%87%E7%BC%96-3"><span class="nav-number">5.4.2.1.</span> <span class="nav-text">反汇编</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">6.</span> <span class="nav-text">课后练习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%83%E4%B9%A0-1-1"><span class="nav-number">6.1.</span> <span class="nav-text">练习 1-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%83%E4%B9%A0-1-2"><span class="nav-number">6.2.</span> <span class="nav-text">练习 1-2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%83%E4%B9%A01-3"><span class="nav-number">6.3.</span> <span class="nav-text">练习1-3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%83%E4%B9%A01-4"><span class="nav-number">6.4.</span> <span class="nav-text">练习1-4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%83%E4%B9%A01-5"><span class="nav-number">6.5.</span> <span class="nav-text">练习1-5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%83%E4%B9%A01-6"><span class="nav-number">6.6.</span> <span class="nav-text">练习1-6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%83%E4%B9%A01-7"><span class="nav-number">6.7.</span> <span class="nav-text">练习1-7</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%83%E4%B9%A01-8"><span class="nav-number">6.8.</span> <span class="nav-text">练习1-8</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%83%E4%B9%A01-9"><span class="nav-number">6.9.</span> <span class="nav-text">练习1-9</span></a></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>
