@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            恶意代码分析实战-静态分析基础技术 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="page-template-container">
+        
+        
+        <div class="page-template-content markdown-body">
+            
+                <p>静态分析技术通常是研究恶意代码的第一步。静态分析指的是分析程序指令与结构来确定功能的过程。在这个时候程序是在不运行状态的。<br>
+本章学习从可执行文件中提取有用信息的多种方法，包括以下技术：</p>
+<ul>
+<li>使用反病毒软件来确认程序样本的恶意性</li>
+<li>使用哈希来识别恶意代码</li>
+<li>从文件的字符串列表、函数和文件头信息中发掘有用的信息。</li>
+</ul>
+<h1>反病毒引擎扫描（启发式检测）</h1>
+<p>分析一个可疑的恶意代码样本时，第一步最好是拿多个反病毒软件扫描这个文件，看是否有哪个引擎已经能够识别它。但是反病毒软件是不完美的，因为它们主要依靠一个已知恶意代码可识别片段的特征数据库（病毒文件的特征库），以及基于行为与模式匹配的分析（启发式检测），来识别可疑文件。问题是恶意代码编写者可以很容易地修改自己的代码，从而改变这些程序的特征，来躲避反病毒引擎的检测。此外，一些罕见的恶意代码通常也不会被反病毒软件所识别，因为它们根本不在病毒文件的特征库里。最后，启发式检测，尽管也能成功地识别出一些未知恶意代码，但仍然可以被一些新型独特的恶意代码所绕过。</p>
+<p>因为不同的反病毒软件使用了不同的特征库和启发式检测方法，所以对同一个可疑恶意代码样本，运行多个不同反病毒软件进行扫描检测时相当有必要的。现在通常用 “<a class="link"   target="_blank" rel="noopener" href="https://x.threatbook.com/" >微步在线威胁情报分析<i class="fas fa-external-link-alt"></i></a>” 对病毒样本进行扫描。</p>
+<h1>哈希值：恶意代码的指纹</h1>
+<p>哈希是用来唯一标识恶意代码的常用方法。恶意样本代码通过一个哈希程序，会产生一段用于唯一标识这个样本的独特哈希值。</p>
+<p>MD5 算法是恶意代码分析最常用的一种哈希函数，SHA-1算法也同样非常流行。<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/dd925279-fa3e-42dd-936e-d52e97e6a4ac"
+                      alt="1"
+                ></p>
+<h1>查找字符串</h1>
+<p>程序中的字符串就是一串可打印的字符序列。一个程序会包含一些字符串，比如打印出的消息、连接的URL，或是赋值文件到某个特定位置。</p>
+<p>从字符串中进行搜索是获得程序功能提示的一种简单方法，例如使用Strings程序读取字符串：<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/92c5485d-394e-4a27-a9c9-e3a174d15c44"
+                      alt="2"
+                ></p>
+<p>通常情况下，如果一个字符串很短并且不是一个单词的话，它就可能是毫无意义的。</p>
+<blockquote>
+<p>现在常用IDA进行静态分析，搜索字符串。</p>
+</blockquote>
+<h1>加壳与混淆恶意代码</h1>
+<p>恶意代码编写者经常使用加壳或混淆技术，让它们的文件更难被检测或分析。混淆程序是恶意代码编写者尝试去隐藏其执行过程的代码。而加壳程序则是混淆程序中的一类，加壳后的恶意程序会被压缩，并且难以分析。这两种技术将严重阻碍你对恶意代码的分析。</p>
+<p>合法程序大多总是会包含很多字符串。而由被加壳或者混淆的恶意代码直接分析获取得到的可打印字符串则很少。如果使用Strings程序来搜索一个程序，发现字符串很少时，它可能是混淆或是加壳的，也表明它可能是恶意的。你需要对它们进行除静态分析方法以外的一些分析，才能够进一步调查它们的行为。</p>
+<h2 id="文件加壳">文件加壳</h2>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/b9951257-6864-417a-a657-2ca910df4081"
+                      alt="3"
+                ></p>
+<h2 id="使用PEID检测加壳">使用PEID检测加壳</h2>
+<p>检测加壳软件的一种方法是使用 PEID 工具。你可以使用PEID来检测加壳器的类型，或是用来链接应用程序的编译器类型，这使得分析加壳软件变得更加容易一些。<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/0623ea3b-160c-4380-b946-d82620902cfc"
+                      alt="4"
+                ></p>
+<h1>PE格式文件</h1>
+<p>可移植执行（PE）文件格式是 Windows 可执行文件、对象代码和DLL所使用的标准格式。PE文件格式其实是一种数据结构，包含为windows操作系统加载器管理可执行代码所必要的信息。几乎每个windows系统中加载的可执行代码都使用PE文件格式，尽管也在一些罕见的恶意代码中，存在一些过时兼容性的文件格式。</p>
+<p>PE文件以一个文件头开始，其中包含代码信息、应用程序类型，所需要的库函数与空间要求。PE头中的信息对于恶意代码分析师而言，是非常有价值的。</p>
+<h1>链接库与函数</h1>
+<p>对于一个可执行程序，我们可以收集到的最有用信息之一，就是它的导入表。导入函数是一个程序所使用的但存储在另一个程序程序中的那些函数，比如包含了对于很多程序都通用的一些代码函数库。代码库可以通过链接的方式，被连接到主程序。</p>
+<p>程序员选择将一些导入函数链接到他们编写的程序中，这让他们不必重新在多个程序中重复实现特定功能。代码库可以被静态链接，也可以在运行是链接，或者动态链接。了解代码库是如何被链接的，对于我们理解恶意代码来说，是非常关键的，因为我们在PE文件头中可以找到的信息取决于链接了哪些代码库。</p>
+<h2 id="静态链接、运行时链接与动态链接">静态链接、运行时链接与动态链接</h2>
+<p>静态链接是 windows 平台链接代码库最不常用的方法，尽管在 UNIX 和 Linux 程序中是比较常见的。当一个库被静态链接到可执行程序时，所有这个库中的代码都会被复制到可执行程序中，这会让可执行程序增大很多。在代码分析时，很难区分静态链接的代码与可执行程序的自身代码，因为在 PE 文件头中没有迹象表明这个文件包含有链接代码。</p>
+<p>虽然运行时链接在合法程序中并不流行，但是恶意代码中时最常用的，特别是当恶意代码被加壳或混淆的时候。使用运行时链接的可执行程序，只有当需要使用函数时，才链接到库，而不是像动态链接模式那样在程序启动时就会链接。</p>
+<p>一些Windows API允许程序员导入并没有在程序的文件头中列出的链接函数。其中，最为常见的是 LoadLibrary 和 GetProcAddress。LdrGetProcAddress 和 LdrLoadDll 也会被使用。LoadLibrary 和 GetProcAddress。LoadLibrary 和 GetProcAddress 允许一个程序访问系统上任何库中的任何函数，这意味着当这些函数被使用时，你无法静态分析出可疑样本程序中会链接哪些函数。</p>
+<p>在所有链接方法中，动态链接是最常见的，对于恶意代码分析师也是最应该关注的。当代码库被动链接时，宿主操作系统会在程序被装载时搜索所需的代码库，如果程序调用了被链接的库函数，这个函数会在代码库中执行。</p>
+<p>PE文件头中存储了每个将被装载的库文件，以及每个会被程序使用的函数信息。程序所使用的库和调用的函数，经常是一个程序中最重要的部分，识别它们尤为重要，因为这些信息允许我们来猜测这个恶意代码样本到底干了些什么事情。</p>
+<h2 id="使用-Dependencies-工具探索动态链接库">使用 Dependencies 工具探索动态链接库</h2>
+<p>这里把书中的工具 “Dependency Walker” 替换为 “Dependencies”。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/3fab43cd-b65b-4806-9926-a887762a9a5d"
+                      alt="5"
+                ></p>
+<p>从右上角窗口可以看到各类DLL的导入表，下面的窗口列出了 iphlpapi.dll 中所有可以被导入的函数（不是很有用的信息），最底部的窗格显示运行程序时装载的DLL版本的额外信息。程序所装载的DLL可以告诉你很多关于程序功能的信息。<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/f6b08340-5605-49a6-830c-572454b69af8"
+                      alt="6"
+                ></p>
+<h3 id="函数命名约定">函数命名约定</h3>
+<p>当评估一些不熟悉的Windows函数时，一些命名约定是非常值得注意，因为如果不了解它们，就会经常造成混淆。例如，当微软更新一个函数，并且新函数与原先的函数不兼容时，微软还会支持旧函数。这时会给新的函数后加上EX后缀。而被显著更新过两次的函数，则会在它们名字后面加上两个Ex后缀。</p>
+<p>以字符串作为参数的函数，在它们的名字后会包含一个A或者一个w。A结尾的表示这个函数接收参数类型为ASCII字符串，而以w结尾的表示这个函数接收参数类型为Unicode字符串。</p>
+<h2 id="导入函数">导入函数</h2>
+<p>PE 文件头中包含了可执行文件使用的特定函数相关信息。Windows函数的这些名字，可以告诉你这个可执行文件到底在干些什么事情。</p>
+<h2 id="导出函数">导出函数</h2>
+<p>与导入函数类似，DLL和EXE的导出函数，是用来与其他程序和代码进行交互时所用的。通常，一个DLL会实现一个或多个功能函数，然后将它们导出，使得别的程序可以导入并使用这些函数。</p>
+<p>PE文件中包含一个文件中导出了哪些函数的信息，因为DLL文件本身就是实现一些导出函数后然后被EXE可执行文件使用的，因此导出函数在DLL文件中是最常见的。而EXE文件并不是设计成为其他EXE文件提供功能的，因此里面很少会有导出函数。如果你在可执行文件中发现了导出函数，它们经常会提供一些有用的信息。</p>
+<p>在许多情况下，软件作者对导出函数命名的名字会给出一些有用信息。一个普遍的约定是使用在微软文档中使用的名字。例如，为了将一个程序以服务方式运行，你必须首先定义一个 ServiceMain 函数。如果存在一个导出函数名为 ServiceMain，会告诉你恶意代码会作为服务的一部分运行。</p>
+<p>不幸的是，尽管微软文档会把这些函数命名为ServiceMain，而普通的程序员也会做同样的命名，但这个导出函数可以设置为任何名称。因此导出函数名称对于实际分析复杂的恶意代码时作用有限。如果恶意代码使用导出函数，它经常会完全省略名字，或者使用不明确或误导性的名字。</p>
+<h1>PE文件头与节区</h1>
+<p>PE文件格式包含一个PE文件头，随后跟着一系列的节区。文件头中包含了有关文件本身的元数据。而头部之后是文件的一些实际部分。，每个节区中都包含了有用的信息。</p>
+<ul>
+<li>.text：默认的代码节区，包含了CPU执行指令。所有其他节存储数据和支持信息。一般来说，这是唯一可以执行的节。</li>
+<li>.rdata：通常包含导入和导出信息。这个节区中还可以存储程序所使用的其他只读数据。有些文件中还会包含.idata和.edata节，来存储导入导出信息。</li>
+<li>.data：包含了程序的全局数据，可以从程序的任何地方访问到。本地数据并不存储在这个节区中，而是PE文件某个其他位置上。</li>
+<li>.rsrc：包含由可执行文件所使用的资源，而这些内容并不是可执行的，比如图标、图片、菜单项和字符串等。字符串可以存储在.rsrc节区中，或在主程序里。在.rsrc节区中经常存储的字符串是为了提供多语种支持的。</li>
+</ul>
+<p>节区名称在同一个编译器编译出来的可执行文件中都是遗一致的，但对于不同编译器，则会不尽相同。例如，Visual Studio使用.text作为可执行代码节的名称，但Borland的Delphi则使用CODE。Windows不会关心实际的节区名称，因为使用了PE头中的其他信息来确定如何使用一个节区。此外，节区的名称有时也被混淆，从而让分析更加困难。幸运的是，大多情况下都是使用的默认名称。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/69b51dd6-33f2-4acb-be9a-2e20450986aa"
+                      alt="7"
+                ></p>
+<h2 id="使用-PEview-来分析-PE-文件">使用 PEview 来分析 PE 文件</h2>
+<p>IMAGE_FILE_HEADER 项中，包含了关于文件的基本信息。画红框的时间戳表示这个可执行文件是什么时候编译的，这在恶意代码分析与事件处理中会非常有用。例如，一个很老的编译时间表示这个是古老的攻击，反病毒软件很有可能包含这个恶意代码的检测特征，而一个很新的编译时间表示的情况正好相反。<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/5c7f5b2d-dda0-4df4-9fac-4ea1c2f3d747"
+                      alt="29"
+                ></p>
+<p>但是，编译时间并不是很可靠的，例如，Dephi 程序都使用统一的编译时间，都是1992年6月19日。此外，编译时间也是可以修改伪造的。</p>
+<p>IMAGE_OPTIONAL_HEADER 项中包含了几个重要的信息。子系统（Subsystem）描述会指出是一个控制台程序还是图形界面程序。控制台程序的值是  IMAGE_SUBSYSTEM_WINDOWS_CUI，说明程序会在一个命令行窗口内运行。而GUI图形界面程序的值是IMAGE_SUBSYSTEM_WINDOWS_GUI，说明程序是win32窗口运行。除此之外，还有一些不太常见的子系统，如Native或者Xbox等。<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/22cf8f09-9fd8-4bb0-8d40-847b5bcb586c"
+                      alt="30"
+                ></p>
+<p>PE文件头各节区头部信息存储在 IMAGE_SECTION_HEADER 中。<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/4c3080d5-841b-4841-bdee-602aa2c3339b"
+                      alt="31"
+                ></p>
+<p>PE 文件头中最有趣的信息来自于分节头部描述信息，存储在 IMAGE_SECTION_HEADER 中。节区的大小，在检测可执行文件时非常有用。例如，虚拟数据大小比原始数据大得多，便可知道这个节在内存中占用了比磁盘上存储更多的空间，这往往意味着该节区有加壳代码，特别是当 .text 节区在内存中的数据比磁盘更大的时候。</p>
+<p>下面列出 AfKayAs.2.Exe 中的各节区大小：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">节区</th>
+<th style="text-align:center">虚拟大小</th>
+<th style="text-align:center">原始数据大小</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">.text</td>
+<td style="text-align:center">7964</td>
+<td style="text-align:center">7A00</td>
+</tr>
+<tr>
+<td style="text-align:center">.data</td>
+<td style="text-align:center">1168</td>
+<td style="text-align:center">200</td>
+</tr>
+<tr>
+<td style="text-align:center">.idata</td>
+<td style="text-align:center">488</td>
+<td style="text-align:center">600</td>
+</tr>
+<tr>
+<td style="text-align:center">.rsrc</td>
+<td style="text-align:center">63C</td>
+<td style="text-align:center">800</td>
+</tr>
+<tr>
+<td style="text-align:center">.reloc</td>
+<td style="text-align:center">388</td>
+<td style="text-align:center">400</td>
+</tr>
+</tbody>
+</table>
+<p>.text、.rdata和.rsrc每个节区都拥有一个虚拟大小和一个原始数据大小，两个值都是相近的。.data节区看起来是可疑的，因为它的虚拟大小比原始大小要大得多，但是对于Windows程序的 .data 节区来说是正常的。</p>
+<p>下图展示了 PackedProgram.exe 文件中的节区。这个文件中的节区有一系列的异常：节区名称 Dijfpds、.sdfuok和kijijl都是不寻常的，而.text、.data和.rdata节区都是可疑的。.text节区的大小为0，也就是说，它在磁盘上不需要任何空间，而虚拟大小的值是A000，这意味着Windows将会为.text节区分配内存空间。这就告诉我们，加壳器将会脱出可执行代码到一个分配的.text节中。<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/99833ad3-1c9b-4e38-bca6-6ee0cb980d65"
+                      alt="32"
+                ></p>
+<h3 id="PEview-报错修正">PEview 报错修正</h3>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/45524b52-7d61-4bf4-9adf-9e001bad727e"
+                      alt="8"
+                ></p>
+<ol>
+<li>使用 x32dbg 调试程序，并点程序报错的位置</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/ce25d8b9-aed5-4e51-83ab-bf7f5c14c647"
+                      alt="10"
+                ></p>
+<p>此时程序断在 “404788” 位置处，再点击 “log” 窗口发现程序异常是 c0000005<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/2da933e7-431f-44be-be25-52597d9ee387"
+                      alt="11"
+                ></p>
+<p>C0000005 报错是访问冲突，是应用程序读取、写入或执行无效内存地址导致的异常类型。简单来说就是 esi或edi的内存地址有一个是错的，无法正常访问。</p>
+<ol start="2">
+<li>通过手动验证发现 esi 源地址是错的，也就是说 <code>[0x0040AA4C]</code> 中存储的内存地址是错误的。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/dc8c30e7-7fec-4ba4-9ef1-b4db1821e9d2"
+                      alt="9"
+                ></p>
+<ol start="3">
+<li>重新运行程序，并在程序出现异常之前在 <code>[0x0040AA4C]</code> 位置处设置硬件断点–&gt;写入–&gt;双字。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/0092bc70-7b0f-4f5f-afee-fc28d977b906"
+                      alt="12"
+                ></p>
+<ol start="4">
+<li>
+<p>点击程序出现异常的位置，注意 PEview 分开放，不然替换点到 PEview 就会断点。<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/a239fea2-49a3-48eb-947d-12008408a784"
+                      alt="13"
+                ></p>
+</li>
+<li>
+<p>此时一直按 F9 运行程序，直到 [0x0040AA4C] 中的值变为 “50 AA 40 31”</p>
+</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/8e74bb2c-44a6-47fb-9615-e2d3faac7cdb"
+                      alt="14"
+                ></p>
+<ol start="6">
+<li>此时已经定位到错误的位置，但是代码这里的地址是 “0x7C84B516” 这里属于系统函数的位置，按理来说系统函数不应该会出错，这里很有可能是参数传入错误。我们按 “Alt+F9” 运行程序到用户代码区。此时我们已经定位到是GetTimeFormatA 这个函数出现异常。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/3b8fd475-4982-4e3f-8938-04ce567ecd6d"
+                      alt="15"
+                ></p>
+<ol start="7">
+<li>我们在该函数参数位置断点，并把之前设置的硬件断点删除</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/c035aa48-0dee-441f-b286-817cf415ced1"
+                      alt="16"
+                ></p>
+<ol start="8">
+<li>重新运行程序，并点击错误位置。此时查看第一条指令 <code>lea edi, ds:[edi+eax*1-0x1]</code>。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/24c93c38-80be-4fb1-8028-9e1daf1dcc78"
+                      alt="17"
+                ><br>
+在MSDN上找到对getTimeFormatA函数各参数信息：<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/fd15a3bf-961f-49e3-b1f6-b06f90b10c20"
+                      alt="18"
+                ><br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/473d6ceb-28ec-4dc8-b05c-0e02c8ccab8c"
+                      alt="19"
+                ></p>
+<ol start="9">
+<li>将各入栈参数对应上</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">push 0xD            ;cchTime：存储时间戳的缓冲区有13个字节，与lpFormat参数大小一致</span><br><span class="line">push edi            ;lpTimeStr：指向缓冲区的指针，此函数在其中检索格式化的时间字符串。</span><br><span class="line">push 0x40D1E4       ;lpFormat：输出的时间格式 &quot;yyyy/MM/dd ddd&quot;</span><br><span class="line">push eax            ;lpTime：指向 SYSTEMTIME 结构的指针</span><br><span class="line">push 0              ;dwFlags：指定时间格式选项的标志。TIME_NOTIMEMARKER（请勿使用时间标记。）</span><br><span class="line">push 0x800          ;Locale：LOCALE_SYSTEM_DEFAULT（操作系统的默认时区设置。 此常量的值是0x0800。）</span><br></pre></td></tr></table></figure>
+<ol start="10">
+<li>继续观察给 eax和edi赋值的指令</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lea edi, ds:[edi+eax*1-0x1]     ;很有可能是导致错误的原因，这里 eax 用的是上一个函数的返回值。</span><br><span class="line">lea eax, ss:[ebp-0x20]          ;这里eax是用局部变量赋值，出问题的可能性较小</span><br></pre></td></tr></table></figure>
+<ol start="11">
+<li>运行程序到断点处，发现 getDateFormatA 函数的返回值是0。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/2c67cae7-9fa3-48f7-b4d6-352ea1b3ff0c"
+                      alt="22"
+                ></p>
+<ol start="12">
+<li>继续按照之前的方法分析 getDateFormatA 函数</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/c3dd6cc9-4b34-4087-b0db-fb8f127e6e50"
+                      alt="20"
+                ><br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/c31ae326-bd02-43e5-ac90-fe50cea4a7b2"
+                      alt="21"
+                ></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">lea eax,dword ptr ss:[ebp-20]</span><br><span class="line">push 0x10                       ;cchDate：格式化日期字符串所需的缓冲区大小</span><br><span class="line">push edi                        ;lpDateStr：指向缓冲区的指针</span><br><span class="line">push 0x40D1D4                   ;lpFormat：指向用于构成日期的格式化字符串的指针。</span><br><span class="line">push eax                        ;lpDate：指向包含要设置格式的日期信息的 SYSTEMTIME 结构的指针。</span><br><span class="line">push 0x0                        ;dwFlags：指定日期格式选项的标志。</span><br><span class="line">push 0x800                      ;Locale：LOCALE_SYSTEM_DEFAULT</span><br></pre></td></tr></table></figure>
+<ol start="13">
+<li>对应上各参数之后，我们继续分析是哪些参数存在问题</li>
+</ol>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- 局部变量 &quot;[ebp-20]&quot; 存储的是 “SYSTEMTIME 结构体变量” 的指针。</span><br><span class="line"></span><br><span class="line">- &quot;push 0x10&quot; 是存储日期字符串的缓冲区大小，字符串格式化字符为 &quot;yyyy/MM/dd ddd &quot;，加上最后的 &#x27;\0&#x27;，正好是 0x10=17 字节</span><br><span class="line"></span><br><span class="line">- &quot;push edi&quot; 是指向缓冲区的指针，有了 &quot;缓冲区指针=edi&quot;、&quot;缓冲区大小=0x10(byte)&quot; 加上该位置一直存储的是ASCII码，我们基本可以确定这是一个 char 型数组。</span><br><span class="line"></span><br><span class="line">- &quot;push 0x800&quot; 根据不同的时区输出对应的日期字符串</span><br></pre></td></tr></table></figure>
+<p>从上面的参数分析发现函数参数并没有问题。</p>
+<p>我们继续回到调试界面查看，最终输出的日期结果是中文，而中文需要的字节数量已经超过了我们所给的缓冲区大小，因此 getDateFormatA 函数执行失败，返回值为 0<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/8db64788-fa63-45a9-9ecb-537d792fd774"
+                      alt="23"
+                ></p>
+<p>Peview.exe 在美国时区应该是能正常运行的，但在中国时区因为显示字符串长度的不同导致程序错误。</p>
+<ol start="14">
+<li>验证猜想</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> _CRT_SECURE_NO_DEPRECATE</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;Datetimeapi.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;minwinbase.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	SYSTEMTIME st;</span><br><span class="line">	SYSTEMTIME* st1=&amp;st;</span><br><span class="line"></span><br><span class="line">	FILETIME Local_File_Time;</span><br><span class="line">	<span class="type">char</span> dateStr[<span class="number">22</span>];</span><br><span class="line">	<span class="type">int</span> ret;</span><br><span class="line"></span><br><span class="line">	GetLocalTime(&amp;st);</span><br><span class="line">	FileTimeToSystemTime(&amp;Local_File_Time, &amp;st);</span><br><span class="line">    <span class="comment">//GetDateFormatA 运行错误，缓冲区大小改为 0x13 ，函数运行正确。</span></span><br><span class="line">    <span class="comment">//ret = GetDateFormatA(LOCALE_SYSTEM_DEFAULT, 0, st1,&quot;yyyy/MM/dd ddd &quot;, dateStr, 0x10);</span></span><br><span class="line">	ret = GetDateFormatA(LOCALE_INVARIANT, <span class="number">0</span>, st1,<span class="string">&quot;yyyy/MM/dd ddd &quot;</span>, dateStr, <span class="number">0x10</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, ret);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="15">
+<li>对程序打补丁</li>
+</ol>
+<p>需要修改的指令在 404A85，需要修改的值是 “8D 45 E0 6A 10”，我们多找几个值方便搜索。<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/3aebfc90-7079-4eca-8de0-0b3c01b9b088"
+                      alt="25"
+                ></p>
+<p>搜索并修改程序<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/e9986e8b-d21c-4625-8926-cbc0108484a7"
+                      alt="26"
+                ><br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/7e342c2f-d307-4949-b52a-1054e7f30ea4"
+                      alt="27"
+                ></p>
+<p>最终成功运行程序<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/c0008a95-8e83-4aa1-ade6-882da596d6a8"
+                      alt="28"
+                ></p>
+<p>参考：<a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/xiao__1bai/article/details/127593054" >记一次 PEview 的报错修正<i class="fas fa-external-link-alt"></i></a></p>
+<h2 id="使用Resource-Hacker工具来查看资源节区">使用Resource Hacker工具来查看资源节区</h2>
+<p>下图显示使用 Resource Hacker工具分析Windows计算程序calc.exe的结果。<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/32e6b5ff-6052-4640-834f-d47ff85300bc"
+                      alt="33"
+                ></p>
+<p>左侧的窗口中显示了可执行文件中包含的所有资源。每个根目录都存储了一种不通过类型的资源。其中对恶意代码分许能够提供有用信息部分包括：</p>
+<ul>
+<li>图标部分列出了当前可执行文件在文件列表中显示时所使用的图标文件。</li>
+<li>菜单部分存储了多有出现在各个窗口中的菜单，例如File、Edit和View菜单。这部分包含了所有菜单项的名称，以及所显示的文字。这些菜单项名称应该能够让你很好地理解它们的功能。</li>
+<li>对话框窗口部分包含了程序的对话框项。在右侧的对话框显示了用户在运行calc.exe所看到的那个界面，假如我们对calc.exe一无所知，我们可以通过查看这个对话框，轻易地识别出它是一个计算程序。</li>
+<li>字符串表部分存储了字符串列表</li>
+<li>版本信息部分包含了一个程序版本号，并经常有公司名称和版权声明。</li>
+</ul>
+<h2 id="PE文件头概述">PE文件头概述</h2>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/e858c926-513d-45b5-8b56-bf7c47a19712"
+                      alt="34"
+                ></p>
+<h1>实验</h1>
+<h2 id="Lab-1-1">Lab 1-1</h2>
+<ol>
+<li>在微步上面匹配病毒特征</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/046982fc-b6fd-437f-88b1-3fdd50a263e4"
+                      alt="35"
+                ></p>
+<ol start="2">
+<li>程序编译时间</li>
+</ol>
+<p>编译时间：2010-12-19<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/ad7f73a0-2db4-4226-9c61-8590a8ba0241"
+                      alt="36"
+                ></p>
+<ol start="3">
+<li>两个文件是否加壳或者混淆</li>
+</ol>
+<p>未加壳<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/d4cdc931-77ca-4462-8b80-9e5ce48a27b6"
+                      alt="37"
+                ><br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/4a4b3d73-d50d-4342-9566-476fb3ba5cf5"
+                      alt="39"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/ca1e4cde-1e5a-49ce-b46d-8c79934f8c73"
+                      alt="38"
+                ><br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/21dbe849-6870-4f52-8269-a290bf223ea3"
+                      alt="40"
+                ></p>
+<ol start="4">
+<li>是否有导入函数？这些函数在做什么？</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/6c9b329c-73bc-41cb-92ab-b73c2192fa4b"
+                      alt="41"
+                ></p>
+<p>可以看到 FindFirstFileA 和 FindNextFIleA 遍历查找指定目录下的所有文件，最后还有一个 CopyFileA 复制文件。这里应该是把目录下的某个文件复制到电脑的其他目录中。</p>
+<p>搜索字符串<br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/9184ddef-e293-41b1-aeb2-34e5a2ea6cb5"
+                      alt="42"
+                ></p>
+<p>发现这里有 “C:\Windows\System32\Kernel32.dll” 和 “Lab01-01.dll”，猜测可能是把 Lab01-01.dll 复制为 C:\Windows\System32\Kernel32.dll。</p>
+<p>继续使用 IDA 分析程序流程图</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/217e8beb-47a4-404e-abfd-2e2f0295ca60"
+                      alt="43"
+                ><br>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/2790ac18-1ca5-455b-aa1f-21b1cc19c301"
+                      alt="44"
+                ></p>
+<ul>
+<li>CreateFileA：打开 “C:\Windows\System32\Kernel32.dll” 文件</li>
+<li>CreateFileMappingA：把文件 Kernal32.dll 创建一个文件映射对象</li>
+<li>MapViewOfFile：将文件 Kernal32.dll 映射到调用进程的地址空间中</li>
+<li>以同样的方法将 Lab01-01.dll 映射到进程地址空间中</li>
+<li>CopyFileA：将 Kernal32.dll 中的资源属性覆盖到 Lab01-01.dll 中。</li>
+</ul>
+
+            
+        </div>
+        <div class="page-template-comments">
+            
+        </div>
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>
