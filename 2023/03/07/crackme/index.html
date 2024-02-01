@@ -172,12 +172,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fas fa-file-word"></i>&nbsp;<span>2.7k 字</span>
+            <i class="fas fa-file-word"></i>&nbsp;<span>5.3k 字</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fas fa-clock"></i>&nbsp;<span>10 分钟</span>
+            <i class="fas fa-clock"></i>&nbsp;<span>21 分钟</span>
         </span>
     
     
@@ -670,7 +670,425 @@
                      data-src="https://github.com/9unkk/tuchuang/assets/25861639/ab375028-5792-4f14-b8a2-58524923e508"
                       alt="8"
                 ></p>
-<h3 id="静态分析-1"><a href="#静态分析-1" class="headerlink" title="静态分析"></a>静态分析</h3><h3 id="动态调试-1"><a href="#动态调试-1" class="headerlink" title="动态调试"></a>动态调试</h3><h3 id="编写注册机-3"><a href="#编写注册机-3" class="headerlink" title="编写注册机"></a>编写注册机</h3>
+<h3 id="静态分析-1"><a href="#静态分析-1" class="headerlink" title="静态分析"></a>静态分析</h3><ol>
+<li>搜索字符串，找到主程序的</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/c7f8d86a-15da-49e1-911d-23d5c9a3d1c7"
+                      alt="9"
+                ></p>
+<blockquote>
+<p>通过IDA静态分析并没有找到中文字符串，这是因为IDA中文字符串搜索功能有点小问题，同时对于程序运行过程中产生的字符串是无法搜索出来的。</p>
+</blockquote>
+<ol start="2">
+<li>通过动态调试搜索字符串</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/360c0af5-f083-456d-8bf2-8ea07fd45087"
+                      alt="10"
+                ></p>
+<ol start="3">
+<li>在IDA中手动定位到字符串位置</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/31a174e3-c89e-4728-9b5a-72ba9aaff8cd"
+                      alt="11"
+                ></p>
+<ol start="4">
+<li>按空格键查看程序流程图</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/6ff14723-d92c-4d8c-903c-1f0b73d372b7"
+                      alt="12"
+                ></p>
+<blockquote>
+<p>经过多次手动调试之后发现，这一块的功能（TFmReg_btnOKClick）就是把 “UserName&#x3D;9unk” 和 “SN&#x3D;123456” 写入到 reg.dll 中，并没有验硬编码的功能。也就是说这个程序是通过读取 reg.dll 这个文件中的 “UserName” 和 “SN” 来验证硬编码的。</p>
+</blockquote>
+<ol start="5">
+<li>重新观察程序，发现左下角写着 “未注册”</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/3e7be35d-ad2c-4099-bee7-cbb30833e3e8"
+                      alt="13"
+                ></p>
+<ol start="6">
+<li>重新在搜索字符串，并在 “提升栈顶” 处设置断点。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/ff19276a-9905-49f9-8458-67a9e71f8440"
+                      alt="14"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/c5fd94ab-c2dd-44f2-a293-248af502b406"
+                      alt="15"
+                ></p>
+<ol start="7">
+<li>在 IDA 中定位到 “0x45D4A9” 位置中，静态程序。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/8eb168ad-2e57-449f-ab85-140a7fda3405"
+                      alt="16"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/4b9238c6-816f-4091-b8b6-f5e14210cd53"
+                      alt="17"
+                ></p>
+<blockquote>
+<p>复制字符串 “您的有效期” 和 “未注册” 到局部变量中，之后再查找 reg.dll 文件，如果该文件不存在就结束程序。</p>
+</blockquote>
+<ol start="8">
+<li>获取窗口 “UserName” 和 “SN” 窗口的值。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/d9a67b48-0c82-48e4-8609-03af642bad2e"
+                      alt="18"
+                ></p>
+<ol start="9">
+<li>根据下面的 call 函数中使用了 “UserName” 和 “SN” 作为参数，这应该是关键函数。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/d237efff-fd60-4584-97df-e4586684e6ac"
+                      alt="19"
+                ></p>
+<p><strong>delphi 逆向中的函数：</strong></p>
+<ul>
+<li>LStrLAsg 函数：将 EDX 指向的地址内容复制到EAX指向的地址中去。</li>
+<li>FileExists 函数：查找文件是否存在，EAX作为入口点；返回值：al&#x3D;&#x3D;”True” 或 “False”。</li>
+<li>GetValue 函数：返回属性的串值，缺省时返回’(unknown)’，这应该被重载以返回适当的值。</li>
+<li>StrCat(Dest: PChar; const Source: PChar) 函数：将参数source中的字符添加到Dest字符串的尾部，Dest缓冲区中必须有足够的空间。其中，Dest表示目的缓冲区；Source表示源缓冲区。</li>
+<li>strcopy(Dest: PChar; const Source: PChar)：将参数Source中的字符复制Dest字符的尾部，Dest缓冲区中必须有足够的空间。</li>
+<li>strtoint 函数：将字符串转换为整数</li>
+<li>strclr 函数：引用计数为0了，释放字符串</li>
+</ul>
+<h3 id="动态调试-1"><a href="#动态调试-1" class="headerlink" title="动态调试"></a>动态调试</h3><ol>
+<li>从这里可以发现从 0x412500 地址往后存储的可能是自定义函数的数组指针。后面的这些函数比较多不必要一个个函数去分析，只要了解大概就行</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/786ceccb-70f0-4a16-9cc1-079fb4474f39"
+                      alt="20"
+                ></p>
+<ol start="2">
+<li>关键函数暂时先跳过。在后面修改跳转指令，F9 运行程序，看看是否能正确注册程序。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/210d2daf-f3d7-4081-b9bc-c18cbaa67b53"
+                      alt="21"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/94f239b1-9696-4bea-86c5-7595b2d8005c"
+                      alt="22"
+                ></p>
+<blockquote>
+<p>可以看到，程序正常运行。后续就是分析这个关键函数再做什么操作。</p>
+</blockquote>
+<ol start="3">
+<li>经过第一轮分析可得出如下结果，修改 reg.dll 文件，重新调试程序。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/fc2b96f4-03eb-4f3e-9e5d-24df670565ae"
+                      alt="23"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/5b4b3135-e225-4b5d-8ff7-75822de7f5f7"
+                      alt="24"
+                ></p>
+<p>循环计算 serial 中的每个字符，如果字符 (x + 0xD0(存储大小为字节) ) &lt; 0xA 就会继续循环计算，如果不符合第一个要求 (上一个计算结果 + 0xF9) &gt;&#x3D; 6 跳出该子程序。</p>
+<blockquote>
+<p>补充：这一段循环表示 ”输入的 SN 必须在 0<del>9 和 A</del>F 之间“。</p>
+</blockquote>
+<ol start="4">
+<li>计算程序激活时间的函数</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/a2a00d8f-4fdc-4c73-9ed2-69da1e679ca8"
+                      alt="25"
+                ></p>
+<ol start="5">
+<li>执行下一个函数后看到有一串16位的字符，这可能是正确的serial</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/92156127-1551-4af1-9599-30d2739f3495"
+                      alt="26"
+                ></p>
+<ol start="6">
+<li>继续调试，发现出现了一串新的字符，这很像 MD5 加密，我们尝试使用加密算法验证一下。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/ad982294-3985-4893-aee7-7f36bae0517e"
+                      alt="27"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/9be30b16-2071-46b8-877b-4baa3d77d9b2"
+                      alt="28"
+                ></p>
+<ol start="7">
+<li>发现对输入的 serial 也进行了两次 MD5 加密，最后在对两个字符串进行比较</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/4bf53e71-047d-426a-a2d2-0e93896c5cf9"
+                      alt="29"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/989495ac-8171-4be2-8740-bf2dc4db06f5"
+                      alt="30"
+                ></p>
+<ol start="8">
+<li>最终输入前面的serial，程序正确激活</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/405a240f-4bdb-4e75-87a0-9b665b11c13e"
+                      alt="31"
+                ></p>
+<h3 id="算法分析：函数0x0045C5E0"><a href="#算法分析：函数0x0045C5E0" class="headerlink" title="算法分析：函数0x0045C5E0"></a>算法分析：函数0x0045C5E0</h3><ol>
+<li><p>入口参数：ECX&#x3D;”正确的SN”，EDX&#x3D;”激活日期期限”，EAX&#x3D;”UserName”<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/92156127-1551-4af1-9599-30d2739f3495"
+                      alt="26"
+                ></p>
+</li>
+<li><p>第一步将 “11”、”05”、”12” 转换为二进制字符串拼接为 “0001011010101100”</p>
+</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/f07bd99f-b350-46e1-8cbd-529668807639"
+                      alt="37"
+                ></p>
+<ol start="3">
+<li>第二步：将“0001011010101100” 经过一系列操作变为 “01010110”，再转换为十六进制0x56</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/b3d13db9-5884-4cbd-b6f4-48192ebfdb11"
+                      alt="38"
+                ></p>
+<ol start="4">
+<li>第三步：将“0001011010101100” 经过一系列操作变为 “00110100”，再转换为十六进制0x34</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/753ad655-8b53-4d38-91d3-f954a5d73fca"
+                      alt="39"
+                ></p>
+<blockquote>
+<p>第二步和第三步不是重点可以忽略，只要知道大概在进行什么操作就行。</p>
+</blockquote>
+<ol start="5">
+<li>“3456”+”MD5(9unk)” 通过函数 0x45C244 计算得出 “0x4E”</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/260d0f4c-b64b-4d29-a5c2-a32fc06ff637"
+                      alt="40"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/692b3773-8055-424e-85bc-d885364d489a"
+                      alt="41"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/49a48362-3b86-4677-a3e9-9fda62d641af"
+                      alt="42"
+                ></p>
+<ol start="6">
+<li>拼接为 “34564E”，再进行 MD5 加密，再取其中第8个和第9个字符 “59”<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/1f04f20d-f617-4859-8c07-3c3273701008"
+                      alt="43"
+                ></li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/1e7a767d-2966-42b1-8a1e-582189dc1976"
+                      alt="44"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/150d9ca0-6654-49aa-bf6d-143ce285b70f"
+                      alt="45"
+                ></p>
+<ol start="7">
+<li>MD5(9unk)+MD5(MD5(9unk)+MD5(110512)) 通过函数 0x45C244 计算得出 “0xD4”</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/113569a3-9c87-4b65-8d7b-6ac0f6815de8"
+                      alt="46"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/20ed2994-bb9e-4d3d-84f5-adf3cdbbf9bc"
+                      alt="47"
+                ></p>
+<ol start="8">
+<li>MD5(110512)+MD5(MD5(9unk)+MD5(110512)) 通过函数 0x45C244 计算得出 “0xD8”</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/366a4605-3036-4e20-a385-dc98f7cd49a5"
+                      alt="48"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/856c80b4-37d1-484f-9466-ac0225f39dbb"
+                      alt="49"
+                ></p>
+<ol start="9">
+<li>取 MD5(MD5(9unk)+MD5(110512)) 第7个字节，第14个字节，第23个字节，第11个字节</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/40cc3528-a9b8-493a-83a3-f598991253e2"
+                      alt="50"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/d3db2b24-83c9-493c-bbe1-4e2a8c20d0e8"
+                      alt="51"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/2a7e8659-c663-40a0-9687-3098fcfcb47b"
+                      alt="52"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/6a712adb-a9b3-4f85-8cf3-915200b3e905"
+                      alt="53"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/d8d0cc01-2492-419e-b57d-a1d1ed28079b"
+                      alt="54"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/c3702de4-1942-42e3-a36c-897d7a07d0a2"
+                      alt="55"
+                ></p>
+<blockquote>
+<p>字节从0开始算，所以按字符个数算少了一个。</p>
+</blockquote>
+<ol start="10">
+<li>从下面的压入堆栈的值可以看出来这就是正确的 “SN”</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/70c2d124-cc6a-4c32-86fa-003b0f81fc81"
+                      alt="57"
+                ></p>
+<h4 id="函数-0x45C244-分析"><a href="#函数-0x45C244-分析" class="headerlink" title="函数 0x45C244 分析"></a>函数 0x45C244 分析</h4><p>call 0x45C244 将参数转换为字符串：入口参数  EAX&#x3D;”3456”+”MD5(9unk)”</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/65572e9c-5d36-4077-b3fa-2f0b9ebd1d63"
+                      alt="33"
+                ></p>
+<p>判断参数是否有错误</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/dfbebce8-6f42-40ff-a9d7-d77d88b2652d"
+                      alt="34"
+                ></p>
+<p>字符串转换为十六进制、通过函数 0x0045C09C 算出 “0x4E”、最后清空函数 0x45C244 使用的局部变量 [ebp-0x10C]</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/cebc0564-cd1a-4dbd-b2e1-8241892387d4"
+                      alt="35"
+                ></p>
+<h5 id="函数-0x0045C09C-分析"><a href="#函数-0x0045C09C-分析" class="headerlink" title="函数 0x0045C09C 分析"></a>函数 0x0045C09C 分析</h5><p>call 0x0045C09C 函数：入口参数 EAX&#x3D;十六进制MD5值内存地址，ecx&#x3D;参数长度，EDX&#x3D;出口参数。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/18bbde73-fb3b-4eda-ae82-1ce571aa4e2a"
+                      alt="36"
+                ></p>
+<p>函数算法,使用内外两层循环进行进算，详细算法如下：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/7aeb2bfd-3e55-4f36-acf6-fde911a4a02d"
+                      alt="32"
+                ></p>
+<p>外循环</p>
+<ol>
+<li>带入第n个字节，一共循环18次</li>
+</ol>
+<p>内循环</p>
+<ol>
+<li>循环将字节逻辑右移8次</li>
+<li>每次循环得到的结果放入 cl</li>
+<li>cl xor dl</li>
+<li>cl and 1</li>
+<li>如果 cl 不为0，dl&#x3D;dl xor 0x18，edx&#x3D;edx shr 1，dl or 0x80，eax &#x3D; eax shr 1</li>
+<li>如果 cl 为 0 ，edx&#x3D;edx shr 1,eax &#x3D; eax shr 1</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><strong>函数0x0045C5E0算法：</strong> 按顺序存储第5步得出的结果；存储固定值 “3456”，因为激活日期是固定的 ；存储第6步结果；存储第9步第8个字符；存储第9步第15个字符；存储第7步结果；存储第9步第24个字符；存储第9步第11个字符；存储第6步结果</p>
+<h3 id="编写注册机-3"><a href="#编写注册机-3" class="headerlink" title="编写注册机"></a>编写注册机</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：reg.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	新160个CrackMe算法分析-007-Reg，注册机。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _CRT_SECURE_NO_DEPRECATE</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> <span class="keyword">warning</span>(disable:4996)</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> comment(lib,<span class="string">&quot;libssl.lib&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> comment(lib,<span class="string">&quot;libcrypto.lib&quot;</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;openssl/md5.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*-----------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">* 函数：md5hexToString</span></span><br><span class="line"><span class="comment">* 功能：将十六进制转换为字符串</span></span><br><span class="line"><span class="comment">* 入口参数：md=十六进制数的指针,result=存储十六进制字符串的数组,</span></span><br><span class="line"><span class="comment">* start=要转换为字符串的其实指针（例如要转换md，从第6位开始的字符串，start=5）</span></span><br><span class="line"><span class="comment">* len=要转换多少个字节为字符串</span></span><br><span class="line"><span class="comment">* 出口参数：无</span></span><br><span class="line"><span class="comment">-------------------------------------------------------------------------------*/</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">HexToStr</span><span class="params">(<span class="type">unsigned</span> <span class="type">char</span>* md, <span class="type">char</span>* result,<span class="type">int</span> start,<span class="type">int</span> len)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">size_t</span> i = start; i &lt;= len; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">sprintf</span>(result + i * <span class="number">2</span>, <span class="string">&quot;%02x&quot;</span>, md[i]);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*-----------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">* 函数：xormd5（即关键算法函数：0x0045C09C）</span></span><br><span class="line"><span class="comment">* 功能：将十六进制数通过固定算法流程，循环计算并得出结果。</span></span><br><span class="line"><span class="comment">* 入口参数：a=存储十六进制值的数组,dest=存储结果的数组</span></span><br><span class="line"><span class="comment">* len=对数组a，需要循环计算多少次</span></span><br><span class="line"><span class="comment">* 出口参数：无</span></span><br><span class="line"><span class="comment">-------------------------------------------------------------------------------*/</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">xormd5</span><span class="params">(<span class="type">char</span> a[], <span class="type">unsigned</span> <span class="type">char</span> dest[],<span class="type">int</span> len)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span> num[<span class="number">1</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	<span class="type">int</span> result[<span class="number">1</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	<span class="type">int</span> x = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>;j &lt; len; j++)</span><br><span class="line">	&#123;</span><br><span class="line">		num[<span class="number">0</span>] = a[j];</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">8</span>; i++)</span><br><span class="line">		&#123;</span><br><span class="line">			x = num[<span class="number">0</span>];</span><br><span class="line">			x ^= result[<span class="number">0</span>];</span><br><span class="line">			x &amp;= <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (x != <span class="number">0</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				result[<span class="number">0</span>] ^= <span class="number">0x18</span>;</span><br><span class="line">				result[<span class="number">0</span>] &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">				result[<span class="number">0</span>] |= <span class="number">0x80</span>;</span><br><span class="line">				num[<span class="number">0</span>] &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">				result[<span class="number">0</span>] = result[<span class="number">0</span>] &gt;&gt; <span class="number">1</span>;</span><br><span class="line">				num[<span class="number">0</span>] = num[<span class="number">0</span>] &gt;&gt; <span class="number">1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		dest[<span class="number">0</span>] = result[<span class="number">0</span>];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc,<span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> md[<span class="number">32</span>] = &#123; <span class="number">0x34</span>,<span class="number">0x56</span> &#125;;</span><br><span class="line">	<span class="type">char</span> mds[<span class="number">65</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	<span class="type">char</span> mds1[<span class="number">33</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> md1[<span class="number">2</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	<span class="type">char</span> name[<span class="number">20</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">	<span class="type">char</span> next1[<span class="number">6</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	<span class="type">char</span> result[<span class="number">18</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	<span class="type">int</span> len=<span class="number">0</span>;</span><br><span class="line">	MD5_CTX c;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//输入用户名</span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;请输入用户名：&quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>, &amp;name);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//判断用户名长度</span></span><br><span class="line">	len=<span class="built_in">strlen</span>(name);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//第一步：获取 &quot;4E&quot;</span></span><br><span class="line">	<span class="comment">//初始化MD5数据类型的数组</span></span><br><span class="line">	MD5_Init(&amp;c);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//根据用户名生成 MD5 到变量c中</span></span><br><span class="line">	MD5_Update(&amp;c, name, len);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//在MD5值前面加上3456</span></span><br><span class="line">	MD5_Final(md+<span class="number">2</span>, &amp;c);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//计算 &quot;3456+MD5(UserName)&quot; 的值，将结果传到 md1</span></span><br><span class="line">	xormd5(md,md1,<span class="number">18</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//转换为字符串存储到result中</span></span><br><span class="line">	HexToStr(md1, result,<span class="number">0</span>,<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//将result中的值转换为大写，后面的 MD5 值加密是用  &quot;34564E&quot; 而不是 &quot;34564e&quot;</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (result[i] &gt;= <span class="number">0x61</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			result[i] -= <span class="number">0x20</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//存储3456到result=4E3456，同时next1=34564E，为下一步做准备。</span></span><br><span class="line">	<span class="type">int</span> x = <span class="number">0x33</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>; i &lt; <span class="number">6</span>; i++,x++)</span><br><span class="line">	&#123;</span><br><span class="line">		result[i] = x;</span><br><span class="line">		next1[i - <span class="number">2</span>] = x;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//第二步：获取 &quot;59&quot;</span></span><br><span class="line">	<span class="comment">//将之前使用 xormd5 计算的结构存储到Next1中</span></span><br><span class="line">	next1[<span class="number">4</span>] = result[<span class="number">0</span>];</span><br><span class="line">	next1[<span class="number">5</span>] = result[<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">//初始化MD5数据类型的数组</span></span><br><span class="line">	MD5_Init(&amp;c);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//根据用户名生成 MD5 到变量c中</span></span><br><span class="line">	MD5_Update(&amp;c, next1, <span class="number">6</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//将MD5(34564E)存储到md</span></span><br><span class="line">	MD5_Final(md, &amp;c);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//将md1转换为字符存储到result</span></span><br><span class="line">	md1[<span class="number">0</span>] = md[<span class="number">3</span>];</span><br><span class="line">	md1[<span class="number">1</span>] = md[<span class="number">4</span>];</span><br><span class="line">	HexToStr(md1, &amp;result[<span class="number">6</span>], <span class="number">0</span>, <span class="number">4</span>);</span><br><span class="line">	result[<span class="number">6</span>] = result[<span class="number">7</span>];</span><br><span class="line">	result[<span class="number">7</span>] = result[<span class="number">8</span>];</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line"><span class="comment">//第三步：获取 &quot;8&quot;</span></span><br><span class="line">   	</span><br><span class="line">	<span class="comment">//初始化MD5数据类型的数组</span></span><br><span class="line">	MD5_Init(&amp;c);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//根据用户名生成 MD5 到变量c中</span></span><br><span class="line">	MD5_Update(&amp;c, name, len);</span><br><span class="line">	MD5_Final(md, &amp;c);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//转换为字符串存储到mds</span></span><br><span class="line">	HexToStr(md, mds, <span class="number">0</span>, <span class="number">15</span>);</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">	MD5_Init(&amp;c);</span><br><span class="line">	<span class="comment">//MD5(110512)到md中</span></span><br><span class="line">	MD5_Update(&amp;c, <span class="string">&quot;110512&quot;</span>, <span class="number">6</span>);</span><br><span class="line">	MD5_Final(md, &amp;c);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//转换为字符串存储到mds+32</span></span><br><span class="line">	HexToStr(md, mds+<span class="number">32</span>, <span class="number">0</span>, <span class="number">15</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//初始化MD5数据类型的数组</span></span><br><span class="line">	MD5_Init(&amp;c);</span><br><span class="line">	MD5_Update(&amp;c, mds, <span class="number">64</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//将结果存储到 md 后32位，放到后面备用。</span></span><br><span class="line">	MD5_Final(md+<span class="number">16</span>, &amp;c);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//转换为字符串存储到 mds1 中</span></span><br><span class="line">	HexToStr(md+<span class="number">16</span>, mds1, <span class="number">0</span>, <span class="number">15</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//取md的第7个字节存储到 result 中</span></span><br><span class="line">	result[<span class="number">8</span>] = mds1[<span class="number">7</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">//第四步：获取 &quot;b&quot;</span></span><br><span class="line">	<span class="comment">//取第14个字节存储到 result 中</span></span><br><span class="line">	result[<span class="number">9</span>] = mds1[<span class="number">14</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">//第九步：获取 &quot;D8&quot;（因为此时md的值正好是第九步的值，直接运算）</span></span><br><span class="line">	<span class="comment">//此时 md = MD5(&quot;110512&quot;)+MD5(MD5(&quot;9unk&quot;)+MD5(&quot;110512&quot;))</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//计算 md 的值，将结果传到 md1</span></span><br><span class="line">	xormd5(md, md1,<span class="number">32</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//转换为字符串存储到result中</span></span><br><span class="line">	HexToStr(md1, result+<span class="number">14</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//第五步：获取 &quot;D4&quot;</span></span><br><span class="line">	<span class="comment">//初始化MD5数据类型的数组</span></span><br><span class="line">	MD5_Init(&amp;c);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//根据用户名生成 MD5 到变量c中</span></span><br><span class="line">	MD5_Update(&amp;c, name, len);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//md前16位替换为MD5(&quot;9unk&quot;)</span></span><br><span class="line">	MD5_Final(md, &amp;c);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//计算 md 的值，将结果传到 md1</span></span><br><span class="line">	xormd5(md, md1, <span class="number">32</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//转换为字符串存储到result中</span></span><br><span class="line">	HexToStr(md1, result + <span class="number">10</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//第六步：</span></span><br><span class="line">	<span class="comment">//取第14个字节存储到 result 中</span></span><br><span class="line">	result[<span class="number">12</span>] = mds1[<span class="number">23</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">//第七步：</span></span><br><span class="line">		<span class="comment">//取第11个字节存储到 result 中</span></span><br><span class="line">	result[<span class="number">13</span>] = mds1[<span class="number">11</span>];</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;SN = &quot;</span>);</span><br><span class="line">	<span class="comment">//打印测试，并将小写字母转换为大写</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">17</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (result[i] &gt;= <span class="number">0x61</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			result[i] -= <span class="number">0x20</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, result[i]);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;	<span class="comment">//程序结束</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
         </div>
 
         
@@ -762,7 +1180,7 @@
               <span>2022</span>
               -
             
-            2023&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+            2024&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
         </div>
         
         <div class="theme-info info-item">
@@ -843,7 +1261,7 @@
         <aside class="page-aside">
             <div class="post-toc-wrap">
     <div class="post-toc">
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B0-160-%E4%B8%AA-CrackMe"><span class="nav-number">2.</span> <span class="nav-text">新 160 个 CrackMe</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#001-abexcm5"><span class="nav-number">2.1.</span> <span class="nav-text">001-abexcm5</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="nav-number">2.1.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">2.1.2.</span> <span class="nav-text">搜索字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90%EF%BC%88%E9%9D%99%E6%80%81-%E5%8A%A8%E6%80%81%EF%BC%89"><span class="nav-number">2.1.3.</span> <span class="nav-text">程序分析（静态+动态）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA"><span class="nav-number">2.1.4.</span> <span class="nav-text">编写注册机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#002-Cruehead-CrackMe-3"><span class="nav-number">2.2.</span> <span class="nav-text">002-Cruehead-CrackMe-3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.2.2.</span> <span class="nav-text">动态调试程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90"><span class="nav-number">2.2.3.</span> <span class="nav-text">程序分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GetModuleHandle-%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">GetModuleHandle 函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CreateFile-%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">CreateFile 函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95"><span class="nav-number">2.2.3.3.</span> <span class="nav-text">动态调试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-1"><span class="nav-number">2.2.4.</span> <span class="nav-text">编写注册机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-number">2.2.5.</span> <span class="nav-text">补充</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#004-Acid-Bytes-2"><span class="nav-number">2.3.</span> <span class="nav-text">004-Acid Bytes.2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%B1%E5%A3%B3"><span class="nav-number">2.3.2.</span> <span class="nav-text">脱壳</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-IDR-%E5%8A%A0%E8%BD%BD%E8%84%B1%E5%A3%B3%E7%A8%8B%E5%BA%8F-%E5%B9%B6%E8%BF%9B%E8%A1%8C%E5%88%86%E6%9E%90"><span class="nav-number">2.3.3.</span> <span class="nav-text">使用 IDR 加载脱壳程序,并进行分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">2.3.3.1.</span> <span class="nav-text">程序执行流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#005-Andrnalin-1"><span class="nav-number">2.4.</span> <span class="nav-text">005-Andrnalin.1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-3"><span class="nav-number">2.4.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90-1"><span class="nav-number">2.4.2.</span> <span class="nav-text">程序分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#006-AD-CM-2"><span class="nav-number">2.5.</span> <span class="nav-text">006-AD_CM#2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-4"><span class="nav-number">2.5.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90"><span class="nav-number">2.5.2.</span> <span class="nav-text">静态分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-2"><span class="nav-number">2.5.3.</span> <span class="nav-text">编写注册机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#007-Reg"><span class="nav-number">2.6.</span> <span class="nav-text">007-Reg</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-5"><span class="nav-number">2.6.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90-1"><span class="nav-number">2.6.2.</span> <span class="nav-text">静态分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95-1"><span class="nav-number">2.6.3.</span> <span class="nav-text">动态调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-3"><span class="nav-number">2.6.4.</span> <span class="nav-text">编写注册机</span></a></li></ol></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B0-160-%E4%B8%AA-CrackMe"><span class="nav-number">2.</span> <span class="nav-text">新 160 个 CrackMe</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#001-abexcm5"><span class="nav-number">2.1.</span> <span class="nav-text">001-abexcm5</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="nav-number">2.1.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">2.1.2.</span> <span class="nav-text">搜索字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90%EF%BC%88%E9%9D%99%E6%80%81-%E5%8A%A8%E6%80%81%EF%BC%89"><span class="nav-number">2.1.3.</span> <span class="nav-text">程序分析（静态+动态）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA"><span class="nav-number">2.1.4.</span> <span class="nav-text">编写注册机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#002-Cruehead-CrackMe-3"><span class="nav-number">2.2.</span> <span class="nav-text">002-Cruehead-CrackMe-3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.2.2.</span> <span class="nav-text">动态调试程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90"><span class="nav-number">2.2.3.</span> <span class="nav-text">程序分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GetModuleHandle-%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">GetModuleHandle 函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CreateFile-%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">CreateFile 函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95"><span class="nav-number">2.2.3.3.</span> <span class="nav-text">动态调试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-1"><span class="nav-number">2.2.4.</span> <span class="nav-text">编写注册机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-number">2.2.5.</span> <span class="nav-text">补充</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#004-Acid-Bytes-2"><span class="nav-number">2.3.</span> <span class="nav-text">004-Acid Bytes.2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%B1%E5%A3%B3"><span class="nav-number">2.3.2.</span> <span class="nav-text">脱壳</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-IDR-%E5%8A%A0%E8%BD%BD%E8%84%B1%E5%A3%B3%E7%A8%8B%E5%BA%8F-%E5%B9%B6%E8%BF%9B%E8%A1%8C%E5%88%86%E6%9E%90"><span class="nav-number">2.3.3.</span> <span class="nav-text">使用 IDR 加载脱壳程序,并进行分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">2.3.3.1.</span> <span class="nav-text">程序执行流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#005-Andrnalin-1"><span class="nav-number">2.4.</span> <span class="nav-text">005-Andrnalin.1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-3"><span class="nav-number">2.4.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90-1"><span class="nav-number">2.4.2.</span> <span class="nav-text">程序分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#006-AD-CM-2"><span class="nav-number">2.5.</span> <span class="nav-text">006-AD_CM#2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-4"><span class="nav-number">2.5.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90"><span class="nav-number">2.5.2.</span> <span class="nav-text">静态分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-2"><span class="nav-number">2.5.3.</span> <span class="nav-text">编写注册机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#007-Reg"><span class="nav-number">2.6.</span> <span class="nav-text">007-Reg</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-5"><span class="nav-number">2.6.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90-1"><span class="nav-number">2.6.2.</span> <span class="nav-text">静态分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95-1"><span class="nav-number">2.6.3.</span> <span class="nav-text">动态调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E5%87%BD%E6%95%B00x0045C5E0"><span class="nav-number">2.6.4.</span> <span class="nav-text">算法分析：函数0x0045C5E0</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%BD%E6%95%B0-0x45C244-%E5%88%86%E6%9E%90"><span class="nav-number">2.6.4.1.</span> <span class="nav-text">函数 0x45C244 分析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%87%BD%E6%95%B0-0x0045C09C-%E5%88%86%E6%9E%90"><span class="nav-number">2.6.4.1.1.</span> <span class="nav-text">函数 0x0045C09C 分析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.6.5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-3"><span class="nav-number">2.6.6.</span> <span class="nav-text">编写注册机</span></a></li></ol></li></ol></li></ol>
     </div>
 </div>
         </aside>
