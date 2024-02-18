@@ -172,12 +172,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fas fa-file-word"></i>&nbsp;<span>8.3k 字</span>
+            <i class="fas fa-file-word"></i>&nbsp;<span>10.5k 字</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fas fa-clock"></i>&nbsp;<span>34 分钟</span>
+            <i class="fas fa-clock"></i>&nbsp;<span>43 分钟</span>
         </span>
     
     
@@ -1321,6 +1321,488 @@
                       alt="84"
                 ></p>
 <h3 id="编写注册机-5"><a href="#编写注册机-5" class="headerlink" title="编写注册机"></a>编写注册机</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：keygenme.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	新160个CrackMe算法分析-009-keygenme1，注册机。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _CRT_SECURE_NO_DEPRECATE</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> <span class="keyword">warning</span>(disable:4996)</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> comment(lib,<span class="string">&quot;libssl.lib&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> comment(lib,<span class="string">&quot;libcrypto.lib&quot;</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;openssl/md5.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc,<span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span> name[<span class="number">20</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	<span class="type">int</span> x = <span class="number">0</span>;</span><br><span class="line">	<span class="type">int</span> y = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;请输入用户名：&quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>, name);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">strlen</span>(name); i++)</span><br><span class="line">	&#123;</span><br><span class="line">		x -= name[i]<span class="number">-0x19</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	y = x * x * x;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;serial = Bon-%X-%X-41720F48&quot;</span>, x,y);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;	<span class="comment">//程序结束</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="010-ceycey（UPX壳）"><a href="#010-ceycey（UPX壳）" class="headerlink" title="010-ceycey（UPX壳）"></a>010-ceycey（UPX壳）</h2><h3 id="查看程序基本信息-8"><a href="#查看程序基本信息-8" class="headerlink" title="查看程序基本信息"></a>查看程序基本信息</h3><ol>
+<li>程序有 upx 壳（压缩壳）</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/f241976a-dcf8-4a94-a2dc-ed9ffdf33fbb"
+                      alt="85"
+                ></p>
+<ol start="2">
+<li>点击check，并未返回错误信息</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/dbde3604-f725-4be8-bbc5-531668d6c5c5"
+                      alt="86"
+                ></p>
+<h4 id="脱壳基础"><a href="#脱壳基础" class="headerlink" title="脱壳基础"></a>脱壳基础</h4><p><a class="link"   target="_blank" rel="noopener" href="https://9unkk.github.io/2021/03/09/x64dbg-tuo-ke-ji-chu/" >脱壳基础<i class="fas fa-external-link-alt"></i></a></p>
+<h3 id="手脱压缩壳"><a href="#手脱压缩壳" class="headerlink" title="手脱压缩壳"></a>手脱压缩壳</h3><h4 id="压缩壳"><a href="#压缩壳" class="headerlink" title="压缩壳"></a>压缩壳</h4><p>压缩壳的工作过程包括以下步骤：</p>
+<ol>
+<li>压缩PE文件：使用数据压缩算法对PE文件进行处理，生成一个新的压缩PE文件。</li>
+<li>解压内存中的数据：在执行程序时，壳内部解压缩代码启动，并在内存中创建一个新的节空间。</li>
+<li>映射节数据：将之前压缩的节数据解压缩并映射回原来内存的位置，使程序能够在内存中正常运行。</li>
+<li>保证内存内容一致：确保解压缩后的PE文件在内存中的内容与未压缩前的正常PE文件完全相同，以维持程序的行为一致性和功能的完整性。</li>
+</ol>
+<p>简单来说就是将硬盘上的exe文件进行压缩，当运行程序时，会先解压缩exe并在内存中创建新的空间，再将解压缩数据放到刚才新建的内存中，最后再验证数据的完整性。执行完解压缩和验证过程后，程序会跳转到程序正常运行的入口点。</p>
+<p>脱壳过程就是找到最后程序正常运行的入口点，然后再将改内存块数据导出另存。</p>
+<h4 id="脱壳-1"><a href="#脱壳-1" class="headerlink" title="脱壳"></a>脱壳</h4><p><strong>esp 定律脱壳（通常用于压缩壳）：</strong> 一般加壳程序（压缩壳）在运行时，会先执行壳代码，然后在内存中恢复还原原程序，再跳转到原始OEP，执行原程序的代码。这些壳代码首先会使用 PUSHAD 指令保存寄存器环境，在解密各个区段完毕，跳往 OEP 之前会使用 POPAD 指令恢复寄存器环境。</p>
+<ol>
+<li>F8，执行 PUSHAD 指令</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/f71ddd9f-7ffb-40a8-a950-20c96dbda817"
+                      alt="87"
+                ></p>
+<ol start="2">
+<li>右键esp，设置硬件访问断点（在指令重新访问 12FFC4 后，会断点停下来）</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/2310bc4d-23d9-4b39-a95a-b16fc567e4b2"
+                      alt="88"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/6e21c086-ae71-4e23-a621-1d2060c9f854"
+                      alt="89"
+                > </p>
+<ol start="3">
+<li>F9 运行程序，此时程序会停在 POPAD 下面</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/73a55174-884b-4937-936b-18748c0d93aa"
+                      alt="90"
+                ></p>
+<ol start="4">
+<li>F8 运行程序，跳转到OEP，程序入口点位置处</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/a8e90bbc-c2c3-4b1d-aaa2-aa3656ee5d02"
+                      alt="91"
+                ></p>
+<p>可以看到有一堆乱码，这是因为OD自动分析指令，而这些指令因压缩无法解析，所以变成乱码。解决方法就是删除OD的分析，将指令还原。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/9af8dceb-81aa-45a7-83af-ccf981d8e9d1"
+                      alt="92"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/326f0067-eadc-45e2-8b40-50665432d60f"
+                      alt="93"
+                ></p>
+<ol start="5">
+<li>使用 ollydbg 脱壳进程，进行脱壳，并另存文件</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/e668743b-f15e-4102-bd54-125d99255dcf"
+                      alt="94"
+                ></p>
+<ol start="6">
+<li>验证脱壳是否成功</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/39c0dc7b-59e7-4e0e-bee2-c29ec3dd741a"
+                      alt="95"
+                ></p>
+<h3 id="静态分析-4"><a href="#静态分析-4" class="headerlink" title="静态分析"></a>静态分析</h3><ol>
+<li>程序运行中没有弹出任何提示，但还是按流程查找可疑字符串进行测试。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/c0f40f91-dac0-46f6-b241-da588de199ac"
+                      alt="97"
+                ></p>
+<ol start="2">
+<li>发现可疑字符串，双击定位到字符串，然后用 ctrl+x 定位到程序，并在上方找到可疑的 strcmp 函数</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/1a6c1cd0-9eca-4093-bea5-d94b080ff916"
+                      alt="98"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/888d8dda-0f36-48e7-96ca-74e5ab90384c"
+                      alt="99"
+                ></p>
+<h3 id="动态调试-4"><a href="#动态调试-4" class="headerlink" title="动态调试"></a>动态调试</h3><ol>
+<li>动态调试后发现关键指令就是 strcmp 位置。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/03fb4565-9d41-4374-bf2a-d8ae87ff9af2"
+                      alt="96"
+                ></p>
+<ol start="2">
+<li>继续回到IDA分析，发现这只是一个字符串比较，没有算法。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/ffb31466-4c17-47b2-b3b0-28b523a38657"
+                      alt="100"
+                ></p>
+<ol start="3">
+<li>验证注册码(ULTRADMA……………………………………………………)</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/29da4c2e-b41c-42e9-aee2-805f59e29684"
+                      alt="101"
+                ></p>
+<h2 id="011-wocy-1"><a href="#011-wocy-1" class="headerlink" title="011-wocy.1"></a>011-wocy.1</h2><h3 id="查看程序基本信息-9"><a href="#查看程序基本信息-9" class="headerlink" title="查看程序基本信息"></a>查看程序基本信息</h3><ol>
+<li>运行程序后，发现有个可疑的 Unregister<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/57734e79-b515-49b6-aefe-e3f75340ed09"
+                      alt="1"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/7ac10e13-ec23-4e0b-a083-4ac745348b16"
+                      alt="2"
+                ></li>
+</ol>
+<h3 id="静态分析-5"><a href="#静态分析-5" class="headerlink" title="静态分析"></a>静态分析</h3><ol>
+<li><p>使用IDA搜索字符串<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/12c2d8b7-2302-4240-855c-fdf68b975e6f"
+                      alt="3"
+                ></p>
+</li>
+<li><p>找到相关字符串，但是这两个字符串在两个不同的函数中<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/b962b6e2-3f97-4ca4-b8c0-c1bfcac83ec5"
+                      alt="4"
+                ></p>
+</li>
+<li><p>分别看看这两个个函数中有没有比较字符串相关的函数</p>
+</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/2e6a7095-0849-4e68-9c04-5b9611645b1a"
+                      alt="6"
+                ></p>
+<p>在 401600 函数中发现了一个宽字符函数 _mbscmp</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/c9bc9585-927d-47ff-b314-c332dfe2dc40"
+                      alt="5"
+                ></p>
+<h3 id="动调试"><a href="#动调试" class="headerlink" title="动调试"></a>动调试</h3><ol>
+<li>在_mbscmp 函数位置处设置断点，看看这是不是我们需要的 id 值</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/65afc33c-60cb-4245-8ac0-ea668bb3419f"
+                      alt="7"
+                ></p>
+<ol start="2">
+<li>F9 运行程序</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/140e7e36-1ac1-4c53-9eb6-19eb60deaa55"
+                      alt="8"
+                ></p>
+<ol start="3">
+<li>验证是否为正确 id</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/17f444b6-d393-46cb-8086-10f9fa37538d"
+                      alt="9"
+                ></p>
+<ol start="4">
+<li>寻找与 [esp+0x4] 相关的指令，设置断点，找到关键算法</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/4bdf43db-320a-4940-87e2-7e5931f72a1a"
+                      alt="10"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/8d77c5cd-dd18-4a2b-8ea5-061646dcca71"
+                      alt="11"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/7658d8f4-dee0-4961-b646-1c1430907183"
+                      alt="12"
+                ></p>
+<ol start="5">
+<li>查找 MakeReverse 函数相关信息</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/286e10cf-b294-4738-861a-799b26ce48f6"
+                      alt="13"
+                ></p>
+<h3 id="编写注册机-6"><a href="#编写注册机-6" class="headerlink" title="编写注册机"></a>编写注册机</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：011-wocy.1.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	新160个CrackMe算法分析011-wocy.1，注册机。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _CRT_SECURE_NO_DEPRECATE</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> <span class="keyword">warning</span>(disable:4996)</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> comment(lib,<span class="string">&quot;libssl.lib&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> comment(lib,<span class="string">&quot;libcrypto.lib&quot;</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;openssl/md5.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc,<span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span> name[<span class="number">20</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	<span class="type">int</span> x = <span class="number">0</span>;</span><br><span class="line">	<span class="type">int</span> y = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">names:</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;请输入用户名(长度不小于4)：&quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>, name);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;id = &quot;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="built_in">strlen</span>(name); i &gt;=<span class="number">0</span> ; i--)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="built_in">strlen</span>(name) &lt; <span class="number">4</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">goto</span> names;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, name[i]);</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;	<span class="comment">//程序结束</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="012-crcme1"><a href="#012-crcme1" class="headerlink" title="012-crcme1"></a>012-crcme1</h2><h3 id="查看程序基本信息-10"><a href="#查看程序基本信息-10" class="headerlink" title="查看程序基本信息"></a>查看程序基本信息</h3><ol>
+<li><p>程序没有加壳<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/f5ad7240-1124-48ca-8fa5-d7cebc28f970"
+                      alt="14"
+                ></p>
+</li>
+<li><p>点击 sacan 分析程序<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/2acf5a96-b2b2-4e52-8de7-917d741eb3aa"
+                      alt="15"
+                ></p>
+</li>
+<li><p>打开程序，查看功能和信息，运行程序后发现错误弹窗<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/0e8b0ad8-17ac-4322-8472-52cfd0cf9d18"
+                      alt="16"
+                ></p>
+</li>
+<li><p>点击旁边的info按钮，也发现一些信息，能大概猜出一些信息<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/29fd7172-53d0-4108-a67d-e90e14c3a15d"
+                      alt="17"
+                ></p>
+</li>
+</ol>
+<h3 id="静态分析-6"><a href="#静态分析-6" class="headerlink" title="静态分析"></a>静态分析</h3><h4 id="分支一"><a href="#分支一" class="headerlink" title="分支一"></a>分支一</h4><ol>
+<li>使用IDA搜索字符串，发现IDA可以正常解析这些字符串（使用的IDA8.3），大概能分析出这个程序有两种解法。一种是通过输入name和serial，另一种是通过读取KEYFILE。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/8d5e5166-778c-4525-9d81-0ea1fef85768"
+                      alt="18"
+                ></p>
+<ol start="2">
+<li>搜索对应的字符串，定位到代码位置，发现程序有三个输出结果</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/83f52d74-2e0e-4029-876c-8e3817a96ccb"
+                      alt="19"
+                ></p>
+<ol start="3">
+<li>向上溯源，找到适合动态调试的断点位置</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/7a563d25-78f8-444c-a698-a2631cc0c9ab"
+                      alt="20"
+                ></p>
+<h4 id="分支二"><a href="#分支二" class="headerlink" title="分支二"></a>分支二</h4><ol>
+<li>定位到字符串 ACG.KEY</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/9aecb00f-eb33-46d8-ba33-778891220c9a"
+                      alt="25"
+                ></p>
+<ol start="2">
+<li>定位到指令位置</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/91cccaa9-ae5e-4811-84d1-bdb96916d909"
+                      alt="26"
+                ></p>
+<h3 id="动态调试-5"><a href="#动态调试-5" class="headerlink" title="动态调试"></a>动态调试</h3><h4 id="分支一-1"><a href="#分支一-1" class="headerlink" title="分支一"></a>分支一</h4><ol>
+<li>设置断点，动态调试</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/5ceed1b9-161e-498f-8cff-18b3ed1f6e5a"
+                      alt="21"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/4a627674-2cb1-4a60-9240-97a9107a52bd"
+                      alt="22"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/320a4549-727a-4105-bcd4-795eee467930"
+                      alt="23"
+                ></p>
+<h4 id="分支二-1"><a href="#分支二-1" class="headerlink" title="分支二"></a>分支二</h4><ol>
+<li>打开 ACG.key 文件失败</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/44f536e2-fff3-447a-8571-767e9407fbb2"
+                      alt="27"
+                ></p>
+<ol start="2">
+<li>文件内容要 12 个字符</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/d135542a-e143-461b-b0e7-3551bda7f79f"
+                      alt="28"
+                ></p>
+<ol start="3">
+<li>任意输入12个字符后继续调试程序</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/764a45a6-2742-48f2-a7f9-116828d4246c"
+                      alt="29"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/094ed7a3-1800-4391-bc1c-a9da379e6a1c"
+                      alt="30"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/d3d97d75-0946-4c70-85b5-3a7e5c12b6f9"
+                      alt="31"
+                ></p>
+<h3 id="算法分析-1"><a href="#算法分析-1" class="headerlink" title="算法分析"></a>算法分析</h3><h4 id="算法一"><a href="#算法一" class="headerlink" title="算法一"></a>算法一</h4><ol>
+<li>累计name值，左移3位，异或 0x51A5</li>
+<li>serial值 异或 0x87CA</li>
+<li>name 结果 + serial 结果 &#x3D; 0x797E7</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/51b70450-560d-4c9a-b313-8bf8e0048f39"
+                      alt="24"
+                ></p>
+<h4 id="算法二"><a href="#算法二" class="headerlink" title="算法二"></a>算法二</h4><ol>
+<li>(key[0] xor 0x1B) rol 2 &#x3D; 0x168</li>
+<li>(key[1] xor 0x1B) rol 2 &#x3D; 0x160</li>
+<li>(key[2] xor 0x1B) rol 2 &#x3D; 0x170</li>
+<li>(key[3] xor 0x1B) rol 2 &#x3D; 0xEC</li>
+<li>(key[4] xor 0x1B) rol 2 &#x3D; 0x13C</li>
+<li>(key[5] xor 0x1B) rol 2 &#x3D; 0x1CC</li>
+<li>(key[6] xor 0x1B) rol 2 &#x3D; 0x1F8</li>
+<li>(key[7] xor 0x1B) rol 2 &#x3D; 0xEC</li>
+<li>(key[8] xor 0x1B) rol 2 &#x3D; 0x164</li>
+<li>(key[9] xor 0x1B) rol 2 &#x3D; 0x1F8</li>
+<li>(key[10] xor 0x1B) rol 2 &#x3D; 0x1A0</li>
+<li>(key[11] xor 0x1B) rol 2 &#x3D; 0x1BC</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/c1ed60ab-6fea-4da0-9f2b-cce1b0fde0be"
+                      alt="32"
+                ></p>
+<h3 id="去除-NAG-窗口"><a href="#去除-NAG-窗口" class="headerlink" title="去除 NAG 窗口"></a>去除 NAG 窗口</h3><p>NAG 窗口指的是不断弹出的窗口。这个程序中我们每次关闭程序时都会弹出窗口提示编写程序的作者。</p>
+<ol>
+<li>搜索字符串，定位到函数为位置，并动态调试</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/69769b54-162c-4ac3-bbd4-d956942c1df4"
+                      alt="33"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/7107289e-b081-4183-bb41-0eb5f687538b"
+                      alt="34"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/fb87235f-c89b-4bb6-949d-8e99a4daed39"
+                      alt="35"
+                ></p>
+<ol start="2">
+<li>运行程序到断点位置，看到该函数没有修改堆栈，直接从堆栈中找到函数返回地址 0x4011F6</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/34249f63-b868-4cbf-bd9d-58ad8cb08493"
+                      alt="36"
+                ></p>
+<ol start="3">
+<li><p>跳转到地址 0x4011F6 地址处，记录修改指令地址 0x4011EF。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/445bf290-9094-478d-b274-26c61780ce3f"
+                      alt="37"
+                ></p>
+</li>
+<li><p>通过手动修改exe文件去除 NAG</p>
+</li>
+</ol>
+<p>Image Base：表示程序在内存加载的基地址<br>Base Of Code：表示程序开始运行的位置，距离 Image Base 得到偏移量（即 程序入口点）。<br>File Offset：当PE文件储存在某个磁盘当中的时候，某个数据的位置相对于文件头的偏移量。</p>
+<p>“Image Base” + “Base Of Code(Entry Point)” &#x3D; 文件运行的代码在内存中的基地址（也可以理解为第一条指令在内存中的基地址）</p>
+<p>“File Offset” 就表示文件在磁盘中（未运行）时，代码的相对的偏移地址（也可以理解为第一条指令在磁盘中的基地址）。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/b82de7ea-aeac-47b8-82ca-c48080cf5eef"
+                      alt="38"
+                ></p>
+<p>内存地址计算：内存中需要修改地址 - 内存中的入口点地址 &#x3D; 0x4011EF - 0x401000 &#x3D; 0x1EF</p>
+<p>磁盘地址计算：文件偏移地址 + 0x1EF &#x3D; 0x600 + 0x1F6 &#x3D; 0x7EF（磁盘中需要修改的地址）</p>
+<p>jmp的硬编码是 0xEB，复制文件并在 0x7EF 偏移处的 0x75 改为 0xEB，并保存。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/77d7c3a9-a6fa-44a9-9e21-eb809012c063"
+                      alt="40"
+                ></p>
+<ol start="5">
+<li>最后验证程序，发现 NAG 窗口已去除。</li>
+</ol>
+<h3 id="编写注册机-7"><a href="#编写注册机-7" class="headerlink" title="编写注册机"></a>编写注册机</h3><h4 id="注册机一"><a href="#注册机一" class="headerlink" title="注册机一"></a>注册机一</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：012-crcme1.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	新160个CrackMe算法分析012-crcme1，注册机。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _CRT_SECURE_NO_DEPRECATE</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> <span class="keyword">warning</span>(disable:4996)</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> comment(lib,<span class="string">&quot;libssl.lib&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> comment(lib,<span class="string">&quot;libcrypto.lib&quot;</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;openssl/md5.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc,<span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span> name[<span class="number">20</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	<span class="type">int</span> x = <span class="number">0</span>;</span><br><span class="line">	<span class="type">int</span> y = <span class="number">0</span>;</span><br><span class="line">	<span class="type">int</span> serial=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;请输入用户名(长度大于4)：&quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>, name);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;serial = &quot;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 累计 name 的值</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">strlen</span>(name); i++)</span><br><span class="line">	&#123;</span><br><span class="line">		x += name[i];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//循环左移三位</span></span><br><span class="line">	x &lt;&lt;= <span class="number">3</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//name异或得出结果</span></span><br><span class="line">	x ^= <span class="number">0x515A5</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//算出 serial xor 0x87CA 的值</span></span><br><span class="line">	y = <span class="number">0x797E7</span> - x;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//y xor 0x87CA 得出 serial</span></span><br><span class="line">	serial = y ^ <span class="number">0x87CA</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,serial);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;	<span class="comment">//程序结束</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="注册机二"><a href="#注册机二" class="headerlink" title="注册机二"></a>注册机二</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*程序名：012-crcme1_KEYFILE.c*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	新160个CrackMe算法分析012-crcme1，注册机。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _CRT_SECURE_NO_DEPRECATE</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> <span class="keyword">warning</span>(disable:4996)</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> comment(lib,<span class="string">&quot;libssl.lib&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> comment(lib,<span class="string">&quot;libcrypto.lib&quot;</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;openssl/md5.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc,<span class="type">char</span>* argv[])</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> key[<span class="number">12</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	key[<span class="number">0</span>] = (<span class="number">0x168</span> &gt;&gt; <span class="number">2</span>) ^ <span class="number">0x1B</span>;</span><br><span class="line">	key[<span class="number">1</span>] = (<span class="number">0x160</span> &gt;&gt; <span class="number">2</span>) ^ <span class="number">0x1B</span>;</span><br><span class="line">	key[<span class="number">2</span>] = (<span class="number">0x170</span> &gt;&gt; <span class="number">2</span>) ^ <span class="number">0x1B</span>;</span><br><span class="line">	key[<span class="number">3</span>] = (<span class="number">0xEC</span> &gt;&gt; <span class="number">2</span>) ^ <span class="number">0x1B</span>;</span><br><span class="line">	key[<span class="number">4</span>] = (<span class="number">0x13C</span> &gt;&gt; <span class="number">2</span>) ^ <span class="number">0x1B</span>;</span><br><span class="line">	key[<span class="number">5</span>] = (<span class="number">0x1CC</span> &gt;&gt; <span class="number">2</span>) ^ <span class="number">0x1B</span>;</span><br><span class="line">	key[<span class="number">6</span>] = (<span class="number">0x1F8</span> &gt;&gt; <span class="number">2</span>) ^ <span class="number">0x1B</span>;</span><br><span class="line">	key[<span class="number">7</span>] = (<span class="number">0xEC</span> &gt;&gt; <span class="number">2</span>) ^ <span class="number">0x1B</span>;</span><br><span class="line">	key[<span class="number">8</span>] = (<span class="number">0x164</span> &gt;&gt; <span class="number">2</span>) ^ <span class="number">0x1B</span>;</span><br><span class="line">	key[<span class="number">9</span>] = (<span class="number">0x1F8</span> &gt;&gt; <span class="number">2</span>) ^ <span class="number">0x1B</span>;</span><br><span class="line">	key[<span class="number">10</span>] = (<span class="number">0x1A0</span> &gt;&gt; <span class="number">2</span>) ^ <span class="number">0x1B</span>;</span><br><span class="line">	key[<span class="number">11</span>] = (<span class="number">0x1BC</span> &gt;&gt; <span class="number">2</span>) ^ <span class="number">0x1B</span>;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;ACG.key = &quot;</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">12</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, key[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;	<span class="comment">//程序结束</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
         </div>
 
         
@@ -1493,7 +1975,7 @@
         <aside class="page-aside">
             <div class="post-toc-wrap">
     <div class="post-toc">
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B0-160-%E4%B8%AA-CrackMe"><span class="nav-number">2.</span> <span class="nav-text">新 160 个 CrackMe</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#001-abexcm5"><span class="nav-number">2.1.</span> <span class="nav-text">001-abexcm5</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="nav-number">2.1.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">2.1.2.</span> <span class="nav-text">搜索字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90%EF%BC%88%E9%9D%99%E6%80%81-%E5%8A%A8%E6%80%81%EF%BC%89"><span class="nav-number">2.1.3.</span> <span class="nav-text">程序分析（静态+动态）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA"><span class="nav-number">2.1.4.</span> <span class="nav-text">编写注册机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#002-Cruehead-CrackMe-3"><span class="nav-number">2.2.</span> <span class="nav-text">002-Cruehead-CrackMe-3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.2.2.</span> <span class="nav-text">动态调试程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90"><span class="nav-number">2.2.3.</span> <span class="nav-text">程序分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GetModuleHandle-%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">GetModuleHandle 函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CreateFile-%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">CreateFile 函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95"><span class="nav-number">2.2.3.3.</span> <span class="nav-text">动态调试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-1"><span class="nav-number">2.2.4.</span> <span class="nav-text">编写注册机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-number">2.2.5.</span> <span class="nav-text">补充</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#004-Acid-Bytes-2"><span class="nav-number">2.3.</span> <span class="nav-text">004-Acid Bytes.2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%B1%E5%A3%B3"><span class="nav-number">2.3.2.</span> <span class="nav-text">脱壳</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-IDR-%E5%8A%A0%E8%BD%BD%E8%84%B1%E5%A3%B3%E7%A8%8B%E5%BA%8F-%E5%B9%B6%E8%BF%9B%E8%A1%8C%E5%88%86%E6%9E%90"><span class="nav-number">2.3.3.</span> <span class="nav-text">使用 IDR 加载脱壳程序,并进行分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">2.3.3.1.</span> <span class="nav-text">程序执行流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#005-Andrnalin-1"><span class="nav-number">2.4.</span> <span class="nav-text">005-Andrnalin.1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-3"><span class="nav-number">2.4.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90-1"><span class="nav-number">2.4.2.</span> <span class="nav-text">程序分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#006-AD-CM-2"><span class="nav-number">2.5.</span> <span class="nav-text">006-AD_CM#2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-4"><span class="nav-number">2.5.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90"><span class="nav-number">2.5.2.</span> <span class="nav-text">静态分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-2"><span class="nav-number">2.5.3.</span> <span class="nav-text">编写注册机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#007-Reg"><span class="nav-number">2.6.</span> <span class="nav-text">007-Reg</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-5"><span class="nav-number">2.6.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90-1"><span class="nav-number">2.6.2.</span> <span class="nav-text">静态分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95-1"><span class="nav-number">2.6.3.</span> <span class="nav-text">动态调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E5%87%BD%E6%95%B00x0045C5E0"><span class="nav-number">2.6.4.</span> <span class="nav-text">算法分析：函数0x0045C5E0</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%BD%E6%95%B0-0x45C244-%E5%88%86%E6%9E%90"><span class="nav-number">2.6.4.1.</span> <span class="nav-text">函数 0x45C244 分析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%87%BD%E6%95%B0-0x0045C09C-%E5%88%86%E6%9E%90"><span class="nav-number">2.6.4.1.1.</span> <span class="nav-text">函数 0x0045C09C 分析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.6.5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-3"><span class="nav-number">2.6.6.</span> <span class="nav-text">编写注册机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#008-Afkayas-1"><span class="nav-number">2.7.</span> <span class="nav-text">008-Afkayas.1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-6"><span class="nav-number">2.7.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90-2"><span class="nav-number">2.7.2.</span> <span class="nav-text">静态分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95-2"><span class="nav-number">2.7.3.</span> <span class="nav-text">动态调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-4"><span class="nav-number">2.7.4.</span> <span class="nav-text">编写注册机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VBA%E9%80%86%E5%90%91%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0"><span class="nav-number">2.7.5.</span> <span class="nav-text">VBA逆向常用函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#009-keygenme1"><span class="nav-number">2.8.</span> <span class="nav-text">009-keygenme1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-7"><span class="nav-number">2.8.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90-3"><span class="nav-number">2.8.2.</span> <span class="nav-text">静态分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95-3"><span class="nav-number">2.8.3.</span> <span class="nav-text">动态调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90"><span class="nav-number">2.8.4.</span> <span class="nav-text">算法分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-5"><span class="nav-number">2.8.5.</span> <span class="nav-text">编写注册机</span></a></li></ol></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B0-160-%E4%B8%AA-CrackMe"><span class="nav-number">2.</span> <span class="nav-text">新 160 个 CrackMe</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#001-abexcm5"><span class="nav-number">2.1.</span> <span class="nav-text">001-abexcm5</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="nav-number">2.1.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">2.1.2.</span> <span class="nav-text">搜索字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90%EF%BC%88%E9%9D%99%E6%80%81-%E5%8A%A8%E6%80%81%EF%BC%89"><span class="nav-number">2.1.3.</span> <span class="nav-text">程序分析（静态+动态）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA"><span class="nav-number">2.1.4.</span> <span class="nav-text">编写注册机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#002-Cruehead-CrackMe-3"><span class="nav-number">2.2.</span> <span class="nav-text">002-Cruehead-CrackMe-3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.2.2.</span> <span class="nav-text">动态调试程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90"><span class="nav-number">2.2.3.</span> <span class="nav-text">程序分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GetModuleHandle-%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">GetModuleHandle 函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CreateFile-%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">CreateFile 函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95"><span class="nav-number">2.2.3.3.</span> <span class="nav-text">动态调试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-1"><span class="nav-number">2.2.4.</span> <span class="nav-text">编写注册机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-number">2.2.5.</span> <span class="nav-text">补充</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#004-Acid-Bytes-2"><span class="nav-number">2.3.</span> <span class="nav-text">004-Acid Bytes.2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%B1%E5%A3%B3"><span class="nav-number">2.3.2.</span> <span class="nav-text">脱壳</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-IDR-%E5%8A%A0%E8%BD%BD%E8%84%B1%E5%A3%B3%E7%A8%8B%E5%BA%8F-%E5%B9%B6%E8%BF%9B%E8%A1%8C%E5%88%86%E6%9E%90"><span class="nav-number">2.3.3.</span> <span class="nav-text">使用 IDR 加载脱壳程序,并进行分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">2.3.3.1.</span> <span class="nav-text">程序执行流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#005-Andrnalin-1"><span class="nav-number">2.4.</span> <span class="nav-text">005-Andrnalin.1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-3"><span class="nav-number">2.4.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90-1"><span class="nav-number">2.4.2.</span> <span class="nav-text">程序分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#006-AD-CM-2"><span class="nav-number">2.5.</span> <span class="nav-text">006-AD_CM#2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-4"><span class="nav-number">2.5.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90"><span class="nav-number">2.5.2.</span> <span class="nav-text">静态分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-2"><span class="nav-number">2.5.3.</span> <span class="nav-text">编写注册机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#007-Reg"><span class="nav-number">2.6.</span> <span class="nav-text">007-Reg</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-5"><span class="nav-number">2.6.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90-1"><span class="nav-number">2.6.2.</span> <span class="nav-text">静态分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95-1"><span class="nav-number">2.6.3.</span> <span class="nav-text">动态调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%EF%BC%9A%E5%87%BD%E6%95%B00x0045C5E0"><span class="nav-number">2.6.4.</span> <span class="nav-text">算法分析：函数0x0045C5E0</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%BD%E6%95%B0-0x45C244-%E5%88%86%E6%9E%90"><span class="nav-number">2.6.4.1.</span> <span class="nav-text">函数 0x45C244 分析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%87%BD%E6%95%B0-0x0045C09C-%E5%88%86%E6%9E%90"><span class="nav-number">2.6.4.1.1.</span> <span class="nav-text">函数 0x0045C09C 分析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.6.5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-3"><span class="nav-number">2.6.6.</span> <span class="nav-text">编写注册机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#008-Afkayas-1"><span class="nav-number">2.7.</span> <span class="nav-text">008-Afkayas.1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-6"><span class="nav-number">2.7.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90-2"><span class="nav-number">2.7.2.</span> <span class="nav-text">静态分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95-2"><span class="nav-number">2.7.3.</span> <span class="nav-text">动态调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-4"><span class="nav-number">2.7.4.</span> <span class="nav-text">编写注册机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VBA%E9%80%86%E5%90%91%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0"><span class="nav-number">2.7.5.</span> <span class="nav-text">VBA逆向常用函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#009-keygenme1"><span class="nav-number">2.8.</span> <span class="nav-text">009-keygenme1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-7"><span class="nav-number">2.8.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90-3"><span class="nav-number">2.8.2.</span> <span class="nav-text">静态分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95-3"><span class="nav-number">2.8.3.</span> <span class="nav-text">动态调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90"><span class="nav-number">2.8.4.</span> <span class="nav-text">算法分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-5"><span class="nav-number">2.8.5.</span> <span class="nav-text">编写注册机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#010-ceycey%EF%BC%88UPX%E5%A3%B3%EF%BC%89"><span class="nav-number">2.9.</span> <span class="nav-text">010-ceycey（UPX壳）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-8"><span class="nav-number">2.9.1.</span> <span class="nav-text">查看程序基本信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%B1%E5%A3%B3%E5%9F%BA%E7%A1%80"><span class="nav-number">2.9.1.1.</span> <span class="nav-text">脱壳基础</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E8%84%B1%E5%8E%8B%E7%BC%A9%E5%A3%B3"><span class="nav-number">2.9.2.</span> <span class="nav-text">手脱压缩壳</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%8B%E7%BC%A9%E5%A3%B3"><span class="nav-number">2.9.2.1.</span> <span class="nav-text">压缩壳</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%B1%E5%A3%B3-1"><span class="nav-number">2.9.2.2.</span> <span class="nav-text">脱壳</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90-4"><span class="nav-number">2.9.3.</span> <span class="nav-text">静态分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95-4"><span class="nav-number">2.9.4.</span> <span class="nav-text">动态调试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#011-wocy-1"><span class="nav-number">2.10.</span> <span class="nav-text">011-wocy.1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-9"><span class="nav-number">2.10.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90-5"><span class="nav-number">2.10.2.</span> <span class="nav-text">静态分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E8%B0%83%E8%AF%95"><span class="nav-number">2.10.3.</span> <span class="nav-text">动调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-6"><span class="nav-number">2.10.4.</span> <span class="nav-text">编写注册机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#012-crcme1"><span class="nav-number">2.11.</span> <span class="nav-text">012-crcme1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF-10"><span class="nav-number">2.11.1.</span> <span class="nav-text">查看程序基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90-6"><span class="nav-number">2.11.2.</span> <span class="nav-text">静态分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E4%B8%80"><span class="nav-number">2.11.2.1.</span> <span class="nav-text">分支一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E4%BA%8C"><span class="nav-number">2.11.2.2.</span> <span class="nav-text">分支二</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95-5"><span class="nav-number">2.11.3.</span> <span class="nav-text">动态调试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E4%B8%80-1"><span class="nav-number">2.11.3.1.</span> <span class="nav-text">分支一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E4%BA%8C-1"><span class="nav-number">2.11.3.2.</span> <span class="nav-text">分支二</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90-1"><span class="nav-number">2.11.4.</span> <span class="nav-text">算法分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E4%B8%80"><span class="nav-number">2.11.4.1.</span> <span class="nav-text">算法一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E4%BA%8C"><span class="nav-number">2.11.4.2.</span> <span class="nav-text">算法二</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%BB%E9%99%A4-NAG-%E7%AA%97%E5%8F%A3"><span class="nav-number">2.11.5.</span> <span class="nav-text">去除 NAG 窗口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%B3%A8%E5%86%8C%E6%9C%BA-7"><span class="nav-number">2.11.6.</span> <span class="nav-text">编写注册机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E6%9C%BA%E4%B8%80"><span class="nav-number">2.11.6.1.</span> <span class="nav-text">注册机一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E6%9C%BA%E4%BA%8C"><span class="nav-number">2.11.6.2.</span> <span class="nav-text">注册机二</span></a></li></ol></li></ol></li></ol></li></ol>
     </div>
 </div>
         </aside>
