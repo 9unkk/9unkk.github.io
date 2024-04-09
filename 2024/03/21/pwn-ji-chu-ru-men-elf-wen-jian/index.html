@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="咸鱼">
+    <meta name="author" content="9unk">
+    
+    <title>
+        
+            PWN基础入门 - ELF文件 |
+        
+        9unk Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.jpg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"/images/logo.jpg","favicon":"/images/logo.jpg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"人初做事，如鸡伏卵，不舍而生气渐充。如燕营巢，不息而结构渐牢。如滋培之木，不见其长，有时而大。如有本之泉，不舍昼夜，盈科而后进，放乎四海。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                9unk Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">PWN基础入门 - ELF文件</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/logo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">9unk</span>
+                        
+                            <span class="author-label">Lv5</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2024-03-21 21:00:00</span>
+        <span class="mobile">2024-03-21 21:00</span>
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/pwn/">pwn</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>4.9k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>18 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1>简介</h1>
+<p>ELF，即 Executable and Linking Format，直译为 “ 可执行和链接格式 ”，具有这种格式的文件称为 ELF 文件。</p>
+<p>ELF 文件主要分为以下三种类型：</p>
+<ul>
+<li>
+<p>可重定位文件（relocatavble file），即 “.o” 文件，常用于与其他目标文件进行连接以构建可执行文件或动态链接库。</p>
+</li>
+<li>
+<p>共享目标文件（shared object file），即动态链接库文件。它在以下两种情况被使用：第一，在连接过程中与其他动态链接库或可重定位文件一起构建新的目标文件；第二，在可执行文件被加载的过程中，被动态链接到新的进程中，成为运行代码一部分。</p>
+</li>
+<li>
+<p>可执行文件（executable file），经过连接的，可执行的程序文件。目标文件是由汇编器（assembler）和连接编辑器（link editor）生成的，内容是二进制，而非刻度的文本形式，是可以直接在处理器上运行的代码。</p>
+</li>
+</ul>
+<p>动态链接库：Windows 的 .dll、Linux 的 .so</p>
+<p>静态链接库：Windows 的 .lib、Linux 的 .a</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/1f75aa5a-38f4-4d52-818c-93d7786b7c99"
+                      alt="1"
+                ></p>
+<p>ELF 文件都是二进制的形式，根据对应的数据结构来生成文件，有哪些字段（顺序是固定的）、各字段的长度、各字段的值代表什么含义。最后生成一个二进制文件。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://github.com/9unkk/tuchuang/assets/25861639/c537175c-a3fe-4c95-a610-83df14ec6e3b"
+                      alt="2"
+                ></p>
+<p>如上图所示，为 ELF 文件的基本结构，其主要由四部分组成：</p>
+<ul>
+<li>
+<p>ELF Header（ELF头）<br>
+指出了 Programe Header Table 、Section Header Table 的位置、大小、数量等。</p>
+</li>
+<li>
+<p>ELF Section Header Table（节头表）<br>
+含有文件中所有 “节” 的信息。文件里的每一个 “节” 都需要在 “节头表” 中有一个对应的注册项，这个注册项描述了节的名字、大小、节的位置等等。</p>
+</li>
+<li>
+<p>ELF Program Header Table（程序头表）<br>
+一个可执行文件或共享目标文件的程序头表（program header table）是一个数组，数组中的每一个元素称为 “程序头（program header）”，每一个程序头描述了一个“段（segment）”或者一块用于准备执行程序的信息。一个目标文件中的 “段（segment）”包含一个或者多个“节（secition）”。程序头只对可执行文件或共享目标文件有意义，对于可重定位文件，该信息可以忽略。</p>
+</li>
+<li>
+<p>ELF Sections<br>
+ELF文件由多个节组成，每个节包含了特定类型的数据。节可以包含代码、数据、只读数据、符号表、字符串表、重定位信息等。节是文件的静态组成部分，它们定义了文件内容的组织和结构。</p>
+</li>
+<li>
+<p>段（Segment）<br>
+段是程序加载到内存中的动态概念。每个段由程序头表中的一个条目描述，并且通常包含一个或多个节。段定义了程序在内存中的布局，包括代码段、数据段、堆栈段等。</p>
+</li>
+<li>
+<p>符号表（Symbol Table）<br>
+符号表是程序中所有符号（如函数、变量等）的集合。它包含了符号的名称、类型、大小、在节中的位置等信息。符号表对于链接器解析外部符号引用和程序调试非常重要。</p>
+</li>
+<li>
+<p>重定位信息（Relocation Information）<br>
+重定位信息用于修正程序中的地址引用，使得程序能够正确地访问其他模块或库中的符号。这在动态链接和目标代码模块的链接过程中非常关键。</p>
+</li>
+<li>
+<p>字符串表<br>
+字符串表是存储在文件中的字符串的集合，通常与符号表一起使用，用于存储符号名称和其他字符串数据。</p>
+</li>
+</ul>
+<h1>ELF 头</h1>
+<h2 id="64-位-ELF-头（占-64-字节）">64 位 ELF 头（占 64 字节）</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> e_ident[EI_NIDENT];     <span class="comment">/* 幻数及其他信息 */</span></span><br><span class="line">  Elf64_Half    e_type;                 <span class="comment">/* 对象文件类型 */</span></span><br><span class="line">  Elf64_Half    e_machine;              <span class="comment">/* 架构 */</span></span><br><span class="line">  Elf64_Word    e_version;              <span class="comment">/* 对象文件版本 */</span></span><br><span class="line">  Elf64_Addr    e_entry;                <span class="comment">/* 程序入口虚拟地址 */</span></span><br><span class="line">  Elf64_Off     e_phoff;                <span class="comment">/* 程序头表的偏移量 */</span></span><br><span class="line">  Elf64_Off     e_shoff;                <span class="comment">/* 节头表的偏移量 */</span></span><br><span class="line">  Elf64_Word    e_flags;                <span class="comment">/* 保存与文件相关的、特定于处理器的标志 */</span></span><br><span class="line">  Elf64_Half    e_ehsize;               <span class="comment">/* ELF头部的大小 */</span></span><br><span class="line">  Elf64_Half    e_phentsize;            <span class="comment">/* 程序头表的条目大小 */</span></span><br><span class="line">  Elf64_Half    e_phnum;                <span class="comment">/* 程序头表的条目数 */</span></span><br><span class="line">  Elf64_Half    e_shentsize;            <span class="comment">/* 节头表的条目大小 */</span></span><br><span class="line">  Elf64_Half    e_shnum;                <span class="comment">/* 节头表的条目数 */</span></span><br><span class="line">  Elf64_Half    e_shstrndx;             <span class="comment">/* 节头表中与节名称字符串相关联的条目的索引 */</span></span><br><span class="line">&#125; Elf64_Ehdr;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p><strong>0x00</strong>，e_ident[EI_NIDENT]（16 byte）：文件标识。0x04（文件类型：1表示32位；2表示64位）；0x05（存储方式：1表示小端存储；2表示大端存储）；0x05（版本，默认为1）；其余字节预留区暂未用到。</p>
+</li>
+<li>
+<p><strong>0x10</strong>，e_type（2 bytes）：文件类型，小端编码 “00 03”。</p>
+</li>
+<li>
+<p><strong>0x12</strong>，e_machine（2 bytes）：CPU 平台属性。003E（AMD x86-64 architecture）</p>
+</li>
+<li>
+<p><strong>0x14</strong>，e_version（4 bytes）：ELF 版本号，默认值 0x00000001</p>
+</li>
+<li>
+<p><strong>0x18</strong>, e_entry（8 bytes）：ELF 程序的入口虚拟地址，操作系统在加载完该程序后从这个地址开始执行进程的指令，真正的入口是 “_start”</p>
+</li>
+<li>
+<p><strong>0x20</strong>，e_phoff（8 bytes）：程序头部表在文件中的字节偏移（Program Header table OFFset）。如果文件中没有程序头部表，则为 0。</p>
+</li>
+<li>
+<p><strong>0x28</strong>，e_shoff（8 bytes）：节头表在文件中的字节偏移（ Section Header table OFFset ）。如果文件中没有节头表，则为 0。</p>
+</li>
+<li>
+<p><strong>0x30</strong>，e_flags（4 bytes）：文件中与特定处理器相关的标志，这些标志命名格式为EF_machine_flag。</p>
+</li>
+<li>
+<p><strong>0x34</strong>，e_ehsize（2 bytes）：ELF 文件头部的字节长度（ELF Header Size）</p>
+</li>
+<li>
+<p><strong>0x36</strong>，e_phentsize（2 bytes）：程序头部表中每个表项的字节长度（Program Header ENTry SIZE）。每个表项的大小相同。</p>
+</li>
+<li>
+<p><strong>0x38</strong>，e_phnum（2 bytes）：程序头部表的项数（ Program Header entry NUMber ）。因此，e_phnum 与 e_phentsize 的乘积即为程序头部表的字节长度。如果文件中没有程序头部表，则该项值为 0。</p>
+</li>
+<li>
+<p><strong>0x3A</strong>，e_shentsize（2 bytes）：节头的字节长度（Section Header ENTry SIZE）。一个节头是节头表中的一项；节头表中所有项占据的空间大小相同。</p>
+</li>
+<li>
+<p><strong>0x3C</strong>，e_shnum（2 bytes）：节头表中的项数（Section Header NUMber）。因此， e_shnum 与 e_shentsize 的乘积即为节头表的字节长度。如果文件中没有节头表，则该项值为 0。</p>
+</li>
+<li>
+<p><strong>0x3E</strong>，e_shstrndx（2 bytes）：节头表中与节名字符串表相关的表项的索引值（Section Header table InDeX related with section name STRing table）。如果文件中没有节名字符串表，则该项值为SHN_UNDEF。</p>
+</li>
+</ul>
+<h2 id="32-位-ELF-头（占-52-字节）">32 位 ELF 头（占 52 字节）</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> EI_NIDENT       16  </span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">elf32_hdr</span>&#123;</span>  </span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span> e_ident[EI_NIDENT];   <span class="comment">/* 幻数及其他信息 */</span></span><br><span class="line">	Elf32_Half    e_type;               <span class="comment">/* 对象文件类型 */</span></span><br><span class="line">	Elf32_Half    e_machine;            <span class="comment">/* 架构 */</span></span><br><span class="line">	Elf32_Word 	  e_version;            <span class="comment">/* 对象文件版本 */</span></span><br><span class="line">	Elf32_Addr    e_entry;              <span class="comment">/* 程序入口虚拟地址 */</span>  </span><br><span class="line">	Elf32_Off 	  e_phoff;              <span class="comment">/* 程序头表的偏移量 */</span>  </span><br><span class="line">	Elf32_Off 	  e_shoff;              <span class="comment">/* 节头表的偏移量 */</span></span><br><span class="line">	Elf32_Word    e_flags;              <span class="comment">/* 保存与文件相关的、特定于处理器的标志 */</span></span><br><span class="line">	Elf32_Half    e_ehsize;             <span class="comment">/* ELF 文件头部的字节长度 */</span></span><br><span class="line">	Elf32_Half    e_phentsize;          <span class="comment">/* 程序头表的大小 */</span>  </span><br><span class="line">	Elf32_Half    e_phnum;              <span class="comment">/* 程序头表的条目数 */</span>  </span><br><span class="line">	Elf32_Half    e_shentsize;          <span class="comment">/* 节头表的条目大小 */</span>  </span><br><span class="line">	Elf32_Half    e_shnum;              <span class="comment">/* 节头表的条目数 */</span>  </span><br><span class="line">	Elf32_Half    e_shstrndx;           <span class="comment">/* 节头表中与节名称字符串相关联的条目的索引 */</span></span><br><span class="line">&#125; Elf32_Ehdr;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>32 位的 elf 头，只有与地址相关的元素大小 e_entry、e_phoff、e_shoff 变成了 4 字节，其他元素的大小不变。</p>
+</blockquote>
+<h1>程序头表</h1>
+<h2 id="64-位">64 位</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="type">uint32_t</span> p_type;       <span class="comment">// 程序头类型，描述段的类型和目的</span></span><br><span class="line">    <span class="type">uint32_t</span> p_flags;      <span class="comment">// 程序头标志，描述段的访问权限和属性</span></span><br><span class="line">    <span class="type">uint64_t</span> p_offset;     <span class="comment">// 段在文件中的偏移量</span></span><br><span class="line">    <span class="type">uint64_t</span> p_vaddr;     <span class="comment">// 段在内存中的虚拟地址</span></span><br><span class="line">    <span class="type">uint64_t</span> p_paddr;     <span class="comment">// 段在内存中的物理地址（通常与虚拟地址相同）</span></span><br><span class="line">    <span class="type">uint64_t</span> p_filesz;    <span class="comment">// 段在文件中的大小</span></span><br><span class="line">    <span class="type">uint64_t</span> p_memsz;     <span class="comment">// 段在内存中的大小</span></span><br><span class="line">    <span class="type">uint64_t</span> p_align;     <span class="comment">// 段的对齐要求</span></span><br><span class="line">&#125; Elf64_Phdr;             <span class="comment">// 对于32位系统，使用 Elf32_Phdr 类型</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>p_type（4 bytes）：指定了段的类型，即该段在程序加载和执行中的作用。</li>
+</ul>
+<p>以下是p_type字段可能的具体数值及其含义：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">    PT_NULL (值为0x0):</span><br><span class="line">        占位符，没有实际的段与之对应。</span><br><span class="line"></span><br><span class="line">    PT_LOAD (值为0x1):</span><br><span class="line">        表示段是可以被加载到内存中执行的。这是最常见的段类型，通常包括代码段、数据段等。</span><br><span class="line"></span><br><span class="line">    PT_DYNAMIC (值为0x2):</span><br><span class="line">        包含动态链接信息，用于动态链接的共享对象。</span><br><span class="line"></span><br><span class="line">    PT_INTERP (值为0x3):</span><br><span class="line">        指定动态链接器的路径，告诉系统在加载共享对象时应该使用哪个动态链接器。</span><br><span class="line"></span><br><span class="line">    PT_NOTE (值为0x4):</span><br><span class="line">        包含特定于系统的信息，通常用于记录版权信息或其他注释。</span><br><span class="line"></span><br><span class="line">    PT_SHLIB (值为0x5):</span><br><span class="line">        保留，不应用于一般的程序。</span><br><span class="line"></span><br><span class="line">    PT_PHDR (值为0x6):</span><br><span class="line">        程序头表自身的描述信息，用于定位程序头表在文件中的位置。</span><br><span class="line"></span><br><span class="line">    PT_TLS (值为0x7):</span><br><span class="line">        线程局部存储段，用于存储线程特定的数据。</span><br><span class="line"></span><br><span class="line">    PT_NUM (值为0x8):</span><br><span class="line">        用于程序链接编辑器的段，不用于程序的执行。</span><br><span class="line"></span><br><span class="line">    PT_LOOS (值为0x60000000):</span><br><span class="line">        操作系统特定的低范围开始。</span><br><span class="line"></span><br><span class="line">    PT_GNU_EH_FRAME (值为0x6474e550):</span><br><span class="line">        包含异常处理帧信息，用于C++异常处理。</span><br><span class="line"></span><br><span class="line">    PT_GNU_STACK (值为0x6474e551):</span><br><span class="line">        描述栈的属性，通常用于指示栈是否可执行。</span><br><span class="line"></span><br><span class="line">    PT_GNU_RELRO (值为0x6474e552):</span><br><span class="line">        读只段，用于标记那些在运行时只读但在加载时需要写权限的段。</span><br><span class="line"></span><br><span class="line">    PT_LOSUNW (值为0x6ffffffa):</span><br><span class="line">        操作系统特定的低范围结束。</span><br><span class="line"></span><br><span class="line">    PT_SUNWBSS (值为0x6ffffffa):</span><br><span class="line">        用于标记BSS段的开始。</span><br><span class="line"></span><br><span class="line">    PT_SUNWSTACK (值为0x6ffffffb):</span><br><span class="line">        用于标记栈的开始。</span><br><span class="line"></span><br><span class="line">    PT_HISUNW (值为0x6fffffff):</span><br><span class="line">        操作系统特定的高范围结束。</span><br><span class="line"></span><br><span class="line">    PT_HIOS (值为0x6fffffff):</span><br><span class="line">        应用程序特定的高范围结束。</span><br><span class="line"></span><br><span class="line">    PT_LOPROC (值为0x70000000):</span><br><span class="line">        应用程序特定的低范围开始。</span><br><span class="line"></span><br><span class="line">    PT_HIPROC (值为0x7fffffff):</span><br><span class="line">        应用程序特定的高范围结束。</span><br><span class="line"></span><br><span class="line">    PT_SHT_ARM_EXIDX (值为0x70000001):</span><br><span class="line">        ARM特有的段，用于异常索引表。</span><br><span class="line"></span><br><span class="line">    PT_SHT_ARM_PREEMPTMAP (值为0x70000002):</span><br><span class="line">        ARM特有的段，用于预取映射表。</span><br><span class="line"></span><br><span class="line">    PT_SHT_ARM_ATTRIBUTES (值为0x70000003):</span><br><span class="line">        ARM特有的段，用于属性表。</span><br><span class="line"></span><br><span class="line">    PT_SHT_ARM_DEBUGOVERLAY (值为0x70000004):</span><br><span class="line">        ARM特有的段，用于调试覆盖。</span><br><span class="line"></span><br><span class="line">    PT_SHT_ARM_OVERLAYSECTION (值为0x70000005):</span><br><span class="line">        ARM特有的段，用于覆盖区。</span><br><span class="line"></span><br><span class="line">这些p_type的值定义了段的不同类型和用途，操作系统和加载器根据这些类型来正确地处理ELF文件中的段。需要注意的是，并非所有的操作系统和加载器都支持所有的段类型，某些类型可能是特定于某个平台或操作系统的。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>p_flags（4 bytes）：指定了段的访问权限和特性。</li>
+</ul>
+<p>以下是p_flags字段可能的具体数值及其含义：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PF_X (值为0x1):</span><br><span class="line">    表示段是可执行的。如果设置了这个标志，意味着这段内存可以被CPU执行指令。</span><br><span class="line"></span><br><span class="line">PF_W (值为0x2):</span><br><span class="line">    表示段是可写的。这个标志指示段允许被写入数据。</span><br><span class="line"></span><br><span class="line">PF_R (值为0x4):</span><br><span class="line">    表示段是可读的。这个标志指示段允许被读取数据。</span><br></pre></td></tr></table></figure>
+<p>这些标志可以组合使用，以表示段的不同访问权限。在实际的ELF文件中，p_flags字段通常是这些值的按位或（OR）组合。例如，一个段的p_flags可能被设置为PF_R | PF_X（即0x5），表示该段是可读和可执行的。</p>
+<ul>
+<li>
+<p>p_offset（8 bytes）：指定了段（segment）在文件中的起始偏移量，即从文件的开始位置到段数据的第一个字节之间的字节偏移数。<br>
+应用场景：当链接器处理ELF文件时，它会使用p_offset来确定如何将节（section）内容复制到输出文件中的相应段。加载器在加载程序时也会参考p_offset来确定段在文件中的物理位置，以便正确地将段内容映射到内存中。</p>
+</li>
+<li>
+<p>p_vaddr（8 bytes）：指定了段（segment）在内存中的虚拟地址（Virtual Address），即段在虚拟内存空间中的起始位置。<br>
+使用场景：加载器（Loader）使用p_vaddr来确定如何将段映射到进程的地址空间。这个地址通常是程序运行时的预期地址</p>
+</li>
+<li>
+<p>p_paddr（8 bytes）：指定了段（segment）在内存中的物理地址（Physical Address），即段在物理内存空间中的起始位置。然而，需要注意的是，p_paddr字段在大多数现代操作系统中并不常用，因为现代操作系统通常使用虚拟内存系统，而不是直接操作物理内存。</p>
+</li>
+<li>
+<p>p_filesz（8 bytes）：指定了一个段（segment）在文件中的大小。<br>
+使用场景：p_filesz用于加载器（loader）或链接器（linker）确定如何从ELF文件中读取段数据。加载器在加载程序到内存时，会根据p_filesz的值来确定需要读取多少字节的数据。</p>
+</li>
+<li>
+<p>p_memsz（8 bytes）：指定了一个段（segment）在内存中的大小。<br>
+使用场景：p_memsz用于加载器（loader）确定如何在内存中为段分配空间。加载器在将程序加载到内存时，会根据p_memsz的值来分配足够的内存空间。</p>
+</li>
+<li>
+<p>p_align（8 bytes）：指定了段（segment）在内存中的对齐要求。<br>
+使用场景：p_align用于加载器（loader）确定如何在内存中为段分配符合对齐要求的地址。这是为了满足某些硬件架构的性能优化要求，或者遵守操作系统的内存管理规则。</p>
+</li>
+</ul>
+<h2 id="32位">32位</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="type">uint32_t</span>   p_type;      <span class="comment">// 程序头类型</span></span><br><span class="line">    Elf32_Off  p_offset;    <span class="comment">// 文件中的偏移量</span></span><br><span class="line">    Elf32_Addr p_vaddr;     <span class="comment">// 虚拟内存地址</span></span><br><span class="line">    Elf32_Addr p_paddr;     <span class="comment">// 物理内存地址（通常不使用）</span></span><br><span class="line">    <span class="type">uint32_t</span>   p_filesz;    <span class="comment">// 文件中的大小</span></span><br><span class="line">    <span class="type">uint32_t</span>   p_memsz;     <span class="comment">// 内存中的大小</span></span><br><span class="line">    <span class="type">uint32_t</span>   p_flags;     <span class="comment">// 访问权限标志</span></span><br><span class="line">    <span class="type">uint32_t</span>   p_align;     <span class="comment">// 对齐要求</span></span><br><span class="line">&#125; Elf32_Phdr;</span><br></pre></td></tr></table></figure>
+<h1>节头表（段表）</h1>
+<p>64位的段表是以 Elf64_Shdr 结构体作为数组元素，数组元素的个数等于段的个数，每一个 “Elf64_Shdr” 代表有一个段。 “Elf64_Shdr” 又被称为段描述符。</p>
+<h2 id="64位">64位</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="type">uint32_t</span> sh_name;      <span class="comment">// 节名称的索引，指向节名称字符串表</span></span><br><span class="line">    <span class="type">uint32_t</span> sh_type;      <span class="comment">// 节类型，描述节的内容和用途</span></span><br><span class="line">    <span class="type">uint32_t</span> sh_flags;     <span class="comment">// 节标志，描述节的访问权限和特性</span></span><br><span class="line">    <span class="type">uint64_t</span> sh_addr;      <span class="comment">// 节的虚拟地址，只有在可执行文件或共享对象中才有效</span></span><br><span class="line">    <span class="type">uint64_t</span> sh_offset;    <span class="comment">// 节在文件中的偏移量</span></span><br><span class="line">    <span class="type">uint64_t</span> sh_size;      <span class="comment">// 节的大小</span></span><br><span class="line">    <span class="type">uint32_t</span> sh_link;      <span class="comment">// 链接到其他节的索引，通常用于符号表和重定位信息</span></span><br><span class="line">    <span class="type">uint32_t</span> sh_info;      <span class="comment">// 用于辅助信息，如重定位表中的符号表条目数量</span></span><br><span class="line">    <span class="type">uint64_t</span> sh_addralign; <span class="comment">// 节内地址对齐要求</span></span><br><span class="line">    <span class="type">uint64_t</span> sh_entsize;   <span class="comment">// 节中条目的大小，仅对某些类型的节（如符号表）有效</span></span><br><span class="line">&#125; Elf64_Shdr;              <span class="comment">// 对于32位系统，使用 Elf32_Shdr 类型</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>sh_name（4 bytes）：用于存储节名称的索引，它指向节名称字符串表（Section Name String Table）中对应的字符串。<br>
+使用场景：sh_name用于标识节的名称，使得链接器（linker）、加载器（loader）和调试工具能够识别和引用每个节。通过sh_name字段的索引值，可以找到对应的节名称字符串。</p>
+</li>
+<li>
+<p>sh_type（4 bytes）：指定节的类型，即节的用途和它包含的数据种类。<br>
+使用场景：sh_type用于链接器（linker）、加载器（loader）和调试工具识别节的类型，以便正确处理和解释节中的数据。</p>
+</li>
+<li>
+<p>sh_flags（8 bytes）：用于指定节的访问权限和属性，即定义了节的某些特性和如何处理这些节。<br>
+使用场景：sh_flags用于链接器（linker）、加载器（loader）和调试工具识别节的属性，以便正确处理节中的数据。例如，加载器可能会根据sh_flags中的SHF_ALLOC标志来决定是否为节分配内存。</p>
+</li>
+<li>
+<p>sh_addr（8 bytes）：指定了节在内存中的起始地址。<br>
+使用场景：sh_addr用于链接器确定节的最终位置。在创建可执行文件或共享对象时，链接器会使用这个地址来放置节；对于加载器来说，sh_addr字段指示了节在内存中的加载位置。加载器根据这个地址将节映射到进程的地址空间中。</p>
+</li>
+<li>
+<p>sh_offset（8 bytes）：指定了节在ELF文件中的起始偏移量，即从文件的开始到该节内容的起始位置之间的字节偏移数。<br>
+使用场景：sh_offset用于文件系统和加载器确定如何从文件中读取节数据。加载器在加载程序时会根据sh_offset来定位节在文件中的位置，并据此读取节内容；链接器在处理目标文件时也会使用sh_offset来识别和操作节。</p>
+</li>
+<li>
+<p>sh_size（8 bytes）：指定了节在文件中的大小，即节内容所占用的字节数。<br>
+使用场景：sh_size用于文件系统和加载器确定节在文件中的范围。加载器在加载程序时会根据sh_size来确定需要读取多少字节的数据；链接器在处理目标文件时也会使用sh_size来识别和操作节。</p>
+</li>
+<li>
+<p>sh_link（4 bytes）：指定当前节与其它节之间的关联，它提供了一个索引值，该值指向节名称字符串表中的一个条目，这个条目包含了与当前节相关联的另一个节的名称。<br>
+使用场景：sh_link用于链接器（linker）和加载器（loader）理解节之间的关系。例如，一个节可能需要与符号表（symbol table）或字符串表（string table）等其他节进行关联；在某些情况下，sh_link还可以用于指定节的合并属性，例如，多个.shstrtab节可能会被合并为一个。</p>
+</li>
+<li>
+<p>sh_info（4 bytes）：提供了与特定节相关的额外信息，其具体含义取决于节的类型。<br>
+使用场景：sh_info用于链接器（linker）和加载器（loader）理解节之间的关系，特别是在处理重定位和符号解析时。它可以帮助工具识别和操作节中的数据，确保正确的符号解析和重定位。</p>
+</li>
+<li>
+<p>sh_addralign（8 bytes）：指定了节（Section）在内存中的对齐要求。这个字段对于确保节的虚拟地址（sh_addr）满足特定的对齐约束非常重要，这通常是基于硬件架构的要求，以优化内存访问性能和满足某些指令集的对齐要求。<br>
+使用场景：sh_addralign用于加载器（loader）在加载程序到内存时，确保节的地址满足硬件架构的对齐要求。它有助于提高内存访问效率，因为许多处理器对齐的内存访问比非对齐的访问更快。</p>
+</li>
+<li>
+<p>sh_entsize（8 bytes）：指定了某些特定类型节中条目的大小。这个字段主要针对那些以固定大小条目数组形式存储数据的节，如符号表（symbol table）或重定位表（relocation table）。<br>
+使用场景：sh_entsize用于链接器（linker）、加载器（loader）和调试工具理解如何解析和处理这些特定类型的节。它有助于正确地遍历节中的数据结构，确保每个条目都能被正确地读取和解释。</p>
+</li>
+</ul>
+<blockquote>
+<p>段表的第一个元素是无效段描述符，它的类型为 “NULL”，除此之外每个段描述符都对应一个段。</p>
+</blockquote>
+<h2 id="32-位">32 位</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="type">uint32_t</span> sh_name;      <span class="comment">// 节名称的索引，指向节名称字符串表</span></span><br><span class="line">    <span class="type">uint32_t</span> sh_type;      <span class="comment">// 节类型，描述节的内容和用途</span></span><br><span class="line">    <span class="type">uint32_t</span> sh_flags;     <span class="comment">// 节标志，描述节的访问权限和特性</span></span><br><span class="line">    <span class="type">uint32_t</span> sh_addr;      <span class="comment">// 节的虚拟地址，只有在可执行文件或共享对象中才有效</span></span><br><span class="line">    <span class="type">uint32_t</span> sh_offset;    <span class="comment">// 节在文件中的偏移量</span></span><br><span class="line">    <span class="type">uint32_t</span> sh_size;      <span class="comment">// 节的大小</span></span><br><span class="line">    <span class="type">uint32_t</span> sh_link;      <span class="comment">// 链接到其他节的索引，通常用于符号表和重定位信息</span></span><br><span class="line">    <span class="type">uint32_t</span> sh_info;      <span class="comment">// 用于辅助信息，如重定位表中的符号表条目数量</span></span><br><span class="line">    <span class="type">uint32_t</span> sh_addralign; <span class="comment">// 节内地址对齐要求</span></span><br><span class="line">    <span class="type">uint32_t</span> sh_entsize;   <span class="comment">// 节中条目的大小，仅对某些类型的节（如符号表）有效</span></span><br><span class="line">&#125; Elf32_Shdr;</span><br></pre></td></tr></table></figure>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：PWN基础入门 - ELF文件</li>
+        <li>本文作者：9unk</li>
+        <li>创建时间：2024-03-21 21:00:00</li>
+        <li>
+            本文链接：https://9unkk.github.io/2024/03/21/pwn-ji-chu-ru-men-elf-wen-jian/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/pwn/">#pwn</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2024/04/07/pwn-ji-chu-ru-men-shellcode/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">PWN基础入门 - shellcode</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2023/11/16/c-yu-yan-jin-jie-c-cheng-xu-kong-zhi/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">C语言进阶-C程序控制</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">9unk</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">ELF 头</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#64-%E4%BD%8D-ELF-%E5%A4%B4%EF%BC%88%E5%8D%A0-64-%E5%AD%97%E8%8A%82%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">64 位 ELF 头（占 64 字节）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#32-%E4%BD%8D-ELF-%E5%A4%B4%EF%BC%88%E5%8D%A0-52-%E5%AD%97%E8%8A%82%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">32 位 ELF 头（占 52 字节）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">程序头表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#64-%E4%BD%8D"><span class="nav-number">3.1.</span> <span class="nav-text">64 位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#32%E4%BD%8D"><span class="nav-number">3.2.</span> <span class="nav-text">32位</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">节头表（段表）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#64%E4%BD%8D"><span class="nav-number">4.1.</span> <span class="nav-text">64位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#32-%E4%BD%8D"><span class="nav-number">4.2.</span> <span class="nav-text">32 位</span></a></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>
