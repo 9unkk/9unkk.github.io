@@ -1,0 +1,118 @@
+int main(void)
+{
+	unsigned int num = 0;
+	char name[20] = { 0 };
+	char rev_str[5] = { 0 };
+	DWORD dwOldProtect;			//用于存储之前的权限
+	printf("请输入用户名：");
+	scanf("%s", name);
+
+	//通过算法计算结果
+	for (int i = 0; i < strlen(name); i++)
+	{
+		num += name[i] * name[i];
+		num += (((name[i] / 2) + 3) * name[i]) - name[i];
+		num *= 2;
+	}
+	
+	//将字符串反向存储到
+	for (int i = num, j = 0; i > 0; i >>= 8, j++)
+	{
+		rev_str[j] = i % 0x100;
+	}
+
+	//要注入的进程名
+	wchar_t* processName = L"KeygenMe.exe";
+
+	//要注入的内存地址
+	DWORD_PTR addressToInject = 0x403138;
+
+	//要设置断点的内存地址
+	DWORD_PTR addressToBreak = 0x00401336;
+
+	//要注入的数据
+	DWORD dataToInject = 0;
+
+	//获取系统进程列表
+	DWORD processId = 0;
+	HANDLE hProcess = NULL;
+	
+	//存入要注入的数据
+	dataToInject = num;
+	//for (int i = 0; i < strlen(rev_str); i++)
+	//{
+		//dataToInject += (unsigned char)rev_str[i];
+		//dataToInject <<= 8;
+	//}
+
+	//创建进程快照
+	HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+
+	//用来接收 hProcessSnap 的信息
+	PROCESSENTRY32 process = { sizeof(PROCESSENTRY32) };
+
+	do
+	{
+		if (strcmp(process.szExeFile, processName) == 0)
+		{
+			processId = process.th32ProcessID;
+			break;
+		}
+	} while (Process32Next(hSnapshot, &process));
+	CloseHandle(hSnapshot);
+
+	
+
+	//调试器附加到进程
+	DebugActiveProcess(processId);
+
+	//打开进程
+	hProcess = OpenProcess(PROCESS_ALL_ACCESS, 0, processId);
+
+
+	//如果没有这个进程就报错
+	if (hProcess != NULL)
+	{
+		//设置 int 3 断点
+		LPVOID breakAddress = (LPVOID)addressToBreak;
+		BYTE int3 = 0xCC;
+		if (!WriteProcessMemory(hProcess, (LPVOID)addressToBreak, &int3, sizeof(int3), NULL))
+		{
+			//获取权限
+			BOOL pid_bol = VirtualProtectEx(hProcess, (LPVOID)addressToInject, sizeof(dataToInject), PAGE_READWRITE, &dwOldProtect);
+			if (pid_bol != FALSE)
+			{
+
+				//如果有这个进程，就尝试向进程中写入数据
+				if (!WriteProcessMemory(hProcess, (LPVOID)addressToInject, &dataToInject, sizeof(dataToInject), NULL))
+				{
+					printf("WriteProcessMemory failed!\n");
+				}
+				else
+				{
+					printf("WriteProcessMemory success!\n");
+
+					//清理，关闭进程
+					VirtualFreeEx(hProcess, (LPVOID)addressToInject, 0, MEM_RELEASE);
+					CloseHandle(hProcess);
+				}
+			}
+			else
+			{
+				printf("VirtualAllocEx Failed!\n");
+			}
+
+		}
+		else
+		{
+			printf("WriteProcessMemory for int 3 failed!\n");
+			CloseHandle(hProcess);
+		}
+
+	}
+	else
+	{
+		printf("OpenProcess failed!\n");
+	}
+	return 0;	//程序结束
+}
